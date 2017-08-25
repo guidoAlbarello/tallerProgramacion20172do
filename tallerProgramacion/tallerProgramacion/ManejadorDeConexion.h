@@ -1,0 +1,5 @@
+/*se encarga de manejar las conexiones mediante threads para el cliente y servidor. 
+nuevaConexion
+iniciarConexion
+threads corriendo para envio y otro para recibir 
+*/
