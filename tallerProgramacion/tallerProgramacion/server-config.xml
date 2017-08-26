@@ -1,0 +1,14 @@
+<servidor>
+	<cantidadMaximaClientes>8</cantidadMaximaClientes>
+	<puerto>15636</puerto>
+</servidor>
+<usuarios>
+	<usuario>
+		<nombre>Juan</nombre>
+		<password>123</password>
+	</usuario>
+	<usuarios>
+		<nombre>Maria</nombre>
+		<password>654</password>
+	</usuarios>
+</usuarios>
