@@ -112,15 +112,19 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Cliente.h" />
+    <ClInclude Include="ClienteDeCorreo.h" />
+    <ClInclude Include="ServidorDeCorreo.h" />
     <ClInclude Include="ManejadorDeConexion.h" />
     <ClInclude Include="Servidor.h" />
     <ClInclude Include="SocketSincronico.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Cliente.cpp" />
+    <ClCompile Include="ClienteDeCorreo.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ManejadorDeConexion.cpp" />
     <ClCompile Include="Servidor.cpp" />
+    <ClCompile Include="ServidorDeCorreo.cpp" />
     <ClCompile Include="SocketSincronico.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

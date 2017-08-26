@@ -1,5 +1,8 @@
 #include "SocketSincronico.h"
 
+SocketSincronico::SocketSincronico() {
+}
+
 SocketSincronico::SocketSincronico(SOCKET unSocket) {
 	this->socketDeConexion = unSocket;
 }
@@ -183,21 +186,20 @@ int SocketSincronico::cerrarSocket() {
 		int iResult = shutdown(socketDeConexion, SD_SEND);
 		if (iResult == SOCKET_ERROR) {
 			closesocket(socketDeConexion);
+			WSACleanup();
 			/*"Falla al cerrar el socket"*/
 			return 1;
 		}
 
 		closesocket(socketDeConexion);
 		socketDeConexion = INVALID_SOCKET;
+		WSACleanup();
 		/*"Se cerro el socket correctamente"*/
 		return 0;
 	}
 	else {
 		/*"Falla al cerrar el socket"*/
+		WSACleanup();
 		return 1;
 	}
-}
-
-void SocketSincronico::limpiarWSA() {
-	WSACleanup();
 }
