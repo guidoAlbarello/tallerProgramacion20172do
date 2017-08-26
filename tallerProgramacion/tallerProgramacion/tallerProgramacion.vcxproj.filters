@@ -27,6 +27,12 @@
     <ClInclude Include="ManejadorDeConexion.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
+    <ClInclude Include="ServidorDeCorreo.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="ClienteDeCorreo.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SocketSincronico.cpp">
@@ -42,6 +48,12 @@
       <Filter>Archivos de recursos</Filter>
     </ClCompile>
     <ClCompile Include="ManejadorDeConexion.cpp">
+      <Filter>Archivos de recursos</Filter>
+    </ClCompile>
+    <ClCompile Include="ServidorDeCorreo.cpp">
+      <Filter>Archivos de recursos</Filter>
+    </ClCompile>
+    <ClCompile Include="ClienteDeCorreo.cpp">
       <Filter>Archivos de recursos</Filter>
     </ClCompile>
   </ItemGroup>

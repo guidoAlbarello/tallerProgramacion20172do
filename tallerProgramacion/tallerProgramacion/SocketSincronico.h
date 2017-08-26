@@ -10,13 +10,13 @@
 
 class SocketSincronico {
 public:
+	SocketSincronico();
 	SocketSincronico(SOCKET unSocket);
 	int crearSocketCliente(std::string unaIp, std::string unPuerto);
 	int crearSocketServidor(std::string unPuerto, int cantidadMaximaDeConexiones);
 	bool enviarDatos(const char* datosAEnviar, int tamanio);
 	const char* recibirDatos();
 	int cerrarSocket();
-	void limpiarWSA();
 private:
 	SOCKET socketDeConexion;
 };
