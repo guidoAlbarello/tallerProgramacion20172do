@@ -8,7 +8,6 @@
 class ParserXml {
 
 public:
-	ParserXml();
 	ServerConfig* openServerConfigFile(std::string path);
 	void openClientConfigFile(std::string path);
 };
