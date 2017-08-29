@@ -2,25 +2,28 @@
 
 #include <string>
 #include <map>
+#include <stddef.h>
 
 using namespace std;
 
-enum LogMode { ERROR = 0, APPLICATION = 1, DEBUG = 2 };
+enum LogMode { Error = 0, Actividad = 1, Debug = 2 };
 
 class Logger
 {
 public:
-
 	LogMode mode;
-	Logger();
+	static Logger* getInstance();
 	void setMode(LogMode mode);
 	void log(LogMode mode, string message);
 	~Logger();
 
 private:
+	Logger();
+	static Logger* instance;
 	string currentDateTime();
 	bool canWrite(LogMode mode);
 	map<LogMode, string> mapMode;
+	
 
 };
 

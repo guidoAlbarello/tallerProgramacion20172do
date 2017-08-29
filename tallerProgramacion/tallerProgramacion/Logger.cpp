@@ -6,14 +6,14 @@
 #include <time.h>
 
 using namespace std;
-
+Logger* Logger::instance = NULL;
 
 Logger::Logger()
 {
-	mapMode[DEBUG] = "Debug";
-	mapMode[APPLICATION] = "Application";
-	mapMode[ERROR] = "Error";
-	this->mode = DEBUG;
+	mapMode[Debug] = "Debug";
+	mapMode[Actividad] = "Actividad";
+	mapMode[Error] = "Error";
+	this->mode = Debug;
 }
 
 
@@ -53,4 +53,13 @@ string Logger::currentDateTime() {
 bool Logger::canWrite(LogMode mode) {
 	return mode <= this->mode;
 
+}
+
+Logger *Logger::getInstance() {
+	if (!instance) {
+		instance = new Logger();
+		instance->setMode(Actividad);
+	}
+
+	return instance;
 }
