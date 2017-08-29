@@ -9,14 +9,9 @@
 #include "Usuario.h"
 #include "ServerConfig.h"
 
-
 using namespace rapidxml;
 using namespace std;
 
-
-ParserXml::ParserXml() {
-
-}
 
 ServerConfig* ParserXml::openServerConfigFile(std::string path) {
 	// TODO: pasar los prints al logger
