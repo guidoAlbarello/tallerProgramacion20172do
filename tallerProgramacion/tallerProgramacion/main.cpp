@@ -1,5 +1,5 @@
-#include "ServidorDeCorreo.h"
-#include "ClienteDeCorreo.h"
+#include "ServidorDeChat.h"
+#include "ClienteDeChat.h"
 
 #define IP "127.0.0.1"
 #define PUERTO "12345"
@@ -8,11 +8,9 @@
 
 int main(int argc, char* argv[]) {
 	if (ES_SERVIDOR) {
-		Servidor* nuevoServidor = new ServidorDeCorreo();
-		nuevoServidor->iniciarServidor(PUERTO, CANTIDAD_MAXIMA_CONEXIONES);
+		ServidorDeChat::getInstance()->iniciarServidor(PUERTO, CANTIDAD_MAXIMA_CONEXIONES);
 	} else {
-		Cliente* nuevoCliente = new ClienteDeCorreo(); 
-		nuevoCliente->iniciarCliente(IP, PUERTO);
+		ClienteDeChat::getInstance()->iniciarCliente(IP, PUERTO);
 	}
 	return 0;
 }

@@ -111,21 +111,36 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="BuzonDeMensajes.h" />
+    <ClInclude Include="ClientConfig.h" />
     <ClInclude Include="Cliente.h" />
-    <ClInclude Include="ClienteDeCorreo.h" />
-    <ClInclude Include="ServidorDeCorreo.h" />
+    <ClInclude Include="ClienteDeChat.h" />
+    <ClInclude Include="Conexion.h" />
+    <ClInclude Include="Logger.h" />
+    <ClInclude Include="Mensaje.h" />
+    <ClInclude Include="ParserXml.h" />
+    <ClInclude Include="ServerConfig.h" />
+    <ClInclude Include="ServidorDeChat.h" />
     <ClInclude Include="ManejadorDeConexion.h" />
     <ClInclude Include="Servidor.h" />
     <ClInclude Include="SocketSincronico.h" />
+    <ClInclude Include="Usuario.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BuzonDeMensajes.cpp" />
+    <ClCompile Include="ClientConfig.cpp" />
     <ClCompile Include="Cliente.cpp" />
-    <ClCompile Include="ClienteDeCorreo.cpp" />
+    <ClCompile Include="ClienteDeChat.cpp" />
+    <ClCompile Include="Conexion.cpp" />
+    <ClCompile Include="Logger.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ManejadorDeConexion.cpp" />
+    <ClCompile Include="ParserXml.cpp" />
+    <ClCompile Include="ServerConfig.cpp" />
     <ClCompile Include="Servidor.cpp" />
-    <ClCompile Include="ServidorDeCorreo.cpp" />
+    <ClCompile Include="ServidorDeChat.cpp" />
     <ClCompile Include="SocketSincronico.cpp" />
+    <ClCompile Include="Usuario.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
