@@ -43,6 +43,8 @@ ServerConfig* ParserXml::openServerConfigFile(std::string path) {
 	}
 	
 	cout << "Fin lectura xml" << endl;
+
+	printf("->> %d %d", intMaxPuertos, intMaxClientes);
 	ServerConfig serverConfig(intMaxClientes, intMaxPuertos, usuarios);
 	return &serverConfig;
 }
@@ -62,13 +64,13 @@ ClientConfig* ParserXml::openClientConfigFile(std::string path) {
 	std::string numeroPuerto = nodoConexion->first_node("puerto")->value();
 	int intPuerto = atoi(numeroPuerto.c_str());
 
-	std::string direccionIP = nodoConexion->first_node("ip")->value();
+	xml_node<>* nodoDireccionIP = nodoConexion->first_node("IP");
+	xml_node<>* nodoTestfilePath = nodoCliente->first_node("testfile")->first_node("path");
 
-	xml_node<>* nodoTestFile = nodoCliente->first_node("testfile");
-	std::string testfilePath = nodoTestFile->first_node("path")->value();
-
+	//printf("%s:%d %s\n", nodoDireccionIP->value(), intPuerto, nodoTestfilePath->value());
 	cout << "Fin lectura xml" << endl;
-	ClientConfig userConfig(direccionIP, intPuerto, testfilePath);
-	return &userConfig;
+
+	ClientConfig clientConfig(nodoDireccionIP->value(), intPuerto, nodoTestfilePath->value());
+	return &clientConfig;
 }
 
