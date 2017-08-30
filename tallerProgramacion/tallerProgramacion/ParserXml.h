@@ -4,11 +4,12 @@
 
 #include <iostream>
 #include "ServerConfig.h"
+#include "ClientConfig.h"
 
 class ParserXml {
 
 public:
 	ServerConfig* openServerConfigFile(std::string path);
-	void openClientConfigFile(std::string path);
+	ClientConfig* openClientConfigFile(std::string path);
 };
 #endif

@@ -7,7 +7,6 @@
 #include <string>     
 #include "../lib/rapidxml-1.13/rapidxml.hpp"
 #include "Usuario.h"
-#include "ServerConfig.h"
 
 using namespace rapidxml;
 using namespace std;
@@ -48,6 +47,28 @@ ServerConfig* ParserXml::openServerConfigFile(std::string path) {
 	return &serverConfig;
 }
 
-void ParserXml::openClientConfigFile(std::string path) {
+ClientConfig* ParserXml::openClientConfigFile(std::string path) {
+	cout << "Leyendo xml..." << endl;
+	xml_document<> documento;
+	ifstream archivo(path);
+	vector<char> buffer((istreambuf_iterator<char>(archivo)), istreambuf_iterator<char>());
+	buffer.push_back('\0');
+	documento.parse<0>(&buffer[0]); // <0> == sin flags de parseo
 
+	xml_node<>* nodoCliente = documento.first_node("cliente");
+
+	xml_node<>* nodoConexion = nodoCliente->first_node("conexion");
+
+	std::string numeroPuerto = nodoConexion->first_node("puerto")->value();
+	int intPuerto = atoi(numeroPuerto.c_str());
+
+	std::string direccionIP = nodoConexion->first_node("ip")->value();
+
+	xml_node<>* nodoTestFile = nodoCliente->first_node("testfile");
+	std::string testfilePath = nodoTestFile->first_node("path")->value();
+
+	cout << "Fin lectura xml" << endl;
+	ClientConfig userConfig(direccionIP, intPuerto, testfilePath);
+	return &userConfig;
 }
+
