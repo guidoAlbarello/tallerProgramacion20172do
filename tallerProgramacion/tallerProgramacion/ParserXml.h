@@ -9,6 +9,7 @@
 class ParserXml {
 
 public:
+	ParserXml();
 	ServerConfig* openServerConfigFile(std::string path);
 	ClientConfig* openClientConfigFile(std::string path);
 };

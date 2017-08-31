@@ -15,8 +15,8 @@ Servidor::~Servidor() {
 }
 
 void Servidor::iniciarServidor(std::string puertoEscucha, int cantidadMaximaConexiones) {
-	ParserXml xmlParser;
-	ServerConfig serverConfig = *xmlParser.openServerConfigFile(DEFAULT_SERVER_CONFIG_FILE);
+	ParserXml* xmlParser = new ParserXml();
+	ServerConfig* serverConfig = xmlParser->openServerConfigFile(DEFAULT_SERVER_CONFIG_FILE);
 	// TODO: definir si el servidor es el que tiene el parser o el main
 
 	this->conexionDelServidor->iniciarConexionServidor(puertoEscucha, cantidadMaximaConexiones);
