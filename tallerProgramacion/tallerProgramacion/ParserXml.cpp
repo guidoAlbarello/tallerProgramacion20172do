@@ -45,7 +45,6 @@ ServerConfig* ParserXml::openServerConfigFile(std::string path) {
 
 		cout << "Fin lectura xml" << endl;
 
-		printf("->> %d %d", intMaxPuertos, intMaxClientes);
 		ServerConfig serverConfig(intMaxClientes, intMaxPuertos, usuarios);
 		return &serverConfig;
 	} catch (std::exception& e) {
@@ -72,7 +71,7 @@ ClientConfig* ParserXml::openClientConfigFile(std::string path) {
 	rapidxml::xml_node<>* nodoDireccionIP = nodoConexion->first_node("IP");
 	rapidxml::xml_node<>* nodoTestfilePath = nodoCliente->first_node("testfile")->first_node("path");
 
-	//printf("%s:%d %s\n", nodoDireccionIP->value(), intPuerto, nodoTestfilePath->value());
+	
 	cout << "Fin lectura xml" << endl;
 
 	ClientConfig clientConfig(nodoDireccionIP->value(), intPuerto, nodoTestfilePath->value());
