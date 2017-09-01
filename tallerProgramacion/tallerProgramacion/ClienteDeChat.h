@@ -5,10 +5,11 @@
 #include "Cliente.h"
 #include <iostream>
 
+
 class ClienteDeChat : public Cliente {
 public:
 	static ClienteDeChat* getInstance();
-	
+	void iniciarCliente();
 private:
 	ClienteDeChat();
 	static ClienteDeChat* instance;

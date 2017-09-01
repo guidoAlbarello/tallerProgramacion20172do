@@ -8,9 +8,9 @@
 
 int main(int argc, char* argv[]) {
 	if (ES_SERVIDOR) {
-		ServidorDeChat::getInstance()->iniciarServidor(PUERTO, CANTIDAD_MAXIMA_CONEXIONES);
+		ServidorDeChat::getInstance()->iniciarServidor();
 	} else {
-		ClienteDeChat::getInstance()->iniciarCliente(IP, PUERTO);
+		ClienteDeChat::getInstance()->iniciarCliente();
 	}
 	return 0;
 }

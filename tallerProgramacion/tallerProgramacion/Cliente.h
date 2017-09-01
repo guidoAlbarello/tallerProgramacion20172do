@@ -3,7 +3,10 @@
 #define CLIENTE_H
 
 #include "ManejadorDeConexion.h"
+#include "ParserXml.h"
+#include "ClientConfig.h"
 
+const std::string DEFAULT_USER_CONFIG_FILE = "client-config.xml";
 class Cliente {
 public:
 	Cliente();
@@ -14,6 +17,7 @@ public:
 protected:
 	ManejadorDeConexion* conexionDelCliente;
 	virtual void correrCicloPrincipal();
+	ClientConfig* clientConfig;
 	bool clienteActivo;
 };
 

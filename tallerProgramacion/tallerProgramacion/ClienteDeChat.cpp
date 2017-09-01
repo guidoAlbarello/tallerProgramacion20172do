@@ -14,6 +14,13 @@ ClienteDeChat * ClienteDeChat::getInstance() {
 	return instance;
 }
 
+void ClienteDeChat::iniciarCliente() {
+	ParserXml xmlParser;
+	clientConfig = xmlParser.openClientConfigFile(DEFAULT_USER_CONFIG_FILE);
+
+	correrCicloPrincipal();
+}
+
 void ClienteDeChat::correrCicloPrincipal() {
 	while (clienteActivo) {
 		mostrarMenu();
@@ -62,15 +69,19 @@ void ClienteDeChat::mostrarMenu() {
 }
 
 void ClienteDeChat::conectarseAlServidor() {
+	this->conexionDelCliente->iniciarConexionCliente(clientConfig->getIP(), std::to_string(clientConfig->getPuerto()));
 }
 
 void ClienteDeChat::desconectarseDelServidor() {
+	this->conexionDelCliente->cerrarConexion();
 }
 
 void ClienteDeChat::hacerTestDeEstres() {
+
 }
 
 void ClienteDeChat::revisarBuzon() {
+
 }
 
 void ClienteDeChat::logearseAlServidor() {
