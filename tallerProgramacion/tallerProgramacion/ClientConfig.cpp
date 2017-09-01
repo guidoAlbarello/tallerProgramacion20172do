@@ -48,7 +48,7 @@ void ClientConfig::crearArchivoConfiguracion(std::string nombre) {
 	rapidxml::xml_node<>* nodoConexion = archivoXML.allocate_node(rapidxml::node_element, "conexion");
 	rapidxml::xml_node<>* nodoIP = archivoXML.allocate_node(rapidxml::node_element, "IP", DEFAULT_IP.c_str());
 	rapidxml::xml_node<>* nodoPuerto = archivoXML.allocate_node(rapidxml::node_element, "puerto", DEFAULT_PUERTO_CLIENTE.c_str());
-	
+
 	nodoConexion->append_node(nodoIP);
 	nodoConexion->append_node(nodoPuerto);
 

@@ -2,8 +2,12 @@
 #ifndef  SERVIDOR_H
 #define SERVIDOR_H
 
-#include "ManejadorDeConexion.h"
+#include "ManejadorDeConexionServidor.h"
 #include "ServerConfig.h"
+#include "Usuario.h"
+#include "ParserXml.h"
+#include "ServerConfig.h"
+#include <fstream>
 
 class Servidor {
 public:
@@ -14,7 +18,7 @@ public:
 	virtual void cerrarServidor();
 protected:
 	ServerConfig* configuracion;
-	ManejadorDeConexion* conexionDelServidor;
+	ManejadorDeConexionServidor* conexionDelServidor;
 	virtual void correrCicloPrincipal();
 	bool servidorActivo;
 	void leerServerConfig();

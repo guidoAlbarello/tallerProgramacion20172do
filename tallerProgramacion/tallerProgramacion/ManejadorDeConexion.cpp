@@ -15,23 +15,9 @@ ManejadorDeConexion::ManejadorDeConexion(SocketSincronico* unSocket) {
 	conexionActiva = true;
 }
 
-void ManejadorDeConexion::iniciarConexionCliente(std::string ipServidor, std::string puertoServidor) {
-	this->socket->crearSocketCliente(ipServidor, puertoServidor);
-
-	this->t_EnviarDatos = std::thread(&ManejadorDeConexion::enviarDatos, this);
-	this->t_RecibirDatos = std::thread(&ManejadorDeConexion::recibirDatos, this);
-}
-
-void ManejadorDeConexion::iniciarConexionServidor(std::string puertoEscucha, int cantidadConexionesMaxima) {
-	this->socket->crearSocketServidor(puertoEscucha, cantidadConexionesMaxima);
-
-	this->t_EnviarDatos = std::thread(&ManejadorDeConexion::enviarDatos, this);
-	this->t_RecibirDatos = std::thread(&ManejadorDeConexion::recibirDatos, this);
-}
-
 void ManejadorDeConexion::enviarDatos() {
 	while (conexionActiva) {
-		const char* datosAEnviar = NULL;
+		char* datosAEnviar = procesarDatosAEnviar();
 		int tamanioDatosAEnviar = 0;
 		this->socket->enviarDatos(datosAEnviar, tamanioDatosAEnviar);
 	}
@@ -39,7 +25,8 @@ void ManejadorDeConexion::enviarDatos() {
 
 void ManejadorDeConexion::recibirDatos() {
 	while (conexionActiva) {
-		const char* datosRecibidos = this->socket->recibirDatos();
+		char* datosRecibidos = this->socket->recibirDatos();
+		procesarDatosRecibidos(datosRecibidos);
 	}
 }
 

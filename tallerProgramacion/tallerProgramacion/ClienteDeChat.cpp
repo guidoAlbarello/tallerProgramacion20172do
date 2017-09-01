@@ -2,10 +2,6 @@
 
 ClienteDeChat* ClienteDeChat::instance = 0;
 
-ClienteDeChat::ClienteDeChat() {
-	Cliente();
-}
-
 ClienteDeChat * ClienteDeChat::getInstance() {
 	if (!instance) {
 		instance = new ClienteDeChat();
@@ -73,7 +69,7 @@ void ClienteDeChat::mostrarMenu() {
 }
 
 void ClienteDeChat::conectarseAlServidor() {
-	this->conexionDelCliente->iniciarConexionCliente(clientConfig->getIP(),clientConfig->getPuerto().c_str());
+	this->conexionDelCliente->iniciarConexion(clientConfig->getIP(), clientConfig->getPuerto().c_str());
 }
 
 void ClienteDeChat::desconectarseDelServidor() {
@@ -85,14 +81,25 @@ void ClienteDeChat::hacerTestDeEstres() {
 }
 
 void ClienteDeChat::revisarBuzon() {
-
+	//this->conexionDelCliente->ejecutarComando(Comando::RETRIEVE_MESSAGES) 
 }
 
 void ClienteDeChat::logearseAlServidor() {
+	//this->conexionDelCliente->ejecutarComando(Comando::LOG, user, pass)
+	//char* datosAEnviar = String(Comando::LOG + cliente->usuario + cliente->pass).c_str();
+	//int tamanio = String(Comando::LOG + cliente->usuario + cliente->pass).size();
+	////this->conexionDelCliente->pasarDatosAEnviar(datosAEnviar, tamanio);
+
+	//mutex en el buffer de manejar conexion .- cuando haya q manejar input en el cliente, se le pasa el input desde le manejador de input al manejador de conexion. o se manda a cliente para q procese primerop si es necesario y d3sp el manejador de conexion
 }
 
 void ClienteDeChat::enviarMensajeAlChat() {
+	//char* datosAEnviar = String(Comando::LOG +  cin >> mensaje).c_str();
+	//int tamanio = String(Comando::LOG + cin >> mensaje).size();
+	////this->conexionDelCliente->pasarDatosAEnviar(datosAEnviar, tamanio);
 }
 
 void ClienteDeChat::enviarMensajePrivado() {
+
 }
+

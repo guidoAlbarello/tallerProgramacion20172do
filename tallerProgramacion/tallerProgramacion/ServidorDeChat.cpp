@@ -21,10 +21,6 @@ Usuario * ServidorDeChat::buscarUsuario(std::string unUsuario) {
 	return usuarioDestinatario;
 }
 
-ServidorDeChat::ServidorDeChat() {
-	Servidor();
-}
-
 void ServidorDeChat::correrCicloPrincipal() {
 	while (servidorActivo) {
 		mostrarMenu();
@@ -95,5 +91,3 @@ void ServidorDeChat::mostrarMenu() {
 	std::cout << "3.Show-connected-users" << std::endl;
 	std::cout << "4.Exit" << std::endl;
 }
-
-

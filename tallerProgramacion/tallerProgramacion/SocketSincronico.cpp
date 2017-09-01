@@ -149,7 +149,7 @@ bool SocketSincronico::enviarDatos(const char* datosAEnviar, int tamanio) {
 	return true;
 }
 
-const char* SocketSincronico::recibirDatos() {
+	char* SocketSincronico::recibirDatos() {
 	int tamanioDeDatosRecibidos;
 	int tamanio;
 	void* datosARecibir = NULL;

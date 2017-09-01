@@ -15,7 +15,7 @@ public:
 	int crearSocketCliente(std::string unaIp, std::string unPuerto);
 	int crearSocketServidor(std::string unPuerto, int cantidadMaximaDeConexiones);
 	bool enviarDatos(const char* datosAEnviar, int tamanio);
-	const char* recibirDatos();
+	char* recibirDatos();
 	int cerrarSocket();
 private:
 	SOCKET socketDeConexion;

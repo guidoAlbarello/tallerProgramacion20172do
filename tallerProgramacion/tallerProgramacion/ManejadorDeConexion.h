@@ -6,21 +6,28 @@
 #include "SocketSincronico.h"
 #include <thread>
 
+enum Comando { LOG = '0', PING = '1', SEND_MESSAGE = '2', RETRIEVE_MESSAGES = '3' };
+
 class ManejadorDeConexion {
 public:	
 	ManejadorDeConexion();
 	ManejadorDeConexion(SOCKET unSocket);
 	ManejadorDeConexion(SocketSincronico* unSocket);
-	void iniciarConexionServidor(std::string puertoEscucha, int cantidadConexionesMaxima);
-	void iniciarConexionCliente(std::string ipServidor, std::string puertoServidor);
+
 	void cerrarConexion();
-private:
+protected:
 	SocketSincronico* socket;
 	bool conexionActiva;
 	std::thread t_RecibirDatos;
 	std::thread t_EnviarDatos;
-	void enviarDatos();
-	void recibirDatos();
+	virtual void enviarDatos();  //cuando esta sin mandar nada manda cada x segundos un ping q espera respuesta para ver si esta conectado 
+	virtual void recibirDatos();
+
+	//enum Comando comandoAEjecutar;
+	char* bufferDatosRecibidos;
+	char* bufferDatosAEnviar;
+	virtual char* procesarDatosAEnviar() = 0;
+	virtual char* procesarDatosRecibidos(char* datosRecibidos) = 0;
 };
 
 #endif

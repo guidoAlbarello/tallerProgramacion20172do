@@ -1,13 +1,10 @@
 #include "Servidor.h"
-#include "Usuario.h"
-#include "ParserXml.h"
-#include "ServerConfig.h"
-#include <fstream>
+
 
 const std::string DEFAULT_SERVER_CONFIG_FILE = "server-config.xml";
 
 Servidor::Servidor() {
-	this->conexionDelServidor = new	ManejadorDeConexion();
+	this->conexionDelServidor = new	ManejadorDeConexionServidor();
 	this->servidorActivo = true;
 }
 
@@ -19,7 +16,7 @@ void Servidor::iniciarServidor() {
 	// TODO: definir si el servidor es el que tiene el parser o el main
 	this->leerServerConfig();
 
-	this->conexionDelServidor->iniciarConexionServidor(this->configuracion->getPuerto(), this->configuracion->getMaxClientes());
+	this->conexionDelServidor->iniciarConexion(this->configuracion->getPuerto(), this->configuracion->getMaxClientes());
 	this->correrCicloPrincipal();
 }
 

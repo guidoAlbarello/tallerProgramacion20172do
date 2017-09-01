@@ -81,12 +81,10 @@ ClientConfig* ParserXml::readClientConfigFile(std::string path) {
 		clientConfig->setPath(nodoTestfilePath->value());
 
 		//cout << "Fin lectura xml" << endl;
-	}
-	catch (std::exception& e) {
+	} catch (std::exception& e) {
 		cout << "Ocurrio un error al parsear el archivo de configuracon del servidor" << endl;
 		cout << e.what();
 	}
 
 	return clientConfig;
-}
-
+} 

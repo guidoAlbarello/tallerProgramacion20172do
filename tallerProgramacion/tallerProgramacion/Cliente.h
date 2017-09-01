@@ -2,12 +2,14 @@
 #ifndef  CLIENTE_H
 #define CLIENTE_H
 
-#include "ManejadorDeConexion.h"
+#include "ManejadorDeConexionCliente.h"
 #include "ParserXml.h"
 #include "ClientConfig.h"
+#include <fstream>
+
+const std::string DEFAULT_CLIENT_CONFIG_FILE = "client-config.xml";
 
 const std::string DEFAULT_USER_CONFIG_FILE = "client-config.xml";
-
 class Cliente {
 public:
 	Cliente();
@@ -16,9 +18,9 @@ public:
 	virtual void cerrarCliente();
 
 protected:
-	ClientConfig* configuracion;
-	ManejadorDeConexion* conexionDelCliente;
+	ManejadorDeConexionCliente* conexionDelCliente;
 	virtual void correrCicloPrincipal();
+	ClientConfig* configuracion;
 	ClientConfig* clientConfig;
 	bool clienteActivo;
 	bool existeArchivo(const std::string& nombreArchivo);
