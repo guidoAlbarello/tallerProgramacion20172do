@@ -15,8 +15,9 @@ ClienteDeChat * ClienteDeChat::getInstance() {
 }
 
 void ClienteDeChat::iniciarCliente() {
-	ParserXml xmlParser;
-	clientConfig = xmlParser.readClientConfigFile(DEFAULT_USER_CONFIG_FILE);
+	/*ParserXml xmlParser;
+	clientConfig = xmlParser.readClientConfigFile(DEFAULT_USER_CONFIG_FILE);*/
+	this->leerClientConfig();
 
 	correrCicloPrincipal();
 }
@@ -50,6 +51,9 @@ void ClienteDeChat::correrCicloPrincipal() {
 		case '8':
 			enviarMensajePrivado();
 			break;
+		case '9':
+			printf("CONFIG: %s %s %s", this->configuracion->getIP().c_str(), this->configuracion->getPuerto().c_str(), this->configuracion->getPath().c_str());
+			break;
 		default:
 			break;
 		}
@@ -69,7 +73,7 @@ void ClienteDeChat::mostrarMenu() {
 }
 
 void ClienteDeChat::conectarseAlServidor() {
-	this->conexionDelCliente->iniciarConexionCliente(clientConfig->getIP(), std::to_string(clientConfig->getPuerto()));
+	this->conexionDelCliente->iniciarConexionCliente(clientConfig->getIP(),clientConfig->getPuerto().c_str());
 }
 
 void ClienteDeChat::desconectarseDelServidor() {

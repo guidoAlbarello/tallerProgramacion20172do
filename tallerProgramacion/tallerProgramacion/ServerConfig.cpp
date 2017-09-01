@@ -8,21 +8,15 @@
 
 ServerConfig::ServerConfig() {
 	this->maxClientes = atoi(DEFAULT_MAXCLIENTES.c_str());
-	this->puerto = DEFAULT_PUERTO;
+	this->puerto = DEFAULT_PUERTO_SERVIDOR;
 }
-
-/*ServerConfig::ServerConfig(int maxClientes, int puerto, std::vector<Usuario> usuarios) {
-	this->maxClientes = maxClientes;
-	this->puerto = puerto;
-	this->usuarios = usuarios;
-}*/
 
 void ServerConfig::crearArchivoConfiguracion(std::string nombre) {
 	//Generando un nuevo archivo de configuracion
 	rapidxml::xml_document<> archivoXML;
 	rapidxml::xml_node<>* nodoServidor = archivoXML.allocate_node(rapidxml::node_element, "servidor");
 	rapidxml::xml_node<>* nodoMaxClientes = archivoXML.allocate_node(rapidxml::node_element, "cantidadMaximaClientes", DEFAULT_MAXCLIENTES.c_str());
-	rapidxml::xml_node<>* nodoPuerto = archivoXML.allocate_node(rapidxml::node_element, "puerto", DEFAULT_PUERTO.c_str());
+	rapidxml::xml_node<>* nodoPuerto = archivoXML.allocate_node(rapidxml::node_element, "puerto", DEFAULT_PUERTO_SERVIDOR.c_str());
 
 	nodoServidor->append_node(nodoMaxClientes);
 	nodoServidor->append_node(nodoPuerto);
@@ -39,9 +33,9 @@ void ServerConfig::crearArchivoConfiguracion(std::string nombre) {
 	archivoXML.append_node(nodoServidor);
 	archivoXML.append_node(nodoUsuarios);
 
-	std::ofstream myfile;
-	myfile.open(nombre);
-	myfile << archivoXML;
+	std::ofstream archivo;
+	archivo.open(nombre);
+	archivo << archivoXML;
 }
 
 int ServerConfig::getMaxClientes() {

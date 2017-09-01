@@ -4,19 +4,24 @@
 
 #include <string>
 
+const std::string DEFAULT_IP = "192.168.0.1";
+const std::string DEFAULT_PUERTO_CLIENTE = "12345";
+const std::string DEFAULT_TESTFILE = "/tmp/filetest_01";
+
 class ClientConfig {
 	std::string IP;
-	int puerto;
+	std::string puerto;
 	std::string path;
 public:
 	ClientConfig();
-	ClientConfig(std::string unaIP, int unPuerto, std::string path);
-	int getPuerto();
+	ClientConfig(std::string unaIP, std::string unPuerto, std::string path);
+	std::string getPuerto();
 	std::string getIP();
 	std::string getPath();
 	void setIP(std::string unaIP);
-	void setPuerto(int unPuerto);
+	void setPuerto(std::string unPuerto);
 	void setPath(std::string path);
+	void crearArchivoConfiguracion(std::string nombre);
 };
 
 #endif

@@ -8,7 +8,7 @@
 using namespace std;
 
 const std::string DEFAULT_MAXCLIENTES = "3";
-const std::string DEFAULT_PUERTO = "12345";
+const std::string DEFAULT_PUERTO_SERVIDOR = "12345";
 
 class ServerConfig {
 	int maxClientes;

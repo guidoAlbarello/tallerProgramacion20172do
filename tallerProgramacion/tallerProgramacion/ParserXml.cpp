@@ -56,28 +56,37 @@ ServerConfig* ParserXml::readServerConfigFile(std::string path) {
 }
 
 ClientConfig* ParserXml::readClientConfigFile(std::string path) {
-	//cout << "Leyendo xml..." << endl;
+	ClientConfig* clientConfig = new ClientConfig();
+	try {
+		//cout << "Leyendo xml..." << endl;
 
-	rapidxml::xml_document<> documento;
-	ifstream archivo(path);
-	vector<char> buffer((istreambuf_iterator<char>(archivo)), istreambuf_iterator<char>());
-	buffer.push_back('\0');
-	documento.parse<0>(&buffer[0]); // <0> == sin flags de parseo
+		rapidxml::xml_document<> documento;
+		ifstream archivo(path);
+		vector<char> buffer((istreambuf_iterator<char>(archivo)), istreambuf_iterator<char>());
+		buffer.push_back('\0');
+		documento.parse<0>(&buffer[0]); // <0> == sin flags de parseo
 
-	rapidxml::xml_node<>* nodoCliente = documento.first_node("cliente");
+		rapidxml::xml_node<>* nodoCliente = documento.first_node("cliente");
 
-	rapidxml::xml_node<>* nodoConexion = nodoCliente->first_node("conexion");
+		rapidxml::xml_node<>* nodoConexion = nodoCliente->first_node("conexion");
 
-	std::string numeroPuerto = nodoConexion->first_node("puerto")->value();
-	int intPuerto = atoi(numeroPuerto.c_str());
+		std::string numeroPuerto = nodoConexion->first_node("puerto")->value();
 
-	rapidxml::xml_node<>* nodoDireccionIP = nodoConexion->first_node("IP");
-	rapidxml::xml_node<>* nodoTestfilePath = nodoCliente->first_node("testfile")->first_node("path");
+		clientConfig->setPuerto(numeroPuerto);
 
-	
-	//cout << "Fin lectura xml" << endl;
+		rapidxml::xml_node<>* nodoDireccionIP = nodoConexion->first_node("IP");
+		rapidxml::xml_node<>* nodoTestfilePath = nodoCliente->first_node("testfile")->first_node("path");
 
-	ClientConfig clientConfig(nodoDireccionIP->value(), intPuerto, nodoTestfilePath->value());
-	return &clientConfig;
+		clientConfig->setIP(nodoDireccionIP->value());
+		clientConfig->setPath(nodoTestfilePath->value());
+
+		//cout << "Fin lectura xml" << endl;
+	}
+	catch (std::exception& e) {
+		cout << "Ocurrio un error al parsear el archivo de configuracon del servidor" << endl;
+		cout << e.what();
+	}
+
+	return clientConfig;
 }
 

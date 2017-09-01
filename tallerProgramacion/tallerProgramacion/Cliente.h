@@ -7,6 +7,7 @@
 #include "ClientConfig.h"
 
 const std::string DEFAULT_USER_CONFIG_FILE = "client-config.xml";
+
 class Cliente {
 public:
 	Cliente();
@@ -15,10 +16,13 @@ public:
 	virtual void cerrarCliente();
 
 protected:
+	ClientConfig* configuracion;
 	ManejadorDeConexion* conexionDelCliente;
 	virtual void correrCicloPrincipal();
 	ClientConfig* clientConfig;
 	bool clienteActivo;
+	bool existeArchivo(const std::string& nombreArchivo);
+	void leerClientConfig();
 };
 
 #endif
