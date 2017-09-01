@@ -16,7 +16,7 @@ ClienteDeChat * ClienteDeChat::getInstance() {
 
 void ClienteDeChat::iniciarCliente() {
 	ParserXml xmlParser;
-	clientConfig = xmlParser.openClientConfigFile(DEFAULT_USER_CONFIG_FILE);
+	clientConfig = xmlParser.readClientConfigFile(DEFAULT_USER_CONFIG_FILE);
 
 	correrCicloPrincipal();
 }

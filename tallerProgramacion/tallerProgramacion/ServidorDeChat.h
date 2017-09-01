@@ -8,6 +8,7 @@
 #include "Logger.h"
 #include <iostream>
 #include <vector>
+
 class ServidorDeChat : public Servidor {
 public:
 	static ServidorDeChat* getInstance();

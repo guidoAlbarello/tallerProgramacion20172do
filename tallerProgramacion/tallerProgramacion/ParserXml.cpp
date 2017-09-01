@@ -3,8 +3,7 @@
 #include <stdio.h>
 #include <iostream>
 #include <fstream>
-#include <vector>
-#include <string>     
+#include <vector> 
 #include "../lib/rapidxml-1.13/rapidxml.hpp"
 #include "Usuario.h"
 
@@ -14,11 +13,12 @@ ParserXml::ParserXml() {
 
 }
 
-ServerConfig* ParserXml::openServerConfigFile(std::string path) {
+ServerConfig* ParserXml::readServerConfigFile(std::string path) {
+	ServerConfig* serverConfig = new ServerConfig();
 	try {
 		// TODO: pasar los prints al logger
-		cout << "Leyendo xml..." << endl;
-		rapidxml:: xml_document<> documento;
+		//cout << "Leyendo xml..." << endl;
+		rapidxml::xml_document<> documento;
 		ifstream archivo(path);
 		vector<char> buffer((istreambuf_iterator<char>(archivo)), istreambuf_iterator<char>());
 		buffer.push_back('\0');
@@ -28,11 +28,11 @@ ServerConfig* ParserXml::openServerConfigFile(std::string path) {
 
 		rapidxml::xml_node<>* nodoMaxClientes = nodoServidor->first_node("cantidadMaximaClientes");
 		std::string maxClientes = nodoMaxClientes->value();
-		int intMaxClientes = atoi(maxClientes.c_str());
+		serverConfig->setMaxClientes(atoi(maxClientes.c_str()));
 
 		rapidxml::xml_node<>* nodoPuerto = nodoMaxClientes->next_sibling();
 		std::string numeroPuerto = nodoPuerto->value();
-		int intMaxPuertos = atoi(numeroPuerto.c_str());
+		serverConfig->setPuerto(numeroPuerto);
 
 		rapidxml::xml_node<>* nodoUsuarios = documento.first_node("usuarios");
 		std::vector<Usuario> usuarios;
@@ -42,19 +42,22 @@ ServerConfig* ParserXml::openServerConfigFile(std::string path) {
 			Usuario user(nodoNombre->value(), nodoPassword->value());
 			usuarios.push_back(user);
 		}
+		serverConfig->setUsuarios(usuarios);
 
-		cout << "Fin lectura xml" << endl;
+		//cout << "Fin lectura xml" << endl;
 
-		ServerConfig serverConfig(intMaxClientes, intMaxPuertos, usuarios);
-		return &serverConfig;
+		//ServerConfig serverConfig(intMaxClientes, intMaxPuertos, usuarios);
 	} catch (std::exception& e) {
 		cout << "Ocurrio un error al parsear el archivo de configuracon del servidor" << endl;
 		cout << e.what();
 	}
+
+	return serverConfig;
 }
 
-ClientConfig* ParserXml::openClientConfigFile(std::string path) {
-	cout << "Leyendo xml..." << endl;
+ClientConfig* ParserXml::readClientConfigFile(std::string path) {
+	//cout << "Leyendo xml..." << endl;
+
 	rapidxml::xml_document<> documento;
 	ifstream archivo(path);
 	vector<char> buffer((istreambuf_iterator<char>(archivo)), istreambuf_iterator<char>());
@@ -72,7 +75,7 @@ ClientConfig* ParserXml::openClientConfigFile(std::string path) {
 	rapidxml::xml_node<>* nodoTestfilePath = nodoCliente->first_node("testfile")->first_node("path");
 
 	
-	cout << "Fin lectura xml" << endl;
+	//cout << "Fin lectura xml" << endl;
 
 	ClientConfig clientConfig(nodoDireccionIP->value(), intPuerto, nodoTestfilePath->value());
 	return &clientConfig;

@@ -1,7 +1,5 @@
 #include "Cliente.h"
 
-
-
 Cliente::Cliente(){
 	this->conexionDelCliente = new	ManejadorDeConexion();
 	this->clienteActivo = true;
@@ -13,7 +11,7 @@ Cliente::~Cliente() {
 
 void Cliente::iniciarCliente(std::string ipServidor, std::string puertoServidor) {
 	ParserXml xmlParser;
-    clientConfig = xmlParser.openClientConfigFile(DEFAULT_USER_CONFIG_FILE);
+    clientConfig = xmlParser.readClientConfigFile(DEFAULT_USER_CONFIG_FILE);
 
 	this->conexionDelCliente->iniciarConexionCliente(clientConfig->getIP(), std::to_string(clientConfig->getPuerto()));
 	this->correrCicloPrincipal();
