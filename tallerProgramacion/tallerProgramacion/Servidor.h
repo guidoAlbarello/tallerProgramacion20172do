@@ -9,23 +9,36 @@
 #include "ServerConfig.h"
 #include <fstream>
 #include <thread>
+#include "Conexion.h"
+#include "Logger.h"
 
 class Servidor {
 public:
-	Servidor();
-	~Servidor();
 	//virtual void iniciarServidor(std::string puertoEscucha, int cantidadMaximaConexiones);
-	virtual void iniciarServidor();
-	virtual void cerrarServidor();
+	static Servidor* getInstance();
+	Usuario* buscarUsuario(std::string unUsuario);
+	void iniciarServidor();
+	void cerrarServidor();
+
 protected:
 	ServerConfig* configuracion;
 	ManejadorDeConexionServidor* conexionDelServidor;
-	virtual void correrCicloPrincipal();
 	bool servidorActivo;
 	void leerServerConfig();
 	bool existeArchivo(const std::string& nombreDeArchivo);
-	std::thread t_procesarDatosRecibidos;
-	virtual void procesarDatosRecibidos();
+	Servidor();
+	~Servidor();
+	static Servidor* instance;
+	std::thread t_escucharClientes;
+	void escucharClientes();
+	void agregarNuevaConexionEntrante(SOCKET unCliente);
+	void cerrarTodasLasConexiones();
+	void correrCicloPrincipal();
+	void cambiarNivelLogeo();
+	void mostrarUsuariosConectados();
+	void mostrarMenu();
+	std::vector<Usuario*> listaDeUsuarios;
+	std::vector<Conexion*> conexionesActivas;
 };
 
 #endif

@@ -17,6 +17,7 @@ public:
 	bool enviarDatos(const char* datosAEnviar, int tamanio);
 	char* recibirDatos();
 	int cerrarSocket();
+	int hayClienteIntentandoConectarse();
 private:
 	SOCKET socketDeConexion;
 };

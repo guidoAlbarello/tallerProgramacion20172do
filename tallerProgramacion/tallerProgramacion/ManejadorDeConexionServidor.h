@@ -3,7 +3,8 @@
 class ManejadorDeConexionServidor : public ManejadorDeConexion {
 public:
 	void iniciarConexion(std::string puertoEscucha, int cantidadConexionesMaxima);
+	SOCKET hayClienteIntentandoConectarse();
 protected:
-	char* procesarDatosAEnviar();
-	char* procesarDatosRecibidos(char* datosRecibidos);
+	std::thread t_escucharClientes;
+
 };

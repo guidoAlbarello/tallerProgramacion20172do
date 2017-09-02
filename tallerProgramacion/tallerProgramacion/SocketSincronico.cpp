@@ -149,7 +149,7 @@ bool SocketSincronico::enviarDatos(const char* datosAEnviar, int tamanio) {
 	return true;
 }
 
-	char* SocketSincronico::recibirDatos() {
+char* SocketSincronico::recibirDatos() {
 	int tamanioDeDatosRecibidos;
 	int tamanio;
 	void* datosARecibir = NULL;
@@ -202,4 +202,12 @@ int SocketSincronico::cerrarSocket() {
 		WSACleanup();
 		return 1;
 	}
+}
+
+int SocketSincronico::hayClienteIntentandoConectarse() {
+	SOCKET socketDelCliente = INVALID_SOCKET;
+
+	// Accept a client socket
+	socketDelCliente = accept(socketDeConexion, NULL, NULL);
+	return socketDelCliente;
 }

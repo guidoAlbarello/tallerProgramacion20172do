@@ -1,13 +1,13 @@
-#include "ServidorDeChat.h"
-#include "ClienteDeChat.h"
+#include "Servidor.h"
+#include "Cliente.h"
 
 #define ES_SERVIDOR true
 
 int main(int argc, char* argv[]) {
 	if (ES_SERVIDOR) {
-		ServidorDeChat::getInstance()->iniciarServidor();
+		Servidor::getInstance()->iniciarServidor();
 	} else {
-		ClienteDeChat::getInstance()->iniciarCliente();
+		Cliente::getInstance()->iniciarCliente();
 	}
 	return 0;
 }

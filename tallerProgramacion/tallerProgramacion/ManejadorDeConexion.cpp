@@ -17,16 +17,17 @@ ManejadorDeConexion::ManejadorDeConexion(SocketSincronico* unSocket) {
 
 void ManejadorDeConexion::enviarDatos() {
 	while (conexionActiva) {
-		char* datosAEnviar = procesarDatosAEnviar();
-		int tamanioDatosAEnviar = 0;
-		this->socket->enviarDatos(datosAEnviar, tamanioDatosAEnviar);
+		this->socket->enviarDatos(bufferDatosAEnviar, tamanioDatosAEnviar);
 	}
 }
 
 void ManejadorDeConexion::recibirDatos() {
 	while (conexionActiva) {
-		char* datosRecibidos = this->socket->recibirDatos();
-		procesarDatosRecibidos(datosRecibidos);
+		char *datosRecibidos = this->socket->recibirDatos();
+
+		m_bufferDatosRecibidos.lock();
+		bufferDatosRecibidos = datosRecibidos;
+		m_bufferDatosRecibidos.unlock();
 	}
 }
 

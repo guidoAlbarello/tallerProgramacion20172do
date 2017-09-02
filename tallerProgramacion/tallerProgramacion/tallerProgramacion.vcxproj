@@ -114,15 +114,14 @@
     <ClInclude Include="BuzonDeMensajes.h" />
     <ClInclude Include="ClientConfig.h" />
     <ClInclude Include="Cliente.h" />
-    <ClInclude Include="ClienteDeChat.h" />
     <ClInclude Include="Conexion.h" />
     <ClInclude Include="Logger.h" />
     <ClInclude Include="ManejadorDeConexionCliente.h" />
+    <ClInclude Include="ManejadorDeConexionConexion.h" />
     <ClInclude Include="ManejadorDeConexionServidor.h" />
     <ClInclude Include="Mensaje.h" />
     <ClInclude Include="ParserXml.h" />
     <ClInclude Include="ServerConfig.h" />
-    <ClInclude Include="ServidorDeChat.h" />
     <ClInclude Include="ManejadorDeConexion.h" />
     <ClInclude Include="Servidor.h" />
     <ClInclude Include="SocketSincronico.h" />
@@ -132,17 +131,16 @@
     <ClCompile Include="BuzonDeMensajes.cpp" />
     <ClCompile Include="ClientConfig.cpp" />
     <ClCompile Include="Cliente.cpp" />
-    <ClCompile Include="ClienteDeChat.cpp" />
     <ClCompile Include="Conexion.cpp" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ManejadorDeConexion.cpp" />
     <ClCompile Include="ManejadorDeConexionCliente.cpp" />
+    <ClCompile Include="ManejadorDeConexionConexion.cpp" />
     <ClCompile Include="ManejadorDeConexionServidor.cpp" />
     <ClCompile Include="ParserXml.cpp" />
     <ClCompile Include="ServerConfig.cpp" />
     <ClCompile Include="Servidor.cpp" />
-    <ClCompile Include="ServidorDeChat.cpp" />
     <ClCompile Include="SocketSincronico.cpp" />
     <ClCompile Include="Usuario.cpp" />
   </ItemGroup>

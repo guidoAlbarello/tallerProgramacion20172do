@@ -14,7 +14,7 @@ public:
 	ManejadorDeConexion();
 	ManejadorDeConexion(SOCKET unSocket);
 	ManejadorDeConexion(SocketSincronico* unSocket);
-	char* getDatosRecibidos() { return bufferDatosRecibidos; }
+	char* getDatosRecibidos() { return bufferDatosRecibidos; } 
 	void cerrarConexion();
 protected:
 	SocketSincronico* socket;
@@ -30,8 +30,7 @@ protected:
 	//enum Comando comandoAEjecutar;
 	char* bufferDatosRecibidos;
 	char* bufferDatosAEnviar;
-	virtual char* procesarDatosAEnviar() = 0;
-	virtual char* procesarDatosRecibidos(char* datosRecibidos) = 0;
+	int tamanioDatosAEnviar;
 };
 
 #endif

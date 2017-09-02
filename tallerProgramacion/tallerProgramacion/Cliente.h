@@ -7,16 +7,16 @@
 #include "ClientConfig.h"
 #include <fstream>
 #include <thread>
+#include "Logger.h"
 
 const std::string DEFAULT_CLIENT_CONFIG_FILE = "client-config.xml";
 
 const std::string DEFAULT_USER_CONFIG_FILE = "client-config.xml";
 class Cliente {
 public:
-	Cliente();
-	~Cliente();
-	virtual void iniciarCliente(std::string ipServidor, std::string puertoServidor);
-	virtual void cerrarCliente();
+	static Cliente* getInstance();
+	void iniciarCliente();
+	void cerrarCliente();
 
 protected:
 	ManejadorDeConexionCliente* conexionDelCliente;
@@ -27,7 +27,18 @@ protected:
 	bool existeArchivo(const std::string& nombreArchivo);
 	void leerClientConfig();
 	std::thread t_procesarDatosRecibidos;
-	virtual void procesarDatosRecibidos();
+	Cliente();
+	~Cliente();
+	static Cliente* instance;
+	void mostrarMenu();
+	void conectarseAlServidor();
+	void desconectarseDelServidor();
+	void hacerTestDeEstres();
+	void revisarBuzon();
+	void logearseAlServidor();
+	void enviarMensajeAlChat();
+	void enviarMensajePrivado();
+	void procesarDatosRecibidos();
 };
 
 #endif
