@@ -9,6 +9,10 @@
 *.opendb
 .vs/
 
+
+Browse.VC.db
+Browse.VC.opendb
+
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
