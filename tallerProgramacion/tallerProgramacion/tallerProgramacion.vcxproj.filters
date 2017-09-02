@@ -57,6 +57,12 @@
     <ClInclude Include="Conexion.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
+    <ClInclude Include="ManejadorDeConexionCliente.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="ManejadorDeConexionServidor.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SocketSincronico.cpp">
@@ -99,6 +105,12 @@
       <Filter>Archivos de recursos</Filter>
     </ClCompile>
     <ClCompile Include="Conexion.cpp">
+      <Filter>Archivos de recursos</Filter>
+    </ClCompile>
+    <ClCompile Include="ManejadorDeConexionCliente.cpp">
+      <Filter>Archivos de recursos</Filter>
+    </ClCompile>
+    <ClCompile Include="ManejadorDeConexionServidor.cpp">
       <Filter>Archivos de recursos</Filter>
     </ClCompile>
   </ItemGroup>

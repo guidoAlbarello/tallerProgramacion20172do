@@ -6,6 +6,7 @@
 #include "ParserXml.h"
 #include "ClientConfig.h"
 #include <fstream>
+#include <thread>
 
 const std::string DEFAULT_CLIENT_CONFIG_FILE = "client-config.xml";
 
@@ -25,6 +26,8 @@ protected:
 	bool clienteActivo;
 	bool existeArchivo(const std::string& nombreArchivo);
 	void leerClientConfig();
+	std::thread t_procesarDatosRecibidos;
+	virtual void procesarDatosRecibidos();
 };
 
 #endif

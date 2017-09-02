@@ -6,6 +6,7 @@ const std::string DEFAULT_SERVER_CONFIG_FILE = "server-config.xml";
 Servidor::Servidor() {
 	this->conexionDelServidor = new	ManejadorDeConexionServidor();
 	this->servidorActivo = true;
+	this->t_procesarDatosRecibidos = std::thread(&Servidor::procesarDatosRecibidos, this);
 }
 
 Servidor::~Servidor() {
@@ -42,4 +43,7 @@ void Servidor::leerServerConfig() {
 bool Servidor::existeArchivo(const std::string& nombreDeArchivo) {
 	std::ifstream archivo(nombreDeArchivo.c_str());
 	return (bool)archivo;
+}
+
+void Servidor::procesarDatosRecibidos() {
 }

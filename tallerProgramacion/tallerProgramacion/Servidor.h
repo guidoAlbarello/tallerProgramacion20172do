@@ -8,6 +8,7 @@
 #include "ParserXml.h"
 #include "ServerConfig.h"
 #include <fstream>
+#include <thread>
 
 class Servidor {
 public:
@@ -23,6 +24,8 @@ protected:
 	bool servidorActivo;
 	void leerServerConfig();
 	bool existeArchivo(const std::string& nombreDeArchivo);
+	std::thread t_procesarDatosRecibidos;
+	virtual void procesarDatosRecibidos();
 };
 
 #endif

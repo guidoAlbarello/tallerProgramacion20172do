@@ -3,6 +3,7 @@
 Cliente::Cliente(){
 	this->conexionDelCliente = new	ManejadorDeConexionCliente();
 	this->clienteActivo = true;
+	this->t_procesarDatosRecibidos = std::thread(&Cliente::procesarDatosRecibidos, this);
 }
 
 Cliente::~Cliente() {
@@ -38,6 +39,9 @@ void Cliente::leerClientConfig() {
 		this->configuracion = new ClientConfig();
 		this->configuracion->crearArchivoConfiguracion(DEFAULT_CLIENT_CONFIG_FILE);
 	}
+}
+
+void Cliente::procesarDatosRecibidos() {
 }
 
 

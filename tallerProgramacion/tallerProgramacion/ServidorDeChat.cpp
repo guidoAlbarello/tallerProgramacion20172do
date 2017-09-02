@@ -91,3 +91,9 @@ void ServidorDeChat::mostrarMenu() {
 	std::cout << "3.Show-connected-users" << std::endl;
 	std::cout << "4.Exit" << std::endl;
 }
+
+void ServidorDeChat::procesarDatosRecibidos() {
+	while (servidorActivo) {
+
+	}
+}

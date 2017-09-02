@@ -24,6 +24,7 @@ private:
 	void mostrarMenu();
 	std::vector<Usuario*> listaDeUsuarios;
 	std::vector<Conexion*> conexionesActivas;
+	void procesarDatosRecibidos();
 };
 
 #endif

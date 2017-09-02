@@ -103,3 +103,12 @@ void ClienteDeChat::enviarMensajePrivado() {
 
 }
 
+void ClienteDeChat::procesarDatosRecibidos() {
+	while (clienteActivo) {
+		char* datosRecibidos = this->conexionDelCliente->getDatosRecibidos();
+
+		//se copia primer byte
+		//switch( primer byte)  hacer y hacer 
+	}
+}
+

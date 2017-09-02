@@ -22,6 +22,7 @@ private:
 	void logearseAlServidor();
 	void enviarMensajeAlChat();
 	void enviarMensajePrivado();
+	void procesarDatosRecibidos();
 };
 
 #endif
