@@ -2,6 +2,10 @@
 
 ServidorDeChat* ServidorDeChat::instance = 0;
 
+ServidorDeChat::ServidorDeChat() {
+	Servidor();
+}
+
 ServidorDeChat * ServidorDeChat::getInstance() {
 	if (!instance) {
 		instance = new ServidorDeChat();

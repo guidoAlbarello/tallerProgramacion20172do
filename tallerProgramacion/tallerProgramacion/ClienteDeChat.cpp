@@ -2,6 +2,10 @@
 
 ClienteDeChat* ClienteDeChat::instance = 0;
 
+ClienteDeChat::ClienteDeChat() {
+	Cliente();
+}
+
 ClienteDeChat * ClienteDeChat::getInstance() {
 	if (!instance) {
 		instance = new ClienteDeChat();
@@ -70,6 +74,7 @@ void ClienteDeChat::mostrarMenu() {
 
 void ClienteDeChat::conectarseAlServidor() {
 	this->conexionDelCliente->iniciarConexion(clientConfig->getIP(), clientConfig->getPuerto().c_str());
+	this->t_procesarDatosRecibidos = std::thread(&ClienteDeChat::procesarDatosRecibidos, this);
 }
 
 void ClienteDeChat::desconectarseDelServidor() {

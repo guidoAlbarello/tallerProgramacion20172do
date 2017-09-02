@@ -6,7 +6,6 @@ const std::string DEFAULT_SERVER_CONFIG_FILE = "server-config.xml";
 Servidor::Servidor() {
 	this->conexionDelServidor = new	ManejadorDeConexionServidor();
 	this->servidorActivo = true;
-	this->t_procesarDatosRecibidos = std::thread(&Servidor::procesarDatosRecibidos, this);
 }
 
 Servidor::~Servidor() {
@@ -18,6 +17,7 @@ void Servidor::iniciarServidor() {
 	this->leerServerConfig();
 
 	this->conexionDelServidor->iniciarConexion(this->configuracion->getPuerto(), this->configuracion->getMaxClientes());
+	this->t_procesarDatosRecibidos = std::thread(&Servidor::procesarDatosRecibidos, this);
 	this->correrCicloPrincipal();
 }
 

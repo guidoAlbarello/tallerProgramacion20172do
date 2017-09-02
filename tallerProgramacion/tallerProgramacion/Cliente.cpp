@@ -3,7 +3,6 @@
 Cliente::Cliente(){
 	this->conexionDelCliente = new	ManejadorDeConexionCliente();
 	this->clienteActivo = true;
-	this->t_procesarDatosRecibidos = std::thread(&Cliente::procesarDatosRecibidos, this);
 }
 
 Cliente::~Cliente() {
@@ -15,6 +14,7 @@ void Cliente::iniciarCliente(std::string ipServidor, std::string puertoServidor)
     clientConfig = xmlParser.readClientConfigFile(DEFAULT_USER_CONFIG_FILE);
 
 	this->conexionDelCliente->iniciarConexion(clientConfig->getIP(), clientConfig->getPuerto());
+	this->t_procesarDatosRecibidos = std::thread(&Cliente::procesarDatosRecibidos, this);
 	this->correrCicloPrincipal();
 }
 
