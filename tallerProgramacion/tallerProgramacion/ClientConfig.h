@@ -6,7 +6,7 @@
 
 const std::string DEFAULT_IP = "127.0.0.1";
 const std::string DEFAULT_PUERTO_CLIENTE = "15636";
-const std::string DEFAULT_TESTFILE = "/tmp/filetest_01";
+const std::string DEFAULT_PATH = "/tmp/filetest_01";
 
 class ClientConfig {
 	std::string IP;

@@ -13,7 +13,7 @@ const std::string DEFAULT_PUERTO_SERVIDOR = "12345";
 class ServerConfig {
 	int maxClientes;
 	std::string puerto;
-	std::vector<Usuario> usuarios;
+	std::vector<Usuario *> usuarios;
 public:
 	ServerConfig();
 	//ServerConfig(int maxClientes, int puerto, std::vector<Usuario> usuarios);
@@ -21,8 +21,8 @@ public:
 	void setMaxClientes(int maxClientes);
 	std::string getPuerto();
 	void setPuerto(std::string puerto);
-	std::vector<Usuario> getUsuarios();
-	void setUsuarios(std::vector<Usuario>);
+	std::vector<Usuario *> getUsuarios();
+	void setUsuarios(std::vector<Usuario *>);
 	void crearArchivoConfiguracion(std::string nombre);
 };
 #endif

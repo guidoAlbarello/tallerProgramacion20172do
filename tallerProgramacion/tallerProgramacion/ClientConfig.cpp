@@ -7,7 +7,7 @@
 ClientConfig::ClientConfig() {
 	this->IP = DEFAULT_IP;
 	this->puerto = DEFAULT_PUERTO_CLIENTE;
-	this->path = DEFAULT_TESTFILE;
+	this->path = DEFAULT_PATH;
 }
 
 ClientConfig::ClientConfig(std::string unaIP, std::string unPuerto, std::string path) {
@@ -52,13 +52,13 @@ void ClientConfig::crearArchivoConfiguracion(std::string nombre) {
 	nodoConexion->append_node(nodoIP);
 	nodoConexion->append_node(nodoPuerto);
 
-	rapidxml::xml_node<>* nodoPath = archivoXML.allocate_node(rapidxml::node_element, "path");
-	rapidxml::xml_node<>* nodoTestfile = archivoXML.allocate_node(rapidxml::node_element, "testfile", DEFAULT_TESTFILE.c_str());
+	rapidxml::xml_node<>* nodoTestfile = archivoXML.allocate_node(rapidxml::node_element, "testfile");
+	rapidxml::xml_node<>* nodoPath = archivoXML.allocate_node(rapidxml::node_element, "path", DEFAULT_PATH.c_str());
 
-	nodoPath->append_node(nodoTestfile);
+	nodoTestfile->append_node(nodoPath);
 
 	nodoCliente->append_node(nodoConexion);
-	nodoCliente->append_node(nodoPath);
+	nodoCliente->append_node(nodoTestfile);
 
 	archivoXML.append_node(nodoCliente);
 

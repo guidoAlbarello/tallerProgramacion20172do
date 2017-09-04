@@ -53,10 +53,10 @@ void ServerConfig::setPuerto(std::string puerto) {
 	this->puerto = puerto;
 }
 
-std::vector<Usuario> ServerConfig::getUsuarios() {
+std::vector<Usuario *> ServerConfig::getUsuarios() {
 	return this->usuarios;
 }
 
-void ServerConfig::setUsuarios(std::vector<Usuario> usuarios) {
+void ServerConfig::setUsuarios(std::vector<Usuario *> usuarios) {
 	this->usuarios = usuarios;
 }

@@ -53,6 +53,7 @@ bool Servidor::existeArchivo(const std::string& nombreDeArchivo) {
 
 Usuario * Servidor::buscarUsuario(std::string unUsuario) {
 	Usuario* usuarioDestinatario = NULL;
+	std::vector<Usuario *> listaDeUsuarios = this->configuracion->getUsuarios();
 
 	for (int i = 0; i < listaDeUsuarios.size() && usuarioDestinatario == NULL; i++) {
 		if (unUsuario.compare(listaDeUsuarios[i]->getNombre()) == 0)
@@ -79,6 +80,9 @@ void Servidor::correrCicloPrincipal() {
 			break;
 		case '4':
 			servidorActivo = false;
+			break;
+		case '5':
+			printf("CONFIG: %d %s. USERS: %zd\n", this->configuracion->getMaxClientes(), this->configuracion->getPuerto().c_str(), this->configuracion->getUsuarios().size());
 			break;
 		default:
 			break;

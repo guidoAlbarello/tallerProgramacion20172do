@@ -37,7 +37,7 @@ protected:
 	void cambiarNivelLogeo();
 	void mostrarUsuariosConectados();
 	void mostrarMenu();
-	std::vector<Usuario*> listaDeUsuarios;
+	//std::vector<Usuario*> listaDeUsuarios;
 	std::vector<Conexion*> conexionesActivas;
 };
 
