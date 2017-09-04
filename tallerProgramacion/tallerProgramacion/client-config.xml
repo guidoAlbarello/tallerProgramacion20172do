@@ -3,8 +3,7 @@
 		<IP>127.0.0.1</IP>
 		<puerto>15636</puerto>
 	</conexion>
-	<path>
-		<testfile>/tmp/filetest_01</testfile>
-	</path>
+	<testfile>
+		<path>/tmp/filetest_01</path>
+	</testfile>
 </cliente>
-

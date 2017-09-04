@@ -1,5 +1,6 @@
 #include "Cliente.h"
-
+#include <iostream>
+#include <limits>
 
 Cliente* Cliente::instance = 0;
 
@@ -14,6 +15,7 @@ Cliente * Cliente::getInstance() {
 Cliente::Cliente(){
 	this->conexionDelCliente = new	ManejadorDeConexionCliente();
 	this->clienteActivo = true;
+	this->configuracion = new ClientConfig();
 }
 
 Cliente::~Cliente() {
@@ -25,19 +27,8 @@ void Cliente::cerrarCliente() {
 	this->clienteActivo = false;
 }
 
-bool Cliente::existeArchivo(const std::string& nombreDeArchivo) {
-	std::ifstream archivo(nombreDeArchivo.c_str());
-	return (bool)archivo;
-}
-
 void Cliente::leerClientConfig() {
-	if (this->existeArchivo(DEFAULT_CLIENT_CONFIG_FILE)) {
-		ParserXml* xmlParser = new ParserXml();
-		this->configuracion = xmlParser->readClientConfigFile(DEFAULT_CLIENT_CONFIG_FILE);
-	} else {
-		this->configuracion = new ClientConfig();
-		this->configuracion->crearArchivoConfiguracion(DEFAULT_CLIENT_CONFIG_FILE);
-	}
+	this->configuracion->leerConfiguracion();
 }
 
 
@@ -64,8 +55,10 @@ void Cliente::correrCicloPrincipal() {
 					break;
 				case '2':
 					desconectarseDelServidor();
+					break;
 				case '3':
 					clienteActivo = false;
+					desconectarseDelServidor();
 					break;
 				case '4':
 					logearseAlServidor();
@@ -108,28 +101,39 @@ void Cliente::mostrarMenuPrincipal() {
 	std::cout << "8.Mensaje Privado" << std::endl;
 }
 
-void Cliente::mostrarMenuLogin() {
-	cout << "|----------------------------|" << std::endl;
-	cout << "|            Login           |" << std::endl;
-	cout << "|----------------------------|" << std::endl;
-}
-
-
 void Cliente::conectarseAlServidor() {
+	std::cout << "Conectando al servidor..." << std::endl;
 	this->conexionDelCliente->iniciarConexion(configuracion->getIP(), configuracion->getPuerto());
 	this->t_procesarDatosRecibidos = std::thread(&Cliente::procesarDatosRecibidos, this);
 }
 
 void Cliente::desconectarseDelServidor() {
+	std::cout << "Desconectando del servidor..." << std::endl;
 	this->conexionDelCliente->cerrarConexion();
 }
 
 void Cliente::hacerTestDeEstres() {
+	std::cout << "Ingrese la cantidad de milisegundos para la prueba" << std::endl;
+	std::string s_stressTimeMillis;
+	int TEST_MAX_DURATION = 99999999;
+	int stressTimeMillis = 0;
+	while (!(cin >> stressTimeMillis)) {
+		cin.clear();
+		cin.ignore(TEST_MAX_DURATION, '\n');
+		cout << "Ingrese solo numeros.  Intente nuevamente: ";
+	}
+	cout << "Ingreso: " << stressTimeMillis << "ms" << endl;
 
+	// TODO: implementar el test de estres
 }
 
 void Cliente::revisarBuzon() {
+	mostrarMenuBuzon();
+	std::cout << "Mensajes recibidos: " << std::endl;
+
+	// TODO: implementar llamado al server que traiga los msjs privados
 	//this->conexionDelCliente->ejecutarComando(Comando::RETRIEVE_MESSAGES) 
+
 }
 
 void Cliente::logearseAlServidor() {
@@ -151,7 +155,8 @@ void Cliente::logearseAlServidor() {
 		cout << "El login fue satisfactorio" << std::endl;
 		loginOk = true;
 
-		//cout << "Los datos ingresados son incorrectos" << std::endl;
+		// cout << "Los datos ingresados son incorrectos" << std::endl;
+		// break;
 
 		//mutex en el buffer de manejar conexion .- cuando haya q manejar input en el cliente, se le pasa el input desde le manejador de input al manejador de conexion. o se manda a cliente para q procese primerop si es necesario y d3sp el manejador de conexion
 	}
@@ -159,13 +164,24 @@ void Cliente::logearseAlServidor() {
 }
 
 void Cliente::enviarMensajeAlChat() {
+	mostrarMenuMensajeChat();
+	std::cout << "Ingrese el mensaje a enviar al chat" << std::endl;
+	std::string mensaje;
+	std::getline(std::cin, mensaje);
+
 	//char* datosAEnviar = String(Comando::LOG +  cin >> mensaje).c_str();
 	//int tamanio = String(Comando::LOG + cin >> mensaje).size();
 	////this->conexionDelCliente->pasarDatosAEnviar(datosAEnviar, tamanio);
 }
 
 void Cliente::enviarMensajePrivado() {
-
+	mostrarMenuMensajePrivado();
+	std::cout << "Ingrese el destinatario" << std::endl;
+	std::string destinatario;
+	std::getline(std::cin, destinatario);
+	std::cout << "Ingrese el mensaje a enviar" << std::endl;
+	std::string mensaje;
+	std::getline(std::cin, mensaje);
 }
 
 void Cliente::procesarDatosRecibidos() {
@@ -176,5 +192,29 @@ void Cliente::procesarDatosRecibidos() {
 		//se copia primer byte
 		//switch( primer byte)  hacer y hacer 
 	}
+}
+
+void Cliente::mostrarMenuLogin() {
+	cout << "|----------------------------|" << std::endl;
+	cout << "|            Login           |" << std::endl;
+	cout << "|----------------------------|" << std::endl;
+}
+
+void Cliente::mostrarMenuBuzon() {
+	cout << "|----------------------------|" << std::endl;
+	cout << "|            Buzon           |" << std::endl;
+	cout << "|----------------------------|" << std::endl;
+}
+
+void Cliente::mostrarMenuMensajeChat() {
+	cout << "|----------------------------|" << std::endl;
+	cout << "|        Mensaje Chat        |" << std::endl;
+	cout << "|----------------------------|" << std::endl;
+}
+
+void Cliente::mostrarMenuMensajePrivado() {
+	cout << "|----------------------------|" << std::endl;
+	cout << "|       Mensaje Privado      |" << std::endl;
+	cout << "|----------------------------|" << std::endl;
 }
 

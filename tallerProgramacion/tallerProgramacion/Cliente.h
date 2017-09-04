@@ -5,13 +5,9 @@
 #include "ManejadorDeConexionCliente.h"
 #include "ParserXml.h"
 #include "ClientConfig.h"
-#include <fstream>
 #include <thread>
 #include "Logger.h"
 
-const std::string DEFAULT_CLIENT_CONFIG_FILE = "client-config.xml";
-
-const std::string DEFAULT_USER_CONFIG_FILE = "client-config.xml";
 class Cliente {
 public:
 	static Cliente* getInstance();
@@ -22,9 +18,7 @@ protected:
 	ManejadorDeConexionCliente* conexionDelCliente;
 	virtual void correrCicloPrincipal();
 	ClientConfig* configuracion;
-	ClientConfig* clientConfig;
 	bool clienteActivo;
-	bool existeArchivo(const std::string& nombreArchivo);
 	void leerClientConfig();
 	std::thread t_procesarDatosRecibidos;
 	Cliente();
@@ -32,6 +26,9 @@ protected:
 	static Cliente* instance;
 	void mostrarMenuPrincipal();
 	void mostrarMenuLogin();
+	void mostrarMenuBuzon();
+	void mostrarMenuMensajeChat();
+	void mostrarMenuMensajePrivado();
 	void conectarseAlServidor();
 	void desconectarseDelServidor();
 	void hacerTestDeEstres();

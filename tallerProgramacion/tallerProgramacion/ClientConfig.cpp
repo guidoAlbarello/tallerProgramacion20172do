@@ -5,15 +5,11 @@
 #include <fstream>
 
 ClientConfig::ClientConfig() {
+	this->nombreConfiguracionPredeterminada = DEFAULT_CLIENT_CONFIG;
+
 	this->IP = DEFAULT_IP;
 	this->puerto = DEFAULT_PUERTO_CLIENTE;
-	this->path = DEFAULT_TESTFILE;
-}
-
-ClientConfig::ClientConfig(std::string unaIP, std::string unPuerto, std::string path) {
-	this->IP = unaIP;
-	this->puerto = unPuerto;
-	this->path = path;
+	this->path = DEFAULT_PATH;
 }
 
 void ClientConfig::setPuerto(std::string unPuerto) {
@@ -40,7 +36,7 @@ std::string ClientConfig::getPath() {
 	return this->path;
 }
 
-void ClientConfig::crearArchivoConfiguracion(std::string nombre) {
+void ClientConfig::crearConfiguracionPredeterminada() {
 	//Generando un nuevo archivo de configuracion
 	rapidxml::xml_document<> archivoXML;
 
@@ -52,17 +48,47 @@ void ClientConfig::crearArchivoConfiguracion(std::string nombre) {
 	nodoConexion->append_node(nodoIP);
 	nodoConexion->append_node(nodoPuerto);
 
-	rapidxml::xml_node<>* nodoPath = archivoXML.allocate_node(rapidxml::node_element, "path");
-	rapidxml::xml_node<>* nodoTestfile = archivoXML.allocate_node(rapidxml::node_element, "testfile", DEFAULT_TESTFILE.c_str());
+	rapidxml::xml_node<>* nodoTestfile = archivoXML.allocate_node(rapidxml::node_element, "testfile");
+	rapidxml::xml_node<>* nodoPath = archivoXML.allocate_node(rapidxml::node_element, "path", DEFAULT_PATH.c_str());
 
-	nodoPath->append_node(nodoTestfile);
+	nodoTestfile->append_node(nodoPath);
 
 	nodoCliente->append_node(nodoConexion);
-	nodoCliente->append_node(nodoPath);
+	nodoCliente->append_node(nodoTestfile);
 
 	archivoXML.append_node(nodoCliente);
 
-	std::ofstream archivo;
-	archivo.open(nombre);
-	archivo << archivoXML;
+	this->grabarDocumentoXML(this->nombreConfiguracionPredeterminada, &archivoXML);
+}
+
+void ClientConfig::parsearArchivoXML(std::string nombre) {
+	try {
+		//cout << "Leyendo xml..." << endl;
+
+		rapidxml::xml_document<> documento;
+		ifstream archivo(nombre);
+		vector<char> buffer((istreambuf_iterator<char>(archivo)), istreambuf_iterator<char>());
+		buffer.push_back('\0');
+		documento.parse<0>(&buffer[0]); // <0> == sin flags de parseo
+
+		rapidxml::xml_node<>* nodoCliente = documento.first_node("cliente");
+
+		rapidxml::xml_node<>* nodoConexion = nodoCliente->first_node("conexion");
+
+		std::string numeroPuerto = nodoConexion->first_node("puerto")->value();
+
+		this->puerto = numeroPuerto;
+
+		rapidxml::xml_node<>* nodoDireccionIP = nodoConexion->first_node("IP");
+		rapidxml::xml_node<>* nodoTestfilePath = nodoCliente->first_node("testfile")->first_node("path");
+
+		this->IP = nodoDireccionIP->value();
+		this->path = nodoTestfilePath->value();
+
+		//cout << "Fin lectura xml" << endl;
+	}
+	catch (std::exception& e) {
+		cout << "Ocurrio un error al parsear el archivo de configuracon del servidor" << endl;
+		cout << e.what();
+	}
 }
