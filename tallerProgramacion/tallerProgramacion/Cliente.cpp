@@ -14,6 +14,7 @@ Cliente * Cliente::getInstance() {
 Cliente::Cliente(){
 	this->conexionDelCliente = new	ManejadorDeConexionCliente();
 	this->clienteActivo = true;
+	this->configuracion = new ClientConfig();
 }
 
 Cliente::~Cliente() {
@@ -25,25 +26,12 @@ void Cliente::cerrarCliente() {
 	this->clienteActivo = false;
 }
 
-bool Cliente::existeArchivo(const std::string& nombreDeArchivo) {
-	std::ifstream archivo(nombreDeArchivo.c_str());
-	return (bool)archivo;
-}
-
 void Cliente::leerClientConfig() {
-	if (this->existeArchivo(DEFAULT_CLIENT_CONFIG_FILE)) {
-		ParserXml* xmlParser = new ParserXml();
-		this->configuracion = xmlParser->readClientConfigFile(DEFAULT_CLIENT_CONFIG_FILE);
-	} else {
-		this->configuracion = new ClientConfig();
-		this->configuracion->crearArchivoConfiguracion(DEFAULT_CLIENT_CONFIG_FILE);
-	}
+	this->configuracion->leerConfiguracion();
 }
 
 
 void Cliente::iniciarCliente() {
-	/*ParserXml xmlParser;
-	clientConfig = xmlParser.readClientConfigFile(DEFAULT_USER_CONFIG_FILE);*/
 	this->leerClientConfig();
 
 	correrCicloPrincipal();

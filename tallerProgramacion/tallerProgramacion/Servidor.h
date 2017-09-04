@@ -7,14 +7,12 @@
 #include "Usuario.h"
 #include "ParserXml.h"
 #include "ServerConfig.h"
-#include <fstream>
 #include <thread>
 #include "Conexion.h"
 #include "Logger.h"
 
 class Servidor {
 public:
-	//virtual void iniciarServidor(std::string puertoEscucha, int cantidadMaximaConexiones);
 	static Servidor* getInstance();
 	Usuario* buscarUsuario(std::string unUsuario);
 	void iniciarServidor();
@@ -25,7 +23,6 @@ protected:
 	ManejadorDeConexionServidor* conexionDelServidor;
 	bool servidorActivo;
 	void leerServerConfig();
-	bool existeArchivo(const std::string& nombreDeArchivo);
 	Servidor();
 	~Servidor();
 	static Servidor* instance;
@@ -37,7 +34,6 @@ protected:
 	void cambiarNivelLogeo();
 	void mostrarUsuariosConectados();
 	void mostrarMenu();
-	//std::vector<Usuario*> listaDeUsuarios;
 	std::vector<Conexion*> conexionesActivas;
 };
 

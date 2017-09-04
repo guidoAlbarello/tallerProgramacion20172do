@@ -2,7 +2,7 @@
 
 Servidor* Servidor::instance = 0;
 
-Servidor * Servidor::getInstance() {
+Servidor* Servidor::getInstance() {
 	if (!instance) {
 		instance = new Servidor();
 	}
@@ -10,11 +10,10 @@ Servidor * Servidor::getInstance() {
 	return instance;
 }
 
-const std::string DEFAULT_SERVER_CONFIG_FILE = "server-config.xml";
-
 Servidor::Servidor() {
 	this->conexionDelServidor = new	ManejadorDeConexionServidor();
 	this->servidorActivo = true;
+	this->configuracion = new ServerConfig();
 }
 
 Servidor::~Servidor() {
@@ -36,19 +35,7 @@ void Servidor::cerrarServidor() {
 }
 
 void Servidor::leerServerConfig() {
-	if (this->existeArchivo(DEFAULT_SERVER_CONFIG_FILE)) {
-		ParserXml* xmlParser = new ParserXml();
-		this->configuracion = xmlParser->readServerConfigFile(DEFAULT_SERVER_CONFIG_FILE);
-	}
-	else {
-		this->configuracion = new ServerConfig();
-		this->configuracion->crearArchivoConfiguracion(DEFAULT_SERVER_CONFIG_FILE);
-	}
-}
-
-bool Servidor::existeArchivo(const std::string& nombreDeArchivo) {
-	std::ifstream archivo(nombreDeArchivo.c_str());
-	return (bool)archivo;
+	this->configuracion->leerConfiguracion();
 }
 
 Usuario * Servidor::buscarUsuario(std::string unUsuario) {
