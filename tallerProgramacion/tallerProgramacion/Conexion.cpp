@@ -4,6 +4,7 @@ Conexion::Conexion(SOCKET unSocket) {
 	this->conexionConCliente = new ManejadorDeConexionConexion(unSocket);
 	this->conexionConCliente->iniciarConexion();
 	this->conexionActiva = true;
+	this->usuarioConectado = NULL;
 	this->t_procesarDatosRecibidos = std::thread(&Conexion::procesarDatosRecibidos, this);
 }
 

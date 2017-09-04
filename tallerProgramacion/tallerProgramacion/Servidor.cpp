@@ -133,7 +133,12 @@ void Servidor::mostrarUsuariosConectados() {
 	std::cout << "-------------------------------" << std::endl;
 
 	for (int i = 0; i < conexionesActivas.size(); i++) {
-		std::cout << "Usuario: " << conexionesActivas[i]->getUsuario()->getNombre() << std::endl;
+		if (conexionesActivas[i]->getUsuario() != NULL) {
+			std::cout << "Usuario: " << conexionesActivas[i]->getUsuario()->getNombre() << std::endl;
+		}
+		else {
+			std::cout << "Usuario connectado, pero sin loggear" << std::endl;
+		}
 	}
 }
 

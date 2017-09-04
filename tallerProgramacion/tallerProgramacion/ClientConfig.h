@@ -4,8 +4,8 @@
 
 #include <string>
 
-const std::string DEFAULT_IP = "192.168.0.1";
-const std::string DEFAULT_PUERTO_CLIENTE = "12345";
+const std::string DEFAULT_IP = "127.0.0.1";
+const std::string DEFAULT_PUERTO_CLIENTE = "15636";
 const std::string DEFAULT_TESTFILE = "/tmp/filetest_01";
 
 class ClientConfig {

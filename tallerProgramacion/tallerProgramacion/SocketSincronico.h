@@ -8,6 +8,8 @@
 #include <WS2tcpip.h>
 #include <string>
 
+using namespace std;
+
 class SocketSincronico {
 public:
 	SocketSincronico();

@@ -64,13 +64,13 @@ void Cliente::correrCicloPrincipal() {
 			clienteActivo = false;
 			break;
 		case '4':
-			hacerTestDeEstres();
+			logearseAlServidor();
 			break;
 		case '5':
-			revisarBuzon();
+			hacerTestDeEstres();
 			break;
 		case '6':
-			logearseAlServidor();
+			revisarBuzon();
 			break;
 		case '7':
 			enviarMensajeAlChat();
@@ -100,7 +100,7 @@ void Cliente::mostrarMenu() {
 }
 
 void Cliente::conectarseAlServidor() {
-	this->conexionDelCliente->iniciarConexion(clientConfig->getIP(), clientConfig->getPuerto().c_str());
+	this->conexionDelCliente->iniciarConexion(configuracion->getIP(), configuracion->getPuerto());
 	this->t_procesarDatosRecibidos = std::thread(&Cliente::procesarDatosRecibidos, this);
 }
 

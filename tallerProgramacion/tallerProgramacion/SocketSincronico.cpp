@@ -7,7 +7,7 @@ SocketSincronico::SocketSincronico(SOCKET unSocket) {
 	this->socketDeConexion = unSocket;
 }
 
-int SocketSincronico::crearSocketCliente(std::string unaIp, std::string unPuerto) {
+int SocketSincronico::crearSocketCliente(string unaIp, string unPuerto) {
 	WSADATA wsaData;
 	WORD wVersionRequested = MAKEWORD(2, 2);
 
@@ -17,7 +17,7 @@ int SocketSincronico::crearSocketCliente(std::string unaIp, std::string unPuerto
 		hints;
 
 	ZeroMemory(&hints, sizeof(hints));
-	hints.ai_family = AF_UNSPEC;
+	hints.ai_family = AF_INET;
 	hints.ai_socktype = SOCK_STREAM;
 	hints.ai_protocol = IPPROTO_TCP;
 
@@ -107,7 +107,8 @@ int SocketSincronico::crearSocketServidor(std::string unPuerto, int conexionesMa
 
 	freeaddrinfo(result);
 
-	if (listen(socketDeConexion, conexionesMax) == SOCKET_ERROR) {
+	int socketResponse = listen(socketDeConexion, conexionesMax);
+	if (socketResponse == SOCKET_ERROR) {
 		closesocket(socketDeConexion);
 		WSACleanup();
 		return 1;

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <cliente>
 	<conexion>
-		<IP>192.168.0.1</IP>
-		<puerto>65532</puerto>
+		<IP>127.0.0.1</IP>
+		<puerto>15636</puerto>
 	</conexion>
 	<testfile>
 		<path>/tmp/filetest_01</path>
