@@ -36,7 +36,9 @@ protected:
 	void correrCicloPrincipal();
 	void cambiarNivelLogeo();
 	void mostrarUsuariosConectados();
-	void mostrarMenu();
+	void mostrarMenuPrincipal();
+	void mostrarMenuModosLogueo();
+	void mostrarMenuUsuariosConectados();
 	std::vector<Usuario*> listaDeUsuarios;
 	std::vector<Conexion*> conexionesActivas;
 };

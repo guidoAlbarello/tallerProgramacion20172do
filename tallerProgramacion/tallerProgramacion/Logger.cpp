@@ -13,7 +13,7 @@ Logger::Logger()
 	mapMode[Debug] = "Debug";
 	mapMode[Actividad] = "Actividad";
 	mapMode[Error] = "Error";
-	this->mode = Debug;
+	//this->mode = Debug;
 }
 
 
@@ -38,6 +38,11 @@ void Logger::setMode(LogMode mode)
 	this->mode = mode;
 }
 
+LogMode Logger::getMode()
+{
+	return this->mode;
+}
+
 string Logger::currentDateTime() {
 	struct tm newtime;
 	time_t now = time(0);
@@ -58,7 +63,7 @@ bool Logger::canWrite(LogMode mode) {
 Logger *Logger::getInstance() {
 	if (!instance) {
 		instance = new Logger();
-		instance->setMode(Actividad);
+		instance->setMode(LogMode::Actividad);
 	}
 
 	return instance;

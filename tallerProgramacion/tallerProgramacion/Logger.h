@@ -14,6 +14,7 @@ public:
 	LogMode mode;
 	static Logger* getInstance();
 	void setMode(LogMode mode);
+	LogMode getMode();
 	void log(LogMode mode, string message);
 	~Logger();
 

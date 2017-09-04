@@ -6,25 +6,34 @@ using namespace std;
 #define ES_SERVIDOR true
 
 int main(int argc, char* argv[]) {
-	cout << "-------------------------------" << std::endl;
-	cout << "Menu" << std::endl;
-	cout << "-------------------------------" << std::endl;
-	cout << "1.Ejecutar Servidor" << std::endl;
-	cout << "2. Ejecutar Cliente" << std::endl;
+	std::string input;
+	while (input.length() != 1) {
+		cout << "|----------------------------|" << std::endl;
+		cout << "|            Menu            |" << std::endl;
+		cout << "|----------------------------|" << std::endl;
+		cout << "1.Ejecutar Servidor" << std::endl;
+		cout << "2.Ejecutar Cliente" << std::endl;
+		cout << "3.Salir" << std::endl;
 
-
-	char entradaUsuario;
-	std::cin >> entradaUsuario;
-	switch (entradaUsuario) {
-	case '1':
-		Servidor::getInstance()->iniciarServidor();
-		break;
-	case '2':
-		Cliente::getInstance()->iniciarCliente();
-		break;
-	default:
-		break;
+		std::getline(std::cin, input);
+		if (input.length() != 1) {
+			std::cout << "Debe ingresar una de las opciones" << std::endl;
+		}
+		else {
+			char opcionElegida = input[0];
+			switch (opcionElegida) {
+			case '1':
+				Servidor::getInstance()->iniciarServidor();
+				break;
+			case '2':
+				Cliente::getInstance()->iniciarCliente();
+				break;
+			default:
+				break;
+			}
+			break;
+		}
 	}
-
+			
 	return 0;
 }

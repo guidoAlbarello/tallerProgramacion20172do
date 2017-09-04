@@ -42,53 +42,62 @@ void Cliente::leerClientConfig() {
 
 
 void Cliente::iniciarCliente() {
-	/*ParserXml xmlParser;
-	clientConfig = xmlParser.readClientConfigFile(DEFAULT_USER_CONFIG_FILE);*/
 	this->leerClientConfig();
 
-	correrCicloPrincipal();
+	this->correrCicloPrincipal();
 }
 
 void Cliente::correrCicloPrincipal() {
+	std::string input;
 	while (clienteActivo) {
-		mostrarMenu();
-		char entradaUsuario;
-		std::cin >> entradaUsuario;
-		switch (entradaUsuario) {
-		case '1':
-			conectarseAlServidor();
-			break;
-		case '2':
-			desconectarseDelServidor();
-		case '3':
-			clienteActivo = false;
-			break;
-		case '4':
-			logearseAlServidor();
-			break;
-		case '5':
-			hacerTestDeEstres();
-			break;
-		case '6':
-			revisarBuzon();
-			break;
-		case '7':
-			enviarMensajeAlChat();
-			break;
-		case '8':
-			enviarMensajePrivado();
-			break;
-		case '9':
-			printf("CONFIG: %s %s %s", this->configuracion->getIP().c_str(), this->configuracion->getPuerto().c_str(), this->configuracion->getPath().c_str());
-			break;
-		default:
-			break;
+		while (input.length() != 1) {
+			mostrarMenuPrincipal();
+			std::getline(std::cin, input);
+			if (input.length() != 1) {
+				std::cout << "Debe ingresar una de las opciones" << std::endl;
+			}
+			else {
+				char opcionElegida = input[0];
+				switch (opcionElegida) {
+				case '1':
+					conectarseAlServidor();
+					break;
+				case '2':
+					desconectarseDelServidor();
+				case '3':
+					clienteActivo = false;
+					break;
+				case '4':
+					logearseAlServidor();
+					break;
+				case '5':
+					hacerTestDeEstres();
+					break;
+				case '6':
+					revisarBuzon();
+					break;
+				case '7':
+					enviarMensajeAlChat();
+					break;
+				case '8':
+					enviarMensajePrivado();
+					break;
+				case '9':
+					printf("CONFIG: %s %s %s", this->configuracion->getIP().c_str(), this->configuracion->getPuerto().c_str(), this->configuracion->getPath().c_str());
+					break;
+				default:
+					break;
+				}
+			}
 		}
+		correrCicloPrincipal();
 	}
 }
 
-void Cliente::mostrarMenu() {
-	std::cout << "Menu" << std::endl;
+void Cliente::mostrarMenuPrincipal() {
+	cout << "|----------------------------|" << std::endl;
+	cout << "|        Menu cliente        |" << std::endl;
+	cout << "|----------------------------|" << std::endl;
 	std::cout << "1.Conectar" << std::endl;
 	std::cout << "2.Desconectar" << std::endl;
 	std::cout << "3.Salir" << std::endl;
@@ -98,6 +107,13 @@ void Cliente::mostrarMenu() {
 	std::cout << "7.Mensaje Chat" << std::endl;
 	std::cout << "8.Mensaje Privado" << std::endl;
 }
+
+void Cliente::mostrarMenuLogin() {
+	cout << "|----------------------------|" << std::endl;
+	cout << "|            Login           |" << std::endl;
+	cout << "|----------------------------|" << std::endl;
+}
+
 
 void Cliente::conectarseAlServidor() {
 	this->conexionDelCliente->iniciarConexion(configuracion->getIP(), configuracion->getPuerto());
@@ -117,12 +133,29 @@ void Cliente::revisarBuzon() {
 }
 
 void Cliente::logearseAlServidor() {
-	//this->conexionDelCliente->ejecutarComando(Comando::LOG, user, pass)
-	//char* datosAEnviar = String(Comando::LOG + cliente->usuario + cliente->pass).c_str();
-	//int tamanio = String(Comando::LOG + cliente->usuario + cliente->pass).size();
-	////this->conexionDelCliente->pasarDatosAEnviar(datosAEnviar, tamanio);
+	bool loginOk = false;
+	while (!loginOk) {
+		std::string user;
+		std::string pass;
+		mostrarMenuLogin();
+		cout << "Ingrese su nombre de usuario" << std::endl;
+		std::getline(std::cin, user);
+		cout << "Ingrese su contrasenia" << std::endl;
+		std::getline(std::cin, pass);
 
-	//mutex en el buffer de manejar conexion .- cuando haya q manejar input en el cliente, se le pasa el input desde le manejador de input al manejador de conexion. o se manda a cliente para q procese primerop si es necesario y d3sp el manejador de conexion
+		//this->conexionDelCliente->ejecutarComando(Comando::LOG, user, pass)
+		//char* datosAEnviar = String(Comando::LOG + cliente->usuario + cliente->pass).c_str();
+		//int tamanio = String(Comando::LOG + cliente->usuario + cliente->pass).size();
+		////this->conexionDelCliente->pasarDatosAEnviar(datosAEnviar, tamanio);
+
+		cout << "El login fue satisfactorio" << std::endl;
+		loginOk = true;
+
+		//cout << "Los datos ingresados son incorrectos" << std::endl;
+
+		//mutex en el buffer de manejar conexion .- cuando haya q manejar input en el cliente, se le pasa el input desde le manejador de input al manejador de conexion. o se manda a cliente para q procese primerop si es necesario y d3sp el manejador de conexion
+	}
+	correrCicloPrincipal();
 }
 
 void Cliente::enviarMensajeAlChat() {

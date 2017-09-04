@@ -30,7 +30,8 @@ protected:
 	Cliente();
 	~Cliente();
 	static Cliente* instance;
-	void mostrarMenu();
+	void mostrarMenuPrincipal();
+	void mostrarMenuLogin();
 	void conectarseAlServidor();
 	void desconectarseDelServidor();
 	void hacerTestDeEstres();

@@ -22,7 +22,6 @@ Servidor::~Servidor() {
 }
 
 void Servidor::iniciarServidor() {
-	// TODO: definir si el servidor es el que tiene el parser o el main
 	this->leerServerConfig();
 
 	this->conexionDelServidor->iniciarConexion(this->configuracion->getPuerto(), this->configuracion->getMaxClientes());
@@ -63,26 +62,35 @@ Usuario * Servidor::buscarUsuario(std::string unUsuario) {
 }
 
 void Servidor::correrCicloPrincipal() {
+	std::string input;
 	while (servidorActivo) {
-		mostrarMenu();
-		char entradaUsuario;
-		std::cin >> entradaUsuario;
-		switch (entradaUsuario) {
-		case '1':
-			cerrarTodasLasConexiones();
-			break;
-		case '2':
-			cambiarNivelLogeo();
-			break;
-		case '3':
-			mostrarUsuariosConectados();
-			break;
-		case '4':
-			servidorActivo = false;
-			break;
-		default:
-			break;
+		while (input.length() != 1) {
+			mostrarMenuPrincipal();
+			std::getline(std::cin, input);
+			if (input.length() != 1) {
+				std::cout << "Debe ingresar una de las opciones" << std::endl;
+			}
+			else {
+				char opcionElegida = input[0];
+				switch (opcionElegida) {
+				case '1':
+					cerrarTodasLasConexiones();
+					break;
+				case '2':
+					cambiarNivelLogeo();
+					break;
+				case '3':
+					mostrarUsuariosConectados();
+					break;
+				case '4':
+					servidorActivo = false;
+					break;
+				default:
+					break;
+				}
+			}
 		}
+		correrCicloPrincipal();
 	}
 }
 
@@ -107,47 +115,87 @@ void Servidor::cerrarTodasLasConexiones() {
 }
 
 void Servidor::cambiarNivelLogeo() {
-	std::cout << "-------------------------------" << std::endl;
-	std::cout << "Modos de logeo" << std::endl;
-	std::cout << "-------------------------------" << std::endl;
-	std::cout << "1.Modo Error" << std::endl;
-	std::cout << "2.Modo Actividad" << std::endl;
-	std::cout << "3.Modo Debug" << std::endl;
-	char entradaUsuario;
-	std::cin >> entradaUsuario;
-	switch (entradaUsuario) {
-	case '1':
-		Logger::getInstance()->setMode(LogMode::Error);
-	case '2':
-		Logger::getInstance()->setMode(LogMode::Actividad);
-	case '3':
-		Logger::getInstance()->setMode(LogMode::Debug);
-	default:
-		break;
+	std::string input;
+	while (input.length() != 1) {
+		mostrarMenuModosLogueo();
+		std::getline(std::cin, input);
+		if (input.length() != 1) {
+			std::cout << "Debe ingresar una de las opciones" << std::endl;
+		}
+		else {
+			char opcionElegida = input[0];
+			switch (opcionElegida) {
+			case '1':
+				Logger::getInstance()->setMode(LogMode::Error);
+				break;
+			case '2':
+				Logger::getInstance()->setMode(LogMode::Actividad);
+				break;
+			case '3':
+				Logger::getInstance()->setMode(LogMode::Debug);
+				break;
+			case '4':
+				break;
+			default:
+				break;
+			}
+		}
 	}
+	correrCicloPrincipal();
 }
 
 void Servidor::mostrarUsuariosConectados() {
-	std::cout << "-------------------------------" << std::endl;
-	std::cout << "Usuarios conectados" << std::endl;
-	std::cout << "-------------------------------" << std::endl;
-
+	mostrarMenuUsuariosConectados();
+	if (conexionesActivas.size() == 0) {
+		std::cout << "En este momento no hay usuarios conectados a la aplicacion" << std::endl;
+	}
 	for (int i = 0; i < conexionesActivas.size(); i++) {
 		if (conexionesActivas[i]->getUsuario() != NULL) {
 			std::cout << "Usuario: " << conexionesActivas[i]->getUsuario()->getNombre() << std::endl;
 		}
 		else {
-			std::cout << "Usuario connectado, pero sin loggear" << std::endl;
+			std::cout << "Usuario connectado sin loguear" << std::endl;
 		}
 	}
+	std::cout << std::endl;
 }
 
-void Servidor::mostrarMenu() {
-	std::cout << "-------------------------------" << std::endl;
-	std::cout << "Menu" << std::endl;
-	std::cout << "-------------------------------" << std::endl;
+void Servidor::mostrarMenuPrincipal() {
+	cout << "|----------------------------|" << std::endl;
+	cout << "|        Menu servidor       |" << std::endl;
+	cout << "|----------------------------|" << std::endl;
 	std::cout << "1.Close-server" << std::endl;
 	std::cout << "2.Change-log-level" << std::endl;
 	std::cout << "3.Show-connected-users" << std::endl;
 	std::cout << "4.Exit" << std::endl;
+}
+
+void Servidor::mostrarMenuModosLogueo() {
+	cout << "|----------------------------|" << std::endl;
+	cout << "|       Modos de logeo       |" << std::endl;
+	cout << "|----------------------------|" << std::endl;
+	std::cout << "Modo actual: ";
+	LogMode modoLogueoActual = Logger::getInstance()->getMode();
+	switch (modoLogueoActual) {
+	case LogMode::Error:
+		std::cout << "Error" << std::endl;
+		break;
+	case LogMode::Actividad:
+		std::cout << "Actividad" << std::endl;
+		break;
+	case LogMode::Debug:
+		std::cout << "Debug" << std::endl;
+		break;
+	}
+	std::cout << std::endl;
+	std::cout << "1.Modo Error" << std::endl;
+	std::cout << "2.Modo Actividad" << std::endl;
+	std::cout << "3.Modo Debug" << std::endl;
+	std::cout << "4.Volver" << std::endl;
+}
+
+void Servidor::mostrarMenuUsuariosConectados() {
+	std::cout << "|----------------------------|" << std::endl;
+	std::cout << "|     Usuarios conectados    |" << std::endl;
+	std::cout << "|----------------------------|" << std::endl;
 }
