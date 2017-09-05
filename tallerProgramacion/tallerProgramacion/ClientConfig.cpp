@@ -62,6 +62,7 @@ void ClientConfig::crearConfiguracionPredeterminada() {
 
 	this->grabarDocumentoXML(this->nombreConfiguracionPredeterminada, &archivoXML);
 	Logger::getInstance()->log(LogMode::Debug, "[" + DEBUG_CLIENT_TAG + "] " + this->nombreConfiguracionPredeterminada + " se creo exitosamente.");
+	Logger::getInstance()->log(LogMode::Debug, "[" + DEBUG_CLIENT_TAG + "] " + "Configuracion del cliente (PREDETERMINADA): IP:PUERTO: " + DEFAULT_IP + ":" + DEFAULT_PUERTO_CLIENTE + ", PATH: " + DEFAULT_PATH + ".");
 }
 
 void ClientConfig::parsearArchivoXML(std::string nombre) {
@@ -79,7 +80,6 @@ void ClientConfig::parsearArchivoXML(std::string nombre) {
 		rapidxml::xml_node<>* nodoConexion = nodoCliente->first_node("conexion");
 
 		std::string numeroPuerto = nodoConexion->first_node("puerto")->value();
-
 		this->puerto = numeroPuerto;
 
 		rapidxml::xml_node<>* nodoDireccionIP = nodoConexion->first_node("IP");
@@ -89,6 +89,7 @@ void ClientConfig::parsearArchivoXML(std::string nombre) {
 		this->path = nodoTestfilePath->value();
 
 		Logger::getInstance()->log(LogMode::Debug, "[" + DEBUG_CLIENT_TAG + "] " + this->nombreConfiguracionPredeterminada + " se parseo exitosamente.");
+		Logger::getInstance()->log(LogMode::Debug, "[" + DEBUG_CLIENT_TAG + "] " + "Configuracion del cliente: IP:PUERTO: " + this->IP + this->puerto + ", PATH: " + this->path + ".");
 	}
 	catch (std::exception& e) {
 		Logger::getInstance()->log(LogMode::Error, "[" + DEBUG_CLIENT_TAG + "] Hubo un error al parsear el archivo de configuracion del cliente.");

@@ -5,7 +5,7 @@
 #include "Config.h"
 #include <string>
 
-const std::string DEFAULT_CLIENT_CONFIG = "client-config.xml";
+const std::string DEFAULT_CLIENT_CONFIG = "client-config2.xml";
 const std::string DEFAULT_IP = "127.0.0.1";
 const std::string DEFAULT_PUERTO_CLIENTE = "15636";
 const std::string DEFAULT_PATH = "/tmp/filetest_01";

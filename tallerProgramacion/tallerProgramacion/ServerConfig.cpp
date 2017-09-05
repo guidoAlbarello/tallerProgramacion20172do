@@ -42,6 +42,7 @@ void ServerConfig::crearConfiguracionPredeterminada() {
 
 	this->grabarDocumentoXML(this->nombreConfiguracionPredeterminada, &archivoXML);
 	Logger::getInstance()->log(LogMode::Debug, "[" + DEBUG_SERVER_TAG + "] " + this->nombreConfiguracionPredeterminada + " se creo exitosamente.");
+	Logger::getInstance()->log(LogMode::Debug, "[" + DEBUG_SERVER_TAG + "] " + "Configuracion del servidor (PREDETERMINADA): PUERTO: " + DEFAULT_PUERTO_SERVIDOR.c_str() + ", MAXIMOS CLIENTES: " + DEFAULT_MAXCLIENTES.c_str() + ".");
 }
 
 void ServerConfig::parsearArchivoXML(std::string nombre) {
@@ -74,6 +75,7 @@ void ServerConfig::parsearArchivoXML(std::string nombre) {
 		this->usuarios = usuarios;
 
 		Logger::getInstance()->log(LogMode::Debug, "[" + DEBUG_SERVER_TAG + "] " + this->nombreConfiguracionPredeterminada + " se parseo exitosamente.");
+		Logger::getInstance()->log(LogMode::Debug, "[" + DEBUG_SERVER_TAG + "] " + "Configuracion del servidor: PUERTO: " + this->puerto + ", MAXIMOS CLIENTES: " + maxClientes.c_str() + ".");
 	}
 	catch (std::exception& e) {
 		Logger::getInstance()->log(LogMode::Error, "[" + DEBUG_SERVER_TAG + "] Hubo un error al parsear el archivo de configuracion del servidor.");
