@@ -1,7 +1,5 @@
 #include "Logger.h"
 #include <string>
-#include <iostream>
-#include <iostream>
 #include <fstream>
 #include <time.h>
 
@@ -27,10 +25,10 @@ void Logger::log(LogMode mode, string message)
 		return;
 	}
 
-	ofstream myfile;
-	myfile.open("log.txt", ofstream::app);
-	myfile << currentDateTime() << " - " << mapMode[mode] << " - " << message << "\n";
-	myfile.close();
+	std::ofstream logFile;
+	logFile.open(currentDateTime(LOG_FILENAME_FORMAT), ofstream::app);
+	logFile << currentDateTime("%d-%m-%Y %I:%M:%S") << " - " << mapMode[mode] << " - " << message << std::endl;
+	logFile.close();
 }
 
 void Logger::setMode(LogMode mode)
@@ -43,13 +41,13 @@ LogMode Logger::getMode()
 	return this->mode;
 }
 
-string Logger::currentDateTime() {
+string Logger::currentDateTime(std::string dateFormat) {
 	struct tm newtime;
 	time_t now = time(0);
 	localtime_s(&newtime, &now);
 	char buffer[80];
 
-	strftime(buffer, sizeof(buffer), "%d-%m-%Y %I:%M:%S", &newtime);
+	strftime(buffer, sizeof(buffer), dateFormat.c_str(), &newtime);
 	std::string str(buffer);
 
 	return str;
@@ -63,7 +61,7 @@ bool Logger::canWrite(LogMode mode) {
 Logger *Logger::getInstance() {
 	if (!instance) {
 		instance = new Logger();
-		instance->setMode(LogMode::Actividad);
+		instance->setMode(LogMode::Debug);
 	}
 
 	return instance;

@@ -5,6 +5,7 @@
 #include "../lib/rapidxml-1.13/rapidxml.hpp"
 #include "../lib/rapidxml-1.13/rapidxml_print.hpp"
 #include <fstream>
+#include "Logger.h"
 
 ServerConfig::ServerConfig() {
 	this->nombreConfiguracionPredeterminada = DEFAULT_SERVER_CONFIG;
@@ -14,6 +15,7 @@ ServerConfig::ServerConfig() {
 }
 
 void ServerConfig::crearConfiguracionPredeterminada() {
+	Logger::getInstance()->log(LogMode::Debug, "[" + DEBUG_SERVER_TAG + "] Creando configuracion de servidor predeterminada: " + this->nombreConfiguracionPredeterminada);
 	//Generando un nuevo archivo de configuracion
 	rapidxml::xml_document<> archivoXML;
 	rapidxml::xml_node<>* nodoServidor = archivoXML.allocate_node(rapidxml::node_element, "servidor");
@@ -39,12 +41,12 @@ void ServerConfig::crearConfiguracionPredeterminada() {
 	archivoXML.append_node(nodoUsuarios);
 
 	this->grabarDocumentoXML(this->nombreConfiguracionPredeterminada, &archivoXML);
+	Logger::getInstance()->log(LogMode::Debug, "[" + DEBUG_SERVER_TAG + "] " + this->nombreConfiguracionPredeterminada + " se creo exitosamente.");
 }
 
 void ServerConfig::parsearArchivoXML(std::string nombre) {
 	try {
-		// TODO: pasar los prints al logger
-		//cout << "Leyendo xml..." << endl;
+		Logger::getInstance()->log(LogMode::Debug, "[" + DEBUG_SERVER_TAG + "] Parseando configuracion del servidor: " + this->nombreConfiguracionPredeterminada);
 		rapidxml::xml_document<> documento;
 		ifstream archivo(nombre);
 		vector<char> buffer((istreambuf_iterator<char>(archivo)), istreambuf_iterator<char>());
@@ -71,10 +73,10 @@ void ServerConfig::parsearArchivoXML(std::string nombre) {
 		}
 		this->usuarios = usuarios;
 
-		//cout << "Fin lectura xml" << endl;
+		Logger::getInstance()->log(LogMode::Debug, "[" + DEBUG_SERVER_TAG + "] " + this->nombreConfiguracionPredeterminada + " se parseo exitosamente.");
 	}
 	catch (std::exception& e) {
-		//cout << "Ocurrio un error al parsear el archivo de configuracon del servidor" << endl;
+		Logger::getInstance()->log(LogMode::Error, "[" + DEBUG_SERVER_TAG + "] Hubo un error al parsear el archivo de configuracion del servidor.");
 		cout << e.what();
 	}
 }

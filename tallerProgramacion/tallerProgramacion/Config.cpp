@@ -25,5 +25,6 @@ void Config::grabarDocumentoXML(std::string nombre, rapidxml::xml_document<>* do
 		std::ofstream archivo;
 		archivo.open(nombre);
 		archivo << *(documentoXML);
+		archivo.close();
 	}
 }

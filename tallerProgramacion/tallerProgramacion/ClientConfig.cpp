@@ -3,6 +3,7 @@
 #include "../lib/rapidxml-1.13/rapidxml.hpp"
 #include "../lib/rapidxml-1.13/rapidxml_print.hpp"
 #include <fstream>
+#include "Logger.h"
 
 ClientConfig::ClientConfig() {
 	this->nombreConfiguracionPredeterminada = DEFAULT_CLIENT_CONFIG;
@@ -37,6 +38,7 @@ std::string ClientConfig::getPath() {
 }
 
 void ClientConfig::crearConfiguracionPredeterminada() {
+	Logger::getInstance()->log(LogMode::Debug, "[" + DEBUG_CLIENT_TAG + "] Creando configuracion de cliente predeterminada: " + this->nombreConfiguracionPredeterminada);
 	//Generando un nuevo archivo de configuracion
 	rapidxml::xml_document<> archivoXML;
 
@@ -59,11 +61,12 @@ void ClientConfig::crearConfiguracionPredeterminada() {
 	archivoXML.append_node(nodoCliente);
 
 	this->grabarDocumentoXML(this->nombreConfiguracionPredeterminada, &archivoXML);
+	Logger::getInstance()->log(LogMode::Debug, "[" + DEBUG_CLIENT_TAG + "] " + this->nombreConfiguracionPredeterminada + " se creo exitosamente.");
 }
 
 void ClientConfig::parsearArchivoXML(std::string nombre) {
 	try {
-		//cout << "Leyendo xml..." << endl;
+		Logger::getInstance()->log(LogMode::Debug, "[" + DEBUG_CLIENT_TAG + "] Parseando configuracion del cliente: " + this->nombreConfiguracionPredeterminada);
 
 		rapidxml::xml_document<> documento;
 		ifstream archivo(nombre);
@@ -85,10 +88,10 @@ void ClientConfig::parsearArchivoXML(std::string nombre) {
 		this->IP = nodoDireccionIP->value();
 		this->path = nodoTestfilePath->value();
 
-		//cout << "Fin lectura xml" << endl;
+		Logger::getInstance()->log(LogMode::Debug, "[" + DEBUG_CLIENT_TAG + "] " + this->nombreConfiguracionPredeterminada + " se parseo exitosamente.");
 	}
 	catch (std::exception& e) {
-		cout << "Ocurrio un error al parsear el archivo de configuracon del servidor" << endl;
+		Logger::getInstance()->log(LogMode::Error, "[" + DEBUG_CLIENT_TAG + "] Hubo un error al parsear el archivo de configuracion del cliente.");
 		cout << e.what();
 	}
 }

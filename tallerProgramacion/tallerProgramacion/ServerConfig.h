@@ -8,7 +8,7 @@
 
 using namespace std;
 
-const std::string DEFAULT_SERVER_CONFIG = "server-config2.xml";
+const std::string DEFAULT_SERVER_CONFIG = "server-config.xml";
 const std::string DEFAULT_MAXCLIENTES = "3";
 const std::string DEFAULT_PUERTO_SERVIDOR = "12345";
 
