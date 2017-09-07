@@ -1,8 +1,11 @@
 #pragma once
+#ifndef  LOGGER_H
+#define LOGGER_H
 
 #include <string>
 #include <map>
 #include <stddef.h>
+#include <mutex>
 
 using namespace std;
 
@@ -21,6 +24,7 @@ public:
 	void setMode(LogMode mode);
 	LogMode getMode();
 	void log(LogMode mode, string format);
+	void log(LogMode mode, char *message);
 	~Logger();
 
 private:
@@ -29,7 +33,9 @@ private:
 	string currentDateTime(std::string dateFormat);
 	bool canWrite(LogMode mode);
 	map<LogMode, string> mapMode;
+	mutex m_loggerMutex;
 	
 
 };
 
+#endif

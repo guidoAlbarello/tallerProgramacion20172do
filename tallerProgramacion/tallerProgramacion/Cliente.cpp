@@ -1,6 +1,7 @@
 #include "Cliente.h"
 #include <iostream>
 #include <limits>
+#include "Logger.h""
 
 Cliente* Cliente::instance = 0;
 
@@ -145,6 +146,7 @@ void Cliente::logearseAlServidor() {
 		std::getline(std::cin, pass);
 
 		//this->conexionDelCliente->ejecutarComando(Comando::LOG, user, pass)
+		this->conexionDelCliente->login(user, pass);
 		//char* datosAEnviar = String(Comando::LOG + cliente->usuario + cliente->pass).c_str();
 		//int tamanio = String(Comando::LOG + cliente->usuario + cliente->pass).size();
 		////this->conexionDelCliente->pasarDatosAEnviar(datosAEnviar, tamanio);
@@ -184,7 +186,9 @@ void Cliente::enviarMensajePrivado() {
 void Cliente::procesarDatosRecibidos() {
 	while (clienteActivo) {
 		char* datosRecibidos = this->conexionDelCliente->getDatosRecibidos();
-
+		if (datosRecibidos != NULL) {
+			Logger::getInstance()->log(Debug, datosRecibidos);
+		}
 
 		//se copia primer byte
 		//switch( primer byte)  hacer y hacer 

@@ -7,6 +7,8 @@ using namespace std;
 
 int main(int argc, char* argv[]) {
 	std::string input;
+	Logger::getInstance()->setMode(Debug);
+	Logger::getInstance()->log(Debug, "Iniciando");
 	while (input.length() != 1) {
 		cout << "|----------------------------|" << std::endl;
 		cout << "|            Menu            |" << std::endl;
