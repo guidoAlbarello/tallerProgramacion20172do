@@ -6,7 +6,7 @@
 #include "ParserXml.h"
 #include "ClientConfig.h"
 #include <thread>
-#include "Logger.h"
+
 
 class Cliente {
 public:

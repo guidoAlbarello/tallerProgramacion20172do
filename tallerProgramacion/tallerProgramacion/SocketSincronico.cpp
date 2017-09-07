@@ -121,6 +121,9 @@ bool SocketSincronico::enviarDatos(const char* datosAEnviar, int tamanio) {
 
 	int tamanioDeDatosEnviados;
 	// Send an initial buffer
+	if (tamanio == 0) {
+		return true;
+	}
 	tamanioDeDatosEnviados = send(socketDeConexion, (char*)&tamanio, sizeof(tamanio), 0);
 	if (tamanioDeDatosEnviados == sizeof(tamanio)) {
 		int cantidadDatosEnviados = 0;

@@ -1,7 +1,11 @@
 #include "ManejadorDeConexion.h"
 
+using namespace std;
+
 class ManejadorDeConexionCliente : public ManejadorDeConexion {
 public:
-	void iniciarConexion(std::string ipServidor, std::string puertoServidor);
-protected:
+	void iniciarConexion(string ipServidor, string puertoServidor);
+	//bool ejecutarComando(Comando comando, std::stri, std::string puertoServidor);
+	bool login(string user, string pass);
+
 };

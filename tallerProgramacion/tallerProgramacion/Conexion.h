@@ -1,10 +1,12 @@
 #ifndef CONEXION_H
 #define CONEXION_H
 
+#include "Logger.h"
 #include "Usuario.h"
 #include <thread>
 #include "SocketSincronico.h"
 #include "ManejadorDeConexionConexion.h"
+
 
 class Conexion {
 public:

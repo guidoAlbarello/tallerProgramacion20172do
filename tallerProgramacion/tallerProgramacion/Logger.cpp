@@ -26,11 +26,24 @@ void Logger::log(LogMode mode, string message)
 	}
 
 	std::ofstream logFile;
+	m_loggerMutex.lock();
 	logFile.open(currentDateTime(LOG_FILENAME_FORMAT), ofstream::app);
 	logFile << currentDateTime("%d-%m-%Y %I:%M:%S") << " - " << mapMode[mode] << " - " << message << std::endl;
 	logFile.close();
+	m_loggerMutex.unlock();
 }
 
+void Logger::log(LogMode mode, char *message) {
+	if (message != NULL) {
+		std::string mensaje(message);
+		log(mode, mensaje);
+	} 
+	else {
+		std:string vacio = "pidieron logear un mensaje vacio";
+		log(mode, vacio);
+	}
+
+}
 void Logger::setMode(LogMode mode)
 {
 	this->mode = mode;

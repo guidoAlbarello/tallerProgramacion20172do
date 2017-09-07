@@ -4,6 +4,7 @@
 
 ManejadorDeConexionConexion::ManejadorDeConexionConexion(SOCKET unSocket) {
 	ManejadorDeConexion::ManejadorDeConexion(unSocket);
+	this->socket = new SocketSincronico(unSocket);
 }
 
 void ManejadorDeConexionConexion::iniciarConexion() {
