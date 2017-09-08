@@ -22,6 +22,11 @@ void Conexion::cerrarConexion() {
 void Conexion::procesarDatosRecibidos() {
 	while (conexionActiva) {
 		//procesar comandos
+		char* datosRecibidos = this->conexionConCliente->getDatosRecibidos();
+		if (datosRecibidos != NULL) {
+			Logger::getInstance()->log(Debug, datosRecibidos);
+			//LLamar al parser, parsear, y de acuerdo al comando, accionar
+		}
 	}
 }
 
