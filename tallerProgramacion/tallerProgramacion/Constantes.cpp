@@ -31,6 +31,27 @@ string Constantes::getComando(Comando comando)
 	}
 }
 
+Comando Constantes::getConstComando(string comando){
+	if (comando.compare("LOG") == 0)
+	{
+		return LOG;
+	}
+	if (comando.compare("PING") == 0)
+	{
+		return PING;
+	}
+	if (comando.compare("SEND_MESSAGE") == 0)
+	{
+		return SEND_MESSAGE;
+	}
+	if (comando.compare("RETRIEVE_MESSAGES") == 0)
+	{
+		return RETRIEVE_MESSAGES;
+	}
+	
+	return VACIO;
+}
+
 Constantes *Constantes::getInstance() {
 	if (!instance) {
 		instance = new Constantes();

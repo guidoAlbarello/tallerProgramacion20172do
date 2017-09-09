@@ -1,4 +1,5 @@
 #include "Conexion.h"
+#include "ParserDeMensajes.h"
 
 Conexion::Conexion(SOCKET unSocket) {
 	this->conexionConCliente = new ManejadorDeConexionConexion(unSocket);
@@ -25,7 +26,26 @@ void Conexion::procesarDatosRecibidos() {
 		char* datosRecibidos = this->conexionConCliente->getDatosRecibidos();
 		if (datosRecibidos != NULL) {
 			Logger::getInstance()->log(Debug, datosRecibidos);
-			//LLamar al parser, parsear, y de acuerdo al comando, accionar
+			std::string datosRecibidosString(datosRecibidos);
+			MensajeDeRed *mensajeDeRed = new MensajeDeRed(datosRecibidosString);
+
+			switch (mensajeDeRed->getComando())
+			{
+			case LOG:
+				Logger::getInstance()->log(Debug, "Recibio un LOG");
+				break;
+			case PING:
+				Logger::getInstance()->log(Debug, "Recibio un PING");
+				break;
+			case SEND_MESSAGE:
+				Logger::getInstance()->log(Debug, "Recibio un Send_message");
+				break;
+			case RETRIEVE_MESSAGES:
+				Logger::getInstance()->log(Debug, "Recibio un Retrieve_message");
+				break;
+			default:
+				Logger::getInstance()->log(Debug, datosRecibidos);
+			}
 		}
 	}
 }

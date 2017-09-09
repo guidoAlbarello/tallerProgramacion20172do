@@ -8,6 +8,7 @@ void ManejadorDeConexionCliente::iniciarConexion(std::string ipServidor, std::st
 	this->t_RecibirDatos = std::thread(&ManejadorDeConexionCliente::recibirDatos, this);
 }
 bool ManejadorDeConexionCliente::login(std::string user, std::string pass) {
+	//tODO  CREAR UN MENSAJE DE RED... Y PASARLO
 	string mensaje = Constantes::getInstance()->getComando(LOG) + Constantes::separador + user + Constantes::separador + pass;
 	int tamanio = sizeof(mensaje);
 	Logger::getInstance()->log(Debug, "enviando mensaje");

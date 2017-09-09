@@ -122,6 +122,7 @@
     <ClInclude Include="ManejadorDeConexionConexion.h" />
     <ClInclude Include="ManejadorDeConexionServidor.h" />
     <ClInclude Include="Mensaje.h" />
+    <ClInclude Include="MensajeDeRed.h" />
     <ClInclude Include="ParserDeMensajes.h" />
     <ClInclude Include="ServerConfig.h" />
     <ClInclude Include="ManejadorDeConexion.h" />
@@ -142,6 +143,7 @@
     <ClCompile Include="ManejadorDeConexionCliente.cpp" />
     <ClCompile Include="ManejadorDeConexionConexion.cpp" />
     <ClCompile Include="ManejadorDeConexionServidor.cpp" />
+    <ClCompile Include="MensajeDeRed.cpp" />
     <ClCompile Include="ParserDeMensajes.cpp" />
     <ClCompile Include="ServerConfig.cpp" />
     <ClCompile Include="Servidor.cpp" />

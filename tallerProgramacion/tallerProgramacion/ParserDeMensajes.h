@@ -4,6 +4,8 @@
 #define  PARSERDEMENSAJES_H
 
 #include <string>
+#include "Constantes.h"
+#include "MensajeDeRed.h"
 
 using namespace std;
 
@@ -15,6 +17,7 @@ public:
 	string getTipoDeAccion(string mensaje);
 	string getParametro(string mensaje, int indice);
 	int getCantidadDeParametros(string mensaje);
+	Comando getComando(string mensaje);
 
 private:
 	ParserDeMensajes();
