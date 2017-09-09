@@ -26,6 +26,25 @@ MensajeDeRed::MensajeDeRed(string mensaje)
 
 }
 
+MensajeDeRed::MensajeDeRed(Comando comando)
+{
+	this->comando = comando;
+}
+
+void MensajeDeRed::agregarParametro(string parametro) {
+	parametros.push_back(parametro);
+}
+
+string MensajeDeRed::getComandoSerializado() {
+	string result = "";
+	result = Constantes::getInstance()->getComando(LOG);
+	for (int i = 0; i < parametros.size(); i++) {
+		result += Constantes::getInstance()->separador;
+		result += parametros.at(i);
+	}
+	return result;
+}
+
 
 MensajeDeRed::~MensajeDeRed()
 {
@@ -44,5 +63,5 @@ int MensajeDeRed::getCantidadDeParametros()
 
 string MensajeDeRed::getParametro(int i)
 {
-	return "bla";
+	return parametros.at(i);
 }

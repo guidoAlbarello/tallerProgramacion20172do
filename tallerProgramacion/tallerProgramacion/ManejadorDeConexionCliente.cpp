@@ -1,6 +1,7 @@
 #include "ManejadorDeConexionCliente.h"
 #include "Logger.h"
 #include "Constantes.h"
+#include "MensajeDeRed.h"
 
 void ManejadorDeConexionCliente::iniciarConexion(std::string ipServidor, std::string puertoServidor) {
 	this->socket->crearSocketCliente(ipServidor, puertoServidor);
@@ -8,8 +9,10 @@ void ManejadorDeConexionCliente::iniciarConexion(std::string ipServidor, std::st
 	this->t_RecibirDatos = std::thread(&ManejadorDeConexionCliente::recibirDatos, this);
 }
 bool ManejadorDeConexionCliente::login(std::string user, std::string pass) {
-	//tODO  CREAR UN MENSAJE DE RED... Y PASARLO
-	string mensaje = Constantes::getInstance()->getComando(LOG) + Constantes::separador + user + Constantes::separador + pass;
+	MensajeDeRed *mensajeDeRed = new MensajeDeRed(LOG);
+	mensajeDeRed->agregarParametro(user);
+	mensajeDeRed->agregarParametro(pass);
+	string mensaje = mensajeDeRed->getComandoSerializado();
 	int tamanio = sizeof(mensaje);
 	Logger::getInstance()->log(Debug, "enviando mensaje");
 	Logger::getInstance()->log(Debug, mensaje);

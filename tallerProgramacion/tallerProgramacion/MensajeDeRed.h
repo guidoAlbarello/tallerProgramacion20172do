@@ -12,10 +12,14 @@ class MensajeDeRed
 {
 public:
 	MensajeDeRed(string mensaje);
+	MensajeDeRed(Comando comando);
+
 	~MensajeDeRed();
 	Comando getComando();
 	int getCantidadDeParametros();
 	string getParametro(int i);
+	void agregarParametro(string parametro);
+	string getComandoSerializado();
 
 
 private:

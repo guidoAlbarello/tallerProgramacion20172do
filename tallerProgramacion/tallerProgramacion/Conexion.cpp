@@ -28,7 +28,7 @@ void Conexion::procesarDatosRecibidos() {
 			Logger::getInstance()->log(Debug, datosRecibidos);
 			std::string datosRecibidosString(datosRecibidos);
 			MensajeDeRed *mensajeDeRed = new MensajeDeRed(datosRecibidosString);
-
+			/*
 			switch (mensajeDeRed->getComando())
 			{
 			case LOG:
@@ -46,6 +46,7 @@ void Conexion::procesarDatosRecibidos() {
 			default:
 				Logger::getInstance()->log(Debug, datosRecibidos);
 			}
+			*/
 		}
 	}
 }
