@@ -7,7 +7,6 @@
 #include <thread>
 #include <mutex>
 
-enum Comando { LOG = '0', PING = '1', SEND_MESSAGE = '2', RETRIEVE_MESSAGES = '3' };
 
 class ManejadorDeConexion {
 public:	

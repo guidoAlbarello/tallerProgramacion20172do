@@ -1,4 +1,5 @@
 #include "SocketSincronico.h"
+#include <iostream>
 
 SocketSincronico::SocketSincronico() {
 }
@@ -182,6 +183,9 @@ char* SocketSincronico::recibirDatos() {
 	}
 
 	/*"Se recibieron los datos correctamente"*/
+	string mensaje((char *)datosARecibir);
+	//Logger::getInstance()->log(Debug, "datos recibidos: " + mensaje);
+	//cout << "|----------------------------|" << mensaje;
 	return (char*)datosARecibir;
 }
 
