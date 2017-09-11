@@ -34,12 +34,12 @@ ServerConfig* ParserXml::readServerConfigFile(std::string path) {
 		serverConfig->setPuerto(numeroPuerto);
 
 		rapidxml::xml_node<>* nodoUsuarios = documento.first_node("usuarios");
-		std::vector<Usuario *> usuarios;
+		std::vector<Usuario> usuarios;
 		for (rapidxml::xml_node<>* unNodoUsuario = nodoUsuarios->first_node("usuario"); unNodoUsuario; unNodoUsuario = unNodoUsuario->next_sibling()) {
 			rapidxml::xml_node<>* nodoNombre = unNodoUsuario->first_node("nombre");
 			rapidxml::xml_node<>* nodoPassword = unNodoUsuario->first_node("password");
 			Usuario user(nodoNombre->value(), nodoPassword->value());
-			usuarios.push_back(&user);
+			usuarios.push_back(Usuario(nodoNombre->value(), nodoPassword->value()));
 		}
 		serverConfig->setUsuarios(usuarios);
 

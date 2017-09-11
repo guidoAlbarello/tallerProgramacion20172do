@@ -119,10 +119,9 @@ int SocketSincronico::crearSocketServidor(std::string unPuerto, int conexionesMa
 }
 
 bool SocketSincronico::enviarDatos(const char* datosAEnviar, int tamanio) {
-
 	int tamanioDeDatosEnviados;
 	// Send an initial buffer
-	if (tamanio == 0) {
+	if (tamanio <= 0) {
 		return true;
 	}
 	tamanioDeDatosEnviados = send(socketDeConexion, (char*)&tamanio, sizeof(tamanio), 0);
@@ -160,32 +159,34 @@ char* SocketSincronico::recibirDatos() {
 	void* datosARecibir = NULL;
 	// Send an initial buffer
 	tamanioDeDatosRecibidos = recv(socketDeConexion, (char*)&tamanio, sizeof(tamanio), 0);
-	if (tamanioDeDatosRecibidos == sizeof(tamanio)) {
-		int cantidadDatosRecibidos = 0;
-		datosARecibir = malloc(tamanio);
-		while (cantidadDatosRecibidos < tamanio) {
-			int datosRecibidos = recv(socketDeConexion, (char*)datosARecibir + cantidadDatosRecibidos, tamanio - cantidadDatosRecibidos, 0);
-			if (datosRecibidos > 0) {
-				cantidadDatosRecibidos += datosRecibidos;
-			}
-			else {
-				/*"Falla al recibir datos"*/
-				closesocket(socketDeConexion);
-				return (char*)datosARecibir;
+	if (tamanioDeDatosRecibidos > 0) {
+		if (tamanioDeDatosRecibidos == sizeof(tamanio)) {
+			int cantidadDatosRecibidos = 0;
+			datosARecibir = malloc(tamanio);
+			while (cantidadDatosRecibidos < tamanio) {
+				int datosRecibidos = recv(socketDeConexion, (char*)datosARecibir + cantidadDatosRecibidos, tamanio - cantidadDatosRecibidos, 0);
+				if (datosRecibidos > 0) {
+					cantidadDatosRecibidos += datosRecibidos;
+				}
+				else {
+					/*"Falla al recibir datos"*/
+					closesocket(socketDeConexion);
+					return (char*)datosARecibir;
+				}
 			}
 		}
-	}
-	else if (tamanioDeDatosRecibidos <= 0) {
-		closesocket(socketDeConexion);
+		else if (tamanioDeDatosRecibidos <= 0) {
+			closesocket(socketDeConexion);
 
-		/*"Falla al recibir datos"*/
-		return (char*)datosARecibir;
-	}
+			/*"Falla al recibir datos"*/
+			//return (char*)datosARecibir;
+		}
 
-	/*"Se recibieron los datos correctamente"*/
-	string mensaje((char *)datosARecibir);
-	//Logger::getInstance()->log(Debug, "datos recibidos: " + mensaje);
-	//cout << "|----------------------------|" << mensaje;
+		/*"Se recibieron los datos correctamente"*/
+		string mensaje((char *)datosARecibir);
+		//Logger::getInstance()->log(Debug, "datos recibidos: " + mensaje);
+		//cout << "|----------------------------|" << mensaje;
+	}
 	return (char*)datosARecibir;
 }
 

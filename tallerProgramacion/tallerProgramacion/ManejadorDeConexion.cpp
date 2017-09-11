@@ -2,32 +2,43 @@
 
 ManejadorDeConexion::ManejadorDeConexion() {
 	this->socket = new SocketSincronico();
+	bufferDatosAEnviar = NULL;
+	bufferDatosRecibidos = NULL;
 	conexionActiva = true;
 }
 
 ManejadorDeConexion::ManejadorDeConexion(SOCKET unSocket) {
 	this->socket = new SocketSincronico(unSocket);
+	bufferDatosAEnviar = NULL;
+	bufferDatosRecibidos = NULL;
 	conexionActiva = true;
 }
 
 ManejadorDeConexion::ManejadorDeConexion(SocketSincronico* unSocket) {
 	this->socket = unSocket;
+	bufferDatosAEnviar = NULL;
+	bufferDatosRecibidos = NULL;
 	conexionActiva = true;
 }
 
 void ManejadorDeConexion::enviarDatos() {
 	while (conexionActiva) {
-		this->socket->enviarDatos(bufferDatosAEnviar, tamanioDatosAEnviar);
+		if (bufferDatosAEnviar != NULL) {
+			if (this->socket->enviarDatos(bufferDatosAEnviar, tamanioDatosAEnviar)) {
+				bufferDatosAEnviar = NULL;
+			}
+		}
 	}
 }
 
 void ManejadorDeConexion::recibirDatos() {
 	while (conexionActiva) {
 		char *datosRecibidos = this->socket->recibirDatos();
-
-		m_bufferDatosRecibidos.lock();
-		bufferDatosRecibidos = datosRecibidos;
-		m_bufferDatosRecibidos.unlock();
+		if (datosRecibidos != NULL) {
+			m_bufferDatosRecibidos.lock();
+			bufferDatosRecibidos = datosRecibidos;
+			m_bufferDatosRecibidos.unlock();
+		}
 	}
 }
 

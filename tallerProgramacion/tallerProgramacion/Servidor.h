@@ -8,25 +8,30 @@
 #include "ParserXml.h"
 #include "ServerConfig.h"
 #include <thread>
-#include "Conexion.h"
 #include "Logger.h"
+#include "MensajeDeRed.h"
+
+class Conexion;  // Declaracion forward de la clase Conexion
+
 
 class Servidor {
 public:
 	static Servidor* getInstance();
-	Usuario* buscarUsuario(std::string unUsuario);
+	Usuario buscarUsuario(std::string unUsuario);
 	void iniciarServidor();
 	void cerrarServidor();
+	bool validarLogin(MensajeDeRed* mensaje);
 
 protected:
 	ServerConfig* configuracion;
 	ManejadorDeConexionServidor* conexionDelServidor;
-	bool servidorActivo;
-	void leerServerConfig();
-	Servidor();
-	~Servidor();
+	std::vector<Conexion*> conexionesActivas;
 	static Servidor* instance;
 	std::thread t_escucharClientes;
+	bool servidorActivo;
+	Servidor();
+	~Servidor();
+	void leerServerConfig();
 	void escucharClientes();
 	void agregarNuevaConexionEntrante(SOCKET unCliente);
 	void cerrarTodasLasConexiones();
@@ -36,8 +41,7 @@ protected:
 	void mostrarMenuPrincipal();
 	void mostrarMenuModosLogueo();
 	void mostrarMenuUsuariosConectados();
-	std::vector<Usuario*> listaDeUsuarios;
-	std::vector<Conexion*> conexionesActivas;
+	bool usuarioValido(std::string usuario, std::string contrasenia);
 };
 
 #endif

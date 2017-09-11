@@ -14,6 +14,7 @@ public:
 	ManejadorDeConexion(SOCKET unSocket);
 	ManejadorDeConexion(SocketSincronico* unSocket);
 	char* getDatosRecibidos() { return bufferDatosRecibidos; } 
+	void setDatosRecibidos(char* datos) { bufferDatosRecibidos = datos; };
 	void cerrarConexion();
 protected:
 	SocketSincronico* socket;

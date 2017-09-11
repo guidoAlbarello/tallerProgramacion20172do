@@ -7,10 +7,12 @@
 #include "SocketSincronico.h"
 #include "ManejadorDeConexionConexion.h"
 
+class Servidor;  // Declaracion forward de la clase Servidor
+
 
 class Conexion {
 public:
-	Conexion(SOCKET unSocket);
+	Conexion(SOCKET unSocket, Servidor* servidor);
 	void cerrarConexion();
 	Usuario* getUsuario() { return usuarioConectado; }
 private:
@@ -20,6 +22,7 @@ private:
 	void procesarDatosRecibidos();
 	bool conexionActiva;
 	SocketSincronico* socket;
+	Servidor* servidor;
 };
 
 #endif

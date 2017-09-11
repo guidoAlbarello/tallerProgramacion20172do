@@ -1,7 +1,9 @@
-#include "Conexion.h"
 #include "ParserDeMensajes.h"
+#include "Conexion.h"
+#include "Servidor.h"
 
-Conexion::Conexion(SOCKET unSocket) {
+Conexion::Conexion(SOCKET unSocket, Servidor* servidor) {
+	this->servidor = servidor;
 	this->conexionConCliente = new ManejadorDeConexionConexion(unSocket);
 	this->conexionConCliente->iniciarConexion();
 	this->conexionActiva = true;
@@ -28,11 +30,20 @@ void Conexion::procesarDatosRecibidos() {
 			Logger::getInstance()->log(Debug, datosRecibidos);
 			std::string datosRecibidosString(datosRecibidos);
 			MensajeDeRed *mensajeDeRed = new MensajeDeRed(datosRecibidosString);
-			/*
+			
 			switch (mensajeDeRed->getComando())
 			{
 			case LOG:
 				Logger::getInstance()->log(Debug, "Recibio un LOG");
+				if (this->servidor->validarLogin(mensajeDeRed)) {
+					Logger::getInstance()->log(Debug, "Login satisfactorio");
+					std::cout << "El login fue satisfactorio" << endl;
+					this->conexionConCliente->setDatosRecibidos(NULL);
+				}
+				else {
+					std::cout << "Login invalido" << endl;
+
+				}
 				break;
 			case PING:
 				Logger::getInstance()->log(Debug, "Recibio un PING");
@@ -46,7 +57,7 @@ void Conexion::procesarDatosRecibidos() {
 			default:
 				Logger::getInstance()->log(Debug, datosRecibidos);
 			}
-			*/
+			
 		}
 	}
 }

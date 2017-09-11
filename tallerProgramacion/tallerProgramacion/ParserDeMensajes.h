@@ -15,7 +15,7 @@ public:
 	static ParserDeMensajes* getInstance();
 	~ParserDeMensajes();
 	string getTipoDeAccion(string mensaje);
-	string getParametro(string mensaje, int indice);
+	string getParametro(string mensaje, int indice); 
 	int getCantidadDeParametros(string mensaje);
 	Comando getComando(string mensaje);
 

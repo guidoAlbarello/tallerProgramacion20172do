@@ -6,6 +6,7 @@
 
 class Usuario {
 public:
+	Usuario();
 	Usuario(std::string nombre, std::string password);
 	std::string getNombre();
 	void setNombre(std::string nombre);

@@ -1,4 +1,7 @@
+#include "Conexion.h"
 #include "Servidor.h"
+#include <algorithm>
+
 
 Servidor* Servidor::instance = 0;
 
@@ -37,16 +40,34 @@ void Servidor::leerServerConfig() {
 	this->configuracion->leerConfiguracion();
 }
 
-Usuario * Servidor::buscarUsuario(std::string unUsuario) {
-	Usuario* usuarioDestinatario = NULL;
-	std::vector<Usuario *> listaDeUsuarios = this->configuracion->getUsuarios();
+Usuario Servidor::buscarUsuario(std::string unUsuario) {
+	Usuario usuarioDestinatario = Usuario();
+	std::vector<Usuario> listaDeUsuarios = this->configuracion->getUsuarios();
 
-	for (int i = 0; i < listaDeUsuarios.size() && usuarioDestinatario == NULL; i++) {
-		if (unUsuario.compare(listaDeUsuarios[i]->getNombre()) == 0)
+	for (int i = 0; i < listaDeUsuarios.size() && usuarioDestinatario.getNombre() == ""; i++) {
+		if (unUsuario.compare(listaDeUsuarios[i].getNombre()) == 0)
 			usuarioDestinatario = listaDeUsuarios[i];
 	}
 
 	return usuarioDestinatario;
+}
+
+bool Servidor::usuarioValido(std::string usuarioBuscado, std::string contraseniaBuscada) {
+	std::vector<Usuario> listaDeUsuarios = this->configuracion->getUsuarios();
+	bool encontrado = false;
+	std::transform(usuarioBuscado.begin(), usuarioBuscado.end(), usuarioBuscado.begin(), ::toupper);
+	std::transform(contraseniaBuscada.begin(), contraseniaBuscada.end(), contraseniaBuscada.begin(), ::toupper);
+	for (int i = 0; i < listaDeUsuarios.size(); i++) {
+		std::string nombreActual = listaDeUsuarios[i].getNombre();
+		std::string contraseniaActual = listaDeUsuarios[i].getPassword();
+		std::transform(nombreActual.begin(), nombreActual.end(), nombreActual.begin(), ::toupper);
+		std::transform(contraseniaActual.begin(), contraseniaActual.end(), contraseniaActual.begin(), ::toupper);
+		if (usuarioBuscado.compare(nombreActual) == 0 && contraseniaBuscada.compare(contraseniaActual) == 0) {
+			encontrado = true;
+			break;
+		}
+	}
+	return encontrado;
 }
 
 void Servidor::correrCicloPrincipal() {
@@ -93,7 +114,7 @@ void Servidor::escucharClientes() {
 }
 
 void Servidor::agregarNuevaConexionEntrante(SOCKET unCliente) {
-	Conexion* nuevaConexion = new Conexion(unCliente);
+	Conexion* nuevaConexion = new Conexion(unCliente, this);
 	conexionesActivas.push_back(nuevaConexion);
 }
 
@@ -188,3 +209,15 @@ void Servidor::mostrarMenuUsuariosConectados() {
 	std::cout << "|     Usuarios conectados    |" << std::endl;
 	std::cout << "|----------------------------|" << std::endl;
 }
+
+bool Servidor::validarLogin(MensajeDeRed* mensaje) {
+	std::string usuario = mensaje->getParametro(0);
+	std::string contrasenia = mensaje->getParametro(1);
+
+	bool usuarioExiste = this->usuarioValido(usuario, contrasenia);
+	if (usuarioExiste) {
+		return true;
+	}
+	return false;
+}
+

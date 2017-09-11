@@ -2,6 +2,10 @@
 #include <iostream>
 using namespace std;
 
+
+Usuario::Usuario() {
+}
+
 Usuario::Usuario(std::string name, std::string pass) {
 	this->nombre = name;
 	this->password = pass;

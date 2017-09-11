@@ -9,7 +9,6 @@
 
 ServerConfig::ServerConfig() {
 	this->nombreConfiguracionPredeterminada = DEFAULT_SERVER_CONFIG;
-
 	this->maxClientes = atoi(DEFAULT_MAXCLIENTES.c_str());
 	this->puerto = DEFAULT_PUERTO_SERVIDOR;
 }
@@ -30,8 +29,7 @@ void ServerConfig::crearConfiguracionPredeterminada() {
 	rapidxml::xml_node<>* nodoNombreAdmin = archivoXML.allocate_node(rapidxml::node_element, "nombre", "Admin");
 	rapidxml::xml_node<>* nodoPasswordAdmin = archivoXML.allocate_node(rapidxml::node_element, "password", "admin");
 	
-	Usuario usuario("Admin", "admin");
-	this->usuarios.push_back(&usuario);
+	this->usuarios.push_back(Usuario("Admin", "admin"));
 
 	nodoNuevoUsuario->append_node(nodoNombreAdmin);
 	nodoNuevoUsuario->append_node(nodoPasswordAdmin);
@@ -65,12 +63,11 @@ void ServerConfig::parsearArchivoXML(std::string nombre) {
 		this->puerto = numeroPuerto;
 
 		rapidxml::xml_node<>* nodoUsuarios = documento.first_node("usuarios");
-		std::vector<Usuario *> usuarios;
+		std::vector<Usuario> usuarios;
 		for (rapidxml::xml_node<>* unNodoUsuario = nodoUsuarios->first_node("usuario"); unNodoUsuario; unNodoUsuario = unNodoUsuario->next_sibling()) {
 			rapidxml::xml_node<>* nodoNombre = unNodoUsuario->first_node("nombre");
 			rapidxml::xml_node<>* nodoPassword = unNodoUsuario->first_node("password");
-			Usuario user(nodoNombre->value(), nodoPassword->value());
-			usuarios.push_back(&user);
+			usuarios.push_back(Usuario(nodoNombre->value(), nodoPassword->value()));
 		}
 		this->usuarios = usuarios;
 
@@ -98,10 +95,10 @@ void ServerConfig::setPuerto(std::string puerto) {
 	this->puerto = puerto;
 }
 
-std::vector<Usuario *> ServerConfig::getUsuarios() {
+std::vector<Usuario> ServerConfig::getUsuarios() {
 	return this->usuarios;
 }
 
-void ServerConfig::setUsuarios(std::vector<Usuario *> usuarios) {
+void ServerConfig::setUsuarios(std::vector<Usuario> usuarios) {
 	this->usuarios = usuarios;
 }
