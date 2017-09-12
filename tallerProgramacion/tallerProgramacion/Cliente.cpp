@@ -146,12 +146,13 @@ void Cliente::logearseAlServidor() {
 		std::getline(std::cin, pass);
 
 		//this->conexionDelCliente->ejecutarComando(Comando::LOG, user, pass)
+
 		this->conexionDelCliente->login(user, pass);
 		//char* datosAEnviar = String(Comando::LOG + cliente->usuario + cliente->pass).c_str();
 		//int tamanio = String(Comando::LOG + cliente->usuario + cliente->pass).size();
 		////this->conexionDelCliente->pasarDatosAEnviar(datosAEnviar, tamanio);
 
-		cout << "El login fue satisfactorio" << std::endl;
+		//cout << "El login fue satisfactorio" << std::endl;
 		loginOk = true;
 
 		// cout << "Los datos ingresados son incorrectos" << std::endl;

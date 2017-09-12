@@ -28,15 +28,14 @@ int SocketSincronico::crearSocketCliente(string unaIp, string unPuerto) {
 		WSACleanup();
 		return 1;
 	}
-
-	socketDeConexion = INVALID_SOCKET;
+	this->socketDeConexion = INVALID_SOCKET;
 
 	ptr = result;
 
-	socketDeConexion = socket(ptr->ai_family, ptr->ai_socktype,
+	this->socketDeConexion = socket(ptr->ai_family, ptr->ai_socktype,
 		ptr->ai_protocol);
 
-	if (socketDeConexion == INVALID_SOCKET) {
+	if (this->socketDeConexion == INVALID_SOCKET) {
 		/*"Socket invalido"*/
 		freeaddrinfo(result);
 		WSACleanup();
@@ -44,18 +43,18 @@ int SocketSincronico::crearSocketCliente(string unaIp, string unPuerto) {
 	}
 
 	// Connect to server.
-	iResult = connect(socketDeConexion, ptr->ai_addr, (int)ptr->ai_addrlen);
+	iResult = connect(this->socketDeConexion, ptr->ai_addr, (int)ptr->ai_addrlen);
 	if (iResult == SOCKET_ERROR) {
 		/*"Fallo la conexion al servidor");*/
-		iResult = closesocket(socketDeConexion);
-		socketDeConexion = INVALID_SOCKET;
+		iResult = closesocket(this->socketDeConexion);
+		this->socketDeConexion = INVALID_SOCKET;
 		WSACleanup();
 		return 1;
 	}
 
 	freeaddrinfo(result);
 
-	if (socketDeConexion == INVALID_SOCKET) {
+	if (this->socketDeConexion == INVALID_SOCKET) {
 		/*"No se pudo conectar al servidor"*/
 		WSACleanup();
 		return 1;
@@ -83,34 +82,33 @@ int SocketSincronico::crearSocketServidor(std::string unPuerto, int conexionesMa
 		WSACleanup();
 		return 1;
 	}
-
-	socketDeConexion = INVALID_SOCKET;
+	this->socketDeConexion = INVALID_SOCKET;
 
 	// Create a SOCKET for the server to listen for client connections
 
-	socketDeConexion = socket(result->ai_family, result->ai_socktype, result->ai_protocol);
+	this->socketDeConexion = socket(result->ai_family, result->ai_socktype, result->ai_protocol);
 
-	if (socketDeConexion == INVALID_SOCKET) {
+	if (this->socketDeConexion == INVALID_SOCKET) {
 		/*"Socket invalido"*/
 		freeaddrinfo(result);
 		WSACleanup();
 		return 1;
 	}
 
-	iResult = bind(socketDeConexion, result->ai_addr, (int)result->ai_addrlen);
+	iResult = bind(this->socketDeConexion, result->ai_addr, (int)result->ai_addrlen);
 	if (iResult == SOCKET_ERROR) {
 		/*"Fallo el bind del socket"*/
 		freeaddrinfo(result);
-		closesocket(socketDeConexion);
+		closesocket(this->socketDeConexion);
 		WSACleanup();
 		return 1;
 	}
 
 	freeaddrinfo(result);
 
-	int socketResponse = listen(socketDeConexion, conexionesMax);
+	int socketResponse = listen(this->socketDeConexion, conexionesMax);
 	if (socketResponse == SOCKET_ERROR) {
-		closesocket(socketDeConexion);
+		closesocket(this->socketDeConexion);
 		WSACleanup();
 		return 1;
 	}
@@ -124,13 +122,13 @@ bool SocketSincronico::enviarDatos(const char* datosAEnviar, int tamanio) {
 	if (tamanio <= 0) {
 		return true;
 	}
-	tamanioDeDatosEnviados = send(socketDeConexion, (char*)&tamanio, sizeof(tamanio), 0);
+	tamanioDeDatosEnviados = send(this->socketDeConexion, (char*)&tamanio, sizeof(tamanio), 0);
 	if (tamanioDeDatosEnviados == sizeof(tamanio)) {
 		int cantidadDatosEnviados = 0;
 		while (cantidadDatosEnviados < tamanio) {
-			int datosEnviados = send(socketDeConexion, (char*)datosAEnviar + cantidadDatosEnviados, tamanio - cantidadDatosEnviados, 0);
+			int datosEnviados = send(this->socketDeConexion, (char*)datosAEnviar + cantidadDatosEnviados, tamanio - cantidadDatosEnviados, 0);
 			if (datosEnviados == SOCKET_ERROR) {
-				closesocket(socketDeConexion);
+				closesocket(this->socketDeConexion);
 				return false;
 			}
 			if (datosEnviados > 0) {
@@ -138,14 +136,14 @@ bool SocketSincronico::enviarDatos(const char* datosAEnviar, int tamanio) {
 			}
 			else {
 				/*Falla al enviar datos */
-				closesocket(socketDeConexion);
+				closesocket(this->socketDeConexion);
 				return false;
 			}
 		}
 	}
 	else if (tamanioDeDatosEnviados == SOCKET_ERROR) {
 		/*Falla al enviar datos */
-		closesocket(socketDeConexion);
+		closesocket(this->socketDeConexion);
 		return false;
 	}
 
@@ -158,25 +156,25 @@ char* SocketSincronico::recibirDatos() {
 	int tamanio;
 	void* datosARecibir = NULL;
 	// Send an initial buffer
-	tamanioDeDatosRecibidos = recv(socketDeConexion, (char*)&tamanio, sizeof(tamanio), 0);
+	tamanioDeDatosRecibidos = recv(this->socketDeConexion, (char*)&tamanio, sizeof(tamanio), 0);
 	if (tamanioDeDatosRecibidos > 0) {
 		if (tamanioDeDatosRecibidos == sizeof(tamanio)) {
 			int cantidadDatosRecibidos = 0;
 			datosARecibir = malloc(tamanio);
 			while (cantidadDatosRecibidos < tamanio) {
-				int datosRecibidos = recv(socketDeConexion, (char*)datosARecibir + cantidadDatosRecibidos, tamanio - cantidadDatosRecibidos, 0);
+				int datosRecibidos = recv(this->socketDeConexion, (char*)datosARecibir + cantidadDatosRecibidos, tamanio - cantidadDatosRecibidos, 0);
 				if (datosRecibidos > 0) {
 					cantidadDatosRecibidos += datosRecibidos;
 				}
 				else {
 					/*"Falla al recibir datos"*/
-					closesocket(socketDeConexion);
+					closesocket(this->socketDeConexion);
 					return (char*)datosARecibir;
 				}
 			}
 		}
 		else if (tamanioDeDatosRecibidos <= 0) {
-			closesocket(socketDeConexion);
+			closesocket(this->socketDeConexion);
 
 			/*"Falla al recibir datos"*/
 			//return (char*)datosARecibir;
@@ -191,17 +189,17 @@ char* SocketSincronico::recibirDatos() {
 }
 
 int SocketSincronico::cerrarSocket() {
-	if (socketDeConexion != INVALID_SOCKET) {
-		int iResult = shutdown(socketDeConexion, SD_SEND);
+	if (this->socketDeConexion != INVALID_SOCKET) {
+		int iResult = shutdown(this->socketDeConexion, SD_SEND);
 		if (iResult == SOCKET_ERROR) {
-			closesocket(socketDeConexion);
+			closesocket(this->socketDeConexion);
 			WSACleanup();
 			/*"Falla al cerrar el socket"*/
 			return 1;
 		}
 
-		closesocket(socketDeConexion);
-		socketDeConexion = INVALID_SOCKET;
+		closesocket(this->socketDeConexion);
+		this->socketDeConexion = INVALID_SOCKET;
 		WSACleanup();
 		/*"Se cerro el socket correctamente"*/
 		return 0;
@@ -217,6 +215,6 @@ int SocketSincronico::hayClienteIntentandoConectarse() {
 	SOCKET socketDelCliente = INVALID_SOCKET;
 
 	// Accept a client socket
-	socketDelCliente = accept(socketDeConexion, NULL, NULL);
+	socketDelCliente = accept(this->socketDeConexion, NULL, NULL);
 	return socketDelCliente;
 }

@@ -17,9 +17,7 @@ void Conexion::cerrarConexion() {
 	if (t_procesarDatosRecibidos.joinable()) {
 		t_procesarDatosRecibidos.join();
 	}
-
-	socket->cerrarSocket();
-	delete socket;
+	this->getConexionConCliente()->cerrarConexion();
 }
 
 void Conexion::procesarDatosRecibidos() {
@@ -37,8 +35,17 @@ void Conexion::procesarDatosRecibidos() {
 				Logger::getInstance()->log(Debug, "Recibio un LOG");
 				if (this->servidor->validarLogin(mensajeDeRed)) {
 					Logger::getInstance()->log(Debug, "Login satisfactorio");
-					std::cout << "El login fue satisfactorio" << endl;
+					//std::cout << "El login fue satisfactorio" << endl;
 					this->conexionConCliente->setDatosRecibidos(NULL);
+
+					// Envio una respuesta con el resultado del login
+					//MensajeDeRed* mensajeDeRed = new MensajeDeRed("El login fue satisfactorio");
+					//string mensaje = mensajeDeRed->getComandoSerializado();
+					std::string mensaje = "Cliente: El login fue satisfactorio";
+					int tamanio = sizeof(mensaje);
+					Logger::getInstance()->log(Debug, "Enviando mensaje");
+					Logger::getInstance()->log(Debug, mensaje);
+					this->conexionConCliente->getSocket().enviarDatos(mensaje.c_str(), tamanio);
 				}
 				else {
 					std::cout << "Login invalido" << endl;

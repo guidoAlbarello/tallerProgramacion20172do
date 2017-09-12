@@ -21,6 +21,7 @@ public:
 	void iniciarServidor();
 	void cerrarServidor();
 	bool validarLogin(MensajeDeRed* mensaje);
+	std::vector<Conexion*> getConexionesActivas();
 
 protected:
 	ServerConfig* configuracion;

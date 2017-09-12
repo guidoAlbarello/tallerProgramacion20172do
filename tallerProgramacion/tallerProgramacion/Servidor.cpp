@@ -23,6 +23,10 @@ Servidor::~Servidor() {
 	delete conexionDelServidor;
 }
 
+std::vector<Conexion*> Servidor::getConexionesActivas() {
+	return this->conexionesActivas;
+}
+
 void Servidor::iniciarServidor() {
 	this->leerServerConfig();
 
@@ -106,7 +110,7 @@ void Servidor::correrCicloPrincipal() {
 
 void Servidor::escucharClientes() {
 	while (this->servidorActivo) {
-		SOCKET nuevoCliente = this->conexionDelServidor->hayClienteIntentandoConectarse();
+		SOCKET nuevoCliente = this->conexionDelServidor->hayClienteIntentandoConectarse(this->getConexionesActivas().size(), this->configuracion->getMaxClientes());
 		if(nuevoCliente != INVALID_SOCKET) {
 			agregarNuevaConexionEntrante(nuevoCliente);
 		}

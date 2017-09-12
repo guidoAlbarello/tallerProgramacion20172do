@@ -2,11 +2,9 @@
 #ifndef  MANEJADOR_DE_CONEXION_H
 #define MANEJADOR_DE_CONEXION_H
 
-
 #include "SocketSincronico.h"
 #include <thread>
 #include <mutex>
-
 
 class ManejadorDeConexion {
 public:	
@@ -16,6 +14,7 @@ public:
 	char* getDatosRecibidos() { return bufferDatosRecibidos; } 
 	void setDatosRecibidos(char* datos) { bufferDatosRecibidos = datos; };
 	void cerrarConexion();
+	SocketSincronico getSocket() { return *this->socket; };
 protected:
 	SocketSincronico* socket;
 	bool conexionActiva;

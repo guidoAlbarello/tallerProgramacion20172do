@@ -1,5 +1,5 @@
 #pragma once
-#ifndef  MENSAJESDERED_H
+#ifndef MENSAJESDERED_H
 #define MENSAJESDERED_H
 
 #include "Constantes.h"

@@ -15,13 +15,13 @@ public:
 	Conexion(SOCKET unSocket, Servidor* servidor);
 	void cerrarConexion();
 	Usuario* getUsuario() { return usuarioConectado; }
+	ManejadorDeConexionConexion* getConexionConCliente() { return this->conexionConCliente; };
 private:
 	ManejadorDeConexionConexion* conexionConCliente;
 	Usuario* usuarioConectado;
 	std::thread t_procesarDatosRecibidos;
 	void procesarDatosRecibidos();
 	bool conexionActiva;
-	SocketSincronico* socket;
 	Servidor* servidor;
 };
 
