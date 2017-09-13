@@ -19,6 +19,7 @@ protected:
 	virtual void correrCicloPrincipal();
 	ClientConfig* configuracion;
 	bool clienteActivo;
+	bool estaLogueado;
 	void leerClientConfig();
 	std::thread t_procesarDatosRecibidos;
 	Cliente();

@@ -1,56 +1,87 @@
 #include "Constantes.h"
 
-
-
 Constantes* Constantes::instance = NULL;
-
 
 Constantes::Constantes()
 {
 }
 
-
 Constantes::~Constantes()
 {
 }
 
-string Constantes::getComando(Comando comando)
+string Constantes::getComandoServidor(ComandoServidor comando)
 {
 	switch (comando)
 	{
-	case Comando::LOG:
+	case ComandoServidor::LOG:
 		return "LOG";
-	case Comando::PING:
+	case ComandoServidor::PING:
 		return "PING";
-	case Comando::SEND_MESSAGE:
+	case ComandoServidor::SEND_MESSAGE:
 		return "SEND_MESSAGE";
-	case Comando::RETRIEVE_MESSAGES:
+	case ComandoServidor::RETRIEVE_MESSAGES:
 		return "RETRIEVE_MESSAGES";
 	default:
 		return "Not recognized..";
 	}
 }
 
-Comando Constantes::getConstComando(string comando){
+ComandoServidor Constantes::getConstComandoServidor(string comando){
 	if (comando.compare("LOG") == 0)
 	{
-		return LOG;
+		return ComandoServidor::LOG;
 	}
 	if (comando.compare("PING") == 0)
 	{
-		return PING;
+		return ComandoServidor::PING;
 	}
 	if (comando.compare("SEND_MESSAGE") == 0)
 	{
-		return SEND_MESSAGE;
+		return ComandoServidor::SEND_MESSAGE;
 	}
 	if (comando.compare("RETRIEVE_MESSAGES") == 0)
 	{
-		return RETRIEVE_MESSAGES;
+		return ComandoServidor::RETRIEVE_MESSAGES;
 	}
 	
-	return VACIO;
+	return ComandoServidor::VACIO;
 }
+
+string Constantes::getComandoCliente(ComandoCliente comando)
+{
+	switch (comando)
+	{
+	case ComandoCliente::LOG:
+		return "LOG";
+	case ComandoCliente::PRINT:
+		return "PRINT";
+	case ComandoCliente::VACIO:
+		return "SEND_MESSAGE";
+	case ComandoCliente::RESULTADO_LOGIN:
+		return "RESULTADO_LOGIN";
+	default:
+		return "Not recognized..";
+	}
+}
+
+ComandoCliente Constantes::getConstComandoCliente(string comando) {
+	if (comando.compare("LOG") == 0)
+	{
+		return ComandoCliente::LOG;
+	}
+	if (comando.compare("PRINT") == 0)
+	{
+		return ComandoCliente::PRINT;
+	}
+	if (comando.compare("RESULTADO_LOGIN") == 0)
+	{
+		return ComandoCliente::RESULTADO_LOGIN;
+	}
+
+	return ComandoCliente::VACIO;
+}
+
 
 Constantes *Constantes::getInstance() {
 	if (!instance) {

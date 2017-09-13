@@ -17,7 +17,8 @@ public:
 	string getTipoDeAccion(string mensaje);
 	string getParametro(string mensaje, int indice); 
 	int getCantidadDeParametros(string mensaje);
-	Comando getComando(string mensaje);
+	ComandoServidor getComandoServidor(string mensaje);
+	ComandoCliente getComandoCliente(string mensaje);
 
 private:
 	ParserDeMensajes();

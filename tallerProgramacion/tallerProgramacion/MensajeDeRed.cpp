@@ -2,9 +2,14 @@
 #include "ParserDeMensajes.h"
 
 
-MensajeDeRed::MensajeDeRed(string mensaje)
+MensajeDeRed::MensajeDeRed(string mensaje, string destinatario)
 {
-	this->comando = ParserDeMensajes::getInstance()->getComando(mensaje);
+	if (Constantes::CLIENTE == destinatario) {
+		this->comandoCliente = ParserDeMensajes::getInstance()->getComandoCliente(mensaje);
+	}
+	else if (Constantes::SERVIDOR == destinatario) {
+		this->comandoServidor = ParserDeMensajes::getInstance()->getComandoServidor(mensaje);
+	}
 	int current = mensaje.find_first_of(Constantes::getInstance()->separador);
 	//Borro el tipo de mensaje
 	mensaje.erase(0, current + 1);
@@ -12,48 +17,65 @@ MensajeDeRed::MensajeDeRed(string mensaje)
 	while (mensaje.length() > 0) {
 		current = mensaje.find_first_of(Constantes::getInstance()->separador);
 		if (current >= 0) {
-			parametros.push_back( mensaje.substr(0, current));
+			parametros.push_back(mensaje.substr(0, current));
 			mensaje.erase(0, current + 1);
 		}
 		else {
 			//era el ultimo
-			parametros.push_back( mensaje );
+			parametros.push_back(mensaje);
 			mensaje.erase(0, mensaje.length());
 
 		}
 		i++;
 	}
-
 }
 
-MensajeDeRed::MensajeDeRed(Comando comando)
+MensajeDeRed::MensajeDeRed(ComandoServidor comando)
 {
-	this->comando = comando;
+	this->comandoServidor = comando;
+}
+
+MensajeDeRed::MensajeDeRed(ComandoCliente comando)
+{
+	this->comandoCliente = comando;
 }
 
 void MensajeDeRed::agregarParametro(string parametro) {
 	parametros.push_back(parametro);
 }
 
-string MensajeDeRed::getComandoSerializado() {
+string MensajeDeRed::getComandoServidorSerializado() {
 	string result = "";
-	result = Constantes::getInstance()->getComando(LOG);
-	for (int i = 0; i < parametros.size(); i++) {
+	result = Constantes::getInstance()->getComandoServidor(this->getComandoServidor());
+	for (unsigned int i = 0; i < parametros.size(); i++) {
 		result += Constantes::getInstance()->separador;
 		result += parametros.at(i);
 	}
 	return result;
 }
 
+string MensajeDeRed::getComandoClienteSerializado() {
+	string result = "";
+	result = Constantes::getInstance()->getComandoCliente(this->getComandoCliente());
+	for (unsigned int i = 0; i < parametros.size(); i++) {
+		result += Constantes::getInstance()->separador;
+		result += parametros.at(i);
+	}
+	return result;
+}
 
 MensajeDeRed::~MensajeDeRed()
 {
 
 }
 
-Comando MensajeDeRed::getComando()
+ComandoServidor MensajeDeRed::getComandoServidor()
 {
-	return this->comando;
+	return this->comandoServidor;
+}
+
+ComandoCliente MensajeDeRed::getComandoCliente() {
+	return this->comandoCliente;
 }
 
 int MensajeDeRed::getCantidadDeParametros()

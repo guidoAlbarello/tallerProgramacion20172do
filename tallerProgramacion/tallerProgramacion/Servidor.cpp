@@ -28,8 +28,8 @@ std::vector<Conexion*> Servidor::getConexionesActivas() {
 }
 
 void Servidor::iniciarServidor() {
+	Logger::getInstance()->log(Debug, "Iniciando servidor...");
 	this->leerServerConfig();
-
 	this->conexionDelServidor->iniciarConexion(this->configuracion->getPuerto(), this->configuracion->getMaxClientes());
 	this->t_escucharClientes = std::thread(&Servidor::escucharClientes, this);
 	this->correrCicloPrincipal();
@@ -48,7 +48,7 @@ Usuario Servidor::buscarUsuario(std::string unUsuario) {
 	Usuario usuarioDestinatario = Usuario();
 	std::vector<Usuario> listaDeUsuarios = this->configuracion->getUsuarios();
 
-	for (int i = 0; i < listaDeUsuarios.size() && usuarioDestinatario.getNombre() == ""; i++) {
+	for (unsigned int i = 0; i < listaDeUsuarios.size() && usuarioDestinatario.getNombre() == ""; i++) {
 		if (unUsuario.compare(listaDeUsuarios[i].getNombre()) == 0)
 			usuarioDestinatario = listaDeUsuarios[i];
 	}
@@ -61,7 +61,7 @@ bool Servidor::usuarioValido(std::string usuarioBuscado, std::string contrasenia
 	bool encontrado = false;
 	std::transform(usuarioBuscado.begin(), usuarioBuscado.end(), usuarioBuscado.begin(), ::toupper);
 	std::transform(contraseniaBuscada.begin(), contraseniaBuscada.end(), contraseniaBuscada.begin(), ::toupper);
-	for (int i = 0; i < listaDeUsuarios.size(); i++) {
+	for (unsigned int i = 0; i < listaDeUsuarios.size(); i++) {
 		std::string nombreActual = listaDeUsuarios[i].getNombre();
 		std::string contraseniaActual = listaDeUsuarios[i].getPassword();
 		std::transform(nombreActual.begin(), nombreActual.end(), nombreActual.begin(), ::toupper);
@@ -123,12 +123,14 @@ void Servidor::agregarNuevaConexionEntrante(SOCKET unCliente) {
 }
 
 void Servidor::cerrarTodasLasConexiones() {
-	for (int i = 0; i < conexionesActivas.size(); i++) {
+	Logger::getInstance()->log(Debug, "Cerrando todas las conexiones del servidor...");
+	for (unsigned int i = 0; i < conexionesActivas.size(); i++) {
 		conexionesActivas[i]->cerrarConexion();
 	}
 }
 
 void Servidor::cambiarNivelLogeo() {
+	Logger::getInstance()->log(Debug, "Cambiando nivel de logueo...");
 	std::string input;
 	while (input.length() != 1) {
 		mostrarMenuModosLogueo();
@@ -141,12 +143,15 @@ void Servidor::cambiarNivelLogeo() {
 			switch (opcionElegida) {
 			case '1':
 				Logger::getInstance()->setMode(LogMode::Error);
+				Logger::getInstance()->log(Debug, "Nuevo modo de logueo = ERROR");
 				break;
 			case '2':
 				Logger::getInstance()->setMode(LogMode::Actividad);
+				Logger::getInstance()->log(Debug, "Nuevo modo de logueo = ACTIVIDAD");
 				break;
 			case '3':
 				Logger::getInstance()->setMode(LogMode::Debug);
+				Logger::getInstance()->log(Debug, "Nuevo modo de logueo = DEBUG");
 				break;
 			case '4':
 				break;
@@ -160,18 +165,26 @@ void Servidor::cambiarNivelLogeo() {
 
 void Servidor::mostrarUsuariosConectados() {
 	mostrarMenuUsuariosConectados();
+	Logger::getInstance()->log(Debug, "Mostrando usuarios conectados");
 	if (conexionesActivas.size() == 0) {
 		std::cout << "En este momento no hay usuarios conectados a la aplicacion" << std::endl;
+		Logger::getInstance()->log(Debug, "En este momento no hay usuarios conectados a la aplicacion");
 	}
-	for (int i = 0; i < conexionesActivas.size(); i++) {
-		if (conexionesActivas[i]->getUsuario() != NULL) {
-			std::cout << "Usuario: " << conexionesActivas[i]->getUsuario()->getNombre() << std::endl;
+	else {
+		Logger::getInstance()->log(Debug, "Usuarios conectados:");
+		for (unsigned int i = 0; i < conexionesActivas.size(); i++) {
+			if (conexionesActivas[i]->getUsuario() != NULL) {
+				string unUsuario = "Usuario: " + conexionesActivas[i]->getUsuario()->getNombre();
+				std::cout << unUsuario << std::endl;
+				Logger::getInstance()->log(Debug, unUsuario);
+			}
+			else {
+				std::cout << "Usuario conectado sin loguear" << std::endl;
+				Logger::getInstance()->log(Debug, "Usuario conectado sin loguear");
+			}
 		}
-		else {
-			std::cout << "Usuario connectado sin loguear" << std::endl;
-		}
+		std::cout << std::endl;
 	}
-	std::cout << std::endl;
 }
 
 void Servidor::mostrarMenuPrincipal() {

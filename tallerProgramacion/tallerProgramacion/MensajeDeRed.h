@@ -11,20 +11,22 @@ using namespace std;
 class MensajeDeRed
 {
 public:
-	MensajeDeRed(string mensaje);
-	MensajeDeRed(Comando comando);
-
+	MensajeDeRed(string mensaje, string destinatario);
+	MensajeDeRed(ComandoServidor comando);
+	MensajeDeRed(ComandoCliente comando);
 	~MensajeDeRed();
-	Comando getComando();
+	ComandoServidor getComandoServidor();
+	ComandoCliente getComandoCliente();
 	int getCantidadDeParametros();
 	string getParametro(int i);
 	void agregarParametro(string parametro);
-	string getComandoSerializado();
-
+	string getComandoServidorSerializado();
+	string getComandoClienteSerializado();
 
 private:
-		Comando comando;
-		vector<string> parametros;
+	ComandoServidor comandoServidor;
+	ComandoCliente comandoCliente;
+	vector<string> parametros;
 };
 
 #endif

@@ -39,7 +39,7 @@ void Logger::log(LogMode mode, char *message) {
 		log(mode, mensaje);
 	} 
 	else {
-		std:string vacio = "pidieron logear un mensaje vacio";
+		std::string vacio = "pidieron logear un mensaje vacio";
 		log(mode, vacio);
 	}
 

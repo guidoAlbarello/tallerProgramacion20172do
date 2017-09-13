@@ -2,19 +2,27 @@
 #include "Logger.h"
 #include "Constantes.h"
 #include "MensajeDeRed.h"
+#include <iostream>
 
 void ManejadorDeConexionCliente::iniciarConexion(std::string ipServidor, std::string puertoServidor) {
-	this->socket->crearSocketCliente(ipServidor, puertoServidor);
+	int resultadoConexion = this->socket->crearSocketCliente(ipServidor, puertoServidor);
 	this->t_EnviarDatos = std::thread(&ManejadorDeConexionCliente::enviarDatos, this);
 	this->t_RecibirDatos = std::thread(&ManejadorDeConexionCliente::recibirDatos, this);
+	if (resultadoConexion == 0) {
+		Logger::getInstance()->log(Debug, "El cliente con ip = " + ipServidor + " se ha conectado satisfactoriamente al servidor");
+		cout << "Se ha conectado satisfactoriamente al servidor" << endl;
+	}
+	else {
+		Logger::getInstance()->log(Debug, "El cliente con ip = " + ipServidor + " no se pudo conectar al servidor");
+		cout << "Fallo la conexion al servidor" << endl;
+	}
 }
 bool ManejadorDeConexionCliente::login(std::string user, std::string pass) {
-	MensajeDeRed *mensajeDeRed = new MensajeDeRed(LOG);
+	MensajeDeRed *mensajeDeRed = new MensajeDeRed(ComandoServidor::LOG);
 	mensajeDeRed->agregarParametro(user);
 	mensajeDeRed->agregarParametro(pass);
-	string mensaje = mensajeDeRed->getComandoSerializado();
+	string mensaje = mensajeDeRed->getComandoServidorSerializado();
 	int tamanio = sizeof(mensaje);
-	Logger::getInstance()->log(Debug, "enviando mensaje");
 	Logger::getInstance()->log(Debug, mensaje);
 	this->socket->enviarDatos(mensaje.c_str() , tamanio);
 

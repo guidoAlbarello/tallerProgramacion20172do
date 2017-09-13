@@ -22,49 +22,56 @@ void Conexion::cerrarConexion() {
 
 void Conexion::procesarDatosRecibidos() {
 	while (conexionActiva) {
-		//procesar comandos
 		char* datosRecibidos = this->conexionConCliente->getDatosRecibidos();
 		if (datosRecibidos != NULL) {
 			Logger::getInstance()->log(Debug, datosRecibidos);
 			std::string datosRecibidosString(datosRecibidos);
-			MensajeDeRed *mensajeDeRed = new MensajeDeRed(datosRecibidosString);
-			
-			switch (mensajeDeRed->getComando())
-			{
-			case LOG:
-				Logger::getInstance()->log(Debug, "Recibio un LOG");
-				if (this->servidor->validarLogin(mensajeDeRed)) {
-					Logger::getInstance()->log(Debug, "Login satisfactorio");
-					//std::cout << "El login fue satisfactorio" << endl;
-					this->conexionConCliente->setDatosRecibidos(NULL);
+			MensajeDeRed *mensajeDeRed = new MensajeDeRed(datosRecibidosString, Constantes::SERVIDOR);
 
-					// Envio una respuesta con el resultado del login
-					//MensajeDeRed* mensajeDeRed = new MensajeDeRed("El login fue satisfactorio");
-					//string mensaje = mensajeDeRed->getComandoSerializado();
-					std::string mensaje = "Cliente: El login fue satisfactorio";
+			/* Procesa comandos recibidos desde los clientes */
+			switch (mensajeDeRed->getComandoServidor())
+			{
+			case ComandoServidor::LOG:
+				Logger::getInstance()->log(Debug, "Recibio un LOG");
+				// Envia respuesta con el resultado del login
+				if (this->servidor->validarLogin(mensajeDeRed)) {
+					Logger::getInstance()->log(Debug, "El login fue satisfactorio");
+					ComandoCliente comando = ComandoCliente::RESULTADO_LOGIN;
+					MensajeDeRed* mensajeDeRed = new MensajeDeRed(comando);
+					mensajeDeRed->agregarParametro("LOGIN_OK"); // ResultCode
+					mensajeDeRed->agregarParametro("El login fue satisfactorio");
+					string mensaje = mensajeDeRed->getComandoClienteSerializado();
 					int tamanio = sizeof(mensaje);
 					Logger::getInstance()->log(Debug, "Enviando mensaje");
 					Logger::getInstance()->log(Debug, mensaje);
 					this->conexionConCliente->getSocket().enviarDatos(mensaje.c_str(), tamanio);
 				}
 				else {
-					std::cout << "Login invalido" << endl;
-
+					Logger::getInstance()->log(Debug, "Login invalido");
+					ComandoCliente comando = ComandoCliente::RESULTADO_LOGIN;
+					MensajeDeRed* mensajeDeRed = new MensajeDeRed(comando);
+					mensajeDeRed->agregarParametro("LOGIN_NOK"); // ResultCode
+					mensajeDeRed->agregarParametro("Login invalido");
+					string mensaje = mensajeDeRed->getComandoClienteSerializado();
+					int tamanio = sizeof(mensaje);
+					Logger::getInstance()->log(Debug, "Login invalido");
+					Logger::getInstance()->log(Debug, mensaje);
+					this->conexionConCliente->getSocket().enviarDatos(mensaje.c_str(), tamanio);
 				}
 				break;
-			case PING:
+			case ComandoServidor::PING:
 				Logger::getInstance()->log(Debug, "Recibio un PING");
 				break;
-			case SEND_MESSAGE:
+			case ComandoServidor::SEND_MESSAGE:
 				Logger::getInstance()->log(Debug, "Recibio un Send_message");
 				break;
-			case RETRIEVE_MESSAGES:
+			case ComandoServidor::RETRIEVE_MESSAGES:
 				Logger::getInstance()->log(Debug, "Recibio un Retrieve_message");
 				break;
 			default:
 				Logger::getInstance()->log(Debug, datosRecibidos);
 			}
-			
+			this->conexionConCliente->setDatosRecibidos(NULL);			
 		}
 	}
 }
