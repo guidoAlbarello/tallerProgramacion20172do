@@ -13,6 +13,13 @@ ServerConfig::ServerConfig() {
 	this->puerto = DEFAULT_PUERTO_SERVIDOR;
 }
 
+ServerConfig::~ServerConfig() {
+	for (std::vector<Usuario*>::iterator it = this->usuarios.begin(); it != this->usuarios.end(); ++it) {
+		delete (*it);
+	}
+	this->usuarios.clear();
+}
+
 void ServerConfig::crearConfiguracionPredeterminada() {
 	Logger::getInstance()->log(LogMode::Debug, "[" + DEBUG_SERVER_TAG + "] Creando configuracion de servidor predeterminada: " + this->nombreConfiguracionPredeterminada);
 	//Generando un nuevo archivo de configuracion
@@ -29,7 +36,7 @@ void ServerConfig::crearConfiguracionPredeterminada() {
 	rapidxml::xml_node<>* nodoNombreAdmin = archivoXML.allocate_node(rapidxml::node_element, "nombre", "Admin");
 	rapidxml::xml_node<>* nodoPasswordAdmin = archivoXML.allocate_node(rapidxml::node_element, "password", "admin");
 	
-	this->usuarios.push_back(Usuario("Admin", "admin"));
+	this->usuarios.push_back(new Usuario("Admin", "admin"));
 
 	nodoNuevoUsuario->append_node(nodoNombreAdmin);
 	nodoNuevoUsuario->append_node(nodoPasswordAdmin);
@@ -63,11 +70,11 @@ void ServerConfig::parsearArchivoXML(std::string nombre) {
 		this->puerto = numeroPuerto;
 
 		rapidxml::xml_node<>* nodoUsuarios = documento.first_node("usuarios");
-		std::vector<Usuario> usuarios;
+		std::vector<Usuario*> usuarios;
 		for (rapidxml::xml_node<>* unNodoUsuario = nodoUsuarios->first_node("usuario"); unNodoUsuario; unNodoUsuario = unNodoUsuario->next_sibling()) {
 			rapidxml::xml_node<>* nodoNombre = unNodoUsuario->first_node("nombre");
 			rapidxml::xml_node<>* nodoPassword = unNodoUsuario->first_node("password");
-			usuarios.push_back(Usuario(nodoNombre->value(), nodoPassword->value()));
+			usuarios.push_back(new Usuario(nodoNombre->value(), nodoPassword->value()));
 		}
 		this->usuarios = usuarios;
 
@@ -95,10 +102,10 @@ void ServerConfig::setPuerto(std::string puerto) {
 	this->puerto = puerto;
 }
 
-std::vector<Usuario> ServerConfig::getUsuarios() {
+std::vector<Usuario*> ServerConfig::getUsuarios() {
 	return this->usuarios;
 }
 
-void ServerConfig::setUsuarios(std::vector<Usuario> usuarios) {
+void ServerConfig::setUsuarios(std::vector<Usuario*> usuarios) {
 	this->usuarios = usuarios;
 }

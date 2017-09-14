@@ -29,8 +29,8 @@ void Usuario::setPassword(std::string password) {
 	this->password = password;
 }
 
-void Usuario::enviarMensaje(Usuario* unUsuario, std::string unDestinatario, std::string unEmisor, std::string unMensaje) {
-	unUsuario->recibirMensaje(unDestinatario, unEmisor, unMensaje);						//tirar excepcion si usuario == NULL
+void Usuario::enviarMensaje(Usuario* unUsuario, std::string unMensaje) {
+	unUsuario->recibirMensaje(unUsuario->getNombre(), this->getNombre(), unMensaje);						//tirar excepcion si usuario == NULL
 }
 
 void Usuario::recibirMensaje(std::string unDestinatario, std::string unEmisor, std::string unMensaje) {

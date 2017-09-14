@@ -1,8 +1,5 @@
 #include "Cliente.h"
-#include <iostream>
-#include <limits>
-#include "Logger.h"
-#include "MensajeDeRed.h"
+
 
 Cliente* Cliente::instance = 0;
 
@@ -14,11 +11,13 @@ Cliente * Cliente::getInstance() {
 	return instance;
 }
 
-Cliente::Cliente(){
+Cliente::Cliente() {
 	this->conexionDelCliente = new ManejadorDeConexionCliente();
 	this->clienteActivo = true;
 	this->estaLogueado = false;
 	this->configuracion = new ClientConfig();
+	this->buzonDeMensajesGlobales = new BuzonDeMensajes(); //LIBERAR LA MEMORIA  DEL BUZON
+	this->enviandoMensaje = false;
 }
 
 Cliente::~Cliente() {
@@ -42,6 +41,8 @@ void Cliente::iniciarCliente() {
 	this->correrCicloPrincipal();
 }
 
+
+
 void Cliente::correrCicloPrincipal() {
 	std::string input;
 	while (clienteActivo) {
@@ -50,8 +51,7 @@ void Cliente::correrCicloPrincipal() {
 			std::getline(std::cin, input);
 			if (input.length() != 1) {
 				std::cout << "Debe ingresar una de las opciones" << std::endl;
-			}
-			else {
+			} else {
 				char opcionElegida = input[0];
 				switch (opcionElegida) {
 				case '1':
@@ -138,8 +138,7 @@ void Cliente::revisarBuzon() {
 	Logger::getInstance()->log(Debug, "Mensajes recibidos: ");
 	std::cout << "Mensajes recibidos: " << std::endl;
 
-	// TODO: implementar llamado al server que traiga los msjs privados
-	//this->conexionDelCliente->ejecutarComando(Comando::RETRIEVE_MESSAGES) 
+	this->conexionDelCliente->devolverMensajesPrivados();
 }
 
 void Cliente::logearseAlServidor() {
@@ -163,20 +162,22 @@ void Cliente::logearseAlServidor() {
 }
 
 void Cliente::enviarMensajeAlChat() {
+	this->enviandoMensaje = true;
 	mostrarMenuMensajeChat();
 	std::cout << "Ingrese el mensaje a enviar al chat" << std::endl;
 	std::string mensaje;
 	std::getline(std::cin, mensaje);
 
-	Logger::getInstance()->log(Debug, "Se envio al chat el mensaje: " + mensaje);
-	// TODO: implemenetar
-
-	//char* datosAEnviar = String(Comando::LOG +  cin >> mensaje).c_str();
-	//int tamanio = String(Comando::LOG + cin >> mensaje).size();
-	////this->conexionDelCliente->pasarDatosAEnviar(datosAEnviar, tamanio);
+	if (this->conexionDelCliente->enviarMensajeGlobal(mensaje)) {
+		Logger::getInstance()->log(Debug, "Se envio al chat el mensaje: " + mensaje);
+	} else {
+		Logger::getInstance()->log(Debug, "No se pudo enviar al chat el mensaje: " + mensaje);
+	}
+	this->enviandoMensaje = false;
 }
 
 void Cliente::enviarMensajePrivado() {
+	this->enviandoMensaje = true;
 	mostrarMenuMensajePrivado();
 	std::cout << "Ingrese el destinatario" << std::endl;
 	std::string destinatario;
@@ -185,30 +186,73 @@ void Cliente::enviarMensajePrivado() {
 	std::string mensaje;
 	std::getline(std::cin, mensaje);
 
-	std::string mensajeLogueado = "Se envio el mensaje privado: " + mensaje;
-	mensajeLogueado.append(" con destinatario: " + destinatario);
-	Logger::getInstance()->log(Debug, mensajeLogueado);
+	if (this->conexionDelCliente->enviarMensajePrivado(destinatario, mensaje)) {
+		std::string mensajeLogueado = "Se envio el mensaje privado: " + mensaje;
+		mensajeLogueado.append(" con destinatario: " + destinatario);
+		Logger::getInstance()->log(Debug, mensajeLogueado);
+	} else {
+		std::string mensajeLogueado = "No se pudo enviar el mensaje privado: " + mensaje;
+		mensajeLogueado.append(" con destinatario: " + destinatario);
+		Logger::getInstance()->log(Debug, mensajeLogueado);
+	}
+	this->enviandoMensaje = false;
 }
+
+
+void Cliente::mostrarMensajesPrivados(MensajeDeRed * unMensajeDeRed) {
+	if (unMensajeDeRed->getParametro(0).compare("RESULTADO_RETRIEVE_MESSAGES_OK") == 0) {
+		for (int i = 1; i < unMensajeDeRed->getCantidadDeParametros(); i++) {
+			string unEmisor = unMensajeDeRed->getParametro(i);
+			string unMensaje = unMensajeDeRed->getParametro(++i);
+
+			cout << "[" + unEmisor + "]: " + unMensaje << endl;
+		}
+	} else {
+
+	}
+}
+
+void Cliente::procesarMensajesGlobales(MensajeDeRed * unMensajeDeRed) {
+	if (unMensajeDeRed->getParametro(0).compare("RECIEVE_GLOBAL_MESSAGES_OK") == 0) {
+		for (int i = 1; i < unMensajeDeRed->getCantidadDeParametros(); i++) {
+			string unEmisor = unMensajeDeRed->getParametro(i);
+			string unMensaje = unMensajeDeRed->getParametro(++i);
+			buzonDeMensajesGlobales->recibirMensaje("", unEmisor, unMensaje);
+		}
+	} else {
+
+	}
+}
+
 
 void Cliente::procesarDatosRecibidos() {
 	while (clienteActivo) {
 		char* datosRecibidos = this->conexionDelCliente->getDatosRecibidos();
 		if (datosRecibidos != NULL) {
-			std::string datosRecibidosString(datosRecibidos);
-			MensajeDeRed* mensajeDeRed = new MensajeDeRed(datosRecibidosString, Constantes::CLIENTE);
+ 			std::string datosRecibidosString(datosRecibidos);
+			MensajeDeRed* mensajeDeRed = new MensajeDeRed(datosRecibidosString, Constantes::CLIENTE); //LIBERAR este mensaje de red, no se borra nunca!!!!!!!!!
 
 			/* Procesa comandos recibidos desde el servidor */
-			switch (mensajeDeRed->getComandoCliente())
-			{
+			switch (mensajeDeRed->getComandoCliente()) {
 			case ComandoCliente::RESULTADO_LOGIN:
 				if (mensajeDeRed->getParametro(0) == "LOGIN_OK") {
 					this->estaLogueado = true;
 					cout << mensajeDeRed->getParametro(1) << endl;
-				}
-				else if (mensajeDeRed->getParametro(0) == "LOGIN_NOK") {
+				} else if (mensajeDeRed->getParametro(0) == "LOGIN_NOK") {
 					this->estaLogueado = false;
 					cout << mensajeDeRed->getParametro(1) << endl;
 				}
+				break;
+			case ComandoCliente::RESULTADO_SEND_MESSAGE:
+				break;
+			case ComandoCliente::RECIEVE_GLOBAL_MESSAGES:
+				procesarMensajesGlobales(mensajeDeRed);
+				break;
+			case ComandoCliente::RESULTADO_RETRIEVE_MESSAGES:
+				mostrarMensajesPrivados(mensajeDeRed);
+				break;
+			case ComandoCliente::PING:
+
 				break;
 			case ComandoCliente::LOG:
 				Logger::getInstance()->log(Debug, "Recibio un LOG");
@@ -226,7 +270,21 @@ void Cliente::procesarDatosRecibidos() {
 			}
 			this->conexionDelCliente->setDatosRecibidos(NULL);
 		}
+
+		mostrarMensajesGlobales();
 	}
+}
+
+void Cliente::mostrarMensajesGlobales() {
+	int i;
+	for (i = 0; i < this->buzonDeMensajesGlobales->getTamanio() && !enviandoMensaje; i++) {
+		Mensaje* unMensaje = this->buzonDeMensajesGlobales->verMensaje(i);
+
+		cout << "[" + unMensaje->getEmisor() + "]: " + unMensaje->getMensaje() << endl;
+
+	}
+	if (i > 0)
+		this->buzonDeMensajesGlobales->eliminarMensajes(i); //esto de mostrar se peue hacer en otro thread si tira problemas e performance
 }
 
 void Cliente::mostrarMenuLogin() {

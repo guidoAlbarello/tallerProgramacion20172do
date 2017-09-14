@@ -6,7 +6,10 @@
 #include "ParserXml.h"
 #include "ClientConfig.h"
 #include <thread>
-
+#include <iostream>
+#include <limits>
+#include "Logger.h"
+#include "MensajeDeRed.h"
 
 class Cliente {
 public:
@@ -15,7 +18,10 @@ public:
 	void cerrarCliente();
 
 protected:
+	void mostrarMensajesPrivados(MensajeDeRed* unMensajeDeRed);
+	void procesarMensajesGlobales(MensajeDeRed* unMensajeDeRed);
 	ManejadorDeConexionCliente* conexionDelCliente;
+	BuzonDeMensajes* buzonDeMensajesGlobales;
 	virtual void correrCicloPrincipal();
 	ClientConfig* configuracion;
 	bool clienteActivo;
@@ -38,6 +44,9 @@ protected:
 	void enviarMensajeAlChat();
 	void enviarMensajePrivado();
 	void procesarDatosRecibidos();
+	void mostrarMensajesGlobales();
+	bool enviandoMensaje;
+
 };
 
 #endif

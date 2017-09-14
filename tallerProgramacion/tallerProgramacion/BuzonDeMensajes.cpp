@@ -17,3 +17,19 @@ void BuzonDeMensajes::recibirMensaje(std::string unDestinatario, std::string unE
 	buzonDeEntrada.push_back(nuevoMensaje);
 	m_buzon.unlock();
 }
+
+unsigned int BuzonDeMensajes::getTamanio() {
+	m_buzon.lock();
+	int tamanio = buzonDeEntrada.size();
+	m_buzon.unlock();
+	return tamanio;
+}
+
+void BuzonDeMensajes::eliminarMensajes(int posUltimoMensajeEnviado) {
+	m_buzon.lock();
+	for (int i = 0; i < posUltimoMensajeEnviado; i++) {
+		delete this->buzonDeEntrada[i];
+	}
+	buzonDeEntrada.erase(buzonDeEntrada.begin(), buzonDeEntrada.begin() + posUltimoMensajeEnviado);
+	m_buzon.unlock();
+}

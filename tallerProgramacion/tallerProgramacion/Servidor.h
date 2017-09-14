@@ -17,14 +17,16 @@ class Conexion;  // Declaracion forward de la clase Conexion
 class Servidor {
 public:
 	static Servidor* getInstance();
-	Usuario buscarUsuario(std::string unUsuario);
+	Usuario* buscarUsuario(std::string unUsuario);
 	void iniciarServidor();
 	void cerrarServidor();
-	bool validarLogin(MensajeDeRed* mensaje);
+	Usuario* validarLogin(MensajeDeRed* mensaje);
 	std::vector<Conexion*> getConexionesActivas();
-
+	std::vector<Usuario*> getUsuarios() { return this->configuracion->getUsuarios(); }
+	void recibirMensajeGlobal(string unEmisor, string unMensaje);
 protected:
 	ServerConfig* configuracion;
+	BuzonDeMensajes* buzonDeChatGlobal;
 	ManejadorDeConexionServidor* conexionDelServidor;
 	std::vector<Conexion*> conexionesActivas;
 	static Servidor* instance;
@@ -42,7 +44,9 @@ protected:
 	void mostrarMenuPrincipal();
 	void mostrarMenuModosLogueo();
 	void mostrarMenuUsuariosConectados();
-	bool usuarioValido(std::string usuario, std::string contrasenia);
+	Usuario* usuarioValido(std::string usuario, std::string contrasenia);
+	void enviarChatGlobal();
+	thread t_enviarChatGlobal;
 };
 
 #endif

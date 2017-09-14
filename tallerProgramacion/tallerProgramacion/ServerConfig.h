@@ -15,16 +15,17 @@ const std::string DEFAULT_PUERTO_SERVIDOR = "15636";
 class ServerConfig : public Config {
 public:
 	ServerConfig();
+	~ServerConfig();
 	int getMaxClientes();
 	void setMaxClientes(int maxClientes);
 	std::string getPuerto();
 	void setPuerto(std::string puerto);
-	std::vector<Usuario> getUsuarios();
-	void setUsuarios(std::vector<Usuario>);
+	std::vector<Usuario*> getUsuarios();
+	void setUsuarios(std::vector<Usuario*>);
 private:
 	int maxClientes;
 	std::string puerto;
-	std::vector<Usuario> usuarios;
+	std::vector<Usuario*> usuarios;
 	void crearConfiguracionPredeterminada();
 	void parsearArchivoXML(std::string nombre);
 };

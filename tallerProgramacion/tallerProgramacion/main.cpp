@@ -3,7 +3,7 @@
 
 using namespace std;
 
-#define ES_SERVIDOR true
+#define ES_SERVIDOR false
 
 int main(int argc, char* argv[]) {
 	std::string input;

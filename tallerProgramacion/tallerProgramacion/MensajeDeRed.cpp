@@ -14,7 +14,7 @@ MensajeDeRed::MensajeDeRed(string mensaje, string destinatario)
 	//Borro el tipo de mensaje
 	mensaje.erase(0, current + 1);
 	int i = 0;
-	while (mensaje.length() > 0) {
+	while (mensaje.length()   > 0) {
 		current = mensaje.find_first_of(Constantes::getInstance()->separador);
 		if (current >= 0) {
 			parametros.push_back(mensaje.substr(0, current));
@@ -23,7 +23,7 @@ MensajeDeRed::MensajeDeRed(string mensaje, string destinatario)
 		else {
 			//era el ultimo
 			parametros.push_back(mensaje);
-			mensaje.erase(0, mensaje.length());
+			mensaje.erase(0, mensaje.length() +1 );
 
 		}
 		i++;

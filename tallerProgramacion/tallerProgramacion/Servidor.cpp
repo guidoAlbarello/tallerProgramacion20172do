@@ -2,7 +2,6 @@
 #include "Servidor.h"
 #include <algorithm>
 
-
 Servidor* Servidor::instance = 0;
 
 Servidor* Servidor::getInstance() {
@@ -17,6 +16,7 @@ Servidor::Servidor() {
 	this->conexionDelServidor = new	ManejadorDeConexionServidor();
 	this->servidorActivo = true;
 	this->configuracion = new ServerConfig();
+	this->buzonDeChatGlobal = new BuzonDeMensajes();
 }
 
 Servidor::~Servidor() {
@@ -27,11 +27,16 @@ std::vector<Conexion*> Servidor::getConexionesActivas() {
 	return this->conexionesActivas;
 }
 
+void Servidor::recibirMensajeGlobal(string unEmisor, string unMensaje) {
+	this->buzonDeChatGlobal->recibirMensaje("", unEmisor, unMensaje);
+}
+
 void Servidor::iniciarServidor() {
 	Logger::getInstance()->log(Debug, "Iniciando servidor...");
 	this->leerServerConfig();
 	this->conexionDelServidor->iniciarConexion(this->configuracion->getPuerto(), this->configuracion->getMaxClientes());
 	this->t_escucharClientes = std::thread(&Servidor::escucharClientes, this);
+	this->t_enviarChatGlobal = std::thread(&Servidor::enviarChatGlobal, this);
 	this->correrCicloPrincipal();
 }
 
@@ -44,34 +49,34 @@ void Servidor::leerServerConfig() {
 	this->configuracion->leerConfiguracion();
 }
 
-Usuario Servidor::buscarUsuario(std::string unUsuario) {
-	Usuario usuarioDestinatario = Usuario();
-	std::vector<Usuario> listaDeUsuarios = this->configuracion->getUsuarios();
+Usuario* Servidor::buscarUsuario(std::string unUsuario) {
+	Usuario* usuarioDestinatario = NULL;
+	std::vector<Usuario*> listaDeUsuarios = this->configuracion->getUsuarios();
 
-	for (unsigned int i = 0; i < listaDeUsuarios.size() && usuarioDestinatario.getNombre() == ""; i++) {
-		if (unUsuario.compare(listaDeUsuarios[i].getNombre()) == 0)
+	for (unsigned int i = 0; i < listaDeUsuarios.size() && usuarioDestinatario == NULL; i++) {
+		if (unUsuario.compare(listaDeUsuarios[i]->getNombre()) == 0)
 			usuarioDestinatario = listaDeUsuarios[i];
 	}
 
 	return usuarioDestinatario;
 }
 
-bool Servidor::usuarioValido(std::string usuarioBuscado, std::string contraseniaBuscada) {
-	std::vector<Usuario> listaDeUsuarios = this->configuracion->getUsuarios();
-	bool encontrado = false;
+Usuario* Servidor::usuarioValido(std::string usuarioBuscado, std::string contraseniaBuscada) {
+	std::vector<Usuario*> listaDeUsuarios = this->configuracion->getUsuarios();
+	Usuario* unUsuario = NULL;
 	std::transform(usuarioBuscado.begin(), usuarioBuscado.end(), usuarioBuscado.begin(), ::toupper);
 	std::transform(contraseniaBuscada.begin(), contraseniaBuscada.end(), contraseniaBuscada.begin(), ::toupper);
 	for (unsigned int i = 0; i < listaDeUsuarios.size(); i++) {
-		std::string nombreActual = listaDeUsuarios[i].getNombre();
-		std::string contraseniaActual = listaDeUsuarios[i].getPassword();
+		std::string nombreActual = listaDeUsuarios[i]->getNombre();
+		std::string contraseniaActual = listaDeUsuarios[i]->getPassword();
 		std::transform(nombreActual.begin(), nombreActual.end(), nombreActual.begin(), ::toupper);
 		std::transform(contraseniaActual.begin(), contraseniaActual.end(), contraseniaActual.begin(), ::toupper);
 		if (usuarioBuscado.compare(nombreActual) == 0 && contraseniaBuscada.compare(contraseniaActual) == 0) {
-			encontrado = true;
+			unUsuario = listaDeUsuarios[i];
 			break;
 		}
 	}
-	return encontrado;
+	return unUsuario;
 }
 
 void Servidor::correrCicloPrincipal() {
@@ -227,14 +232,25 @@ void Servidor::mostrarMenuUsuariosConectados() {
 	std::cout << "|----------------------------|" << std::endl;
 }
 
-bool Servidor::validarLogin(MensajeDeRed* mensaje) {
+Usuario* Servidor::validarLogin(MensajeDeRed* mensaje) {
 	std::string usuario = mensaje->getParametro(0);
 	std::string contrasenia = mensaje->getParametro(1);
 
-	bool usuarioExiste = this->usuarioValido(usuario, contrasenia);
-	if (usuarioExiste) {
-		return true;
-	}
-	return false;
+	Usuario* unUsuario = this->usuarioValido(usuario, contrasenia);
+	return unUsuario;
 }
 
+void Servidor::enviarChatGlobal() {
+	while (servidorActivo) {
+		if (buzonDeChatGlobal->getTamanio() != 0) {
+			for (int i = 0; i < this->buzonDeChatGlobal->getTamanio(); i++) {
+				Mensaje* unMensaje = this->buzonDeChatGlobal->verMensaje(i);
+				for (std::vector<Conexion*>::iterator it = conexionesActivas.begin(); it != conexionesActivas.end(); ++it) {
+					Conexion* unaConexion = (Conexion*)*it;
+					unaConexion->enviarChatGlobal(unMensaje->getEmisor(), unMensaje->getMensaje());
+				}
+			}
+			this->buzonDeChatGlobal->eliminarMensajes(this->buzonDeChatGlobal->getTamanio());
+		}
+	}
+}

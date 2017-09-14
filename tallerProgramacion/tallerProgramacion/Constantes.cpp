@@ -60,6 +60,14 @@ string Constantes::getComandoCliente(ComandoCliente comando)
 		return "SEND_MESSAGE";
 	case ComandoCliente::RESULTADO_LOGIN:
 		return "RESULTADO_LOGIN";
+	case ComandoCliente::RESULTADO_SEND_MESSAGE:
+		return "RESULTADO_SEND_MESSAGE";
+	case ComandoCliente::RESULTADO_RETRIEVE_MESSAGES:
+		return "RESULTADO_RETRIEVE_MESSAGES";
+	case ComandoCliente::PING:
+		return "PING";
+	case ComandoCliente::RECIEVE_GLOBAL_MESSAGES:
+		return "RECIEVE_GLOBAL_MESSAGES";
 	default:
 		return "Not recognized..";
 	}
@@ -77,6 +85,22 @@ ComandoCliente Constantes::getConstComandoCliente(string comando) {
 	if (comando.compare("RESULTADO_LOGIN") == 0)
 	{
 		return ComandoCliente::RESULTADO_LOGIN;
+	}
+
+	if (comando.compare("RESULTADO_SEND_MESSAGE") == 0) {
+		return ComandoCliente::RESULTADO_SEND_MESSAGE;
+	}
+
+	if (comando.compare("RESULTADO_RETRIEVE_MESSAGES") == 0) {
+		return ComandoCliente::RESULTADO_RETRIEVE_MESSAGES;
+	}
+
+	if (comando.compare("PING") == 0) {
+		return ComandoCliente::PING;
+	}
+
+	if (comando.compare("RECIEVE_GLOBAL_MESSAGES") == 0) {
+		return ComandoCliente::RECIEVE_GLOBAL_MESSAGES;
 	}
 
 	return ComandoCliente::VACIO;

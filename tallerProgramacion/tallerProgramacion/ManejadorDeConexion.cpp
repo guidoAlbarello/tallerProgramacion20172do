@@ -36,7 +36,7 @@ void ManejadorDeConexion::recibirDatos() {
 		char *datosRecibidos = this->socket->recibirDatos();
 		if (datosRecibidos != NULL) {
 			m_bufferDatosRecibidos.lock();
-			bufferDatosRecibidos = datosRecibidos;
+			bufferDatosRecibidos = datosRecibidos;     //LIBERAR MEMORIA
 			m_bufferDatosRecibidos.unlock();
 		}
 	}

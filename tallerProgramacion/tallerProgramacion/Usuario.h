@@ -12,8 +12,9 @@ public:
 	void setNombre(std::string nombre);
 	std::string getPassword();
 	void setPassword(std::string password);
-	void enviarMensaje(Usuario* unUsuario, std::string unDestinatario, std::string unEmisor, std::string unMensaje);
+	void enviarMensaje(Usuario* unUsuario, std::string unMensaje);
 	void recibirMensaje(std::string unDestinatario, std::string unEmisor, std::string unMensaje);
+	BuzonDeMensajes* getBuzon() { return buzonDeMensajes; }
 private:
 	std::string nombre;
 	std::string password;
