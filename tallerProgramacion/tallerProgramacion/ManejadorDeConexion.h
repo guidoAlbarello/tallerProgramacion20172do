@@ -5,6 +5,7 @@
 #include "SocketSincronico.h"
 #include <thread>
 #include <mutex>
+#include <condition_variable> // std::condition_variable
 
 class ManejadorDeConexion {
 public:	
@@ -15,6 +16,8 @@ public:
 	void setDatosRecibidos(char* datos) { bufferDatosRecibidos = datos; };
 	void cerrarConexion();
 	SocketSincronico getSocket() { return *this->socket; };
+	void notificarDatosAEnviar();
+	void notificarDatoARecibir();
 protected:
 	SocketSincronico* socket;
 	bool conexionActiva;
@@ -25,6 +28,9 @@ protected:
 
 	std::mutex m_bufferDatosAEnviar;
 	std::mutex m_bufferDatosRecibidos;
+	std::condition_variable condicion_enviar;
+	std::condition_variable condicion_recibir;
+
 
 	//enum Comando comandoAEjecutar;
 	char* bufferDatosRecibidos;
