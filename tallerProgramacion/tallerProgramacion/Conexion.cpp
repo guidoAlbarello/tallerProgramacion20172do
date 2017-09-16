@@ -27,7 +27,7 @@ void Conexion::procesarSend_Message(MensajeDeRed* unMensajeDeRed) {
 	if (unMensajeDeRed->getParametro(0).compare("") != 0) {
 		Usuario* usuarioDestinatario = this->servidor->buscarUsuario(unMensajeDeRed->getParametro(0));
 		this->getUsuario()->enviarMensaje(usuarioDestinatario, unMensajeDeRed->getParametro(1));
-		this->servidor->enviarMensajePrivado(unMensajeDeRed->getParametro(0), unMensajeDeRed->getParametro(1));
+		this->servidor->enviarMensajePrivado(this->getUsuario()->getNombre(), unMensajeDeRed->getParametro(1));
 	} else {
 		this->servidor->recibirMensajeGlobal(this->getUsuario()->getNombre(), unMensajeDeRed->getParametro(1));
 		Logger::getInstance()->log(Debug, "El envio de mensaje fue satisfactorio");
@@ -67,12 +67,19 @@ void Conexion::procesarRetrieve_Messages(MensajeDeRed* unMensajeDeRed) {
 
 void Conexion::enviarChatGlobal(bool tipoDeChat, string unEmisor, string unMensaje) {
 	Logger::getInstance()->log(Debug, "El envio de mensaje fue satisfactorio");
-	ComandoCliente comando = ComandoCliente::RECIEVE_GLOBAL_MESSAGES;
+	ComandoCliente comando;
+	string resultado;
+	
+	if (tipoDeChat) {
+		comando = ComandoCliente::RECIEVE_GLOBAL_MESSAGES;
+		resultado = "RECIEVE_GLOBAL_MESSAGES_OK";
+	} else {
+		comando = ComandoCliente::RECIEVE_PRIVATE_MESSAGES;
+		resultado = "RECIEVE_PRIVATE_MESSAGES_OK";
+	}
+
 	MensajeDeRed* mensajeDeRed = new MensajeDeRed(comando);
-	if(tipoDeChat)
-		mensajeDeRed->agregarParametro("RECIEVE_GLOBAL_MESSAGES_OK"); 
-	else
-		mensajeDeRed->agregarParametro("RECIEVE_PRIVATE_MESSAGES_OK");
+	mensajeDeRed->agregarParametro(resultado);
 	mensajeDeRed->agregarParametro(unEmisor);
 	mensajeDeRed->agregarParametro(unMensaje);
 	string mensaje = mensajeDeRed->getComandoClienteSerializado();

@@ -277,3 +277,29 @@
 16-09-2017 05:28:14 - Debug - Enviando mensaje
 16-09-2017 05:28:14 - Debug - RECIEVE_GLOBAL_MESSAGES0RECIEVE_GLOBAL_MESSAGES_OK0Juan0sjfkdjfkdjfksdjfksj
 16-09-2017 05:31:03 - Debug - Iniciando aplicacion
+16-09-2017 05:37:56 - Debug - Iniciando aplicacion
+16-09-2017 05:45:23 - Debug - Iniciando aplicacion
+16-09-2017 05:45:26 - Debug - Iniciando servidor...
+16-09-2017 05:45:26 - Debug - [ServerConfig] Parseando configuracion del servidor: server-config.xml
+16-09-2017 05:45:26 - Debug - [ServerConfig] server-config.xml se parseo exitosamente.
+16-09-2017 05:45:26 - Debug - [ServerConfig] Configuracion del servidor: PUERTO: 15636, MAXIMOS CLIENTES: 8.
+16-09-2017 05:45:26 - Debug - Se creo correctamente el socket del servidor escuchando en el puerto = 15636
+16-09-2017 05:45:35 - Debug - LOG0Juan0123
+16-09-2017 05:45:35 - Debug - Recibio un LOG
+16-09-2017 05:45:35 - Debug - El login fue satisfactorio
+16-09-2017 05:45:35 - Debug - Enviando mensaje
+16-09-2017 05:45:35 - Debug - RESULTADO_LOGIN0LOGIN_OK0El login fue satisfactorio
+16-09-2017 05:45:46 - Debug - LOG0Maria0654
+16-09-2017 05:45:46 - Debug - Recibio un LOG
+16-09-2017 05:45:46 - Debug - El login fue satisfactorio
+16-09-2017 05:45:46 - Debug - Enviando mensaje
+16-09-2017 05:45:46 - Debug - RESULTADO_LOGIN0LOGIN_OK0El login fue satisfactorio
+16-09-2017 05:45:53 - Debug - SEND_MESSAGE0Juan0asdasd
+16-09-2017 05:45:53 - Debug - Recibio un Send_message
+16-09-2017 05:45:53 - Debug - El envio de mensaje fue satisfactorio
+16-09-2017 05:45:53 - Debug - Enviando mensaje
+16-09-2017 05:45:53 - Debug - RECIEVE_PRIVATE_MESSAGES0RECIEVE_PRIVATE_MESSAGES_OK0Juan0asdasd
+16-09-2017 05:46:06 - Debug - RETRIEVE_MESSAGES
+16-09-2017 05:46:06 - Debug - Recibio un Retrieve_message
+16-09-2017 05:46:06 - Debug - Enviando mensaje
+16-09-2017 05:46:06 - Debug - RESULTADO_RETRIEVE_MESSAGES0RESULTADO_RETRIEVE_MESSAGES_OK0Maria0asdasd
