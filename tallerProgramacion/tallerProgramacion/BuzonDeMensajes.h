@@ -8,6 +8,7 @@
 class BuzonDeMensajes {
 public:
 	Mensaje* verMensaje(int posicionMensajeParaVer);
+	void eliminarMensaje(int i);
 	void recibirMensaje(std::string unDestinatario, std::string unEmisor, std::string unMensaje);
 	unsigned int getTamanio();
 	void eliminarMensajes(int posUltimoMensajeEnviado);

@@ -137,7 +137,8 @@ void Cliente::hacerTestDeEstres() {
 	mensajeLogueado.append("ms");
 	Logger::getInstance()->log(Debug, mensajeLogueado);
 	for (size_t i = 0; i < 100; i++) {
-		this->conexionDelCliente->enviarMensajeGlobal("esto es un mensaje automatico de prueba para ir probando. un poco largo como lo manda.");
+		string mensaje = to_string(i) + ". esto es un mensaje automatico de prueba para ir probando. un poco largo como lo manda.";
+		this->conexionDelCliente->enviarMensajeGlobal(mensaje);
 	}
 
 }

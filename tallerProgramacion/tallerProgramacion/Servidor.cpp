@@ -259,15 +259,16 @@ Usuario* Servidor::validarLogin(MensajeDeRed* mensaje) {
 
 void Servidor::enviarChatGlobal() {
 	while (servidorActivo) {
+		
 		if (buzonDeChatGlobal->getTamanio() != 0) {
 			for (int i = 0; i < this->buzonDeChatGlobal->getTamanio(); i++) {
 				Mensaje* unMensaje = this->buzonDeChatGlobal->verMensaje(i);
 				for (std::vector<Conexion*>::iterator it = conexionesActivas.begin(); it != conexionesActivas.end(); ++it) {
 					Conexion* unaConexion = (Conexion*)*it;
-					unaConexion->enviarChatGlobal(true,unMensaje->getEmisor(), unMensaje->getMensaje());
+					unaConexion->enviarChatGlobal(true, unMensaje->getEmisor(), unMensaje->getMensaje());
 				}
+				
 			}
-			this->buzonDeChatGlobal->eliminarMensajes(this->buzonDeChatGlobal->getTamanio());
 		}
 	}
 }

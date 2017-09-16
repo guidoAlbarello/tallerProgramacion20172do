@@ -7,6 +7,13 @@ Mensaje* BuzonDeMensajes::verMensaje(int posicionMensajeParaVer) {
 	return unMensaje;
 }
 
+void BuzonDeMensajes::eliminarMensaje(int i) {
+	m_buzon.lock();
+	delete this->buzonDeEntrada.at(i);
+	this->buzonDeEntrada.erase(this->buzonDeEntrada.begin() +i);
+	m_buzon.unlock();
+}
+
 void BuzonDeMensajes::recibirMensaje(std::string unDestinatario, std::string unEmisor, std::string unMensaje) {
 	Mensaje* nuevoMensaje = new Mensaje();
 	nuevoMensaje->setDestinatario(unDestinatario);
