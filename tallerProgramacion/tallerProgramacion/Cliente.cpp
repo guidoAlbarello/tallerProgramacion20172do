@@ -136,7 +136,7 @@ void Cliente::hacerTestDeEstres() {
 	std::string mensajeLogueado = "Ejecutando test de estres durante " + stressTimeMillis;
 	mensajeLogueado.append("ms");
 	Logger::getInstance()->log(Debug, mensajeLogueado);
-	// TODO: implementar el test de estres
+	
 
 }
 
@@ -230,7 +230,19 @@ void Cliente::procesarMensajesGlobales(MensajeDeRed * unMensajeDeRed) {
 		for (int i = 1; i < unMensajeDeRed->getCantidadDeParametros(); i++) {
 			string unEmisor = unMensajeDeRed->getParametro(i);
 			string unMensaje = unMensajeDeRed->getParametro(++i);
-			buzonDeMensajesGlobales->recibirMensaje("", unEmisor, unMensaje);
+			buzonDeMensajesGlobales->recibirMensaje("Global", unEmisor, unMensaje);
+		}
+	} else {
+
+	}
+}
+
+void Cliente::procesarMensajesPrivados(MensajeDeRed * unMensajeDeRed) {
+	if (unMensajeDeRed->getParametro(0).compare("RECIEVE_PRIVATE_MESSAGES_OK") == 0) {
+		for (int i = 1; i < unMensajeDeRed->getCantidadDeParametros(); i++) {
+			string unEmisor = unMensajeDeRed->getParametro(i);
+			string unMensaje = unMensajeDeRed->getParametro(++i);
+			buzonDeMensajesGlobales->recibirMensaje("Private", unEmisor, unMensaje);
 		}
 	} else {
 
@@ -266,6 +278,9 @@ void Cliente::procesarDatosRecibidos() {
 				break;
 			case ComandoCliente::PING:
 
+				break;
+			case ComandoCliente::RECIEVE_PRIVATE_MESSAGES:
+				procesarMensajesPrivados(mensajeDeRed);
 				break;
 			case ComandoCliente::LOG:
 				Logger::getInstance()->log(Debug, "Recibio un LOG");

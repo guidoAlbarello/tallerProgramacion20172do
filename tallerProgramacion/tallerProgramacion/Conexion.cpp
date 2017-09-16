@@ -27,19 +27,31 @@ void Conexion::procesarSend_Message(MensajeDeRed* unMensajeDeRed) {
 	if (unMensajeDeRed->getParametro(0).compare("") != 0) {
 		Usuario* usuarioDestinatario = this->servidor->buscarUsuario(unMensajeDeRed->getParametro(0));
 		this->getUsuario()->enviarMensaje(usuarioDestinatario, unMensajeDeRed->getParametro(1));
+		Logger::getInstance()->log(Debug, "El envio de mensaje fue satisfactorio");
+		ComandoCliente comando = ComandoCliente::RECIEVE_PRIVATE_MESSAGES;
+		MensajeDeRed* mensajeDeRed = new MensajeDeRed(comando);
+		mensajeDeRed->agregarParametro("RECIEVE_PRIVATE_MESSAGES_OK"); // ResultCode
+		mensajeDeRed->agregarParametro(this->getUsuario()->getNombre());
+		mensajeDeRed->agregarParametro(unMensajeDeRed->getParametro(1));
+		string mensaje = mensajeDeRed->getComandoClienteSerializado();
+		int tamanio = mensaje.length() + 1;
+		Logger::getInstance()->log(Debug, "Enviando mensaje");
+		Logger::getInstance()->log(Debug, mensaje);
+		this->conexionConCliente->getSocket().enviarDatos(mensaje.c_str(), tamanio);
 	} else {
 		this->servidor->recibirMensajeGlobal(this->getUsuario()->getNombre(), unMensajeDeRed->getParametro(1));
+		Logger::getInstance()->log(Debug, "El envio de mensaje fue satisfactorio");
+		ComandoCliente comando = ComandoCliente::RESULTADO_SEND_MESSAGE;
+		MensajeDeRed* mensajeDeRed = new MensajeDeRed(comando);
+		mensajeDeRed->agregarParametro("SEND_MESSAGE_OK"); // ResultCode
+		mensajeDeRed->agregarParametro("El envio de mensaje fue satisfactorio");
+		string mensaje = mensajeDeRed->getComandoClienteSerializado();
+		int tamanio = mensaje.length() + 1;
+		Logger::getInstance()->log(Debug, "Enviando mensaje");
+		Logger::getInstance()->log(Debug, mensaje);
+		this->conexionConCliente->getSocket().enviarDatos(mensaje.c_str(), tamanio);
 	}
-	Logger::getInstance()->log(Debug, "El envio de mensaje fue satisfactorio");
-	ComandoCliente comando = ComandoCliente::RESULTADO_SEND_MESSAGE;
-	MensajeDeRed* mensajeDeRed = new MensajeDeRed(comando);
-	mensajeDeRed->agregarParametro("SEND_MESSAGE_OK"); // ResultCode
-	mensajeDeRed->agregarParametro("El envio de mensaje fue satisfactorio");
-	string mensaje = mensajeDeRed->getComandoClienteSerializado();
-	int tamanio = mensaje.length() + 1;
-	Logger::getInstance()->log(Debug, "Enviando mensaje");
-	Logger::getInstance()->log(Debug, mensaje);
-	this->conexionConCliente->getSocket().enviarDatos(mensaje.c_str(), tamanio);
+	
 }
 
 void Conexion::procesarRetrieve_Messages(MensajeDeRed* unMensajeDeRed) {

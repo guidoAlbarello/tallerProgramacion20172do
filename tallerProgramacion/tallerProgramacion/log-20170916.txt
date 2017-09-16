@@ -197,3 +197,4 @@
 16-09-2017 03:59:16 - Debug - [ServerConfig] server-config.xml se parseo exitosamente.
 16-09-2017 03:59:16 - Debug - [ServerConfig] Configuracion del servidor: PUERTO: 15636, MAXIMOS CLIENTES: 8.
 16-09-2017 03:59:16 - Debug - Se creo correctamente el socket del servidor escuchando en el puerto = 15636
+16-09-2017 05:01:52 - Debug - Iniciando aplicacion

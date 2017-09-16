@@ -68,6 +68,8 @@ string Constantes::getComandoCliente(ComandoCliente comando)
 		return "PING";
 	case ComandoCliente::RECIEVE_GLOBAL_MESSAGES:
 		return "RECIEVE_GLOBAL_MESSAGES";
+	case ComandoCliente::RECIEVE_PRIVATE_MESSAGES:
+		return "RECIEVE_PRIVATE_MESSAGES";
 	default:
 		return "Not recognized..";
 	}
@@ -101,6 +103,10 @@ ComandoCliente Constantes::getConstComandoCliente(string comando) {
 
 	if (comando.compare("RECIEVE_GLOBAL_MESSAGES") == 0) {
 		return ComandoCliente::RECIEVE_GLOBAL_MESSAGES;
+	}
+
+	if (comando.compare("RECIEVE_PRIVATE_MESSAGES") == 0) {
+		return ComandoCliente::RECIEVE_PRIVATE_MESSAGES;
 	}
 
 	return ComandoCliente::VACIO;

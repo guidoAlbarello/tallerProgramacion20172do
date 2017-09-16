@@ -20,6 +20,7 @@ public:
 protected:
 	void mostrarMensajesPrivados(MensajeDeRed* unMensajeDeRed);
 	void procesarMensajesGlobales(MensajeDeRed* unMensajeDeRed);
+	void procesarMensajesPrivados(MensajeDeRed* unMensajeDeRed);
 	ManejadorDeConexionCliente* conexionDelCliente;
 	BuzonDeMensajes* buzonDeMensajesGlobales;
 	virtual void correrCicloPrincipal();
