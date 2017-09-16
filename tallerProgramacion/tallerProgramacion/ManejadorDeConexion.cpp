@@ -53,7 +53,9 @@ void ManejadorDeConexion::recibirDatos() {
 			//PAra recibir datos no haria falta, porque el recv es bloqueante y este proceso no se envia datos a si mismo 
 			//condicion_recibir.wait(m_bufferDatosRecibidos);
 			m_bufferDatosRecibidos.lock();
-			bufferDatosRecibidos = datosRecibidos;     //LIBERAR MEMORIA
+			if (bufferDatosRecibidos != NULL)
+				free(bufferDatosRecibidos);
+			bufferDatosRecibidos = datosRecibidos;     
 			m_bufferDatosRecibidos.unlock();
 		}
 	}
