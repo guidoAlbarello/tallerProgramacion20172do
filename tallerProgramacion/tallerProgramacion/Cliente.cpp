@@ -154,8 +154,8 @@ void Cliente::logearseAlServidor() {
 		Logger::getInstance()->log(Debug, "Logueando al servidor con credenciales: ");
 		Logger::getInstance()->log(Debug, "Usuario: " + user);
 		Logger::getInstance()->log(Debug, "Contrasenia: " + pass);
-
-		this->conexionDelCliente->login(user, pass);
+		
+		estaLogueado = this->conexionDelCliente->login(user, pass);
 		//mutex en el buffer de manejar conexion .- cuando haya q manejar input en el cliente, se le pasa el input desde le manejador de input al manejador de conexion. o se manda a cliente para q procese primerop si es necesario y d3sp el manejador de conexion
 	}
 	correrCicloPrincipal();
