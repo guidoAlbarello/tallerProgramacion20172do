@@ -16,6 +16,7 @@ public:
 	void setDatosRecibidos(char* datos) { bufferDatosRecibidos = datos; };
 	void cerrarConexion();
 	SocketSincronico getSocket() { return *this->socket; };
+	bool getConexionActiva() { return this->conexionActiva; };
 	void notificarDatosAEnviar();
 	void notificarDatoARecibir();
 protected:

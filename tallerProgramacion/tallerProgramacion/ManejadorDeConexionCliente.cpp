@@ -11,10 +11,12 @@ void ManejadorDeConexionCliente::iniciarConexion(std::string ipServidor, std::st
 	if (resultadoConexion == 0) {
 		Logger::getInstance()->log(Debug, "El cliente con ip = " + ipServidor + " se ha conectado satisfactoriamente al servidor");
 		cout << "Se ha conectado satisfactoriamente al servidor" << endl;
+		this->conexionActiva = true;
 	}
 	else {
 		Logger::getInstance()->log(Debug, "El cliente con ip = " + ipServidor + " no se pudo conectar al servidor");
 		cout << "Fallo la conexion al servidor" << endl;
+		this->conexionActiva = false;
 	}
 }
 bool ManejadorDeConexionCliente::login(std::string user, std::string pass) {

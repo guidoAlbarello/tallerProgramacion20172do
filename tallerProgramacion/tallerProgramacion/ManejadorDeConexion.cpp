@@ -4,21 +4,21 @@ ManejadorDeConexion::ManejadorDeConexion() {
 	this->socket = new SocketSincronico();
 	bufferDatosAEnviar = NULL;
 	bufferDatosRecibidos = NULL;
-	conexionActiva = true;
+	conexionActiva = false;
 }
 
 ManejadorDeConexion::ManejadorDeConexion(SOCKET unSocket) {
 	this->socket = new SocketSincronico(unSocket);
 	bufferDatosAEnviar = NULL;
 	bufferDatosRecibidos = NULL;
-	conexionActiva = true;
+	conexionActiva = false;
 }
 
 ManejadorDeConexion::ManejadorDeConexion(SocketSincronico* unSocket) {
 	this->socket = unSocket;
 	bufferDatosAEnviar = NULL;
 	bufferDatosRecibidos = NULL;
-	conexionActiva = true;
+	conexionActiva = false;
 }
 
 void  ManejadorDeConexion::notificarDatosAEnviar() {

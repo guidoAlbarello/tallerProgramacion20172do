@@ -103,10 +103,16 @@ void Cliente::mostrarMenuPrincipal() {
 }
 
 void Cliente::conectarseAlServidor() {
-	Logger::getInstance()->log(Debug, "Conectando al servidor...");
-	std::cout << "Conectando al servidor..." << std::endl;
-	this->conexionDelCliente->iniciarConexion(configuracion->getIP(), configuracion->getPuerto());
-	this->t_procesarDatosRecibidos = std::thread(&Cliente::procesarDatosRecibidos, this);
+	if (!this->conexionDelCliente->getConexionActiva()) {
+		Logger::getInstance()->log(Debug, "Conectando al servidor...");
+		std::cout << "Conectando al servidor..." << std::endl;
+		this->conexionDelCliente->iniciarConexion(configuracion->getIP(), configuracion->getPuerto());
+		this->t_procesarDatosRecibidos = std::thread(&Cliente::procesarDatosRecibidos, this);
+	}
+	else {
+		Logger::getInstance()->log(Debug, "Conectando al servidor...");
+		std::cout << "Ya se encuentra conectado al servidor" << std::endl;
+	}
 }
 
 void Cliente::desconectarseDelServidor() {
@@ -229,7 +235,7 @@ void Cliente::procesarDatosRecibidos() {
 	while (clienteActivo) {
 		char* datosRecibidos = this->conexionDelCliente->getDatosRecibidos();
 		if (datosRecibidos != NULL) {
- 			std::string datosRecibidosString(datosRecibidos);
+			std::string datosRecibidosString(datosRecibidos);
 			MensajeDeRed* mensajeDeRed = new MensajeDeRed(datosRecibidosString, Constantes::CLIENTE); //LIBERAR este mensaje de red, no se borra nunca!!!!!!!!!
 
 			/* Procesa comandos recibidos desde el servidor */
