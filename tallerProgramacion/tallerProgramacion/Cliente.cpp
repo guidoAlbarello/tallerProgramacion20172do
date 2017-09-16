@@ -148,21 +148,27 @@ void Cliente::revisarBuzon() {
 }
 
 void Cliente::logearseAlServidor() {
-	while (!this->estaLogueado) {
-		std::string user;
-		std::string pass;
-		mostrarMenuLogin();
-		cout << "Ingrese su nombre de usuario" << std::endl;
-		std::getline(std::cin, user);
-		cout << "Ingrese su contrasenia" << std::endl;
-		std::getline(std::cin, pass);
+	if (!this->conexionDelCliente->getConexionActiva()) {
+		Logger::getInstance()->log(Debug, "Se intento loguear al servidor un cliente sin conectarse previamente");
+		cout << "Debe conectarse al servidor antes de loguearse" << std::endl;
+	}
+	else {
+		while (!this->estaLogueado) {
+			std::string user;
+			std::string pass;
+			mostrarMenuLogin();
+			cout << "Ingrese su nombre de usuario" << std::endl;
+			std::getline(std::cin, user);
+			cout << "Ingrese su contrasenia" << std::endl;
+			std::getline(std::cin, pass);
 
-		Logger::getInstance()->log(Debug, "Logueando al servidor con credenciales: ");
-		Logger::getInstance()->log(Debug, "Usuario: " + user);
-		Logger::getInstance()->log(Debug, "Contrasenia: " + pass);
-		
-		estaLogueado = this->conexionDelCliente->login(user, pass);
-		//mutex en el buffer de manejar conexion .- cuando haya q manejar input en el cliente, se le pasa el input desde le manejador de input al manejador de conexion. o se manda a cliente para q procese primerop si es necesario y d3sp el manejador de conexion
+			Logger::getInstance()->log(Debug, "Logueando al servidor con credenciales: ");
+			Logger::getInstance()->log(Debug, "Usuario: " + user);
+			Logger::getInstance()->log(Debug, "Contrasenia: " + pass);
+
+			estaLogueado = this->conexionDelCliente->login(user, pass);
+			//mutex en el buffer de manejar conexion .- cuando haya q manejar input en el cliente, se le pasa el input desde le manejador de input al manejador de conexion. o se manda a cliente para q procese primerop si es necesario y d3sp el manejador de conexion
+		}
 	}
 	correrCicloPrincipal();
 }
