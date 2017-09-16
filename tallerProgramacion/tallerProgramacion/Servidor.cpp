@@ -41,8 +41,14 @@ void Servidor::iniciarServidor() {
 }
 
 void Servidor::cerrarServidor() {
-	this->conexionDelServidor->cerrarConexion();
+	
 	this->servidorActivo = false;
+
+	if (t_escucharClientes.joinable()) {
+		t_escucharClientes.join();
+	}
+
+	this->conexionDelServidor->cerrarConexion();
 }
 
 void Servidor::leerServerConfig() {
