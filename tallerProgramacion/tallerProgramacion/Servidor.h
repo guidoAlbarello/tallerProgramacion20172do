@@ -24,6 +24,7 @@ public:
 	std::vector<Conexion*> getConexionesActivas();
 	std::vector<Usuario*> getUsuarios() { return this->configuracion->getUsuarios(); }
 	void recibirMensajeGlobal(string unEmisor, string unMensaje);
+	void enviarMensajePrivado(string unDestinatario, string unMensaje);
 protected:
 	ServerConfig* configuracion;
 	BuzonDeMensajes* buzonDeChatGlobal;

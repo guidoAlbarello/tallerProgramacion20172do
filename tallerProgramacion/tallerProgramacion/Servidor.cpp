@@ -31,6 +31,17 @@ void Servidor::recibirMensajeGlobal(string unEmisor, string unMensaje) {
 	this->buzonDeChatGlobal->recibirMensaje("", unEmisor, unMensaje);
 }
 
+void Servidor::enviarMensajePrivado(string unDestinatario, string unMensaje) {
+	bool encontrado = false;
+	for (int i = 0; i < this->conexionesActivas.size() && !encontrado; i++) {
+		Conexion* unaConexion = this->conexionesActivas[i];
+		if (unaConexion->getUsuario()->getNombre().compare(unDestinatario) == 0) {
+			unaConexion->enviarChatGlobal(false,unDestinatario, unMensaje);
+			encontrado = true;
+		}
+	}
+}
+
 void Servidor::iniciarServidor() {
 	Logger::getInstance()->log(Debug, "Iniciando servidor...");
 	this->leerServerConfig();
@@ -253,7 +264,7 @@ void Servidor::enviarChatGlobal() {
 				Mensaje* unMensaje = this->buzonDeChatGlobal->verMensaje(i);
 				for (std::vector<Conexion*>::iterator it = conexionesActivas.begin(); it != conexionesActivas.end(); ++it) {
 					Conexion* unaConexion = (Conexion*)*it;
-					unaConexion->enviarChatGlobal(unMensaje->getEmisor(), unMensaje->getMensaje());
+					unaConexion->enviarChatGlobal(true,unMensaje->getEmisor(), unMensaje->getMensaje());
 				}
 			}
 			this->buzonDeChatGlobal->eliminarMensajes(this->buzonDeChatGlobal->getTamanio());

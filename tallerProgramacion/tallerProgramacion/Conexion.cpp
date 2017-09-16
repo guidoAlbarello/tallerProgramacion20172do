@@ -27,17 +27,7 @@ void Conexion::procesarSend_Message(MensajeDeRed* unMensajeDeRed) {
 	if (unMensajeDeRed->getParametro(0).compare("") != 0) {
 		Usuario* usuarioDestinatario = this->servidor->buscarUsuario(unMensajeDeRed->getParametro(0));
 		this->getUsuario()->enviarMensaje(usuarioDestinatario, unMensajeDeRed->getParametro(1));
-		Logger::getInstance()->log(Debug, "El envio de mensaje fue satisfactorio");
-		ComandoCliente comando = ComandoCliente::RECIEVE_PRIVATE_MESSAGES;
-		MensajeDeRed* mensajeDeRed = new MensajeDeRed(comando);
-		mensajeDeRed->agregarParametro("RECIEVE_PRIVATE_MESSAGES_OK"); // ResultCode
-		mensajeDeRed->agregarParametro(this->getUsuario()->getNombre());
-		mensajeDeRed->agregarParametro(unMensajeDeRed->getParametro(1));
-		string mensaje = mensajeDeRed->getComandoClienteSerializado();
-		int tamanio = mensaje.length() + 1;
-		Logger::getInstance()->log(Debug, "Enviando mensaje");
-		Logger::getInstance()->log(Debug, mensaje);
-		this->conexionConCliente->getSocket().enviarDatos(mensaje.c_str(), tamanio);
+		this->servidor->enviarMensajePrivado(unMensajeDeRed->getParametro(0), unMensajeDeRed->getParametro(1));
 	} else {
 		this->servidor->recibirMensajeGlobal(this->getUsuario()->getNombre(), unMensajeDeRed->getParametro(1));
 		Logger::getInstance()->log(Debug, "El envio de mensaje fue satisfactorio");
@@ -75,11 +65,14 @@ void Conexion::procesarRetrieve_Messages(MensajeDeRed* unMensajeDeRed) {
 	}
 }
 
-void Conexion::enviarChatGlobal(string unEmisor, string unMensaje) {
+void Conexion::enviarChatGlobal(bool tipoDeChat, string unEmisor, string unMensaje) {
 	Logger::getInstance()->log(Debug, "El envio de mensaje fue satisfactorio");
 	ComandoCliente comando = ComandoCliente::RECIEVE_GLOBAL_MESSAGES;
 	MensajeDeRed* mensajeDeRed = new MensajeDeRed(comando);
-	mensajeDeRed->agregarParametro("RECIEVE_GLOBAL_MESSAGES_OK"); // ResultCode
+	if(tipoDeChat)
+		mensajeDeRed->agregarParametro("RECIEVE_GLOBAL_MESSAGES_OK"); 
+	else
+		mensajeDeRed->agregarParametro("RECIEVE_PRIVATE_MESSAGES_OK");
 	mensajeDeRed->agregarParametro(unEmisor);
 	mensajeDeRed->agregarParametro(unMensaje);
 	string mensaje = mensajeDeRed->getComandoClienteSerializado();

@@ -17,7 +17,7 @@ public:
 	void cerrarConexion();
 	Usuario* getUsuario() { return usuarioConectado; }
 	ManejadorDeConexionConexion* getConexionConCliente() { return this->conexionConCliente; };
-	void enviarChatGlobal(string unEmisor, string unMensaje);
+	void enviarChatGlobal(bool tipoDeChat, string unEmisor, string unMensaje);
 private:
 	ManejadorDeConexionConexion* conexionConCliente;
 	void procesarPing();

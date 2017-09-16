@@ -232,7 +232,7 @@ void Cliente::procesarMensajesGlobales(MensajeDeRed * unMensajeDeRed) {
 		for (int i = 1; i < unMensajeDeRed->getCantidadDeParametros(); i++) {
 			string unEmisor = unMensajeDeRed->getParametro(i);
 			string unMensaje = unMensajeDeRed->getParametro(++i);
-			buzonDeMensajesGlobales->recibirMensaje("Global", unEmisor, unMensaje);
+			buzonDeMensajesGlobales->recibirMensaje("/global", unEmisor, unMensaje);
 		}
 	} else {
 
@@ -244,7 +244,7 @@ void Cliente::procesarMensajesPrivados(MensajeDeRed * unMensajeDeRed) {
 		for (int i = 1; i < unMensajeDeRed->getCantidadDeParametros(); i++) {
 			string unEmisor = unMensajeDeRed->getParametro(i);
 			string unMensaje = unMensajeDeRed->getParametro(++i);
-			buzonDeMensajesGlobales->recibirMensaje("Private", unEmisor, unMensaje);
+			buzonDeMensajesGlobales->recibirMensaje("/private", unEmisor, unMensaje);
 		}
 	} else {
 
@@ -310,7 +310,7 @@ void Cliente::mostrarMensajesGlobales() {
 	for (i = 0; i < this->buzonDeMensajesGlobales->getTamanio() && !enviandoMensaje; i++) {
 		Mensaje* unMensaje = this->buzonDeMensajesGlobales->verMensaje(i);
 
-		cout << "[" + unMensaje->getEmisor() + "]: " + unMensaje->getMensaje() << endl;
+		cout << unMensaje->getDestinatario() + " [" + unMensaje->getEmisor() + "]: " + unMensaje->getMensaje() << endl;
 
 	}
 	if (i > 0)
