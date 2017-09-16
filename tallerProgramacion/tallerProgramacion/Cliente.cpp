@@ -103,16 +103,16 @@ void Cliente::mostrarMenuPrincipal() {
 }
 
 void Cliente::conectarseAlServidor() {
-	if (!this->conexionDelCliente->getConexionActiva()) {
+	//if (!this->conexionDelCliente->getConexionActiva()) {
 		Logger::getInstance()->log(Debug, "Conectando al servidor...");
 		std::cout << "Conectando al servidor..." << std::endl;
 		this->conexionDelCliente->iniciarConexion(configuracion->getIP(), configuracion->getPuerto());
 		this->t_procesarDatosRecibidos = std::thread(&Cliente::procesarDatosRecibidos, this);
-	}
-	else {
-		Logger::getInstance()->log(Debug, "Conectando al servidor...");
-		std::cout << "Ya se encuentra conectado al servidor" << std::endl;
-	}
+	//}
+	//else {
+	//	Logger::getInstance()->log(Debug, "Conectando al servidor...");
+	//	std::cout << "Ya se encuentra conectado al servidor" << std::endl;
+	//}
 }
 
 void Cliente::desconectarseDelServidor() {
@@ -137,6 +137,7 @@ void Cliente::hacerTestDeEstres() {
 	mensajeLogueado.append("ms");
 	Logger::getInstance()->log(Debug, mensajeLogueado);
 	// TODO: implementar el test de estres
+
 }
 
 void Cliente::revisarBuzon() {
@@ -148,11 +149,11 @@ void Cliente::revisarBuzon() {
 }
 
 void Cliente::logearseAlServidor() {
-	if (!this->conexionDelCliente->getConexionActiva()) {
-		Logger::getInstance()->log(Debug, "Se intento loguear al servidor un cliente sin conectarse previamente");
-		cout << "Debe conectarse al servidor antes de loguearse" << std::endl;
-	}
-	else {
+	//if (!this->conexionDelCliente->getConexionActiva()) {
+	//	Logger::getInstance()->log(Debug, "Se intento loguear al servidor un cliente sin conectarse previamente");
+	//	cout << "Debe conectarse al servidor antes de loguearse" << std::endl;
+	//}
+	//else {
 		while (!this->estaLogueado) {
 			std::string user;
 			std::string pass;
@@ -169,7 +170,7 @@ void Cliente::logearseAlServidor() {
 			estaLogueado = this->conexionDelCliente->login(user, pass);
 			//mutex en el buffer de manejar conexion .- cuando haya q manejar input en el cliente, se le pasa el input desde le manejador de input al manejador de conexion. o se manda a cliente para q procese primerop si es necesario y d3sp el manejador de conexion
 		}
-	}
+	//}
 	correrCicloPrincipal();
 }
 
