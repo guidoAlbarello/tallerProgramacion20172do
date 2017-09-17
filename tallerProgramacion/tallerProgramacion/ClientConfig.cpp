@@ -1,9 +1,10 @@
 #include "ClientConfig.h"
-#include "ParserXml.h"
 #include "../lib/rapidxml-1.13/rapidxml.hpp"
 #include "../lib/rapidxml-1.13/rapidxml_print.hpp"
 #include <fstream>
+#include <vector>
 #include "Logger.h"
+#include <iostream>
 
 ClientConfig::ClientConfig() {
 	this->nombreConfiguracionPredeterminada = DEFAULT_CLIENT_CONFIG;

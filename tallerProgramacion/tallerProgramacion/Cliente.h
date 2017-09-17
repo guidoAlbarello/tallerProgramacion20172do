@@ -3,7 +3,7 @@
 #define CLIENTE_H
 
 #include "ManejadorDeConexionCliente.h"
-#include "ParserXml.h"
+#include "BuzonDeMensajes.h"
 #include "ClientConfig.h"
 #include <thread>
 #include <iostream>

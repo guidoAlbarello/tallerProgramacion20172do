@@ -1,7 +1,6 @@
 #include "Config.h"
 #include "../lib/rapidxml-1.13/rapidxml_print.hpp"
 #include <fstream>
-#include "ParserXml.h"
 
 Config::Config() {
 }
