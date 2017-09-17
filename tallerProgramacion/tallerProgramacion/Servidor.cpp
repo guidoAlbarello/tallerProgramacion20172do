@@ -17,6 +17,9 @@ Servidor::Servidor() {
 	this->servidorActivo = true;
 	this->configuracion = new ServerConfig();
 	this->buzonDeChatGlobal = new BuzonDeMensajes();
+
+	//Seteando el nombre del log
+	Logger::getInstance()->setLogFileName(SERVER_LOG_FILENAME_FORMAT);
 }
 
 Servidor::~Servidor() {

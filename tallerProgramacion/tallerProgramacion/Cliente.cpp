@@ -18,6 +18,9 @@ Cliente::Cliente() {
 	this->configuracion = new ClientConfig();
 	this->buzonDeMensajesGlobales = new BuzonDeMensajes(); //LIBERAR LA MEMORIA  DEL BUZON
 	this->enviandoMensaje = false;
+
+	//Seteando el nombre del log
+	Logger::getInstance()->setLogFileName(CLIENT_LOG_FILENAME_FORMAT);
 }
 
 Cliente::~Cliente() {

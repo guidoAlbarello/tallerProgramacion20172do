@@ -11,6 +11,8 @@
 #include "Logger.h"
 #include "MensajeDeRed.h"
 
+const std::string SERVER_LOG_FILENAME_FORMAT = "LogSrv%Y%m%d%H%M%S.txt";
+
 class Conexion;  // Declaracion forward de la clase Conexion
 
 
