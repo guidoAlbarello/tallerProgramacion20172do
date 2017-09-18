@@ -7,8 +7,8 @@
 using namespace std;
 
 // Actualizar a medida que necesitemos
-enum class ComandoServidor { LOG = '0', PING = '1', SEND_MESSAGE = '2', RETRIEVE_MESSAGES = '3', VACIO = '4' };
-enum class ComandoCliente { LOG = '0', PRINT = '1', VACIO = '2', RESULTADO_LOGIN = '3', RESULTADO_SEND_MESSAGE = '4', RESULTADO_RETRIEVE_MESSAGES = '5', PING = '6', RECIEVE_GLOBAL_MESSAGES = '7', RECIEVE_PRIVATE_MESSAGES = '8'};
+enum class ComandoServidor { LOG = '0', PING = '1', SEND_MESSAGE = '2', RETRIEVE_MESSAGES = '3', VACIO = '4', USUARIOS = '5' };
+enum class ComandoCliente { LOG = '0', PRINT = '1', VACIO = '2', RESULTADO_LOGIN = '3', RESULTADO_SEND_MESSAGE = '4', RESULTADO_RETRIEVE_MESSAGES = '5', PING = '6', RECIEVE_GLOBAL_MESSAGES = '7', RECIEVE_PRIVATE_MESSAGES = '8', RESULTADO_USUARIOS = '9'};
 
 class Constantes
 {

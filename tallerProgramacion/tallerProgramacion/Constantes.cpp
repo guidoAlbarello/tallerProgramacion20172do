@@ -22,6 +22,8 @@ string Constantes::getComandoServidor(ComandoServidor comando)
 		return "SEND_MESSAGE";
 	case ComandoServidor::RETRIEVE_MESSAGES:
 		return "RETRIEVE_MESSAGES";
+	case ComandoServidor::USUARIOS:
+		return "USUARIOS";
 	default:
 		return "Not recognized..";
 	}
@@ -43,6 +45,10 @@ ComandoServidor Constantes::getConstComandoServidor(string comando){
 	if (comando.compare("RETRIEVE_MESSAGES") == 0)
 	{
 		return ComandoServidor::RETRIEVE_MESSAGES;
+	}
+	if (comando.compare("USUARIOS") == 0)
+	{
+		return ComandoServidor::USUARIOS;
 	}
 	
 	return ComandoServidor::VACIO;
@@ -70,6 +76,8 @@ string Constantes::getComandoCliente(ComandoCliente comando)
 		return "RECIEVE_GLOBAL_MESSAGES";
 	case ComandoCliente::RECIEVE_PRIVATE_MESSAGES:
 		return "RECIEVE_PRIVATE_MESSAGES";
+	case ComandoCliente::RESULTADO_USUARIOS:
+		return "RESULTADO_USUARIOS";
 	default:
 		return "Not recognized..";
 	}
@@ -107,6 +115,10 @@ ComandoCliente Constantes::getConstComandoCliente(string comando) {
 
 	if (comando.compare("RECIEVE_PRIVATE_MESSAGES") == 0) {
 		return ComandoCliente::RECIEVE_PRIVATE_MESSAGES;
+	}
+
+	if (comando.compare("RESULTADO_USUARIOS") == 0) {
+		return ComandoCliente::RESULTADO_USUARIOS;
 	}
 
 	return ComandoCliente::VACIO;

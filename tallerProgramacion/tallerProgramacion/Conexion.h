@@ -23,6 +23,7 @@ private:
 	void procesarPing();
 	void procesarSend_Message(MensajeDeRed* unMensajeDeRed);
 	void procesarRetrieve_Messages(MensajeDeRed* unMensajeDeRed);
+	void procesarPeticionListaDeUsuarios();
 	Usuario* usuarioConectado;
 	std::thread t_procesarDatosRecibidos;
 	void procesarDatosRecibidos();

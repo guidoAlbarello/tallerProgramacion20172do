@@ -82,6 +82,9 @@ void Cliente::correrCicloPrincipal() {
 				case '8':
 					enviarMensajePrivado();
 					break;
+				case '9':
+					this->conexionDelCliente->realizarPeticionUsuarios();
+					break;
 				default:
 					break;
 				}
@@ -103,6 +106,7 @@ void Cliente::mostrarMenuPrincipal() {
 	std::cout << "6.Revisar Buzon" << std::endl;
 	std::cout << "7.Mensaje Chat" << std::endl;
 	std::cout << "8.Mensaje Privado" << std::endl;
+	std::cout << "9.Usuarios Logueados" << std::endl;
 }
 
 void Cliente::conectarseAlServidor() {
@@ -231,6 +235,17 @@ void Cliente::mostrarMensajesPrivados(MensajeDeRed * unMensajeDeRed) {
 	}
 }
 
+void Cliente::mostrarUsuariosConectados(MensajeDeRed * unMensajeDeRed)
+{
+	cout << "|----------------------------|" << std::endl;
+	cout << "|     Usuarios Logueados     |" << std::endl;
+	cout << "|----------------------------|" << std::endl;
+	int i;
+	for (i = 0; i < unMensajeDeRed->getCantidadDeParametros(); i++) {
+		cout << unMensajeDeRed->getParametro(i) << std::endl;
+	}
+}
+
 void Cliente::procesarMensajesGlobales(MensajeDeRed * unMensajeDeRed) {
 	if (unMensajeDeRed->getParametro(0).compare("RECIEVE_GLOBAL_MESSAGES_OK") == 0) {
 		for (int i = 1; i < unMensajeDeRed->getCantidadDeParametros(); i++) {
@@ -299,6 +314,10 @@ void Cliente::procesarDatosRecibidos() {
 			case ComandoCliente::VACIO:
 				Logger::getInstance()->log(Debug, "Recibio un VACIO");
 				break;
+			case ComandoCliente::RESULTADO_USUARIOS:
+				Logger::getInstance()->log(Debug, "se recibio una lista de usuarios");
+				mostrarUsuariosConectados(mensajeDeRed);
+				break;
 			default:
 				Logger::getInstance()->log(Debug, datosRecibidos);
 			}
@@ -320,6 +339,8 @@ void Cliente::mostrarMensajesGlobales() {
 	if (i > 0)
 		this->buzonDeMensajesGlobales->eliminarMensajes(i); //esto de mostrar se peue hacer en otro thread si tira problemas e performance
 }
+
+
 
 void Cliente::mostrarMenuLogin() {
 	cout << "|----------------------------|" << std::endl;

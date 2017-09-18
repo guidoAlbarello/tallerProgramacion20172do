@@ -65,6 +65,35 @@ void Conexion::procesarRetrieve_Messages(MensajeDeRed* unMensajeDeRed) {
 	}
 }
 
+void Conexion::procesarPeticionListaDeUsuarios()
+{
+	ComandoCliente comando = ComandoCliente::RESULTADO_USUARIOS;
+	MensajeDeRed* mensajeDeRed = new MensajeDeRed(comando);
+	
+	std::vector<Conexion*> conexionesActivas = this->servidor->getConexionesActivas();
+
+	if (conexionesActivas.size() == 0) {
+		
+		mensajeDeRed->agregarParametro("no hay ususarios conectados en este momento");
+		Logger::getInstance()->log(Debug, "no habian ususarios conectados apra mostrar");
+	}
+	else {
+		for (unsigned int i = 0; i < conexionesActivas.size(); i++) {
+			if (conexionesActivas[i]->getUsuario() != NULL) {
+				string unUsuario = "Usuario: " + conexionesActivas[i]->getUsuario()->getNombre();
+				mensajeDeRed->agregarParametro(unUsuario);
+			}
+			else {
+				Logger::getInstance()->log(Debug, "Usuario conectado sin loguear no se puede mostrar en usuarios conectados");
+			}
+		}
+	}
+	
+	string mensaje = mensajeDeRed->getComandoClienteSerializado();
+	int tamanio = mensaje.length() + 1;
+	this->conexionConCliente->getSocket().enviarDatos(mensaje.c_str(), tamanio);
+}
+
 void Conexion::enviarChatGlobal(bool tipoDeChat, string unEmisor, string unMensaje) {
 	Logger::getInstance()->log(Debug, "El envio de mensaje fue satisfactorio");
 	ComandoCliente comando;
@@ -139,6 +168,10 @@ void Conexion::procesarDatosRecibidos() {
 			case ComandoServidor::RETRIEVE_MESSAGES:
 				Logger::getInstance()->log(Debug, "Recibio un Retrieve_message");
 				procesarRetrieve_Messages(mensajeDeRed);
+				break;
+			case ComandoServidor::USUARIOS:
+				Logger::getInstance()->log(Debug, "Recibio peticion de Usuarios");
+				procesarPeticionListaDeUsuarios();
 				break;
 			default:
 				Logger::getInstance()->log(Debug, datosRecibidos);
