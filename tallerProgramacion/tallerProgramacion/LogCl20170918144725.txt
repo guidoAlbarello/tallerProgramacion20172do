@@ -1,0 +1,12 @@
+18-09-2017 02:47:25 - Debug - Iniciando cliente...
+18-09-2017 02:47:25 - Debug - [ClientConfig] Parseando configuracion del cliente: client-config.xml
+18-09-2017 02:47:25 - Debug - [ClientConfig] client-config.xml se parseo exitosamente.
+18-09-2017 02:47:25 - Debug - [ClientConfig] Configuracion del cliente: IP:PUERTO: 127.0.0.115636, PATH: /tmp/filetest_01.
+18-09-2017 02:47:26 - Debug - Conectando al servidor...
+18-09-2017 02:47:26 - Debug - El cliente con ip = 127.0.0.1 se ha conectado satisfactoriamente al servidor
+18-09-2017 02:47:30 - Debug - Logueando al servidor con credenciales: 
+18-09-2017 02:47:30 - Debug - Usuario: Admin
+18-09-2017 02:47:30 - Debug - Contrasenia: admin
+18-09-2017 02:47:30 - Debug - LOG0Admin0admin
+18-09-2017 02:47:31 - Debug - SEND_MESSAGE00asdasdsa
+18-09-2017 02:47:31 - Debug - Se envio al chat el mensaje: asdasdsa
