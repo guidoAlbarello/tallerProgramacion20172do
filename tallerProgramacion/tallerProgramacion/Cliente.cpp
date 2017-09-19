@@ -15,6 +15,7 @@ Cliente::Cliente() {
 	this->conexionDelCliente = new ManejadorDeConexionCliente();
 	this->clienteActivo = true;
 	this->estaLogueado = false;
+	this->conexionViva = true;
 	this->configuracion = new ClientConfig();
 	this->buzonDeMensajesGlobales = new BuzonDeMensajes(); //LIBERAR LA MEMORIA  DEL BUZON
 	this->enviandoMensaje = false;
@@ -111,6 +112,7 @@ void Cliente::conectarseAlServidor() {
 		std::cout << "Conectando al servidor..." << std::endl;
 		this->conexionDelCliente->iniciarConexion(configuracion->getIP(), configuracion->getPuerto());
 		this->t_procesarDatosRecibidos = std::thread(&Cliente::procesarDatosRecibidos, this);
+		this->t_procesarPing = std::thread(&Cliente::enviarPingAServidor, this);
 	//}
 	//else {
 	//	Logger::getInstance()->log(Debug, "Conectando al servidor...");
@@ -256,6 +258,7 @@ void Cliente::procesarMensajesPrivados(MensajeDeRed * unMensajeDeRed) {
 }
 
 
+/* Procesa comandos recibidos desde el servidor */
 void Cliente::procesarDatosRecibidos() {
 	while (clienteActivo) {
 		char* datosRecibidos = this->conexionDelCliente->getDatosRecibidos();
@@ -263,18 +266,12 @@ void Cliente::procesarDatosRecibidos() {
 			std::string datosRecibidosString(datosRecibidos);
 			MensajeDeRed* mensajeDeRed = new MensajeDeRed(datosRecibidosString, Constantes::CLIENTE); //LIBERAR este mensaje de red, no se borra nunca!!!!!!!!!
 
-			/* Procesa comandos recibidos desde el servidor */
 			switch (mensajeDeRed->getComandoCliente()) {
 			case ComandoCliente::RESULTADO_LOGIN:
-				if (mensajeDeRed->getParametro(0) == "LOGIN_OK") {
-					this->estaLogueado = true;
-					cout << mensajeDeRed->getParametro(1) << endl;
-				} else if (mensajeDeRed->getParametro(0) == "LOGIN_NOK") {
-					this->estaLogueado = false;
-					cout << mensajeDeRed->getParametro(1) << endl;
-				}
+				procesarResultadoLogin(mensajeDeRed);
 				break;
 			case ComandoCliente::RESULTADO_SEND_MESSAGE:
+				procesarResultadoSendMessage(mensajeDeRed);
 				break;
 			case ComandoCliente::RECIEVE_GLOBAL_MESSAGES:
 				procesarMensajesGlobales(mensajeDeRed);
@@ -283,7 +280,7 @@ void Cliente::procesarDatosRecibidos() {
 				mostrarMensajesPrivados(mensajeDeRed);
 				break;
 			case ComandoCliente::PING:
-
+				procesarSolicitudPing(mensajeDeRed);
 				break;
 			case ComandoCliente::RECIEVE_PRIVATE_MESSAGES:
 				procesarMensajesPrivados(mensajeDeRed);
@@ -298,6 +295,10 @@ void Cliente::procesarDatosRecibidos() {
 				break;
 			case ComandoCliente::VACIO:
 				Logger::getInstance()->log(Debug, "Recibio un VACIO");
+				break;
+			case ComandoCliente::RESULTADO_PING:
+				Logger::getInstance()->log(Debug, "Recibio un RESULTADO_PING");
+				this->conexionViva = true;
 				break;
 			default:
 				Logger::getInstance()->log(Debug, datosRecibidos);
@@ -319,6 +320,54 @@ void Cliente::mostrarMensajesGlobales() {
 	}
 	if (i > 0)
 		this->buzonDeMensajesGlobales->eliminarMensajes(i); //esto de mostrar se peue hacer en otro thread si tira problemas e performance
+}
+
+void Cliente::procesarResultadoSendMessage(MensajeDeRed* mensajeDeRed) {
+	if (mensajeDeRed->getParametro(0) == "SEND_MESSAGE_OK") {
+		// Mensaje enviado satisfactoriamente
+		cout << mensajeDeRed->getParametro(1) << endl;
+	}
+	else if (mensajeDeRed->getParametro(0) == "SEND_MESSAGE_NOK") {
+		// Fallo el envio del mensaje
+		cout << mensajeDeRed->getParametro(1) << endl;
+	}
+}
+
+void Cliente::procesarResultadoLogin(MensajeDeRed* mensajeDeRed) {
+	if (mensajeDeRed->getParametro(0) == "LOGIN_OK") {
+		this->estaLogueado = true;
+		cout << mensajeDeRed->getParametro(1) << endl;
+	}
+	else if (mensajeDeRed->getParametro(0) == "LOGIN_NOK") {
+		this->estaLogueado = false;
+		cout << mensajeDeRed->getParametro(1) << endl;
+	}
+}
+
+void Cliente::procesarSolicitudPing(MensajeDeRed* mensajeDeRed) {
+	Logger::getInstance()->log(Debug, "Un cliente recibio un PING");
+	//this->conexionViva = true;
+	this->conexionDelCliente->enviarRespuestaPingAServidor();
+}
+
+void Cliente::enviarPingAServidor() {
+	while (this->conexionViva) {
+		m_procesarPing.lock();
+		this->conexionViva = false;
+		m_procesarPing.unlock();
+		Logger::getInstance()->log(Debug, "Cliente enviando PING al servidor");
+		this->conexionDelCliente->enviarSolicitudPing();
+
+		std::this_thread::sleep_for(std::chrono::milliseconds(Constantes::PING_DELAY)); 
+		Logger::getInstance()->log(Debug, "conexionViva despues del sleep en Cliente.cpp: " + conexionViva);
+	}
+
+	// No recibio respuesta al ping -> conexionViva = false -> cerrar todo
+	this->desconectarseDelServidor();
+	Logger::getInstance()->log(Debug, "Se desconecto un cliente del servidor por falta de respuesta al ping");
+	std::cout << "Se ha desconectado del servidor" << std::endl;
+	this->cerrarCliente();
+
 }
 
 void Cliente::mostrarMenuLogin() {

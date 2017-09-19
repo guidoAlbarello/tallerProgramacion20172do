@@ -8,6 +8,8 @@
 #include "ManejadorDeConexionConexion.h"
 #include "ParserDeMensajes.h"
 #include "Servidor.h"
+#include <chrono>
+
 class Servidor;  // Declaracion forward de la clase Servidor
 
 
@@ -18,15 +20,19 @@ public:
 	Usuario* getUsuario() { return usuarioConectado; }
 	ManejadorDeConexionConexion* getConexionConCliente() { return this->conexionConCliente; };
 	void enviarChatGlobal(bool tipoDeChat, string unEmisor, string unMensaje);
+	void procesarSolicitudPing();
+	void enviarPingACliente();
 private:
 	ManejadorDeConexionConexion* conexionConCliente;
-	void procesarPing();
 	void procesarSend_Message(MensajeDeRed* unMensajeDeRed);
 	void procesarRetrieve_Messages(MensajeDeRed* unMensajeDeRed);
 	Usuario* usuarioConectado;
 	std::thread t_procesarDatosRecibidos;
+	std::thread t_procesarPing;
+	std::mutex m_procesarPing;
 	void procesarDatosRecibidos();
 	bool conexionActiva;
+	bool conexionViva;
 	Servidor* servidor;
 };
 

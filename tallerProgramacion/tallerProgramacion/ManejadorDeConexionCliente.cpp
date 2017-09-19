@@ -59,3 +59,19 @@ bool ManejadorDeConexionCliente::devolverMensajesPrivados() {
 	return this->socket->enviarDatos(mensaje.c_str(), tamanio);;
 };
 
+bool ManejadorDeConexionCliente::enviarSolicitudPing() {
+	MensajeDeRed* mensajeDeRed = new MensajeDeRed(ComandoServidor::PING);
+	string mensaje = mensajeDeRed->getComandoServidorSerializado();
+	int tamanio = mensaje.length() + 1;
+	Logger::getInstance()->log(Debug, mensaje);
+	return this->socket->enviarDatos(mensaje.c_str(), tamanio);;
+}
+
+bool ManejadorDeConexionCliente::enviarRespuestaPingAServidor() {
+	MensajeDeRed* mensajeDeRed = new MensajeDeRed(ComandoServidor::RESULTADO_PING);
+	string mensaje = mensajeDeRed->getComandoServidorSerializado();
+	int tamanio = mensaje.length() + 1;
+	Logger::getInstance()->log(Debug, mensaje);
+	return this->socket->enviarDatos(mensaje.c_str(), tamanio);;
+}
+

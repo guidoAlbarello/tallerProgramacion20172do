@@ -7,27 +7,75 @@ Conexion::Conexion(SOCKET unSocket, Servidor* servidor) {
 	this->conexionConCliente = new ManejadorDeConexionConexion(unSocket);
 	this->conexionConCliente->iniciarConexion();
 	this->conexionActiva = true;
+	this->conexionViva = true;
 	this->usuarioConectado = NULL;
 	this->t_procesarDatosRecibidos = std::thread(&Conexion::procesarDatosRecibidos, this);
+	this->t_procesarPing = std::thread(&Conexion::enviarPingACliente, this);
 }
 
 void Conexion::cerrarConexion() {
 	this->conexionActiva = false;
+	this->conexionViva = false;
 
 	if (t_procesarDatosRecibidos.joinable()) {
 		t_procesarDatosRecibidos.join();
 	}
-	this->getConexionConCliente()->cerrarConexion();
+
+	if (t_procesarDatosRecibidos.joinable()) {
+		t_procesarPing.join();
+	}
+
+	if (this->getConexionConCliente() != NULL) {
+		this->getConexionConCliente()->cerrarConexion();
+	}
 }
 
-void Conexion::procesarPing() {
+void Conexion::procesarSolicitudPing() {
+	// Envia un ping de vuelta hacia el cliente como respuesta
+	ComandoCliente comando = ComandoCliente::RESULTADO_PING;
+	MensajeDeRed* mensajeDeRed = new MensajeDeRed(comando);
+	string mensaje = mensajeDeRed->getComandoClienteSerializado();
+	int tamanio = mensaje.length() + 1;
+	Logger::getInstance()->log(Debug, "Enviando mensaje");
+	Logger::getInstance()->log(Debug, mensaje);
+	if (this->conexionConCliente->getSocket().enviarDatos(mensaje.c_str(), tamanio)) {
+		Logger::getInstance()->log(Debug, "RESULTADO_PING Servidor->Cliente enviado OK");
+	}
+	else {
+		Logger::getInstance()->log(Debug, "RESULTADO_PING Servidor->Cliente enviado NOK");
+	}
+
 }
 
 void Conexion::procesarSend_Message(MensajeDeRed* unMensajeDeRed) {
 	if (unMensajeDeRed->getParametro(0).compare("") != 0) {
 		Usuario* usuarioDestinatario = this->servidor->buscarUsuario(unMensajeDeRed->getParametro(0));
-		this->getUsuario()->enviarMensaje(usuarioDestinatario, unMensajeDeRed->getParametro(1));
-		this->servidor->enviarMensajePrivado(this->getUsuario()->getNombre(), unMensajeDeRed->getParametro(1));
+		if (usuarioDestinatario == NULL) {
+			Logger::getInstance()->log(Debug, "No existe el usuario" + unMensajeDeRed->getParametro(0) + "para enviar el mensaje");
+			ComandoCliente comando = ComandoCliente::RESULTADO_SEND_MESSAGE;
+			MensajeDeRed* mensajeDeRed = new MensajeDeRed(comando);
+			mensajeDeRed->agregarParametro("SEND_MESSAGE_NOK"); // ResultCode
+			mensajeDeRed->agregarParametro("No existe el usuario para enviar el mensaje");
+			string mensaje = mensajeDeRed->getComandoClienteSerializado();
+			int tamanio = mensaje.length() + 1;
+			Logger::getInstance()->log(Debug, "Enviando mensaje");
+			Logger::getInstance()->log(Debug, mensaje);
+			this->conexionConCliente->getSocket().enviarDatos(mensaje.c_str(), tamanio);
+		}
+		else {
+			this->getUsuario()->enviarMensaje(usuarioDestinatario, unMensajeDeRed->getParametro(1));
+			this->servidor->enviarMensajePrivado(this->getUsuario()->getNombre(), unMensajeDeRed->getParametro(1));
+			ComandoCliente comando = ComandoCliente::RESULTADO_SEND_MESSAGE;
+			MensajeDeRed* mensajeDeRed = new MensajeDeRed(comando);
+			mensajeDeRed->agregarParametro("SEND_MESSAGE_OK"); // ResultCode
+			mensajeDeRed->agregarParametro("El envio del mensaje fue satisfactorio");
+			string mensaje = mensajeDeRed->getComandoClienteSerializado();
+			int tamanio = mensaje.length() + 1;
+			Logger::getInstance()->log(Debug, "Enviando mensaje");
+			Logger::getInstance()->log(Debug, mensaje);
+			this->conexionConCliente->getSocket().enviarDatos(mensaje.c_str(), tamanio);
+
+		}
 	} else {
 		this->servidor->recibirMensajeGlobal(this->getUsuario()->getNombre(), unMensajeDeRed->getParametro(1));
 		Logger::getInstance()->log(Debug, "El envio de mensaje fue satisfactorio");
@@ -89,6 +137,29 @@ void Conexion::enviarChatGlobal(bool tipoDeChat, string unEmisor, string unMensa
 	this->conexionConCliente->getSocket().enviarDatos(mensaje.c_str(), tamanio);
 }
 
+void Conexion::enviarPingACliente() {
+	while (this->conexionViva) {
+		m_procesarPing.lock();
+		this->conexionViva = false;
+		m_procesarPing.unlock();
+		ComandoCliente comando = ComandoCliente::PING;
+		MensajeDeRed* mensajeDeRed = new MensajeDeRed(comando);
+		string mensaje = mensajeDeRed->getComandoClienteSerializado();
+		int tamanio = mensaje.length() + 1;
+		Logger::getInstance()->log(Debug, mensaje);
+		this->conexionConCliente->getSocket().enviarDatos(mensaje.c_str(), tamanio);
+
+		std::this_thread::sleep_for(std::chrono::milliseconds(Constantes::PING_DELAY));
+		Logger::getInstance()->log(Debug, "conexionViva despues del sleep en Conexion.cpp: " + this->conexionViva);
+	}
+	
+	// No recibio respuesta al ping -> conexionViva = false -> cerrar todo
+	//this->cerrarConexion(); // TODO: validar esto
+	Logger::getInstance()->log(Debug, "Se desconecto un cliente por falta de respuesta al ping");
+	std::cout << "Se ha desconectado un cliente" << std::endl;
+}
+
+/* Procesa los mensajes recibidos por los clientes */
 void Conexion::procesarDatosRecibidos() {
 	while (conexionActiva) {
 		char* datosRecibidos = this->conexionConCliente->getDatosRecibidos();
@@ -97,7 +168,6 @@ void Conexion::procesarDatosRecibidos() {
 			std::string datosRecibidosString(datosRecibidos);
 			MensajeDeRed *mensajeDeRed = new MensajeDeRed(datosRecibidosString, Constantes::SERVIDOR);
 			Usuario* unUsuario = NULL;
-			/* Procesa comandos recibidos desde los clientes */
 			switch (mensajeDeRed->getComandoServidor()) {
 			case ComandoServidor::LOG:
 				Logger::getInstance()->log(Debug, "Recibio un LOG");
@@ -130,7 +200,7 @@ void Conexion::procesarDatosRecibidos() {
 				break;
 			case ComandoServidor::PING:
 				Logger::getInstance()->log(Debug, "Recibio un PING");
-				procesarPing();
+				procesarSolicitudPing();
 				break;
 			case ComandoServidor::SEND_MESSAGE:
 				Logger::getInstance()->log(Debug, "Recibio un Send_message");
@@ -139,6 +209,10 @@ void Conexion::procesarDatosRecibidos() {
 			case ComandoServidor::RETRIEVE_MESSAGES:
 				Logger::getInstance()->log(Debug, "Recibio un Retrieve_message");
 				procesarRetrieve_Messages(mensajeDeRed);
+				break;
+			case ComandoServidor::RESULTADO_PING:
+				Logger::getInstance()->log(Debug, "Recibio un RESULTADO_PING");
+				this->conexionViva = true;
 				break;
 			default:
 				Logger::getInstance()->log(Debug, datosRecibidos);

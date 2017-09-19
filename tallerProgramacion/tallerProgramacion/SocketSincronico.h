@@ -21,6 +21,7 @@ public:
 	char* recibirDatos();
 	int cerrarSocket();
 	int hayClienteIntentandoConectarse();
+	SOCKET getSocket() { return this->socketDeConexion; };
 private:
 	SOCKET socketDeConexion;
 };

@@ -10,4 +10,6 @@ public:
 	bool enviarMensajeGlobal(string unMensaje);
 	bool enviarMensajePrivado(string unDestinatario, string unMensaje);
 	bool devolverMensajesPrivados();
+	bool enviarSolicitudPing();
+	bool enviarRespuestaPingAServidor();
 };

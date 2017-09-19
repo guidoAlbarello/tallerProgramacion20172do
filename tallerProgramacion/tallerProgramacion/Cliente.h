@@ -23,14 +23,20 @@ protected:
 	void mostrarMensajesPrivados(MensajeDeRed* unMensajeDeRed);
 	void procesarMensajesGlobales(MensajeDeRed* unMensajeDeRed);
 	void procesarMensajesPrivados(MensajeDeRed* unMensajeDeRed);
+	void procesarResultadoSendMessage(MensajeDeRed* mensajeDeRed);
+	void procesarResultadoLogin(MensajeDeRed* mensajeDeRed);
+	void procesarSolicitudPing(MensajeDeRed* mensajeDeRed);
 	ManejadorDeConexionCliente* conexionDelCliente;
 	BuzonDeMensajes* buzonDeMensajesGlobales;
 	virtual void correrCicloPrincipal();
 	ClientConfig* configuracion;
 	bool clienteActivo;
 	bool estaLogueado;
+	bool conexionViva; // Manejada por los pings
 	void leerClientConfig();
 	std::thread t_procesarDatosRecibidos;
+	std::thread t_procesarPing;
+	std::mutex m_procesarPing;
 	Cliente();
 	~Cliente();
 	static Cliente* instance;
@@ -48,8 +54,9 @@ protected:
 	void enviarMensajePrivado();
 	void procesarDatosRecibidos();
 	void mostrarMensajesGlobales();
-	bool enviandoMensaje;
+	void enviarPingAServidor();
 
+	bool enviandoMensaje;
 };
 
 #endif

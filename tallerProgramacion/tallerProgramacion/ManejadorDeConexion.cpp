@@ -72,6 +72,8 @@ void ManejadorDeConexion::cerrarConexion() {
 		t_RecibirDatos.join();
 	}
 
-	socket->cerrarSocket();
-	delete socket;
+	if (this->socket != NULL) {
+		socket->cerrarSocket();
+		delete socket;
+	}
 }

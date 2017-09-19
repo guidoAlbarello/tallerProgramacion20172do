@@ -1,5 +1,5 @@
 #pragma once
-#ifndef  SERVIDOR_H
+#ifndef SERVIDOR_H
 #define SERVIDOR_H
 
 #include "ManejadorDeConexionServidor.h"
@@ -27,28 +27,30 @@ public:
 	void recibirMensajeGlobal(string unEmisor, string unMensaje);
 	void enviarMensajePrivado(string unDestinatario, string unMensaje);
 protected:
+	Servidor();
+	~Servidor();
 	ServerConfig* configuracion;
 	BuzonDeMensajes* buzonDeChatGlobal;
 	ManejadorDeConexionServidor* conexionDelServidor;
 	std::vector<Conexion*> conexionesActivas;
 	static Servidor* instance;
 	std::thread t_escucharClientes;
+	std::thread t_enviarChatGlobal;
+	std::thread t_hacerPing;
 	bool servidorActivo;
-	Servidor();
-	~Servidor();
 	void leerServerConfig();
 	void escucharClientes();
 	void agregarNuevaConexionEntrante(SOCKET unCliente);
 	void cerrarTodasLasConexiones();
 	void correrCicloPrincipal();
 	void cambiarNivelLogeo();
+	void enviarPingAClientes();
 	void mostrarUsuariosConectados();
 	void mostrarMenuPrincipal();
 	void mostrarMenuModosLogueo();
 	void mostrarMenuUsuariosConectados();
 	Usuario* usuarioValido(std::string usuario, std::string contrasenia);
 	void enviarChatGlobal();
-	thread t_enviarChatGlobal;
 };
 
 #endif
