@@ -1,4 +1,5 @@
 #include "BuzonDeMensajes.h"
+#include "Logger.h"
 
 Mensaje* BuzonDeMensajes::verMensaje(int posicionMensajeParaVer) {
 	m_buzon.lock();
@@ -33,8 +34,10 @@ unsigned int BuzonDeMensajes::getTamanio() {
 }
 
 void BuzonDeMensajes::eliminarMensajes(int posUltimoMensajeEnviado) {
+	int borrados = 0;
 	m_buzon.lock();
 	for (int i = 0; i < posUltimoMensajeEnviado; i++) {
+		borrados++;
 		delete this->buzonDeEntrada[i];
 	}
 	buzonDeEntrada.erase(buzonDeEntrada.begin(), buzonDeEntrada.begin() + posUltimoMensajeEnviado);

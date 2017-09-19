@@ -1,5 +1,8 @@
 #include "Cliente.h"
-
+#include "../lib/rapidxml-1.13/rapidxml.hpp"
+#include "../lib/rapidxml-1.13/rapidxml_print.hpp"
+#include <fstream>
+#include <chrono>
 
 Cliente* Cliente::instance = 0;
 
@@ -96,9 +99,9 @@ void Cliente::correrCicloPrincipal() {
 }
 
 void Cliente::mostrarMenuPrincipal() {
-	std::cout << "|----------------------------|" << std::endl;
-	std::cout << "|        Menu cliente        |" << std::endl;
-	std::cout << "|----------------------------|" << std::endl;
+	cout << "|----------------------------|" << std::endl;
+	cout << "|        Menu cliente        |" << std::endl;
+	cout << "|----------------------------|" << std::endl;
 	std::cout << "1.Conectar" << std::endl;
 	std::cout << "2.Desconectar" << std::endl;
 	std::cout << "3.Salir" << std::endl;
@@ -131,25 +134,64 @@ void Cliente::desconectarseDelServidor() {
 }
 
 void Cliente::hacerTestDeEstres() {
-	std::cout << "Ingrese la cantidad de milisegundos para la prueba" << std::endl;
+	std::string stressFileName = this->configuracion->getPath();
+	if (!existeArchivo(stressFileName)) {
+		std::cout << "No existe el archivo de Test de Stress definido en la configuracion de usuario" << endl;
+		Logger::getInstance()->log(Debug, "No se pudo encontrar el archivo " + this->configuracion->getPath() + " para comenzar el test de stress");
+		return;
+	}
+	std::cout << "Ingrese la cantidad de milisegundos para la prueba" << endl;
 	std::string s_stressTimeMillis;
 	int TEST_MAX_DURATION = 99999999;
 	int stressTimeMillis = 0;
 	while (!(cin >> stressTimeMillis)) {
 		cin.clear();
 		cin.ignore(TEST_MAX_DURATION, '\n');
-		std::cout << "Ingrese solo numeros.  Intente nuevamente: ";
+		cout << "Ingrese solo numeros. Intente nuevamente: ";
 	}
 	std::cout << "Ingreso: " << stressTimeMillis << "ms" << endl;
 
-	std::string mensajeLogueado = "Ejecutando test de estres durante " + stressTimeMillis;
-	mensajeLogueado.append("ms");
-	Logger::getInstance()->log(Debug, mensajeLogueado);
-	for (size_t i = 0; i < 100; i++) {
-		string mensaje = to_string(i) + ". esto es un mensaje automatico de prueba para ir probando. un poco largo como lo manda.";
-		this->conexionDelCliente->enviarMensajeGlobal(mensaje);
+	Logger::getInstance()->log(Debug, "Ejecutando test de estres durante los proximos " + to_string(stressTimeMillis) + "ms");
+	
+	leerTestXML(stressFileName, stressTimeMillis);
+}
+
+void Cliente::leerTestXML(std::string stressFileName, int stressTimeMillis) {
+	//Inicio el cronometro
+	auto tComienzo = std::chrono::high_resolution_clock::now();
+	std::chrono::milliseconds tConsumidoMs(0);
+
+	Logger::getInstance()->log(Debug, "Leyendo el archivo de test " + this->configuracion->getPath());
+
+	try {
+		rapidxml::xml_document<> documento;
+		ifstream archivo(stressFileName);
+		vector<char> buffer((istreambuf_iterator<char>(archivo)), istreambuf_iterator<char>());
+		buffer.push_back('\0');
+		documento.parse<0>(&buffer[0]); // <0> == sin flags de parseo
+
+		rapidxml::xml_node<>* nodoStressTest = documento.first_node("StressTest");
+
+		for (rapidxml::xml_node<>* unNodoMensaje = nodoStressTest->first_node("mensaje"); unNodoMensaje && (tConsumidoMs.count() <= stressTimeMillis); unNodoMensaje = unNodoMensaje->next_sibling()) {
+			//Tiempo consumido -> el actual - el de comienzo
+			tConsumidoMs = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - tComienzo);
+			std::string nuevoMensaje = unNodoMensaje->value();
+			this->conexionDelCliente->enviarMensajeGlobal(nuevoMensaje);
+
+			Sleep(30);
+		}
+	}
+	catch (std::exception& e) {
+		Logger::getInstance()->log(LogMode::Error, "[" + DEBUG_SERVER_TAG + "] Hubo un error al parsear el archivo de configuracion del servidor.");
+		cout << e.what();
 	}
 
+	Logger::getInstance()->log(Debug, "Finalizo el test de stress");
+}
+
+bool Cliente::existeArchivo(const std::string& nombreDeArchivo) {
+	std::ifstream archivo(nombreDeArchivo.c_str());
+	return (bool)archivo;
 }
 
 void Cliente::revisarBuzon() {
@@ -336,6 +378,7 @@ void Cliente::mostrarMensajesGlobales() {
 		std::cout << unMensaje->getDestinatario() + " [" + unMensaje->getEmisor() + "]: " + unMensaje->getMensaje() << endl;
 
 	}
+
 	if (i > 0)
 		this->buzonDeMensajesGlobales->eliminarMensajes(i); //esto de mostrar se peue hacer en otro thread si tira problemas e performance
 }

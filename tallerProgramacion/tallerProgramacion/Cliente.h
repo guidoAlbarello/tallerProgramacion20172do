@@ -55,9 +55,10 @@ protected:
 	void enviarMensajePrivado();
 	void procesarDatosRecibidos();
 	void mostrarMensajesGlobales();
-	void enviarPingAServidor();
-
 	bool enviandoMensaje;
+	bool existeArchivo(const std::string& nombre);
+	void enviarPingAServidor();
+	void leerTestXML(std::string stressFileName, int stressTestTime);
 };
 
 #endif
