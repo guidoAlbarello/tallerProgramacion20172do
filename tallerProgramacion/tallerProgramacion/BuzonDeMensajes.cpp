@@ -34,10 +34,8 @@ unsigned int BuzonDeMensajes::getTamanio() {
 }
 
 void BuzonDeMensajes::eliminarMensajes(int posUltimoMensajeEnviado) {
-	int borrados = 0;
 	m_buzon.lock();
-	for (int i = 0; i < posUltimoMensajeEnviado; i++) {
-		borrados++;
+	for (int i = posUltimoMensajeEnviado - 1; i >= 0; i--) {
 		delete this->buzonDeEntrada[i];
 	}
 	buzonDeEntrada.erase(buzonDeEntrada.begin(), buzonDeEntrada.begin() + posUltimoMensajeEnviado);

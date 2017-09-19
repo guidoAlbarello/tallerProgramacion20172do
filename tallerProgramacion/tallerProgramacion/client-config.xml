@@ -4,6 +4,6 @@
 		<puerto>15636</puerto>
 	</conexion>
 	<testfile>
-		<path>/tmp/filetest_01</path>
+		<path>stress-test.xml</path>
 	</testfile>
 </cliente>
