@@ -134,26 +134,10 @@ void Cliente::desconectarseDelServidor() {
 }
 
 void Cliente::hacerTestDeEstres() {
-	std::string stressFileName = this->configuracion->getPath();
-	if (!existeArchivo(stressFileName)) {
-		std::cout << "No existe el archivo de Test de Stress definido en la configuracion de usuario" << endl;
-		Logger::getInstance()->log(Debug, "No se pudo encontrar el archivo " + this->configuracion->getPath() + " para comenzar el test de stress");
-		return;
+	for (size_t i = 0; i < 100; i++) {
+		string mensaje = "esto es el mensaje " + to_string(i);
+		this->conexionDelCliente->enviarMensajeGlobal(mensaje);
 	}
-	std::cout << "Ingrese la cantidad de milisegundos para la prueba" << endl;
-	std::string s_stressTimeMillis;
-	int TEST_MAX_DURATION = 99999999;
-	int stressTimeMillis = 0;
-	while (!(cin >> stressTimeMillis)) {
-		cin.clear();
-		cin.ignore(TEST_MAX_DURATION, '\n');
-		cout << "Ingrese solo numeros. Intente nuevamente: ";
-	}
-	std::cout << "Ingreso: " << stressTimeMillis << "ms" << endl;
-
-	Logger::getInstance()->log(Debug, "Ejecutando test de estres durante los proximos " + to_string(stressTimeMillis) + "ms");
-	
-	leerTestXML(stressFileName, stressTimeMillis);
 }
 
 void Cliente::leerTestXML(std::string stressFileName, int stressTimeMillis) {
@@ -177,8 +161,6 @@ void Cliente::leerTestXML(std::string stressFileName, int stressTimeMillis) {
 			tConsumidoMs = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - tComienzo);
 			std::string nuevoMensaje = unNodoMensaje->value();
 			this->conexionDelCliente->enviarMensajeGlobal(nuevoMensaje);
-
-			Sleep(30);
 		}
 	}
 	catch (std::exception& e) {
@@ -318,7 +300,7 @@ void Cliente::procesarMensajesPrivados(MensajeDeRed * unMensajeDeRed) {
 /* Procesa comandos recibidos desde el servidor */
 void Cliente::procesarDatosRecibidos() {
 	while (clienteActivo) {
-		char* datosRecibidos = this->conexionDelCliente->getDatosRecibidos();
+		char* datosRecibidos = this->conexionDelCliente->getMensaje();
 		if (datosRecibidos != NULL) {
 			std::string datosRecibidosString(datosRecibidos);
 			MensajeDeRed* mensajeDeRed = new MensajeDeRed(datosRecibidosString, Constantes::CLIENTE); //LIBERAR este mensaje de red, no se borra nunca!!!!!!!!!
@@ -363,7 +345,8 @@ void Cliente::procesarDatosRecibidos() {
 			default:
 				Logger::getInstance()->log(Debug, datosRecibidos);
 			}
-			this->conexionDelCliente->setDatosRecibidos(NULL);
+			if (datosRecibidos != NULL)
+				free(datosRecibidos);
 		}
 
 		mostrarMensajesGlobales();

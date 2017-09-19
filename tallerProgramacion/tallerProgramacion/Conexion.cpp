@@ -191,7 +191,7 @@ void Conexion::enviarPingACliente() {
 /* Procesa los mensajes recibidos por los clientes */
 void Conexion::procesarDatosRecibidos() {
 	while (conexionActiva) {
-		char* datosRecibidos = this->conexionConCliente->getDatosRecibidos();
+		char* datosRecibidos = this->conexionConCliente->getMensaje();
 		if (datosRecibidos != NULL) {
 			Logger::getInstance()->log(Debug, datosRecibidos);
 			std::string datosRecibidosString(datosRecibidos);
@@ -249,7 +249,8 @@ void Conexion::procesarDatosRecibidos() {
 			default:
 				Logger::getInstance()->log(Debug, datosRecibidos);
 			}
-			this->conexionConCliente->setDatosRecibidos(NULL);
+			if (datosRecibidos != NULL)
+				free(datosRecibidos);
 		}
 	}
 }

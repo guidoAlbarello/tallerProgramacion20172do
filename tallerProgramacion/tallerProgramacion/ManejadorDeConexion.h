@@ -6,19 +6,21 @@
 #include <thread>
 #include <mutex>
 #include <condition_variable> // std::condition_variable
+#include <vector>
 
 class ManejadorDeConexion {
-public:	
+public:
 	ManejadorDeConexion();
 	ManejadorDeConexion(SOCKET unSocket);
 	ManejadorDeConexion(SocketSincronico* unSocket);
-	char* getDatosRecibidos() { return bufferDatosRecibidos; } 
+	char* getDatosRecibidos() { return bufferDatosRecibidos; }
 	void setDatosRecibidos(char* datos) { bufferDatosRecibidos = datos; };
 	void cerrarConexion();
 	SocketSincronico getSocket() { return *this->socket; };
 	bool getConexionActiva() { return this->conexionActiva; };
 	void notificarDatosAEnviar();
 	void notificarDatoARecibir();
+	char* getMensaje();
 protected:
 	SocketSincronico* socket;
 	bool conexionActiva;
@@ -31,7 +33,7 @@ protected:
 	std::mutex m_bufferDatosRecibidos;
 	std::condition_variable condicion_enviar;
 	std::condition_variable condicion_recibir;
-
+	std::vector<char*> mensajesEntrantes;
 
 	//enum Comando comandoAEjecutar;
 	char* bufferDatosRecibidos;
@@ -40,4 +42,3 @@ protected:
 };
 
 #endif
-
