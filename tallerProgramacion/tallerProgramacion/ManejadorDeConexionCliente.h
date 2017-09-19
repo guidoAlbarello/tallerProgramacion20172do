@@ -9,6 +9,7 @@ public:
 	bool login(string user, string pass);
 	bool enviarMensajeGlobal(string unMensaje);
 	bool enviarMensajePrivado(string unDestinatario, string unMensaje);
+	bool realizarPeticionUsuarios();
 	bool devolverMensajesPrivados();
 	bool enviarSolicitudPing();
 	bool enviarRespuestaPingAServidor();

@@ -264,7 +264,8 @@ void Servidor::enviarChatGlobal() {
 	while (servidorActivo) {
 		
 		if (buzonDeChatGlobal->getTamanio() != 0) {
-			for (int i = 0; i < this->buzonDeChatGlobal->getTamanio(); i++) {
+			int i = 0;
+			for (i = 0; i < this->buzonDeChatGlobal->getTamanio(); i++) {
 				Mensaje* unMensaje = this->buzonDeChatGlobal->verMensaje(i);
 				for (std::vector<Conexion*>::iterator it = conexionesActivas.begin(); it != conexionesActivas.end(); ++it) {
 					Conexion* unaConexion = (Conexion*)*it;
@@ -272,7 +273,11 @@ void Servidor::enviarChatGlobal() {
 				}
 				
 			}
+			if(i > 0)
+				this->buzonDeChatGlobal->eliminarMensajes(i);
 		}
+
+		
 	}
 }
 

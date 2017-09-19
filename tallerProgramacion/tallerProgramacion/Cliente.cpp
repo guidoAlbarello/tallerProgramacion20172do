@@ -83,6 +83,9 @@ void Cliente::correrCicloPrincipal() {
 				case '8':
 					enviarMensajePrivado();
 					break;
+				case '9':
+					this->conexionDelCliente->realizarPeticionUsuarios();
+					break;
 				default:
 					break;
 				}
@@ -93,9 +96,9 @@ void Cliente::correrCicloPrincipal() {
 }
 
 void Cliente::mostrarMenuPrincipal() {
-	cout << "|----------------------------|" << std::endl;
-	cout << "|        Menu cliente        |" << std::endl;
-	cout << "|----------------------------|" << std::endl;
+	std::cout << "|----------------------------|" << std::endl;
+	std::cout << "|        Menu cliente        |" << std::endl;
+	std::cout << "|----------------------------|" << std::endl;
 	std::cout << "1.Conectar" << std::endl;
 	std::cout << "2.Desconectar" << std::endl;
 	std::cout << "3.Salir" << std::endl;
@@ -104,6 +107,7 @@ void Cliente::mostrarMenuPrincipal() {
 	std::cout << "6.Revisar Buzon" << std::endl;
 	std::cout << "7.Mensaje Chat" << std::endl;
 	std::cout << "8.Mensaje Privado" << std::endl;
+	std::cout << "9.Usuarios Logueados" << std::endl;
 }
 
 void Cliente::conectarseAlServidor() {
@@ -134,9 +138,9 @@ void Cliente::hacerTestDeEstres() {
 	while (!(cin >> stressTimeMillis)) {
 		cin.clear();
 		cin.ignore(TEST_MAX_DURATION, '\n');
-		cout << "Ingrese solo numeros.  Intente nuevamente: ";
+		std::cout << "Ingrese solo numeros.  Intente nuevamente: ";
 	}
-	cout << "Ingreso: " << stressTimeMillis << "ms" << endl;
+	std::cout << "Ingreso: " << stressTimeMillis << "ms" << endl;
 
 	std::string mensajeLogueado = "Ejecutando test de estres durante " + stressTimeMillis;
 	mensajeLogueado.append("ms");
@@ -166,9 +170,9 @@ void Cliente::logearseAlServidor() {
 			std::string user;
 			std::string pass;
 			mostrarMenuLogin();
-			cout << "Ingrese su nombre de usuario" << std::endl;
+			std::cout << "Ingrese su nombre de usuario" << std::endl;
 			std::getline(std::cin, user);
-			cout << "Ingrese su contrasenia" << std::endl;
+			std::cout << "Ingrese su contrasenia" << std::endl;
 			std::getline(std::cin, pass);
 
 			Logger::getInstance()->log(Debug, "Logueando al servidor con credenciales: ");
@@ -226,10 +230,21 @@ void Cliente::mostrarMensajesPrivados(MensajeDeRed * unMensajeDeRed) {
 			string unEmisor = unMensajeDeRed->getParametro(i);
 			string unMensaje = unMensajeDeRed->getParametro(++i);
 
-			cout << "[" + unEmisor + "]: " + unMensaje << endl;
+			std::cout << "[" + unEmisor + "]: " + unMensaje << endl;
 		}
 	} else {
 
+	}
+}
+
+void Cliente::mostrarUsuariosConectados(MensajeDeRed * unMensajeDeRed)
+{
+	std::cout << "|----------------------------|" << std::endl;
+	std::cout << "|     Usuarios Logueados     |" << std::endl;
+	std::cout << "|----------------------------|" << std::endl;
+	int i;
+	for (i = 0; i < unMensajeDeRed->getCantidadDeParametros(); i++) {
+		std::cout << unMensajeDeRed->getParametro(i) << std::endl;
 	}
 }
 
@@ -291,7 +306,7 @@ void Cliente::procesarDatosRecibidos() {
 				break;
 			case ComandoCliente::PRINT:
 				Logger::getInstance()->log(Debug, "Recibio un PRINT");
-				cout << datosRecibidosString << endl;
+				std::cout << datosRecibidosString << endl;
 				break;
 			case ComandoCliente::VACIO:
 				Logger::getInstance()->log(Debug, "Recibio un VACIO");
@@ -299,6 +314,9 @@ void Cliente::procesarDatosRecibidos() {
 			case ComandoCliente::RESULTADO_PING:
 				Logger::getInstance()->log(Debug, "Recibio un RESULTADO_PING");
 				this->conexionViva = true;
+			case ComandoCliente::RESULTADO_USUARIOS:
+				Logger::getInstance()->log(Debug, "se recibio una lista de usuarios");
+				mostrarUsuariosConectados(mensajeDeRed);
 				break;
 			default:
 				Logger::getInstance()->log(Debug, datosRecibidos);
@@ -315,7 +333,7 @@ void Cliente::mostrarMensajesGlobales() {
 	for (i = 0; i < this->buzonDeMensajesGlobales->getTamanio() && !enviandoMensaje; i++) {
 		Mensaje* unMensaje = this->buzonDeMensajesGlobales->verMensaje(i);
 
-		cout << unMensaje->getDestinatario() + " [" + unMensaje->getEmisor() + "]: " + unMensaje->getMensaje() << endl;
+		std::cout << unMensaje->getDestinatario() + " [" + unMensaje->getEmisor() + "]: " + unMensaje->getMensaje() << endl;
 
 	}
 	if (i > 0)
@@ -329,7 +347,7 @@ void Cliente::procesarResultadoSendMessage(MensajeDeRed* mensajeDeRed) {
 	}
 	else if (mensajeDeRed->getParametro(0) == "SEND_MESSAGE_NOK") {
 		// Fallo el envio del mensaje
-		cout << mensajeDeRed->getParametro(1) << endl;
+		std::cout << mensajeDeRed->getParametro(1) << endl;
 	}
 }
 

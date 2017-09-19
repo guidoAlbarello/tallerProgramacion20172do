@@ -26,6 +26,8 @@ string Constantes::getComandoServidor(ComandoServidor comando)
 		return "VACIO";
 	case ComandoServidor::RESULTADO_PING:
 		return "RESULTADO_PING";
+	case ComandoServidor::USUARIOS:
+		return "USUARIOS";
 	default:
 		return "Not recognized..";
 	}
@@ -56,6 +58,11 @@ ComandoServidor Constantes::getConstComandoServidor(string comando){
 	{
 		return ComandoServidor::RESULTADO_PING;
 	}
+	if (comando.compare("USUARIOS") == 0)
+	{
+		return ComandoServidor::USUARIOS;
+	}
+	
 	return ComandoServidor::VACIO;
 }
 
@@ -83,6 +90,8 @@ string Constantes::getComandoCliente(ComandoCliente comando)
 		return "RECIEVE_PRIVATE_MESSAGES";
 	case ComandoCliente::RESULTADO_PING:
 		return "RESULTADO_PING";
+	case ComandoCliente::RESULTADO_USUARIOS:
+		return "RESULTADO_USUARIOS";
 	default:
 		return "Not recognized..";
 	}
@@ -125,6 +134,10 @@ ComandoCliente Constantes::getConstComandoCliente(string comando) {
 	if (comando.compare("RESULTADO_PING") == 0) {
 		return ComandoCliente::RESULTADO_PING;
 	}
+	if (comando.compare("RESULTADO_USUARIOS") == 0) {
+		return ComandoCliente::RESULTADO_USUARIOS;
+	}
+
 	return ComandoCliente::VACIO;
 }
 

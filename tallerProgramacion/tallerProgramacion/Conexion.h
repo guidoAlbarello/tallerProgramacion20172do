@@ -26,6 +26,7 @@ private:
 	ManejadorDeConexionConexion* conexionConCliente;
 	void procesarSend_Message(MensajeDeRed* unMensajeDeRed);
 	void procesarRetrieve_Messages(MensajeDeRed* unMensajeDeRed);
+	void procesarPeticionListaDeUsuarios();
 	Usuario* usuarioConectado;
 	std::thread t_procesarDatosRecibidos;
 	std::thread t_procesarPing;

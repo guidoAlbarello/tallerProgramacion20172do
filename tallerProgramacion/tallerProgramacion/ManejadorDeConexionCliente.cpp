@@ -31,6 +31,7 @@ bool ManejadorDeConexionCliente::login(std::string user, std::string pass) {
 	return true;
 }
 
+
 bool ManejadorDeConexionCliente::enviarMensajeGlobal(string unMensaje) {
 	MensajeDeRed *mensajeDeRed = new MensajeDeRed(ComandoServidor::SEND_MESSAGE);
 	mensajeDeRed->agregarParametro("");
@@ -48,6 +49,16 @@ bool ManejadorDeConexionCliente::enviarMensajePrivado(string unDestinatario, str
 	string mensaje = mensajeDeRed->getComandoServidorSerializado();
 	int tamanio = mensaje.length() +1;
 	Logger::getInstance()->log(Debug, mensaje);
+	return this->socket->enviarDatos(mensaje.c_str(), tamanio);;
+}
+
+bool ManejadorDeConexionCliente::realizarPeticionUsuarios()
+{
+	cout << "se ejeacuta realizar peticion usuario" << endl;
+	MensajeDeRed *mensajeDeRed = new MensajeDeRed(ComandoServidor::USUARIOS);
+	string mensaje = mensajeDeRed->getComandoServidorSerializado();
+	int tamanio = mensaje.length() + 1;
+	Logger::getInstance()->log(Debug, "se manda la peticion de lista de usuarios");
 	return this->socket->enviarDatos(mensaje.c_str(), tamanio);;
 }
 

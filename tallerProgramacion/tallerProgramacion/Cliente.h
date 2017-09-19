@@ -43,6 +43,7 @@ protected:
 	void mostrarMenuPrincipal();
 	void mostrarMenuLogin();
 	void mostrarMenuBuzon();
+	void mostrarUsuariosConectados(MensajeDeRed * unMensajeDeRed);
 	void mostrarMenuMensajeChat();
 	void mostrarMenuMensajePrivado();
 	void conectarseAlServidor();
