@@ -131,7 +131,9 @@ void Cliente::conectarseAlServidor() {
 void Cliente::desconectarseDelServidor() {
 	Logger::getInstance()->log(Debug, "Desconectando del servidor...");
 	std::cout << "Desconectando del servidor..." << std::endl;
-	this->conexionDelCliente->cerrarConexion();
+	if (this->conexionDelCliente->getConexionActiva()) {
+		this->conexionDelCliente->cerrarConexion();
+	}
 }
 
 void Cliente::hacerTestDeEstres() {
@@ -412,14 +414,12 @@ void Cliente::enviarPingAServidor() {
 		this->conexionDelCliente->enviarSolicitudPing();
 		std::this_thread::sleep_for(std::chrono::milliseconds(Constantes::PING_DELAY)); 
 	}
-	std::cout << "Desconectando del servidor por falta de respuesta..." << std::endl;
 	Logger::getInstance()->log(Debug, "Se desconecto un cliente del servidor por falta de respuesta al ping");
 	std::cout << "Se ha desconectado del servidor" << std::endl;
 
 	if (this->conexionDelCliente->getConexionActiva()) {
 		// Valido que no se haya cerrado previamente la conexion
 		this->conexionDelCliente->setConexionActiva(false);
-		//this->conexionDelCliente->cerrarConexion();
 	}
 }
 

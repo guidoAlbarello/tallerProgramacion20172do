@@ -51,7 +51,6 @@ void Servidor::iniciarServidor() {
 	this->conexionDelServidor->iniciarConexion(this->configuracion->getPuerto(), this->configuracion->getMaxClientes());
 	this->t_escucharClientes = std::thread(&Servidor::escucharClientes, this);
 	this->t_enviarChatGlobal = std::thread(&Servidor::enviarChatGlobal, this);
-	this->t_verificarConexiones = std::thread(&Servidor::verificarConexiones, this);
 	this->correrCicloPrincipal();
 }
 
@@ -154,6 +153,7 @@ void Servidor::correrCicloPrincipal() {
 
 void Servidor::escucharClientes() {
 	while (this->servidorActivo) {
+		this->verificarConexiones();
 		SOCKET nuevoCliente = this->conexionDelServidor->hayClienteIntentandoConectarse(this->conexionesActivas.size(), this->configuracion->getMaxClientes());
 		if(nuevoCliente != INVALID_SOCKET) {
 			agregarNuevaConexionEntrante(nuevoCliente);
