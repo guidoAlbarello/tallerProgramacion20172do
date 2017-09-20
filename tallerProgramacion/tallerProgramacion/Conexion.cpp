@@ -8,6 +8,7 @@ Conexion::Conexion(SOCKET unSocket, Servidor* servidor) {
 	this->conexionConCliente->iniciarConexion();
 	this->conexionActiva = true;
 	this->conexionViva = true;
+	this->conexionCerrada = false;
 	this->usuarioConectado = NULL;
 	this->t_procesarDatosRecibidos = std::thread(&Conexion::procesarDatosRecibidos, this);
 	this->t_procesarPing = std::thread(&Conexion::procesarPing, this);
@@ -20,6 +21,7 @@ Conexion::~Conexion() {
 void Conexion::cerrarConexion() {
 	this->conexionActiva = false;
 	this->conexionViva = false;
+	this->conexionCerrada = true;
 
 	if (t_procesarDatosRecibidos.joinable()) {
 		t_procesarDatosRecibidos.join();
@@ -172,6 +174,7 @@ void Conexion::procesarPing() {
 	std::cout << "Desconectando a cliente por falta de respuesta..." << std::endl;
 	Logger::getInstance()->log(Debug, "Desconectando a cliente por falta de respuesta...");
 	this->conexionConCliente->setConexionActiva(false);
+	this->conexionActiva = false;
 }
 
 /* Procesa los mensajes recibidos por los clientes */

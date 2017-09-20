@@ -26,17 +26,17 @@ public:
 	std::vector<Usuario*> getUsuarios() { return this->configuracion->getUsuarios(); }
 	void recibirMensajeGlobal(string unEmisor, string unMensaje);
 	void enviarMensajePrivado(string unDestinatario, string unMensaje);
+	std::vector<Conexion*> conexionesActivas;
 protected:
 	Servidor();
 	~Servidor();
 	ServerConfig* configuracion;
 	BuzonDeMensajes* buzonDeChatGlobal;
 	ManejadorDeConexionServidor* conexionDelServidor;
-	std::vector<Conexion*> conexionesActivas;
 	static Servidor* instance;
 	std::thread t_escucharClientes;
 	std::thread t_enviarChatGlobal;
-	std::thread t_hacerPing;
+	std::thread t_verificarConexiones;
 	bool servidorActivo;
 	void leerServerConfig();
 	void escucharClientes();
@@ -44,13 +44,13 @@ protected:
 	void cerrarTodasLasConexiones();
 	void correrCicloPrincipal();
 	void cambiarNivelLogeo();
-	void enviarPingAClientes();
 	void mostrarUsuariosConectados();
 	void mostrarMenuPrincipal();
 	void mostrarMenuModosLogueo();
 	void mostrarMenuUsuariosConectados();
 	Usuario* usuarioValido(std::string usuario, std::string contrasenia);
 	void enviarChatGlobal();
+	void verificarConexiones();
 };
 
 #endif

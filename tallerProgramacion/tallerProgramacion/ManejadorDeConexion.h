@@ -36,7 +36,6 @@ protected:
 	std::condition_variable condicion_recibir;
 	std::vector<char*> mensajesEntrantes;
 
-	//enum Comando comandoAEjecutar;
 	char* bufferDatosRecibidos;
 	char* bufferDatosAEnviar;
 	int tamanioDatosAEnviar;

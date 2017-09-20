@@ -51,6 +51,7 @@ void Servidor::iniciarServidor() {
 	this->conexionDelServidor->iniciarConexion(this->configuracion->getPuerto(), this->configuracion->getMaxClientes());
 	this->t_escucharClientes = std::thread(&Servidor::escucharClientes, this);
 	this->t_enviarChatGlobal = std::thread(&Servidor::enviarChatGlobal, this);
+	this->t_verificarConexiones = std::thread(&Servidor::verificarConexiones, this);
 	this->correrCicloPrincipal();
 }
 
@@ -63,6 +64,22 @@ void Servidor::cerrarServidor() {
 	}
 
 	this->conexionDelServidor->cerrarConexion();
+}
+
+void Servidor::verificarConexiones() {
+	while (this->servidorActivo) {
+		if (this->conexionesActivas.size() > 0) {
+			for (int i = 0; i < this->conexionesActivas.size(); i++) {
+				if (!this->conexionesActivas.at(i)->getConexionCerrada()) {
+					if (!this->conexionesActivas.at(i)->getConexionActiva()) {
+						this->conexionesActivas.at(i)->cerrarConexion();
+						this->conexionesActivas.erase(this->conexionesActivas.begin() + i);
+					}
+				}
+			}
+		}
+		std::this_thread::sleep_for(std::chrono::milliseconds(4000));
+	}
 }
 
 void Servidor::leerServerConfig() {
@@ -135,7 +152,7 @@ void Servidor::correrCicloPrincipal() {
 
 void Servidor::escucharClientes() {
 	while (this->servidorActivo) {
-		SOCKET nuevoCliente = this->conexionDelServidor->hayClienteIntentandoConectarse(this->getConexionesActivas().size(), this->configuracion->getMaxClientes());
+		SOCKET nuevoCliente = this->conexionDelServidor->hayClienteIntentandoConectarse(this->conexionesActivas.size(), this->configuracion->getMaxClientes());
 		if(nuevoCliente != INVALID_SOCKET) {
 			agregarNuevaConexionEntrante(nuevoCliente);
 		}
@@ -203,14 +220,9 @@ void Servidor::mostrarUsuariosConectados() {
 				hayUsuariosConConexionActiva = true;
 				if (conexionesActivas[i]->getUsuario() != NULL) {
 					usuariosConectados.push_back(conexionesActivas[i]->getUsuario()->getNombre());
-					//string unUsuario = "Usuario: " + conexionesActivas[i]->getUsuario()->getNombre();
-					//std::cout << unUsuario << std::endl;
-					//Logger::getInstance()->log(Debug, unUsuario);
 				}
 				else {
 					usuariosConectados.push_back("Usuario conectado sin loguear");
-					//std::cout << "Usuario conectado sin loguear" << std::endl;
-					//Logger::getInstance()->log(Debug, "Usuario conectado sin loguear");
 				}
 			}
 		}

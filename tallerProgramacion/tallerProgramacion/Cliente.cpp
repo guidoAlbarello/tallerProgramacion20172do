@@ -418,7 +418,8 @@ void Cliente::enviarPingAServidor() {
 
 	if (this->conexionDelCliente->getConexionActiva()) {
 		// Valido que no se haya cerrado previamente la conexion
-		this->conexionDelCliente->cerrarConexion();
+		this->conexionDelCliente->setConexionActiva(false);
+		//this->conexionDelCliente->cerrarConexion();
 	}
 }
 
