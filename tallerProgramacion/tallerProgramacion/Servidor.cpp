@@ -142,6 +142,13 @@ void Servidor::correrCicloPrincipal() {
 					servidorActivo = false;
 					cerrarTodasLasConexiones();
 					break;
+				/*case '5':
+					cout << "PUERTO " << this->configuracion->getPuerto() << " MAXCLIENTES: " << this->configuracion->getMaxClientes() << endl;
+					for (int i = 0; i < this->configuracion->getUsuarios().size(); i++) {
+						cout << "Usuario: " << this->configuracion->getUsuarios()[i]->getNombre() << endl;
+					}
+
+					break;*/
 				default:
 					break;
 				}

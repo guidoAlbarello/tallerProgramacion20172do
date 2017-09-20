@@ -28,5 +28,6 @@ private:
 	std::vector<Usuario*> usuarios;
 	void crearConfiguracionPredeterminada();
 	void parsearArchivoXML(std::string nombre);
+	void cargarUsuariosPredeterminados();
 };
 #endif

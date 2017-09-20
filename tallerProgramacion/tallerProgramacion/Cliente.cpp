@@ -90,6 +90,9 @@ void Cliente::correrCicloPrincipal() {
 				case '9':
 					this->conexionDelCliente->realizarPeticionUsuarios();
 					break;
+				/*case '0':
+					cout << "IP " << this->configuracion->getIP() << " PUERTO: " << this->configuracion->getPuerto() << " PATH: " << this->configuracion->getPath() << endl;
+					break;*/
 				default:
 					break;
 				}
@@ -174,12 +177,13 @@ void Cliente::leerTestXML(std::string stressFileName, int stressTimeMillis) {
 		documento.parse<0>(&buffer[0]); // <0> == sin flags de parseo
 
 		rapidxml::xml_node<>* nodoStressTest = documento.first_node("StressTest");
-
-		for (rapidxml::xml_node<>* unNodoMensaje = nodoStressTest->first_node("mensaje"); unNodoMensaje && (tConsumidoMs.count() <= stressTimeMillis); unNodoMensaje = unNodoMensaje->next_sibling()) {
-			//Tiempo consumido -> el actual - el de comienzo
-			tConsumidoMs = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - tComienzo);
-			std::string nuevoMensaje = unNodoMensaje->value();
-			this->conexionDelCliente->enviarMensajeGlobal(nuevoMensaje);
+		if (nodoStressTest != NULL) {
+			for (rapidxml::xml_node<>* unNodoMensaje = nodoStressTest->first_node("mensaje"); unNodoMensaje && (tConsumidoMs.count() <= stressTimeMillis); unNodoMensaje = unNodoMensaje->next_sibling("mensaje")) {
+				//Tiempo consumido -> el actual - el de comienzo
+				tConsumidoMs = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - tComienzo);
+				std::string nuevoMensaje = unNodoMensaje->value();
+				this->conexionDelCliente->enviarMensajeGlobal(nuevoMensaje);
+			}
 		}
 	}
 	catch (std::exception& e) {

@@ -47,7 +47,7 @@ void ClientConfig::crearConfiguracionPredeterminada() {
 	rapidxml::xml_node<>* nodoConexion = archivoXML.allocate_node(rapidxml::node_element, "conexion");
 	rapidxml::xml_node<>* nodoIP = archivoXML.allocate_node(rapidxml::node_element, "IP", DEFAULT_IP.c_str());
 	rapidxml::xml_node<>* nodoPuerto = archivoXML.allocate_node(rapidxml::node_element, "puerto", DEFAULT_PUERTO_CLIENTE.c_str());
-
+	
 	nodoConexion->append_node(nodoIP);
 	nodoConexion->append_node(nodoPuerto);
 
@@ -78,16 +78,32 @@ void ClientConfig::parsearArchivoXML(std::string nombre) {
 
 		rapidxml::xml_node<>* nodoCliente = documento.first_node("cliente");
 
+		if (nodoCliente == NULL) {
+			//Si no hay nodo cliente (root) no se puede seguir leyendo
+			return;
+		}
+
 		rapidxml::xml_node<>* nodoConexion = nodoCliente->first_node("conexion");
 
-		std::string numeroPuerto = nodoConexion->first_node("puerto")->value();
-		this->puerto = numeroPuerto;
+		if (nodoConexion != NULL) {
+			rapidxml::xml_node<>* nodoDireccionIP = nodoConexion->first_node("IP");
+			if (nodoDireccionIP != NULL) {
+				this->IP = nodoDireccionIP->value();
+			}
 
-		rapidxml::xml_node<>* nodoDireccionIP = nodoConexion->first_node("IP");
-		rapidxml::xml_node<>* nodoTestfilePath = nodoCliente->first_node("testfile")->first_node("path");
+			rapidxml::xml_node<>* nodoPuerto = nodoConexion->first_node("puerto");
+			if (nodoPuerto != NULL) {
+				this->puerto = nodoPuerto->value();
+			}
+		}
 
-		this->IP = nodoDireccionIP->value();
-		this->path = nodoTestfilePath->value();
+		rapidxml::xml_node<>* nodoTestfile = nodoCliente->first_node("testfile");
+		if (nodoTestfile != NULL) {
+			rapidxml::xml_node<>* nodoPath = nodoTestfile->first_node("path");
+			if (nodoPath != NULL) {
+				this->path = nodoPath->value();
+			}
+		}
 
 		Logger::getInstance()->log(LogMode::Debug, "[" + DEBUG_CLIENT_TAG + "] " + this->nombreConfiguracionPredeterminada + " se parseo exitosamente.");
 		Logger::getInstance()->log(LogMode::Debug, "[" + DEBUG_CLIENT_TAG + "] " + "Configuracion del cliente: IP:PUERTO: " + this->IP + this->puerto + ", PATH: " + this->path + ".");

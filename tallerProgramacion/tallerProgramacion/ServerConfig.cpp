@@ -35,7 +35,7 @@ void ServerConfig::crearConfiguracionPredeterminada() {
 	rapidxml::xml_node<>* nodoNombreAdmin = archivoXML.allocate_node(rapidxml::node_element, "nombre", "Admin");
 	rapidxml::xml_node<>* nodoPasswordAdmin = archivoXML.allocate_node(rapidxml::node_element, "password", "admin");
 	
-	this->usuarios.push_back(new Usuario("Admin", "admin"));
+	this->cargarUsuariosPredeterminados();
 
 	nodoNuevoUsuario->append_node(nodoNombreAdmin);
 	nodoNuevoUsuario->append_node(nodoPasswordAdmin);
@@ -49,6 +49,10 @@ void ServerConfig::crearConfiguracionPredeterminada() {
 	Logger::getInstance()->log(LogMode::Debug, "[" + DEBUG_SERVER_TAG + "] " + "Configuracion del servidor (PREDETERMINADA): PUERTO: " + DEFAULT_PUERTO_SERVIDOR.c_str() + ", MAXIMOS CLIENTES: " + DEFAULT_MAXCLIENTES.c_str() + ".");
 }
 
+void ServerConfig::cargarUsuariosPredeterminados() {
+	this->usuarios.push_back(new Usuario("Admin", "admin"));
+}
+
 void ServerConfig::parsearArchivoXML(std::string nombre) {
 	try {
 		Logger::getInstance()->log(LogMode::Debug, "[" + DEBUG_SERVER_TAG + "] Parseando configuracion del servidor: " + this->nombreConfiguracionPredeterminada);
@@ -59,26 +63,38 @@ void ServerConfig::parsearArchivoXML(std::string nombre) {
 		documento.parse<0>(&buffer[0]); // <0> == sin flags de parseo
 
 		rapidxml::xml_node<>* nodoServidor = documento.first_node("servidor");
+		if (nodoServidor != NULL) {
+			rapidxml::xml_node<>* nodoMaxClientes = nodoServidor->first_node("cantidadMaximaClientes");
+			if (nodoMaxClientes != NULL) {
+				std::string maxClientes = nodoMaxClientes->value();
+				this->maxClientes = atoi(maxClientes.c_str());
+			}
 
-		rapidxml::xml_node<>* nodoMaxClientes = nodoServidor->first_node("cantidadMaximaClientes");
-		std::string maxClientes = nodoMaxClientes->value();
-		this->maxClientes = atoi(maxClientes.c_str());
-
-		rapidxml::xml_node<>* nodoPuerto = nodoMaxClientes->next_sibling();
-		std::string numeroPuerto = nodoPuerto->value();
-		this->puerto = numeroPuerto;
+			rapidxml::xml_node<>* nodoPuerto = nodoServidor->first_node("puerto");
+			if (nodoPuerto != NULL) {
+				std::string numeroPuerto = nodoPuerto->value();
+				this->puerto = numeroPuerto;
+			}
+		}
 
 		rapidxml::xml_node<>* nodoUsuarios = documento.first_node("usuarios");
-		std::vector<Usuario*> usuarios;
-		for (rapidxml::xml_node<>* unNodoUsuario = nodoUsuarios->first_node("usuario"); unNodoUsuario; unNodoUsuario = unNodoUsuario->next_sibling()) {
-			rapidxml::xml_node<>* nodoNombre = unNodoUsuario->first_node("nombre");
-			rapidxml::xml_node<>* nodoPassword = unNodoUsuario->first_node("password");
-			usuarios.push_back(new Usuario(nodoNombre->value(), nodoPassword->value()));
+		if (nodoUsuarios != NULL) {
+			std::vector<Usuario*> usuarios;
+			for (rapidxml::xml_node<>* unNodoUsuario = nodoUsuarios->first_node("usuario"); unNodoUsuario; unNodoUsuario = unNodoUsuario->next_sibling("usuario")) {
+				rapidxml::xml_node<>* nodoNombre = unNodoUsuario->first_node("nombre");
+				rapidxml::xml_node<>* nodoPassword = unNodoUsuario->first_node("password");
+				if (nodoNombre != NULL && nodoPassword != NULL)
+					usuarios.push_back(new Usuario(nodoNombre->value(), nodoPassword->value()));
+			}
+			this->usuarios = usuarios;
 		}
-		this->usuarios = usuarios;
+		else {
+			//Cargo usuarios predeterminados
+				this->cargarUsuariosPredeterminados();
+		}
 
 		Logger::getInstance()->log(LogMode::Debug, "[" + DEBUG_SERVER_TAG + "] " + this->nombreConfiguracionPredeterminada + " se parseo exitosamente.");
-		Logger::getInstance()->log(LogMode::Debug, "[" + DEBUG_SERVER_TAG + "] " + "Configuracion del servidor: PUERTO: " + this->puerto + ", MAXIMOS CLIENTES: " + maxClientes.c_str() + ".");
+		Logger::getInstance()->log(LogMode::Debug, "[" + DEBUG_SERVER_TAG + "] " + "Configuracion del servidor: PUERTO: " + this->puerto + ", MAXIMOS CLIENTES: " + to_string(this->maxClientes) + ".");
 	}
 	catch (std::exception& e) {
 		Logger::getInstance()->log(LogMode::Error, "[" + DEBUG_SERVER_TAG + "] Hubo un error al parsear el archivo de configuracion del servidor.");
