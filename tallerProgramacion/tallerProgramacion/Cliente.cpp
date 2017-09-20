@@ -18,7 +18,7 @@ Cliente::Cliente() {
 	this->conexionDelCliente = new ManejadorDeConexionCliente();
 	this->clienteActivo = true;
 	this->estaLogueado = false;
-
+	this->conexionViva = false;
 	this->configuracion = new ClientConfig();
 	this->buzonDeMensajesGlobales = new BuzonDeMensajes(); //LIBERAR LA MEMORIA  DEL BUZON
 	this->enviandoMensaje = false;
