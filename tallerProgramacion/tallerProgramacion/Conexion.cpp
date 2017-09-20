@@ -11,7 +11,6 @@ Conexion::Conexion(SOCKET unSocket, Servidor* servidor) {
 	this->conexionCerrada = false;
 	this->usuarioConectado = NULL;
 	this->t_procesarDatosRecibidos = std::thread(&Conexion::procesarDatosRecibidos, this);
-	this->t_procesarPing = std::thread(&Conexion::procesarPing, this);
 }
 
 Conexion::~Conexion() {
@@ -22,14 +21,12 @@ void Conexion::cerrarConexion() {
 	this->conexionActiva = false;
 	this->conexionViva = false;
 	this->conexionCerrada = true;
-
-	if (t_procesarDatosRecibidos.joinable()) {
-		t_procesarDatosRecibidos.join();
+	try {
+		if (t_procesarDatosRecibidos.joinable()) {
+			t_procesarDatosRecibidos.join();
+		}
+	} catch (exception e) {
 	}
-	if (t_procesarPing.joinable()) {
-		t_procesarPing.join();
-	}
-
 
 	if (this->getConexionConCliente() != NULL) {
 		this->getConexionConCliente()->cerrarConexion();
@@ -43,7 +40,6 @@ void Conexion::procesarSolicitudPing() {
 	string mensaje = mensajeDeRed->getComandoClienteSerializado();
 	int tamanio = mensaje.length() + 1;
 	Logger::getInstance()->log(Debug, mensaje);
-	this->conexionViva = true;
 	Logger::getInstance()->log(Debug, "Enviando respuesta de ping a cliente");
 	this->conexionConCliente->getSocket().enviarDatos(mensaje.c_str(), tamanio);
 }
@@ -62,8 +58,7 @@ void Conexion::procesarSend_Message(MensajeDeRed* unMensajeDeRed) {
 			Logger::getInstance()->log(Debug, "Enviando mensaje");
 			Logger::getInstance()->log(Debug, mensaje);
 			this->conexionConCliente->getSocket().enviarDatos(mensaje.c_str(), tamanio);
-		}
-		else {
+		} else {
 			this->getUsuario()->enviarMensaje(usuarioDestinatario, unMensajeDeRed->getParametro(1));
 			this->servidor->enviarMensajePrivado(this->getUsuario()->getNombre(), unMensajeDeRed->getParametro(1));
 			ComandoCliente comando = ComandoCliente::RESULTADO_SEND_MESSAGE;
@@ -90,7 +85,7 @@ void Conexion::procesarSend_Message(MensajeDeRed* unMensajeDeRed) {
 		Logger::getInstance()->log(Debug, mensaje);
 		this->conexionConCliente->getSocket().enviarDatos(mensaje.c_str(), tamanio);
 	}
-	
+
 }
 
 void Conexion::procesarRetrieve_Messages(MensajeDeRed* unMensajeDeRed) {
@@ -114,30 +109,27 @@ void Conexion::procesarRetrieve_Messages(MensajeDeRed* unMensajeDeRed) {
 	}
 }
 
-void Conexion::procesarPeticionListaDeUsuarios()
-{
+void Conexion::procesarPeticionListaDeUsuarios() {
 	ComandoCliente comando = ComandoCliente::RESULTADO_USUARIOS;
 	MensajeDeRed* mensajeDeRed = new MensajeDeRed(comando);
-	
+
 	std::vector<Conexion*> conexionesActivas = this->servidor->getConexionesActivas();
 
 	if (conexionesActivas.size() == 0) {
-		
+
 		mensajeDeRed->agregarParametro("no hay ususarios conectados en este momento");
 		Logger::getInstance()->log(Debug, "no habian ususarios conectados apra mostrar");
-	}
-	else {
+	} else {
 		for (unsigned int i = 0; i < conexionesActivas.size(); i++) {
 			if (conexionesActivas[i]->getUsuario() != NULL) {
 				string unUsuario = "Usuario: " + conexionesActivas[i]->getUsuario()->getNombre();
 				mensajeDeRed->agregarParametro(unUsuario);
-			}
-			else {
+			} else {
 				Logger::getInstance()->log(Debug, "Usuario conectado sin loguear no se puede mostrar en usuarios conectados");
 			}
 		}
 	}
-	
+
 	string mensaje = mensajeDeRed->getComandoClienteSerializado();
 	int tamanio = mensaje.length() + 1;
 	this->conexionConCliente->getSocket().enviarDatos(mensaje.c_str(), tamanio);
@@ -147,7 +139,7 @@ void Conexion::enviarChatGlobal(bool tipoDeChat, string unEmisor, string unMensa
 	Logger::getInstance()->log(Debug, "El envio de mensaje fue satisfactorio");
 	ComandoCliente comando;
 	string resultado;
-	
+
 	if (tipoDeChat) {
 		comando = ComandoCliente::RECIEVE_GLOBAL_MESSAGES;
 		resultado = "RECIEVE_GLOBAL_MESSAGES_OK";
@@ -167,25 +159,14 @@ void Conexion::enviarChatGlobal(bool tipoDeChat, string unEmisor, string unMensa
 	this->conexionConCliente->getSocket().enviarDatos(mensaje.c_str(), tamanio);
 }
 
-void Conexion::procesarPing() {
-	while (this->conexionViva) {
-		m_procesarPing.lock();
-		this->conexionViva = false;
-		m_procesarPing.unlock();
-		std::this_thread::sleep_for(std::chrono::milliseconds(Constantes::PING_DELAY));
-	}
-
-	std::cout << "Desconectando a cliente por falta de respuesta..." << std::endl;
-	Logger::getInstance()->log(Debug, "Desconectando a cliente por falta de respuesta...");
-	this->conexionConCliente->setConexionActiva(false);
-	this->conexionActiva = false;
-}
 
 /* Procesa los mensajes recibidos por los clientes */
 void Conexion::procesarDatosRecibidos() {
+	auto timeOut = std::chrono::high_resolution_clock::now();
 	while (conexionActiva) {
 		char* datosRecibidos = this->conexionConCliente->getMensaje();
 		if (datosRecibidos != NULL) {
+			timeOut = std::chrono::high_resolution_clock::now();
 			Logger::getInstance()->log(Debug, datosRecibidos);
 			std::string datosRecibidosString(datosRecibidos);
 			MensajeDeRed *mensajeDeRed = new MensajeDeRed(datosRecibidosString, Constantes::SERVIDOR);
@@ -242,6 +223,9 @@ void Conexion::procesarDatosRecibidos() {
 			if (datosRecibidos != NULL)
 				free(datosRecibidos);
 		}
+
+		if (std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - timeOut).count() > (Constantes::PING_DELAY + 1000 * 3))
+			this->cerrarConexion();
 	}
 }
 

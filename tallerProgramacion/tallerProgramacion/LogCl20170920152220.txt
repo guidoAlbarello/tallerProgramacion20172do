@@ -1,0 +1,5 @@
+20-09-2017 03:22:20 - Debug - Iniciando cliente...
+20-09-2017 03:22:20 - Debug - [ClientConfig] Parseando configuracion del cliente: client-config.xml
+20-09-2017 03:22:20 - Debug - [ClientConfig] client-config.xml se parseo exitosamente.
+20-09-2017 03:22:20 - Debug - [ClientConfig] Configuracion del cliente: IP:PUERTO: 127.0.0.115636, PATH: stress-test.xml.
+20-09-2017 03:22:20 - Debug - Existe archivo y se logea

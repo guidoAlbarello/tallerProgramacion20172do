@@ -22,7 +22,6 @@ public:
 	ManejadorDeConexionConexion* getConexionConCliente() { return this->conexionConCliente; };
 	void enviarChatGlobal(bool tipoDeChat, string unEmisor, string unMensaje);
 	void procesarSolicitudPing();
-	void procesarPing();
 	bool getConexionActiva() { return this->conexionActiva; };
 	bool getConexionCerrada() { return this->conexionCerrada; };
 private:
@@ -32,13 +31,12 @@ private:
 	void procesarPeticionListaDeUsuarios();
 	Usuario* usuarioConectado;
 	std::thread t_procesarDatosRecibidos;
-	std::thread t_procesarPing;
-	std::mutex m_procesarPing;
 	void procesarDatosRecibidos();
 	bool conexionActiva;
 	bool conexionViva;
 	bool conexionCerrada;
 	Servidor* servidor;
+
 };
 
 #endif

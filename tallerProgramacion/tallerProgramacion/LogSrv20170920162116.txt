@@ -1,0 +1,171 @@
+20-09-2017 04:21:16 - Debug - Iniciando servidor...
+20-09-2017 04:21:16 - Debug - se lee la configuracion del servidor
+20-09-2017 04:21:16 - Debug - [ServerConfig] Parseando configuracion del servidor: server-config.xml
+20-09-2017 04:21:16 - Debug - [ServerConfig] server-config.xml se parseo exitosamente.
+20-09-2017 04:21:16 - Debug - [ServerConfig] Configuracion del servidor: PUERTO: 15636, MAXIMOS CLIENTES: 8.
+20-09-2017 04:21:16 - Debug - Existe archivo y se logea
+20-09-2017 04:21:16 - Debug - Se creo correctamente el socket del servidor escuchando en el puerto = 15636
+20-09-2017 04:21:18 - Debug - PING
+20-09-2017 04:21:18 - Debug - Recibio un PING
+20-09-2017 04:21:18 - Debug - RESULTADO_PING
+20-09-2017 04:21:18 - Debug - Enviando respuesta de ping a cliente
+20-09-2017 04:21:19 - Debug - PING
+20-09-2017 04:21:19 - Debug - Recibio un PING
+20-09-2017 04:21:19 - Debug - RESULTADO_PING
+20-09-2017 04:21:19 - Debug - Enviando respuesta de ping a cliente
+20-09-2017 04:21:20 - Debug - PING
+20-09-2017 04:21:20 - Debug - Recibio un PING
+20-09-2017 04:21:20 - Debug - RESULTADO_PING
+20-09-2017 04:21:20 - Debug - Enviando respuesta de ping a cliente
+20-09-2017 04:21:21 - Debug - PING
+20-09-2017 04:21:21 - Debug - Recibio un PING
+20-09-2017 04:21:21 - Debug - RESULTADO_PING
+20-09-2017 04:21:21 - Debug - Enviando respuesta de ping a cliente
+20-09-2017 04:21:22 - Debug - PING
+20-09-2017 04:21:22 - Debug - Recibio un PING
+20-09-2017 04:21:22 - Debug - RESULTADO_PING
+20-09-2017 04:21:22 - Debug - Enviando respuesta de ping a cliente
+20-09-2017 04:21:23 - Debug - PING
+20-09-2017 04:21:23 - Debug - Recibio un PING
+20-09-2017 04:21:23 - Debug - RESULTADO_PING
+20-09-2017 04:21:23 - Debug - Enviando respuesta de ping a cliente
+20-09-2017 04:21:24 - Debug - PING
+20-09-2017 04:21:24 - Debug - Recibio un PING
+20-09-2017 04:21:24 - Debug - RESULTADO_PING
+20-09-2017 04:21:24 - Debug - Enviando respuesta de ping a cliente
+20-09-2017 04:21:25 - Debug - PING
+20-09-2017 04:21:25 - Debug - Recibio un PING
+20-09-2017 04:21:25 - Debug - RESULTADO_PING
+20-09-2017 04:21:25 - Debug - Enviando respuesta de ping a cliente
+20-09-2017 04:21:26 - Debug - PING
+20-09-2017 04:21:26 - Debug - Recibio un PING
+20-09-2017 04:21:26 - Debug - RESULTADO_PING
+20-09-2017 04:21:26 - Debug - Enviando respuesta de ping a cliente
+20-09-2017 04:21:27 - Debug - PING
+20-09-2017 04:21:27 - Debug - Recibio un PING
+20-09-2017 04:21:27 - Debug - RESULTADO_PING
+20-09-2017 04:21:27 - Debug - Enviando respuesta de ping a cliente
+20-09-2017 04:21:28 - Debug - PING
+20-09-2017 04:21:28 - Debug - Recibio un PING
+20-09-2017 04:21:28 - Debug - RESULTADO_PING
+20-09-2017 04:21:28 - Debug - Enviando respuesta de ping a cliente
+20-09-2017 04:21:29 - Debug - PING
+20-09-2017 04:21:29 - Debug - Recibio un PING
+20-09-2017 04:21:29 - Debug - RESULTADO_PING
+20-09-2017 04:21:29 - Debug - Enviando respuesta de ping a cliente
+20-09-2017 04:21:30 - Debug - PING
+20-09-2017 04:21:30 - Debug - Recibio un PING
+20-09-2017 04:21:30 - Debug - RESULTADO_PING
+20-09-2017 04:21:30 - Debug - Enviando respuesta de ping a cliente
+20-09-2017 04:21:31 - Debug - PING
+20-09-2017 04:21:31 - Debug - Recibio un PING
+20-09-2017 04:21:31 - Debug - RESULTADO_PING
+20-09-2017 04:21:31 - Debug - Enviando respuesta de ping a cliente
+20-09-2017 04:21:32 - Debug - PING
+20-09-2017 04:21:32 - Debug - Recibio un PING
+20-09-2017 04:21:32 - Debug - RESULTADO_PING
+20-09-2017 04:21:32 - Debug - Enviando respuesta de ping a cliente
+20-09-2017 04:21:33 - Debug - PING
+20-09-2017 04:21:33 - Debug - Recibio un PING
+20-09-2017 04:21:33 - Debug - RESULTADO_PING
+20-09-2017 04:21:33 - Debug - Enviando respuesta de ping a cliente
+20-09-2017 04:21:34 - Debug - PING
+20-09-2017 04:21:34 - Debug - Recibio un PING
+20-09-2017 04:21:34 - Debug - RESULTADO_PING
+20-09-2017 04:21:34 - Debug - Enviando respuesta de ping a cliente
+20-09-2017 04:21:35 - Debug - PING
+20-09-2017 04:21:35 - Debug - Recibio un PING
+20-09-2017 04:21:35 - Debug - RESULTADO_PING
+20-09-2017 04:21:35 - Debug - Enviando respuesta de ping a cliente
+20-09-2017 04:21:36 - Debug - PING
+20-09-2017 04:21:36 - Debug - Recibio un PING
+20-09-2017 04:21:36 - Debug - RESULTADO_PING
+20-09-2017 04:21:36 - Debug - Enviando respuesta de ping a cliente
+20-09-2017 04:21:37 - Debug - PING
+20-09-2017 04:21:37 - Debug - Recibio un PING
+20-09-2017 04:21:37 - Debug - RESULTADO_PING
+20-09-2017 04:21:37 - Debug - Enviando respuesta de ping a cliente
+20-09-2017 04:21:38 - Debug - PING
+20-09-2017 04:21:38 - Debug - Recibio un PING
+20-09-2017 04:21:38 - Debug - RESULTADO_PING
+20-09-2017 04:21:38 - Debug - Enviando respuesta de ping a cliente
+20-09-2017 04:21:39 - Debug - PING
+20-09-2017 04:21:39 - Debug - Recibio un PING
+20-09-2017 04:21:39 - Debug - RESULTADO_PING
+20-09-2017 04:21:39 - Debug - Enviando respuesta de ping a cliente
+20-09-2017 04:21:40 - Debug - PING
+20-09-2017 04:21:40 - Debug - Recibio un PING
+20-09-2017 04:21:40 - Debug - RESULTADO_PING
+20-09-2017 04:21:40 - Debug - Enviando respuesta de ping a cliente
+20-09-2017 04:21:41 - Debug - PING
+20-09-2017 04:21:41 - Debug - Recibio un PING
+20-09-2017 04:21:41 - Debug - RESULTADO_PING
+20-09-2017 04:21:41 - Debug - Enviando respuesta de ping a cliente
+20-09-2017 04:21:42 - Debug - PING
+20-09-2017 04:21:42 - Debug - Recibio un PING
+20-09-2017 04:21:42 - Debug - RESULTADO_PING
+20-09-2017 04:21:42 - Debug - Enviando respuesta de ping a cliente
+20-09-2017 04:21:43 - Debug - PING
+20-09-2017 04:21:43 - Debug - Recibio un PING
+20-09-2017 04:21:43 - Debug - RESULTADO_PING
+20-09-2017 04:21:43 - Debug - Enviando respuesta de ping a cliente
+20-09-2017 04:21:44 - Debug - PING
+20-09-2017 04:21:44 - Debug - Recibio un PING
+20-09-2017 04:21:44 - Debug - RESULTADO_PING
+20-09-2017 04:21:44 - Debug - Enviando respuesta de ping a cliente
+20-09-2017 04:21:45 - Debug - PING
+20-09-2017 04:21:45 - Debug - Recibio un PING
+20-09-2017 04:21:45 - Debug - RESULTADO_PING
+20-09-2017 04:21:45 - Debug - Enviando respuesta de ping a cliente
+20-09-2017 04:21:46 - Debug - PING
+20-09-2017 04:21:46 - Debug - Recibio un PING
+20-09-2017 04:21:46 - Debug - RESULTADO_PING
+20-09-2017 04:21:46 - Debug - Enviando respuesta de ping a cliente
+20-09-2017 04:21:47 - Debug - PING
+20-09-2017 04:21:47 - Debug - Recibio un PING
+20-09-2017 04:21:47 - Debug - RESULTADO_PING
+20-09-2017 04:21:47 - Debug - Enviando respuesta de ping a cliente
+20-09-2017 04:21:48 - Debug - PING
+20-09-2017 04:21:48 - Debug - Recibio un PING
+20-09-2017 04:21:48 - Debug - RESULTADO_PING
+20-09-2017 04:21:48 - Debug - Enviando respuesta de ping a cliente
+20-09-2017 04:21:49 - Debug - PING
+20-09-2017 04:21:49 - Debug - Recibio un PING
+20-09-2017 04:21:49 - Debug - RESULTADO_PING
+20-09-2017 04:21:49 - Debug - Enviando respuesta de ping a cliente
+20-09-2017 04:21:50 - Debug - PING
+20-09-2017 04:21:50 - Debug - Recibio un PING
+20-09-2017 04:21:50 - Debug - RESULTADO_PING
+20-09-2017 04:21:50 - Debug - Enviando respuesta de ping a cliente
+20-09-2017 04:21:51 - Debug - PING
+20-09-2017 04:21:51 - Debug - Recibio un PING
+20-09-2017 04:21:51 - Debug - RESULTADO_PING
+20-09-2017 04:21:51 - Debug - Enviando respuesta de ping a cliente
+20-09-2017 04:21:52 - Debug - PING
+20-09-2017 04:21:52 - Debug - Recibio un PING
+20-09-2017 04:21:52 - Debug - RESULTADO_PING
+20-09-2017 04:21:52 - Debug - Enviando respuesta de ping a cliente
+20-09-2017 04:21:53 - Debug - PING
+20-09-2017 04:21:53 - Debug - Recibio un PING
+20-09-2017 04:21:53 - Debug - RESULTADO_PING
+20-09-2017 04:21:53 - Debug - Enviando respuesta de ping a cliente
+20-09-2017 04:21:54 - Debug - PING
+20-09-2017 04:21:54 - Debug - Recibio un PING
+20-09-2017 04:21:54 - Debug - RESULTADO_PING
+20-09-2017 04:21:54 - Debug - Enviando respuesta de ping a cliente
+20-09-2017 04:21:55 - Debug - PING
+20-09-2017 04:21:55 - Debug - Recibio un PING
+20-09-2017 04:21:55 - Debug - RESULTADO_PING
+20-09-2017 04:21:55 - Debug - Enviando respuesta de ping a cliente
+20-09-2017 04:21:56 - Debug - PING
+20-09-2017 04:21:56 - Debug - Recibio un PING
+20-09-2017 04:21:56 - Debug - RESULTADO_PING
+20-09-2017 04:21:56 - Debug - Enviando respuesta de ping a cliente
+20-09-2017 04:21:57 - Debug - PING
+20-09-2017 04:21:57 - Debug - Recibio un PING
+20-09-2017 04:21:57 - Debug - RESULTADO_PING
+20-09-2017 04:21:57 - Debug - Enviando respuesta de ping a cliente
+20-09-2017 04:21:58 - Debug - PING
+20-09-2017 04:21:58 - Debug - Recibio un PING
+20-09-2017 04:21:58 - Debug - RESULTADO_PING
+20-09-2017 04:21:58 - Debug - Enviando respuesta de ping a cliente

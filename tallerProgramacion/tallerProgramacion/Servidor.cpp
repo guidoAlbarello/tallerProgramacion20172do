@@ -39,7 +39,7 @@ void Servidor::enviarMensajePrivado(string unDestinatario, string unMensaje) {
 	for (int i = 0; i < this->conexionesActivas.size() && !encontrado; i++) {
 		Conexion* unaConexion = this->conexionesActivas[i];
 		if (unaConexion->getUsuario()->getNombre().compare(unDestinatario) == 0) {
-			unaConexion->enviarChatGlobal(false,unDestinatario, unMensaje);
+			unaConexion->enviarChatGlobal(false, unDestinatario, unMensaje);
 			encontrado = true;
 		}
 	}
@@ -67,20 +67,18 @@ void Servidor::cerrarServidor() {
 }
 
 void Servidor::verificarConexiones() {
-	while (this->servidorActivo) {
-		if (this->conexionesActivas.size() > 0) {
-			for (int i = 0; i < this->conexionesActivas.size(); i++) {
-				if (!this->conexionesActivas.at(i)->getConexionCerrada()) {
-					if (!this->conexionesActivas.at(i)->getConexionActiva()) {
-						this->conexionesActivas.at(i)->cerrarConexion();
-						delete (this->conexionesActivas.at(i));
-						this->conexionesActivas.erase(this->conexionesActivas.begin() + i);
-					}
+	if (this->conexionesActivas.size() > 0) {
+		for (int i = 0; i < this->conexionesActivas.size(); i++) {
+			if (!this->conexionesActivas.at(i)->getConexionCerrada()) {
+				if (!this->conexionesActivas.at(i)->getConexionActiva()) {
+					this->conexionesActivas.at(i)->cerrarConexion();
+					delete (this->conexionesActivas.at(i));
+					this->conexionesActivas.erase(this->conexionesActivas.begin() + i);
 				}
 			}
 		}
-		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 	}
+
 }
 
 void Servidor::leerServerConfig() {
@@ -122,29 +120,27 @@ Usuario* Servidor::usuarioValido(std::string usuarioBuscado, std::string contras
 void Servidor::correrCicloPrincipal() {
 	std::string input;
 	while (servidorActivo) {
-		while (input.length() != 1) {
-			mostrarMenuPrincipal();
-			std::getline(std::cin, input);
-			if (input.length() != 1) {
-				std::cout << "Debe ingresar una de las opciones" << std::endl;
-			}
-			else {
-				char opcionElegida = input[0];
-				Logger::getInstance()->log(Actividad, "se ingresa la opcion "+ input + "en el menu de servidor");
-				switch (opcionElegida) {
-				case '1':
-					cerrarTodasLasConexiones();
-					break;
-				case '2':
-					cambiarNivelLogeo();
-					break;
-				case '3':
-					mostrarUsuariosConectados();
-					break;
-				case '4':
-					servidorActivo = false;
-					cerrarTodasLasConexiones();
-					break;
+		mostrarMenuPrincipal();
+		std::getline(std::cin, input);
+		if (input.length() != 1) {
+			std::cout << "Debe ingresar una de las opciones" << std::endl;
+		} else {
+			char opcionElegida = input[0];
+			Logger::getInstance()->log(Actividad, "se ingresa la opcion " + input + "en el menu de servidor");
+			switch (opcionElegida) {
+			case '1':
+				cerrarTodasLasConexiones();
+				break;
+			case '2':
+				cambiarNivelLogeo();
+				break;
+			case '3':
+				mostrarUsuariosConectados();
+				break;
+			case '4':
+				servidorActivo = false;
+				cerrarTodasLasConexiones();
+				break;
 				/*case '5':
 					cout << "PUERTO " << this->configuracion->getPuerto() << " MAXCLIENTES: " << this->configuracion->getMaxClientes() << endl;
 					for (int i = 0; i < this->configuracion->getUsuarios().size(); i++) {
@@ -152,12 +148,10 @@ void Servidor::correrCicloPrincipal() {
 					}
 
 					break;*/
-				default:
-					break;
-				}
+			default:
+				break;
 			}
 		}
-		correrCicloPrincipal();
 	}
 }
 
@@ -165,7 +159,7 @@ void Servidor::escucharClientes() {
 	while (this->servidorActivo) {
 		this->verificarConexiones();
 		SOCKET nuevoCliente = this->conexionDelServidor->hayClienteIntentandoConectarse(this->conexionesActivas.size(), this->configuracion->getMaxClientes());
-		if(nuevoCliente != INVALID_SOCKET) {
+		if (nuevoCliente != INVALID_SOCKET) {
 			agregarNuevaConexionEntrante(nuevoCliente);
 		}
 	}
@@ -191,8 +185,7 @@ void Servidor::cambiarNivelLogeo() {
 		std::getline(std::cin, input);
 		if (input.length() != 1) {
 			std::cout << "Debe ingresar una de las opciones" << std::endl;
-		}
-		else {
+		} else {
 			char opcionElegida = input[0];
 			Logger::getInstance()->log(Actividad, "se ingresa la opcion " + input + " en el menu de cambio de nivel de logue0");
 			switch (opcionElegida) {
@@ -224,8 +217,7 @@ void Servidor::mostrarUsuariosConectados() {
 	if (conexionesActivas.size() == 0) {
 		std::cout << "En este momento no hay usuarios conectados a la aplicacion" << std::endl;
 		Logger::getInstance()->log(Debug, "En este momento no hay usuarios conectados a la aplicacion");
-	}
-	else {
+	} else {
 		std::vector<std::string> usuariosConectados;
 		bool hayUsuariosConConexionActiva = false;
 		for (unsigned int i = 0; i < conexionesActivas.size(); i++) {
@@ -233,8 +225,7 @@ void Servidor::mostrarUsuariosConectados() {
 				hayUsuariosConConexionActiva = true;
 				if (conexionesActivas[i]->getUsuario() != NULL) {
 					usuariosConectados.push_back(conexionesActivas[i]->getUsuario()->getNombre());
-				}
-				else {
+				} else {
 					usuariosConectados.push_back("Usuario conectado sin loguear");
 				}
 			}
@@ -245,8 +236,7 @@ void Servidor::mostrarUsuariosConectados() {
 				std::cout << usuariosConectados[i] << std::endl;
 				Logger::getInstance()->log(Debug, usuariosConectados[i]);
 			}
-		}
-		else {
+		} else {
 			std::cout << "En este momento no hay usuarios conectados a la aplicacion" << std::endl;
 			Logger::getInstance()->log(Debug, "En este momento no hay usuarios conectados a la aplicacion");
 		}

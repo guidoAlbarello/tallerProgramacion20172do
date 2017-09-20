@@ -1,0 +1,50 @@
+20-09-2017 04:22:23 - Debug - Iniciando cliente...
+20-09-2017 04:22:23 - Debug - [ClientConfig] Parseando configuracion del cliente: client-config.xml
+20-09-2017 04:22:23 - Debug - [ClientConfig] client-config.xml se parseo exitosamente.
+20-09-2017 04:22:23 - Debug - [ClientConfig] Configuracion del cliente: IP:PUERTO: 127.0.0.115636, PATH: stress-test.xml.
+20-09-2017 04:22:23 - Debug - Existe archivo y se logea
+20-09-2017 04:22:26 - Actividad - Se ingresa la opcion 1 en el menu del cliente
+20-09-2017 04:22:26 - Debug - Conectando al servidor...
+20-09-2017 04:22:26 - Actividad - El cliente con ip = 127.0.0.1 se ha conectado satisfactoriamente al servidor
+20-09-2017 04:22:26 - Debug - Cliente enviando PING al servidor
+20-09-2017 04:22:26 - Debug - se realiza el envio de un PING
+20-09-2017 04:22:26 - Debug - PING
+20-09-2017 04:22:28 - Debug - Cliente enviando PING al servidor
+20-09-2017 04:22:28 - Debug - Recibio un RESULTADO_PING
+20-09-2017 04:22:28 - Debug - se realiza el envio de un PING
+20-09-2017 04:22:28 - Debug - PING
+20-09-2017 04:22:28 - Debug - Recibio un RESULTADO_PING
+20-09-2017 04:22:29 - Debug - Cliente enviando PING al servidor
+20-09-2017 04:22:29 - Debug - se realiza el envio de un PING
+20-09-2017 04:22:29 - Debug - PING
+20-09-2017 04:22:29 - Debug - Recibio un RESULTADO_PING
+20-09-2017 04:22:30 - Debug - Cliente enviando PING al servidor
+20-09-2017 04:22:30 - Debug - se realiza el envio de un PING
+20-09-2017 04:22:30 - Debug - PING
+20-09-2017 04:22:30 - Debug - Recibio un RESULTADO_PING
+20-09-2017 04:22:31 - Debug - Cliente enviando PING al servidor
+20-09-2017 04:22:31 - Debug - se realiza el envio de un PING
+20-09-2017 04:22:31 - Debug - PING
+20-09-2017 04:22:31 - Debug - Recibio un RESULTADO_PING
+20-09-2017 04:22:32 - Debug - Cliente enviando PING al servidor
+20-09-2017 04:22:32 - Debug - se realiza el envio de un PING
+20-09-2017 04:22:32 - Debug - PING
+20-09-2017 04:22:32 - Debug - Recibio un RESULTADO_PING
+20-09-2017 04:22:33 - Debug - Cliente enviando PING al servidor
+20-09-2017 04:22:33 - Debug - se realiza el envio de un PING
+20-09-2017 04:22:33 - Debug - PING
+20-09-2017 04:22:33 - Debug - Recibio un RESULTADO_PING
+20-09-2017 04:22:34 - Debug - Cliente enviando PING al servidor
+20-09-2017 04:22:34 - Debug - se realiza el envio de un PING
+20-09-2017 04:22:34 - Debug - PING
+20-09-2017 04:22:35 - Debug - Cliente enviando PING al servidor
+20-09-2017 04:22:35 - Debug - se realiza el envio de un PING
+20-09-2017 04:22:35 - Debug - PING
+20-09-2017 04:22:36 - Debug - Cliente enviando PING al servidor
+20-09-2017 04:22:36 - Debug - se realiza el envio de un PING
+20-09-2017 04:22:36 - Debug - PING
+20-09-2017 04:22:43 - Debug - Desconectando del servidor...
+20-09-2017 04:22:43 - Debug - Cliente enviando PING al servidor
+20-09-2017 04:22:43 - Debug - se realiza el envio de un PING
+20-09-2017 04:22:43 - Debug - PING
+20-09-2017 04:22:43 - Debug - Se desconecto un cliente del servidor por falta de respuesta al ping

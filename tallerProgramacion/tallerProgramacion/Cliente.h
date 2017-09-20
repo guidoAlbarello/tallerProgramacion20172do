@@ -25,7 +25,6 @@ protected:
 	void procesarMensajesPrivados(MensajeDeRed* unMensajeDeRed);
 	void procesarResultadoSendMessage(MensajeDeRed* mensajeDeRed);
 	void procesarResultadoLogin(MensajeDeRed* mensajeDeRed);
-	void procesarSolicitudPing(MensajeDeRed* mensajeDeRed);
 	ManejadorDeConexionCliente* conexionDelCliente;
 	BuzonDeMensajes* buzonDeMensajesGlobales;
 	virtual void correrCicloPrincipal();

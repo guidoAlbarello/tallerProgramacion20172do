@@ -23,7 +23,7 @@ public:
 	ComandoCliente getConstComandoCliente(string comando);
 	~Constantes();
 	static Constantes* getInstance();
-	static constexpr const int PING_DELAY = 8000; // grande por ahora para que no moleste
+	static constexpr const int PING_DELAY = 1000; // grande por ahora para que no moleste
 private:
 	Constantes();
 	static Constantes* instance;

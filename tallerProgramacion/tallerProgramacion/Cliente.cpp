@@ -18,7 +18,7 @@ Cliente::Cliente() {
 	this->conexionDelCliente = new ManejadorDeConexionCliente();
 	this->clienteActivo = true;
 	this->estaLogueado = false;
-	this->conexionViva = true;
+
 	this->configuracion = new ClientConfig();
 	this->buzonDeMensajesGlobales = new BuzonDeMensajes(); //LIBERAR LA MEMORIA  DEL BUZON
 	this->enviandoMensaje = false;
@@ -32,10 +32,12 @@ Cliente::~Cliente() {
 }
 
 void Cliente::cerrarCliente() {
-	this->conexionDelCliente->cerrarConexion();
 	this->clienteActivo = false;
-	this->estaLogueado = false;
-	this->conexionViva = false;
+
+
+	if (this->conexionDelCliente->getConexionActiva()) {
+		this->desconectarseDelServidor();
+	}
 }
 
 void Cliente::leerClientConfig() {
@@ -54,52 +56,49 @@ void Cliente::iniciarCliente() {
 void Cliente::correrCicloPrincipal() {
 	std::string input;
 	while (clienteActivo) {
-		while (input.length() != 1) {
-			mostrarMenuPrincipal();
-			std::getline(std::cin, input);
-			if (input.length() != 1) {
-				std::cout << "Debe ingresar una de las opciones" << std::endl;
-			} else {
-				char opcionElegida = input[0];
-				Logger::getInstance()->log(Actividad, "Se ingresa la opcion " + input + " en el menu del cliente");
-				switch (opcionElegida) {
-				case '1':
-					conectarseAlServidor();
-					break;
-				case '2':
-					desconectarseDelServidor();
-					break;
-				case '3':
-					clienteActivo = false;
-					desconectarseDelServidor();
-					break;
-				case '4':
-					logearseAlServidor();
-					break;
-				case '5':
-					hacerTestDeEstres();
-					break;
-				case '6':
-					revisarBuzon();
-					break;
-				case '7':
-					enviarMensajeAlChat();
-					break;
-				case '8':
-					enviarMensajePrivado();
-					break;
-				case '9':
-					this->conexionDelCliente->realizarPeticionUsuarios();
-					break;
+		mostrarMenuPrincipal();
+		std::getline(std::cin, input);
+		if (input.length() != 1) {
+			std::cout << "Debe ingresar una de las opciones" << std::endl;
+		} else {
+			char opcionElegida = input[0];
+			Logger::getInstance()->log(Actividad, "Se ingresa la opcion " + input + " en el menu del cliente");
+			switch (opcionElegida) {
+			case '1':
+				conectarseAlServidor();
+				break;
+			case '2':
+				desconectarseDelServidor();
+				break;
+			case '3':
+				cerrarCliente();
+				break;
+			case '4':
+				logearseAlServidor();
+				break;
+			case '5':
+				hacerTestDeEstres();
+				break;
+			case '6':
+				revisarBuzon();
+				break;
+			case '7':
+				enviarMensajeAlChat();
+				break;
+			case '8':
+				enviarMensajePrivado();
+				break;
+			case '9':
+				this->conexionDelCliente->realizarPeticionUsuarios();
+				break;
 				/*case '0':
 					cout << "IP " << this->configuracion->getIP() << " PUERTO: " << this->configuracion->getPuerto() << " PATH: " << this->configuracion->getPath() << endl;
 					break;*/
-				default:
-					break;
-				}
+			default:
+				break;
 			}
 		}
-		correrCicloPrincipal();
+
 	}
 }
 
@@ -120,11 +119,13 @@ void Cliente::mostrarMenuPrincipal() {
 
 void Cliente::conectarseAlServidor() {
 	//if (!this->conexionDelCliente->getConexionActiva()) {
-		Logger::getInstance()->log(Debug, "Conectando al servidor...");
-		std::cout << "Conectando al servidor..." << std::endl;
-		this->conexionDelCliente->iniciarConexion(configuracion->getIP(), configuracion->getPuerto());
-		this->t_procesarDatosRecibidos = std::thread(&Cliente::procesarDatosRecibidos, this);
-		this->t_procesarPing = std::thread(&Cliente::enviarPingAServidor, this);
+	Logger::getInstance()->log(Debug, "Conectando al servidor...");
+	std::cout << "Conectando al servidor..." << std::endl;
+	this->conexionDelCliente->iniciarConexion(configuracion->getIP(), configuracion->getPuerto());
+	this->conexionViva = true;
+	this->t_procesarPing = std::thread(&Cliente::enviarPingAServidor, this);
+	this->t_procesarDatosRecibidos = std::thread(&Cliente::procesarDatosRecibidos, this);
+
 	//}
 	//else {
 	//	Logger::getInstance()->log(Debug, "Conectando al servidor...");
@@ -135,7 +136,22 @@ void Cliente::conectarseAlServidor() {
 void Cliente::desconectarseDelServidor() {
 	Logger::getInstance()->log(Debug, "Desconectando del servidor...");
 	std::cout << "Desconectando del servidor..." << std::endl;
-	if (this->conexionDelCliente->getConexionActiva()) {
+
+	this->estaLogueado = false;
+	this->conexionViva = false;
+	try {
+		if (t_procesarDatosRecibidos.joinable()) {
+			t_procesarDatosRecibidos.join();
+		}
+
+		if (this->t_procesarPing.joinable()) {
+			t_procesarPing.join();
+		}
+	} catch (exception e) {
+
+	}
+
+	if (this->conexionDelCliente != NULL) {
 		this->conexionDelCliente->cerrarConexion();
 	}
 }
@@ -186,8 +202,7 @@ void Cliente::leerTestXML(std::string stressFileName, int stressTimeMillis) {
 				this->conexionDelCliente->enviarMensajeGlobal(nuevoMensaje);
 			}
 		}
-	}
-	catch (std::exception& e) {
+	} catch (std::exception& e) {
 		Logger::getInstance()->log(LogMode::Error, "[" + DEBUG_SERVER_TAG + "] Hubo un error al parsear el archivo de configuracion del servidor.");
 		cout << e.what();
 	}
@@ -214,22 +229,22 @@ void Cliente::logearseAlServidor() {
 	//	cout << "Debe conectarse al servidor antes de loguearse" << std::endl;
 	//}
 	//else {
-		while (!this->estaLogueado) {
-			std::string user;
-			std::string pass;
-			mostrarMenuLogin();
-			std::cout << "Ingrese su nombre de usuario" << std::endl;
-			std::getline(std::cin, user);
-			std::cout << "Ingrese su contrasenia" << std::endl;
-			std::getline(std::cin, pass);
+	while (!this->estaLogueado) {
+		std::string user;
+		std::string pass;
+		mostrarMenuLogin();
+		std::cout << "Ingrese su nombre de usuario" << std::endl;
+		std::getline(std::cin, user);
+		std::cout << "Ingrese su contrasenia" << std::endl;
+		std::getline(std::cin, pass);
 
-			Logger::getInstance()->log(Debug, "Logueando al servidor con credenciales: ");
-			Logger::getInstance()->log(Debug, "Usuario: " + user);
-			Logger::getInstance()->log(Debug, "Contrasenia: " + pass);
+		Logger::getInstance()->log(Debug, "Logueando al servidor con credenciales: ");
+		Logger::getInstance()->log(Debug, "Usuario: " + user);
+		Logger::getInstance()->log(Debug, "Contrasenia: " + pass);
 
-			estaLogueado = this->conexionDelCliente->login(user, pass);
-			//mutex en el buffer de manejar conexion .- cuando haya q manejar input en el cliente, se le pasa el input desde le manejador de input al manejador de conexion. o se manda a cliente para q procese primerop si es necesario y d3sp el manejador de conexion
-		}
+		estaLogueado = this->conexionDelCliente->login(user, pass);
+		//mutex en el buffer de manejar conexion .- cuando haya q manejar input en el cliente, se le pasa el input desde le manejador de input al manejador de conexion. o se manda a cliente para q procese primerop si es necesario y d3sp el manejador de conexion
+	}
 	//}
 	correrCicloPrincipal();
 }
@@ -285,8 +300,7 @@ void Cliente::mostrarMensajesPrivados(MensajeDeRed * unMensajeDeRed) {
 	}
 }
 
-void Cliente::mostrarUsuariosConectados(MensajeDeRed * unMensajeDeRed)
-{
+void Cliente::mostrarUsuariosConectados(MensajeDeRed * unMensajeDeRed) {
 	std::cout << "|----------------------------|" << std::endl;
 	std::cout << "|     Usuarios Logueados     |" << std::endl;
 	std::cout << "|----------------------------|" << std::endl;
@@ -325,9 +339,12 @@ void Cliente::procesarMensajesPrivados(MensajeDeRed * unMensajeDeRed) {
 
 /* Procesa comandos recibidos desde el servidor */
 void Cliente::procesarDatosRecibidos() {
-	while (clienteActivo) {
+	auto timeOut = std::chrono::high_resolution_clock::now();
+
+	while (this->conexionViva) {
 		char* datosRecibidos = this->conexionDelCliente->getMensaje();
 		if (datosRecibidos != NULL) {
+			timeOut = std::chrono::high_resolution_clock::now();
 			std::string datosRecibidosString(datosRecibidos);
 			MensajeDeRed* mensajeDeRed = new MensajeDeRed(datosRecibidosString, Constantes::CLIENTE); //LIBERAR este mensaje de red, no se borra nunca!!!!!!!!!
 
@@ -360,7 +377,6 @@ void Cliente::procesarDatosRecibidos() {
 				break;
 			case ComandoCliente::RESULTADO_PING:
 				Logger::getInstance()->log(Debug, "Recibio un RESULTADO_PING");
-				this->conexionViva = true;
 				break;
 			case ComandoCliente::RESULTADO_USUARIOS:
 				Logger::getInstance()->log(Debug, "se recibio una lista de usuarios");
@@ -371,8 +387,14 @@ void Cliente::procesarDatosRecibidos() {
 			}
 			if (datosRecibidos != NULL)
 				free(datosRecibidos);
+			if (mensajeDeRed != NULL)
+				delete mensajeDeRed;
 		}
-
+		if (std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - timeOut).count() > (Constantes::PING_DELAY + 1000 * 3)) {
+			this->desconectarseDelServidor();
+			Logger::getInstance()->log(Debug, "Se desconecto un cliente del servidor por falta de respuesta al ping");
+			std::cout << "Se ha desconectado del servidor" << std::endl;
+		}
 		mostrarMensajesGlobales();
 	}
 }
@@ -394,8 +416,7 @@ void Cliente::procesarResultadoSendMessage(MensajeDeRed* mensajeDeRed) {
 	if (mensajeDeRed->getParametro(0) == "SEND_MESSAGE_OK") {
 		// Mensaje enviado satisfactoriamente
 		cout << mensajeDeRed->getParametro(1) << endl;
-	}
-	else if (mensajeDeRed->getParametro(0) == "SEND_MESSAGE_NOK") {
+	} else if (mensajeDeRed->getParametro(0) == "SEND_MESSAGE_NOK") {
 		// Fallo el envio del mensaje
 		std::cout << mensajeDeRed->getParametro(1) << endl;
 	}
@@ -405,8 +426,7 @@ void Cliente::procesarResultadoLogin(MensajeDeRed* mensajeDeRed) {
 	if (mensajeDeRed->getParametro(0) == "LOGIN_OK") {
 		this->estaLogueado = true;
 		cout << mensajeDeRed->getParametro(1) << endl;
-	}
-	else if (mensajeDeRed->getParametro(0) == "LOGIN_NOK") {
+	} else if (mensajeDeRed->getParametro(0) == "LOGIN_NOK") {
 		this->estaLogueado = false;
 		cout << mensajeDeRed->getParametro(1) << endl;
 	}
@@ -414,20 +434,12 @@ void Cliente::procesarResultadoLogin(MensajeDeRed* mensajeDeRed) {
 
 void Cliente::enviarPingAServidor() {
 	while (this->conexionViva) {
-		m_procesarPing.lock();
-		this->conexionViva = false;
-		m_procesarPing.unlock();
 		Logger::getInstance()->log(Debug, "Cliente enviando PING al servidor");
 		this->conexionDelCliente->enviarSolicitudPing();
-		std::this_thread::sleep_for(std::chrono::milliseconds(Constantes::PING_DELAY)); 
+		std::this_thread::sleep_for(std::chrono::milliseconds(Constantes::PING_DELAY));
 	}
-	Logger::getInstance()->log(Debug, "Se desconecto un cliente del servidor por falta de respuesta al ping");
-	std::cout << "Se ha desconectado del servidor" << std::endl;
 
-	if (this->conexionDelCliente->getConexionActiva()) {
-		// Valido que no se haya cerrado previamente la conexion
-		this->conexionDelCliente->setConexionActiva(false);
-	}
+
 }
 
 void Cliente::mostrarMenuLogin() {
