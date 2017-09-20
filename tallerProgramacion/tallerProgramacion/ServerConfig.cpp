@@ -69,12 +69,21 @@ void ServerConfig::parsearArchivoXML(std::string nombre) {
 				std::string maxClientes = nodoMaxClientes->value();
 				this->maxClientes = atoi(maxClientes.c_str());
 			}
+			else {
+				Logger::getInstance()->log(LogMode::Error, "[" + DEBUG_SERVER_TAG + "] " + "No se encontro el nodo 'cantidadMaximaClientes' en la configuracion. A continuacion, se cargara la cantidad de maximos clientes predeterminada.");
+			}
 
 			rapidxml::xml_node<>* nodoPuerto = nodoServidor->first_node("puerto");
 			if (nodoPuerto != NULL) {
 				std::string numeroPuerto = nodoPuerto->value();
 				this->puerto = numeroPuerto;
 			}
+			else {
+				Logger::getInstance()->log(LogMode::Error, "[" + DEBUG_SERVER_TAG + "] " + "No se pudo obtener el numero de puerto desde el archivo de configuracion XML.");
+			}
+		}
+		else {
+			Logger::getInstance()->log(LogMode::Error, "[" + DEBUG_SERVER_TAG + "] " + "No se encontro el nodo 'servidor' en la configuracion. A continuacion, se cargara la cantidad de maximos clientes y el numero de puerto predeterminados.");
 		}
 
 		rapidxml::xml_node<>* nodoUsuarios = documento.first_node("usuarios");
@@ -83,14 +92,20 @@ void ServerConfig::parsearArchivoXML(std::string nombre) {
 			for (rapidxml::xml_node<>* unNodoUsuario = nodoUsuarios->first_node("usuario"); unNodoUsuario; unNodoUsuario = unNodoUsuario->next_sibling("usuario")) {
 				rapidxml::xml_node<>* nodoNombre = unNodoUsuario->first_node("nombre");
 				rapidxml::xml_node<>* nodoPassword = unNodoUsuario->first_node("password");
-				if (nodoNombre != NULL && nodoPassword != NULL)
+				if (nodoNombre != NULL && nodoPassword != NULL) {
 					usuarios.push_back(new Usuario(nodoNombre->value(), nodoPassword->value()));
+					Logger::getInstance()->log(LogMode::Actividad, "[" + DEBUG_SERVER_TAG + "] " + "Se leyo el usuario USUARIO: '" + nodoNombre->value() + "'-CONTRASENIA='" + nodoPassword->value() + "' desde el archivo de configuracion XML.");
+				}
+				else {
+					Logger::getInstance()->log(LogMode::Error, "[" + DEBUG_SERVER_TAG + "] " + "No se pudo leer un usuario desde el archivo de configuracion porque el nodo 'nombre' o el nodo 'password' no existe.");
+				}
 			}
 			this->usuarios = usuarios;
 		}
 		else {
+			Logger::getInstance()->log(LogMode::Error, "[" + DEBUG_SERVER_TAG + "] " + "No se encontro el nodo 'usuarios' en el archivo de configuracion XML. Se procede a cargar los usuarios predeterminados.");
 			//Cargo usuarios predeterminados
-				this->cargarUsuariosPredeterminados();
+			this->cargarUsuariosPredeterminados();
 		}
 
 		Logger::getInstance()->log(LogMode::Debug, "[" + DEBUG_SERVER_TAG + "] " + this->nombreConfiguracionPredeterminada + " se parseo exitosamente.");

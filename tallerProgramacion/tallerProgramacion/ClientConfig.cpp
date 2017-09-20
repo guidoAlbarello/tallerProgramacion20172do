@@ -82,6 +82,9 @@ void ClientConfig::parsearArchivoXML(std::string nombre) {
 			//Si no hay nodo cliente (root) no se puede seguir leyendo
 			return;
 		}
+		else {
+			Logger::getInstance()->log(LogMode::Error, "[" + DEBUG_CLIENT_TAG + "] " + "No se encontro el nodo de 'cliente' en la configuracion. A continuacion, se cargara la configuracion predeterminada.");
+		}
 
 		rapidxml::xml_node<>* nodoConexion = nodoCliente->first_node("conexion");
 
@@ -90,11 +93,20 @@ void ClientConfig::parsearArchivoXML(std::string nombre) {
 			if (nodoDireccionIP != NULL) {
 				this->IP = nodoDireccionIP->value();
 			}
+			else {
+				Logger::getInstance()->log(LogMode::Error, "[" + DEBUG_CLIENT_TAG + "] " + "No se pudo obtener la direccion IP desde el archivo de configuracion XML.");
+			}
 
 			rapidxml::xml_node<>* nodoPuerto = nodoConexion->first_node("puerto");
 			if (nodoPuerto != NULL) {
 				this->puerto = nodoPuerto->value();
 			}
+			else {
+				Logger::getInstance()->log(LogMode::Error, "[" + DEBUG_CLIENT_TAG + "] " + "No se pudo obtener el numero de puerto desde el archivo de configuracion XML.");
+			}
+		}
+		else {
+			Logger::getInstance()->log(LogMode::Error, "[" + DEBUG_CLIENT_TAG + "] " + "No se pudo encontrar el nodo conexion dentro del archivo de configuracion de XML.");
 		}
 
 		rapidxml::xml_node<>* nodoTestfile = nodoCliente->first_node("testfile");
@@ -103,6 +115,12 @@ void ClientConfig::parsearArchivoXML(std::string nombre) {
 			if (nodoPath != NULL) {
 				this->path = nodoPath->value();
 			}
+			else {
+				Logger::getInstance()->log(LogMode::Error, "[" + DEBUG_CLIENT_TAG + "] " + "No se pudo obtener la direccion del archivo de estres desde el archivo de configuracion XML.");
+			}
+		}
+		else {
+			Logger::getInstance()->log(LogMode::Error, "[" + DEBUG_CLIENT_TAG + "] " + "No se encontro el nodo 'testfile' en la configuracion. A continuacion, se cargara el path predeterminado.");
 		}
 
 		Logger::getInstance()->log(LogMode::Debug, "[" + DEBUG_CLIENT_TAG + "] " + this->nombreConfiguracionPredeterminada + " se parseo exitosamente.");
