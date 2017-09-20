@@ -1,0 +1,13 @@
+20-09-2017 01:30:34 - Debug - Iniciando servidor...
+20-09-2017 01:30:34 - Debug - [ServerConfig] Parseando configuracion del servidor: server-config.xml
+20-09-2017 01:30:34 - Debug - [ServerConfig] server-config.xml se parseo exitosamente.
+20-09-2017 01:30:34 - Debug - [ServerConfig] Configuracion del servidor: PUERTO: 15636, MAXIMOS CLIENTES: 8.
+20-09-2017 01:30:34 - Debug - Se creo correctamente el socket del servidor escuchando en el puerto = 15636
+20-09-2017 01:30:37 - Debug - PING
+20-09-2017 01:30:37 - Debug - Recibio un PING
+20-09-2017 01:30:37 - Debug - RESULTADO_PING
+20-09-2017 01:30:37 - Debug - Enviando respuesta de ping a cliente
+20-09-2017 01:31:38 - Debug - PING
+20-09-2017 01:31:38 - Debug - Recibio un PING
+20-09-2017 01:31:38 - Debug - RESULTADO_PING
+20-09-2017 01:31:38 - Debug - Enviando respuesta de ping a cliente

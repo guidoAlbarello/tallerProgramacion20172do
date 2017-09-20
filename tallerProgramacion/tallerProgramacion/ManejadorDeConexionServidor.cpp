@@ -23,3 +23,8 @@ SOCKET ManejadorDeConexionServidor::hayClienteIntentandoConectarse(size_t conexi
 
 	return this->socket->hayClienteIntentandoConectarse();
 }
+
+void ManejadorDeConexionServidor::borrarEntorno() {
+	this->socket->borrarEntornoWSA();
+}
+

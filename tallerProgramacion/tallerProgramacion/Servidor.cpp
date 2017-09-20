@@ -64,6 +64,7 @@ void Servidor::cerrarServidor() {
 	}
 
 	this->conexionDelServidor->cerrarConexion();
+	delete this->conexionDelServidor;
 }
 
 void Servidor::verificarConexiones() {

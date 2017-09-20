@@ -68,7 +68,11 @@ bool ManejadorDeConexionCliente::devolverMensajesPrivados() {
 	int tamanio = mensaje.length() +1;
 	Logger::getInstance()->log(Debug, mensaje);
 	return this->socket->enviarDatos(mensaje.c_str(), tamanio);;
-};
+}
+void ManejadorDeConexionCliente::borrarEntorno() {
+	this->socket->borrarEntornoWSA();
+}
+;
 
 bool ManejadorDeConexionCliente::enviarSolicitudPing() {
 	MensajeDeRed* mensajeDeRed = new MensajeDeRed(ComandoServidor::PING);

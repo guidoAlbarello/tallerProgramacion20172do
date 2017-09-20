@@ -16,6 +16,7 @@ public:
 	char* getDatosRecibidos() { return bufferDatosRecibidos; }
 	void setDatosRecibidos(char* datos) { bufferDatosRecibidos = datos; };
 	void cerrarConexion();
+	virtual void borrarEntorno();
 	SocketSincronico getSocket() { return *this->socket; };
 	bool getConexionActiva() { return this->conexionActiva; };
 	void setConexionActiva(bool conexionActiva) { this->conexionActiva = conexionActiva; }

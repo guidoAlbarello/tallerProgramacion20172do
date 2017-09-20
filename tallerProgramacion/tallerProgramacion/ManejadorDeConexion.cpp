@@ -79,8 +79,19 @@ void ManejadorDeConexion::cerrarConexion() {
 		t_RecibirDatos.join();
 	}
 
+	for (int i = 0; i < this->mensajesEntrantes.size(); i++) {
+		delete this->mensajesEntrantes.at(i);
+	}
+
+	if (mensajesEntrantes.size() > 0)
+		this->mensajesEntrantes.erase(this->mensajesEntrantes.begin(), this->mensajesEntrantes.end());
+
 	if (this->socket != NULL) {
 		socket->cerrarSocket();
+		this->borrarEntorno();
 		delete socket;
 	}
+}
+
+void ManejadorDeConexion::borrarEntorno() {
 }

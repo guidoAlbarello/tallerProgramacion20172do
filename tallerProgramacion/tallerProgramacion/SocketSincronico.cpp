@@ -193,20 +193,18 @@ int SocketSincronico::cerrarSocket() {
 		int iResult = shutdown(this->socketDeConexion, SD_SEND);
 		if (iResult == SOCKET_ERROR) {
 			closesocket(this->socketDeConexion);
-			WSACleanup();
 			/*"Falla al cerrar el socket"*/
 			return 1;
 		}
 
 		closesocket(this->socketDeConexion);
 		this->socketDeConexion = INVALID_SOCKET;
-		WSACleanup();
-		/*"Se cerro el socket correctamente"*/
+				/*"Se cerro el socket correctamente"*/
 		return 0;
 	}
 	else {
 		/*"Falla al cerrar el socket"*/
-		WSACleanup();
+		
 		return 1;
 	}
 }
@@ -217,4 +215,8 @@ int SocketSincronico::hayClienteIntentandoConectarse() {
 	// Accept a client socket
 	socketDelCliente = accept(this->socketDeConexion, NULL, NULL);
 	return socketDelCliente;
+}
+
+void SocketSincronico::borrarEntornoWSA() {
+	WSACleanup();
 }

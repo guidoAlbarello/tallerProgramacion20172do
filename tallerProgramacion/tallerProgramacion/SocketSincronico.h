@@ -22,6 +22,7 @@ public:
 	int cerrarSocket();
 	int hayClienteIntentandoConectarse();
 	SOCKET getSocket() { return this->socketDeConexion; };
+	void borrarEntornoWSA();
 private:
 	SOCKET socketDeConexion;
 };
