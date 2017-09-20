@@ -89,7 +89,12 @@ void Cliente::correrCicloPrincipal() {
 				enviarMensajePrivado();
 				break;
 			case '9':
-				this->conexionDelCliente->realizarPeticionUsuarios();
+				if (!this->estaLogueado) {
+					cout << "Necesita estar logueado para realizar esta accion." << endl;
+				}
+				else {
+					this->conexionDelCliente->realizarPeticionUsuarios();
+				}
 				break;
 				/*case '0':
 					cout << "IP " << this->configuracion->getIP() << " PUERTO: " << this->configuracion->getPuerto() << " PATH: " << this->configuracion->getPath() << endl;
@@ -126,14 +131,17 @@ void Cliente::conectarseAlServidor() {
 		this->t_procesarPing = std::thread(&Cliente::enviarPingAServidor, this);
 		this->t_procesarDatosRecibidos = std::thread(&Cliente::procesarDatosRecibidos, this);
 	}
-	//}
-	//else {
-	//	Logger::getInstance()->log(Debug, "Conectando al servidor...");
-	//	std::cout << "Ya se encuentra conectado al servidor" << std::endl;
-	//}
+	else {
+		std::cout << "Ya se encuentra conectado al servidor" << std::endl;
+	}
 }
 
 void Cliente::desconectarseDelServidor() {
+	if (!this->conexionViva) {
+		cout << "Usted no esta conectado con el servidor." << endl;
+		return;
+	}
+
 	Logger::getInstance()->log(Debug, "Desconectando del servidor...");
 	std::cout << "Desconectando del servidor..." << std::endl;
 
@@ -157,6 +165,11 @@ void Cliente::desconectarseDelServidor() {
 }
 
 void Cliente::hacerTestDeEstres() {
+	if (!this->estaLogueado) {
+		cout << "Necesita estar logueado para realizar esta accion." << endl;
+		return;
+	}
+
 	std::string stressFileName = this->configuracion->getPath();
 	if (!existeArchivo(stressFileName)) {
 		std::cout << "No existe el archivo de Test de Stress definido en la configuracion de usuario" << endl;
@@ -218,6 +231,11 @@ bool Cliente::existeArchivo(const std::string& nombreDeArchivo) {
 }
 
 void Cliente::revisarBuzon() {
+	if (!this->estaLogueado) {
+		cout << "Necesita estar logueado para realizar esta accion." << endl;
+		return;
+	}
+
 	mostrarMenuBuzon();
 	Logger::getInstance()->log(Debug, "Mensajes recibidos: ");
 	std::cout << "Mensajes recibidos: " << std::endl;
@@ -226,11 +244,16 @@ void Cliente::revisarBuzon() {
 }
 
 void Cliente::logearseAlServidor() {
-	//if (!this->conexionDelCliente->getConexionActiva()) {
-	//	Logger::getInstance()->log(Debug, "Se intento loguear al servidor un cliente sin conectarse previamente");
-	//	cout << "Debe conectarse al servidor antes de loguearse" << std::endl;
-	//}
-	//else {
+	if (!this->conexionViva) {
+		cout << "Necesita estar conectado con el servidor para realizar esta accion." << endl;
+		return;
+	}
+
+	if (this->estaLogueado) {
+		cout << "Usted ya esta logueado." << endl;
+		return;
+	}
+
 	while (!this->estaLogueado) {
 		std::string user;
 		std::string pass;
@@ -252,6 +275,11 @@ void Cliente::logearseAlServidor() {
 }
 
 void Cliente::enviarMensajeAlChat() {
+	if (!this->estaLogueado) {
+		cout << "Necesita estar logueado para realizar esta accion." << endl;
+		return;
+	}
+
 	this->enviandoMensaje = true;
 	mostrarMenuMensajeChat();
 	std::cout << "Ingrese el mensaje a enviar al chat" << std::endl;
@@ -267,6 +295,11 @@ void Cliente::enviarMensajeAlChat() {
 }
 
 void Cliente::enviarMensajePrivado() {
+	if (!this->estaLogueado) {
+		cout << "Necesita estar logueado para realizar esta accion." << endl;
+		return;
+	}
+
 	this->enviandoMensaje = true;
 	mostrarMenuMensajePrivado();
 	std::cout << "Ingrese el destinatario" << std::endl;
