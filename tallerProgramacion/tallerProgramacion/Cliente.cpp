@@ -35,6 +35,7 @@ void Cliente::cerrarCliente() {
 	this->conexionDelCliente->cerrarConexion();
 	this->clienteActivo = false;
 	this->estaLogueado = false;
+	this->conexionViva = false;
 }
 
 void Cliente::leerClientConfig() {
@@ -336,9 +337,6 @@ void Cliente::procesarDatosRecibidos() {
 			case ComandoCliente::RESULTADO_RETRIEVE_MESSAGES:
 				mostrarMensajesPrivados(mensajeDeRed);
 				break;
-			case ComandoCliente::PING:
-				procesarSolicitudPing(mensajeDeRed);
-				break;
 			case ComandoCliente::RECIEVE_PRIVATE_MESSAGES:
 				procesarMensajesPrivados(mensajeDeRed);
 				break;
@@ -356,6 +354,7 @@ void Cliente::procesarDatosRecibidos() {
 			case ComandoCliente::RESULTADO_PING:
 				Logger::getInstance()->log(Debug, "Recibio un RESULTADO_PING");
 				this->conexionViva = true;
+				break;
 			case ComandoCliente::RESULTADO_USUARIOS:
 				Logger::getInstance()->log(Debug, "se recibio una lista de usuarios");
 				mostrarUsuariosConectados(mensajeDeRed);
@@ -405,12 +404,6 @@ void Cliente::procesarResultadoLogin(MensajeDeRed* mensajeDeRed) {
 	}
 }
 
-void Cliente::procesarSolicitudPing(MensajeDeRed* mensajeDeRed) {
-	Logger::getInstance()->log(Debug, "Un cliente recibio un PING");
-	//this->conexionViva = true;
-	this->conexionDelCliente->enviarRespuestaPingAServidor();
-}
-
 void Cliente::enviarPingAServidor() {
 	while (this->conexionViva) {
 		m_procesarPing.lock();
@@ -418,17 +411,16 @@ void Cliente::enviarPingAServidor() {
 		m_procesarPing.unlock();
 		Logger::getInstance()->log(Debug, "Cliente enviando PING al servidor");
 		this->conexionDelCliente->enviarSolicitudPing();
-
 		std::this_thread::sleep_for(std::chrono::milliseconds(Constantes::PING_DELAY)); 
-		Logger::getInstance()->log(Debug, "conexionViva despues del sleep en Cliente.cpp: " + conexionViva);
 	}
-
-	// No recibio respuesta al ping -> conexionViva = false -> cerrar todo
-	this->desconectarseDelServidor();
+	std::cout << "Desconectando del servidor por falta de respuesta..." << std::endl;
 	Logger::getInstance()->log(Debug, "Se desconecto un cliente del servidor por falta de respuesta al ping");
 	std::cout << "Se ha desconectado del servidor" << std::endl;
-	this->cerrarCliente();
 
+	if (this->conexionDelCliente->getConexionActiva()) {
+		// Valido que no se haya cerrado previamente la conexion
+		this->conexionDelCliente->cerrarConexion();
+	}
 }
 
 void Cliente::mostrarMenuLogin() {

@@ -24,8 +24,6 @@ string Constantes::getComandoServidor(ComandoServidor comando)
 		return "RETRIEVE_MESSAGES";
 	case ComandoServidor::VACIO:
 		return "VACIO";
-	case ComandoServidor::RESULTADO_PING:
-		return "RESULTADO_PING";
 	case ComandoServidor::USUARIOS:
 		return "USUARIOS";
 	default:
@@ -54,10 +52,6 @@ ComandoServidor Constantes::getConstComandoServidor(string comando){
 	{
 		return ComandoServidor::VACIO;
 	}
-	if (comando.compare("RESULTADO_PING") == 0)
-	{
-		return ComandoServidor::RESULTADO_PING;
-	}
 	if (comando.compare("USUARIOS") == 0)
 	{
 		return ComandoServidor::USUARIOS;
@@ -82,8 +76,6 @@ string Constantes::getComandoCliente(ComandoCliente comando)
 		return "RESULTADO_SEND_MESSAGE";
 	case ComandoCliente::RESULTADO_RETRIEVE_MESSAGES:
 		return "RESULTADO_RETRIEVE_MESSAGES";
-	case ComandoCliente::PING:
-		return "PING";
 	case ComandoCliente::RECIEVE_GLOBAL_MESSAGES:
 		return "RECIEVE_GLOBAL_MESSAGES";
 	case ComandoCliente::RECIEVE_PRIVATE_MESSAGES:
@@ -117,10 +109,6 @@ ComandoCliente Constantes::getConstComandoCliente(string comando) {
 
 	if (comando.compare("RESULTADO_RETRIEVE_MESSAGES") == 0) {
 		return ComandoCliente::RESULTADO_RETRIEVE_MESSAGES;
-	}
-
-	if (comando.compare("PING") == 0) {
-		return ComandoCliente::PING;
 	}
 
 	if (comando.compare("RECIEVE_GLOBAL_MESSAGES") == 0) {

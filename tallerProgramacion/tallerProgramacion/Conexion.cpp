@@ -10,7 +10,11 @@ Conexion::Conexion(SOCKET unSocket, Servidor* servidor) {
 	this->conexionViva = true;
 	this->usuarioConectado = NULL;
 	this->t_procesarDatosRecibidos = std::thread(&Conexion::procesarDatosRecibidos, this);
-	this->t_procesarPing = std::thread(&Conexion::enviarPingACliente, this);
+	this->t_procesarPing = std::thread(&Conexion::procesarPing, this);
+}
+
+Conexion::~Conexion() {
+
 }
 
 void Conexion::cerrarConexion() {
@@ -19,10 +23,6 @@ void Conexion::cerrarConexion() {
 
 	if (t_procesarDatosRecibidos.joinable()) {
 		t_procesarDatosRecibidos.join();
-	}
-
-	if (t_procesarDatosRecibidos.joinable()) {
-		t_procesarPing.join();
 	}
 
 	if (this->getConexionConCliente() != NULL) {
@@ -36,15 +36,10 @@ void Conexion::procesarSolicitudPing() {
 	MensajeDeRed* mensajeDeRed = new MensajeDeRed(comando);
 	string mensaje = mensajeDeRed->getComandoClienteSerializado();
 	int tamanio = mensaje.length() + 1;
-	Logger::getInstance()->log(Debug, "Enviando mensaje");
 	Logger::getInstance()->log(Debug, mensaje);
-	if (this->conexionConCliente->getSocket().enviarDatos(mensaje.c_str(), tamanio)) {
-		Logger::getInstance()->log(Debug, "RESULTADO_PING Servidor->Cliente enviado OK");
-	}
-	else {
-		Logger::getInstance()->log(Debug, "RESULTADO_PING Servidor->Cliente enviado NOK");
-	}
-
+	this->conexionViva = true;
+	Logger::getInstance()->log(Debug, "Enviando respuesta de ping a cliente");
+	this->conexionConCliente->getSocket().enviarDatos(mensaje.c_str(), tamanio);
 }
 
 void Conexion::procesarSend_Message(MensajeDeRed* unMensajeDeRed) {
@@ -166,26 +161,17 @@ void Conexion::enviarChatGlobal(bool tipoDeChat, string unEmisor, string unMensa
 	this->conexionConCliente->getSocket().enviarDatos(mensaje.c_str(), tamanio);
 }
 
-void Conexion::enviarPingACliente() {
+void Conexion::procesarPing() {
 	while (this->conexionViva) {
 		m_procesarPing.lock();
 		this->conexionViva = false;
 		m_procesarPing.unlock();
-		ComandoCliente comando = ComandoCliente::PING;
-		MensajeDeRed* mensajeDeRed = new MensajeDeRed(comando);
-		string mensaje = mensajeDeRed->getComandoClienteSerializado();
-		int tamanio = mensaje.length() + 1;
-		Logger::getInstance()->log(Debug, mensaje);
-		this->conexionConCliente->getSocket().enviarDatos(mensaje.c_str(), tamanio);
-
 		std::this_thread::sleep_for(std::chrono::milliseconds(Constantes::PING_DELAY));
-		Logger::getInstance()->log(Debug, "conexionViva despues del sleep en Conexion.cpp: " + this->conexionViva);
 	}
-	
-	// No recibio respuesta al ping -> conexionViva = false -> cerrar todo
-	//this->cerrarConexion(); // TODO: validar esto
-	Logger::getInstance()->log(Debug, "Se desconecto un cliente por falta de respuesta al ping");
-	std::cout << "Se ha desconectado un cliente" << std::endl;
+
+	std::cout << "Desconectando a cliente por falta de respuesta..." << std::endl;
+	Logger::getInstance()->log(Debug, "Desconectando a cliente por falta de respuesta...");
+	this->conexionConCliente->setConexionActiva(false);
 }
 
 /* Procesa los mensajes recibidos por los clientes */
@@ -239,9 +225,6 @@ void Conexion::procesarDatosRecibidos() {
 				Logger::getInstance()->log(Debug, "Recibio un Retrieve_message");
 				procesarRetrieve_Messages(mensajeDeRed);
 				break;
-			case ComandoServidor::RESULTADO_PING:
-				Logger::getInstance()->log(Debug, "Recibio un RESULTADO_PING");
-				this->conexionViva = true;
 			case ComandoServidor::USUARIOS:
 				Logger::getInstance()->log(Debug, "Recibio peticion de Usuarios");
 				procesarPeticionListaDeUsuarios();

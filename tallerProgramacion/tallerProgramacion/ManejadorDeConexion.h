@@ -17,6 +17,7 @@ public:
 	void cerrarConexion();
 	SocketSincronico getSocket() { return *this->socket; };
 	bool getConexionActiva() { return this->conexionActiva; };
+	void setConexionActiva(bool conexionActiva) { this->conexionActiva = conexionActiva; }
 	void notificarDatosAEnviar();
 	void notificarDatoARecibir();
 protected:

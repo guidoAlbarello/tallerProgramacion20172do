@@ -196,17 +196,34 @@ void Servidor::mostrarUsuariosConectados() {
 		Logger::getInstance()->log(Debug, "En este momento no hay usuarios conectados a la aplicacion");
 	}
 	else {
-		Logger::getInstance()->log(Debug, "Usuarios conectados:");
+		std::vector<std::string> usuariosConectados;
+		bool hayUsuariosConConexionActiva = false;
 		for (unsigned int i = 0; i < conexionesActivas.size(); i++) {
-			if (conexionesActivas[i]->getUsuario() != NULL) {
-				string unUsuario = "Usuario: " + conexionesActivas[i]->getUsuario()->getNombre();
-				std::cout << unUsuario << std::endl;
-				Logger::getInstance()->log(Debug, unUsuario);
+			if (conexionesActivas[i]->getConexionActiva()) {
+				hayUsuariosConConexionActiva = true;
+				if (conexionesActivas[i]->getUsuario() != NULL) {
+					usuariosConectados.push_back(conexionesActivas[i]->getUsuario()->getNombre());
+					//string unUsuario = "Usuario: " + conexionesActivas[i]->getUsuario()->getNombre();
+					//std::cout << unUsuario << std::endl;
+					//Logger::getInstance()->log(Debug, unUsuario);
+				}
+				else {
+					usuariosConectados.push_back("Usuario conectado sin loguear");
+					//std::cout << "Usuario conectado sin loguear" << std::endl;
+					//Logger::getInstance()->log(Debug, "Usuario conectado sin loguear");
+				}
 			}
-			else {
-				std::cout << "Usuario conectado sin loguear" << std::endl;
-				Logger::getInstance()->log(Debug, "Usuario conectado sin loguear");
+		}
+		if (hayUsuariosConConexionActiva) {
+			Logger::getInstance()->log(Debug, "Usuarios conectados:");
+			for (int i = 0; i < usuariosConectados.size(); i++) {
+				std::cout << usuariosConectados[i] << std::endl;
+				Logger::getInstance()->log(Debug, usuariosConectados[i]);
 			}
+		}
+		else {
+			std::cout << "En este momento no hay usuarios conectados a la aplicacion" << std::endl;
+			Logger::getInstance()->log(Debug, "En este momento no hay usuarios conectados a la aplicacion");
 		}
 		std::cout << std::endl;
 	}

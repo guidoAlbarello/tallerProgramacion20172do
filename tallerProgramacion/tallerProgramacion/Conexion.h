@@ -16,12 +16,14 @@ class Servidor;  // Declaracion forward de la clase Servidor
 class Conexion {
 public:
 	Conexion(SOCKET unSocket, Servidor* servidor);
+	~Conexion();
 	void cerrarConexion();
 	Usuario* getUsuario() { return usuarioConectado; }
 	ManejadorDeConexionConexion* getConexionConCliente() { return this->conexionConCliente; };
 	void enviarChatGlobal(bool tipoDeChat, string unEmisor, string unMensaje);
 	void procesarSolicitudPing();
-	void enviarPingACliente();
+	void procesarPing();
+	bool getConexionActiva() { return this->conexionActiva; };
 private:
 	ManejadorDeConexionConexion* conexionConCliente;
 	void procesarSend_Message(MensajeDeRed* unMensajeDeRed);

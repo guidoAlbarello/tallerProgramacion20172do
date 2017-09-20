@@ -12,5 +12,4 @@ public:
 	bool realizarPeticionUsuarios();
 	bool devolverMensajesPrivados();
 	bool enviarSolicitudPing();
-	bool enviarRespuestaPingAServidor();
 };
