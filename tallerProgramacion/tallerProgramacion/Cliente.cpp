@@ -118,14 +118,14 @@ void Cliente::mostrarMenuPrincipal() {
 }
 
 void Cliente::conectarseAlServidor() {
-	//if (!this->conexionDelCliente->getConexionActiva()) {
-	Logger::getInstance()->log(Debug, "Conectando al servidor...");
-	std::cout << "Conectando al servidor..." << std::endl;
-	this->conexionDelCliente->iniciarConexion(configuracion->getIP(), configuracion->getPuerto());
-	this->conexionViva = true;
-	this->t_procesarPing = std::thread(&Cliente::enviarPingAServidor, this);
-	this->t_procesarDatosRecibidos = std::thread(&Cliente::procesarDatosRecibidos, this);
-
+	if (!this->conexionViva) {
+		Logger::getInstance()->log(Debug, "Conectando al servidor...");
+		std::cout << "Conectando al servidor..." << std::endl;
+		this->conexionDelCliente->iniciarConexion(configuracion->getIP(), configuracion->getPuerto());
+		this->conexionViva = true;
+		this->t_procesarPing = std::thread(&Cliente::enviarPingAServidor, this);
+		this->t_procesarDatosRecibidos = std::thread(&Cliente::procesarDatosRecibidos, this);
+	}
 	//}
 	//else {
 	//	Logger::getInstance()->log(Debug, "Conectando al servidor...");

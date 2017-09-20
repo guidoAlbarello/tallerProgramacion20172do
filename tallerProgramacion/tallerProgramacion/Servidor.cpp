@@ -57,13 +57,20 @@ void Servidor::iniciarServidor() {
 void Servidor::cerrarServidor() {
 	Logger::getInstance()->log(Debug, "se realiza el cierre del servidor");
 	this->servidorActivo = false;
+	try {
+		if (t_escucharClientes.joinable()) {
+			t_escucharClientes.join();
+		}
 
-	if (t_escucharClientes.joinable()) {
-		t_escucharClientes.join();
-	}
+		if (t_enviarChatGlobal.joinable()) {
+			t_enviarChatGlobal.join();
+		}
+	} catch (exception e) {}
 
 	this->conexionDelServidor->cerrarConexion();
 	delete this->conexionDelServidor;
+	delete this->configuracion;
+	delete this->buzonDeChatGlobal;
 }
 
 void Servidor::verificarConexiones() {
@@ -129,7 +136,21 @@ void Servidor::correrCicloPrincipal() {
 			Logger::getInstance()->log(Actividad, "se ingresa la opcion " + input + "en el menu de servidor");
 			switch (opcionElegida) {
 			case '1':
-				cerrarTodasLasConexiones();
+				if (this->conexionesActivas.size() != 0) {
+					string confirmacionUsuario;
+					while (confirmacionUsuario.length() != 1) {
+						std::cout << "Todavia hay conexiones activas en el servidor, esta seguro que desea cerrarlas? Para cerrarlas presione la tecla 'y' , sino presione cualquier otra: ";
+						std::getline(std::cin, confirmacionUsuario);
+					}
+
+					if(confirmacionUsuario.compare("y"))
+						cerrarTodasLasConexiones();
+						cerrarServidor();
+				} else {
+					cerrarTodasLasConexiones();
+					cerrarServidor();
+				}
+				
 				break;
 			case '2':
 				cambiarNivelLogeo();
@@ -173,8 +194,12 @@ void Servidor::agregarNuevaConexionEntrante(SOCKET unCliente) {
 void Servidor::cerrarTodasLasConexiones() {
 	Logger::getInstance()->log(Debug, "Cerrando todas las conexiones del servidor...");
 	for (unsigned int i = 0; i < conexionesActivas.size(); i++) {
-		conexionesActivas[i]->cerrarConexion();
+		Conexion* unaConexion = conexionesActivas[i];
+		unaConexion->cerrarConexion();
+		delete unaConexion;
 	}
+
+	conexionesActivas.erase(conexionesActivas.begin(), conexionesActivas.end());
 }
 
 void Servidor::cambiarNivelLogeo() {
