@@ -1,7 +1,0 @@
-20-09-2017 04:01:49 - Debug - Iniciando servidor...
-20-09-2017 04:01:49 - Debug - se lee la configuracion del servidor
-20-09-2017 04:01:49 - Debug - [ServerConfig] Parseando configuracion del servidor: server-config.xml
-20-09-2017 04:01:49 - Debug - [ServerConfig] server-config.xml se parseo exitosamente.
-20-09-2017 04:01:49 - Debug - [ServerConfig] Configuracion del servidor: PUERTO: 15636, MAXIMOS CLIENTES: 8.
-20-09-2017 04:01:49 - Debug - Existe archivo y se logea
-20-09-2017 04:01:49 - Error - Fallo la creacion del socket del servidor escuchando en el puerto = 15636
