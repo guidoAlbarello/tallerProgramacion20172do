@@ -61,6 +61,7 @@ void Cliente::correrCicloPrincipal() {
 				std::cout << "Debe ingresar una de las opciones" << std::endl;
 			} else {
 				char opcionElegida = input[0];
+				Logger::getInstance()->log(Actividad, "Se ingresa la opcion " + input + " en el menu del cliente");
 				switch (opcionElegida) {
 				case '1':
 					conectarseAlServidor();
@@ -143,7 +144,7 @@ void Cliente::hacerTestDeEstres() {
 	std::string stressFileName = this->configuracion->getPath();
 	if (!existeArchivo(stressFileName)) {
 		std::cout << "No existe el archivo de Test de Stress definido en la configuracion de usuario" << endl;
-		Logger::getInstance()->log(Debug, "No se pudo encontrar el archivo " + this->configuracion->getPath() + " para comenzar el test de stress");
+		Logger::getInstance()->log(Error, "No se pudo encontrar el archivo " + this->configuracion->getPath() + " para comenzar el test de stress");
 		return;
 	}
 	std::cout << "Ingrese la cantidad de milisegundos para la prueba" << endl;
@@ -297,6 +298,7 @@ void Cliente::mostrarUsuariosConectados(MensajeDeRed * unMensajeDeRed)
 
 void Cliente::procesarMensajesGlobales(MensajeDeRed * unMensajeDeRed) {
 	if (unMensajeDeRed->getParametro(0).compare("RECIEVE_GLOBAL_MESSAGES_OK") == 0) {
+		Logger::getInstance()->log(Debug, "se procesa un recieve_global_messages_ok");
 		for (int i = 1; i < unMensajeDeRed->getCantidadDeParametros(); i++) {
 			string unEmisor = unMensajeDeRed->getParametro(i);
 			string unMensaje = unMensajeDeRed->getParametro(++i);
@@ -309,6 +311,7 @@ void Cliente::procesarMensajesGlobales(MensajeDeRed * unMensajeDeRed) {
 
 void Cliente::procesarMensajesPrivados(MensajeDeRed * unMensajeDeRed) {
 	if (unMensajeDeRed->getParametro(0).compare("RECIEVE_PRIVATE_MESSAGES_OK") == 0) {
+		Logger::getInstance()->log(Debug, "se procesa un recieve_private_messages_ok");
 		for (int i = 1; i < unMensajeDeRed->getCantidadDeParametros(); i++) {
 			string unEmisor = unMensajeDeRed->getParametro(i);
 			string unMensaje = unMensajeDeRed->getParametro(++i);

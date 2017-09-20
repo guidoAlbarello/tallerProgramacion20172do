@@ -55,7 +55,7 @@ void Servidor::iniciarServidor() {
 }
 
 void Servidor::cerrarServidor() {
-	
+	Logger::getInstance()->log(Debug, "se realiza el cierre del servidor");
 	this->servidorActivo = false;
 
 	if (t_escucharClientes.joinable()) {
@@ -84,6 +84,7 @@ void Servidor::verificarConexiones() {
 }
 
 void Servidor::leerServerConfig() {
+	Logger::getInstance()->log(Debug, "se lee la configuracion del servidor");
 	this->configuracion->leerConfiguracion();
 }
 
@@ -100,6 +101,7 @@ Usuario* Servidor::buscarUsuario(std::string unUsuario) {
 }
 
 Usuario* Servidor::usuarioValido(std::string usuarioBuscado, std::string contraseniaBuscada) {
+
 	std::vector<Usuario*> listaDeUsuarios = this->configuracion->getUsuarios();
 	Usuario* unUsuario = NULL;
 	std::transform(usuarioBuscado.begin(), usuarioBuscado.end(), usuarioBuscado.begin(), ::toupper);
@@ -128,6 +130,7 @@ void Servidor::correrCicloPrincipal() {
 			}
 			else {
 				char opcionElegida = input[0];
+				Logger::getInstance()->log(Actividad, "se ingresa la opcion "+ input + "en el menu de servidor");
 				switch (opcionElegida) {
 				case '1':
 					cerrarTodasLasConexiones();
@@ -191,6 +194,7 @@ void Servidor::cambiarNivelLogeo() {
 		}
 		else {
 			char opcionElegida = input[0];
+			Logger::getInstance()->log(Actividad, "se ingresa la opcion " + input + " en el menu de cambio de nivel de logue0");
 			switch (opcionElegida) {
 			case '1':
 				Logger::getInstance()->setMode(LogMode::Error);

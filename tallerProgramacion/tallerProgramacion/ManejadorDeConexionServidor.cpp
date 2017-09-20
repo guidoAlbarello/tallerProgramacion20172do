@@ -10,14 +10,14 @@ void ManejadorDeConexionServidor::iniciarConexion(std::string puertoEscucha, int
 	}
 	else {
 		cout << "Fallo la inicializacion del servidor" << endl;
-		Logger::getInstance()->log(Debug, "Fallo la creacion del socket del servidor escuchando en el puerto = " + puertoEscucha);
+		Logger::getInstance()->log(Error, "Fallo la creacion del socket del servidor escuchando en el puerto = " + puertoEscucha);
 
 	}
 }
 
 SOCKET ManejadorDeConexionServidor::hayClienteIntentandoConectarse(size_t conexionesActivas, int maxClientes) {
 	if (conexionesActivas >= maxClientes) {
-		Logger::getInstance()->log(Debug, "Un cliente no se pudo conectar debido a que se llego al maximo de conexiones aceptadas");
+		Logger::getInstance()->log(Error, "Un cliente no se pudo conectar debido a que se llego al maximo de conexiones aceptadas");
 		return INVALID_SOCKET;
 	}
 

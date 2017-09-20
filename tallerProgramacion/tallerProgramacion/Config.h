@@ -3,6 +3,7 @@
 #define CLIENT_H
 
 #include <string>
+#include "Logger.h"
 #include "../lib/rapidxml-1.13/rapidxml.hpp"
 
 using namespace std;

@@ -8,9 +8,11 @@ Config::Config() {
 void Config::leerConfiguracion() {
 	if (this->existeArchivo(this->nombreConfiguracionPredeterminada)) {
 		this->parsearArchivoXML(this->nombreConfiguracionPredeterminada);
+		Logger::getInstance()->log(Debug, "Existe archivo y se logea");
 	}
 	else {
 		this->crearConfiguracionPredeterminada();
+		Logger::getInstance()->log(Debug, "No existe el archivo y se lee del predetermiando");
 	}
 }
 
