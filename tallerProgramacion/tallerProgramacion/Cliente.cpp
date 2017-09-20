@@ -174,7 +174,7 @@ void Cliente::hacerTestDeEstres() {
 	}
 	std::cout << "Ingreso: " << stressTimeMillis << "ms" << endl;
 
-	Logger::getInstance()->log(Debug, "Ejecutando test de estres durante los proximos " + to_string(stressTimeMillis) + "ms");
+	Logger::getInstance()->log(Actividad, "Ejecutando test de estres durante los proximos " + to_string(stressTimeMillis) + "ms");
 
 	leerTestXML(stressFileName, stressTimeMillis);
 }
@@ -184,7 +184,7 @@ void Cliente::leerTestXML(std::string stressFileName, int stressTimeMillis) {
 	auto tComienzo = std::chrono::high_resolution_clock::now();
 	std::chrono::milliseconds tConsumidoMs(0);
 
-	Logger::getInstance()->log(Debug, "Leyendo el archivo de test " + this->configuracion->getPath());
+	Logger::getInstance()->log(Actividad, "[Cliente.cpp] Leyendo el archivo de test " + this->configuracion->getPath());
 
 	try {
 		rapidxml::xml_document<> documento;
@@ -201,13 +201,15 @@ void Cliente::leerTestXML(std::string stressFileName, int stressTimeMillis) {
 				std::string nuevoMensaje = unNodoMensaje->value();
 				this->conexionDelCliente->enviarMensajeGlobal(nuevoMensaje);
 			}
+			Logger::getInstance()->log(Actividad, "[Cliente.cpp] Finalizo el test de stress");
+		}
+		else {
+			Logger::getInstance()->log(LogMode::Error, "[Cliente.cpp] No se encontro el nodo 'StressTest' en el archivo de test XML. No se puede realizar el test de estres.");
 		}
 	} catch (std::exception& e) {
-		Logger::getInstance()->log(LogMode::Error, "[" + DEBUG_SERVER_TAG + "] Hubo un error al parsear el archivo de configuracion del servidor.");
+		Logger::getInstance()->log(LogMode::Error, "[Cliente.cpp] Hubo un error al parsear el archivo de configuracion del servidor.");
 		cout << e.what();
 	}
-
-	Logger::getInstance()->log(Debug, "Finalizo el test de stress");
 }
 
 bool Cliente::existeArchivo(const std::string& nombreDeArchivo) {
