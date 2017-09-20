@@ -16,7 +16,7 @@ class Constantes
 public:
 	static constexpr const char* CLIENTE = "CLIENTE";
 	static constexpr const char* SERVIDOR = "SERVIDOR";
-	static const char separador = (char)'/0';
+	static const char separador = char(6);
 	string getComandoServidor(ComandoServidor comando);
 	string getComandoCliente(ComandoCliente);
 	ComandoServidor getConstComandoServidor(string comando);
