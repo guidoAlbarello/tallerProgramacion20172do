@@ -26,6 +26,10 @@ void Conexion::cerrarConexion() {
 	if (t_procesarDatosRecibidos.joinable()) {
 		t_procesarDatosRecibidos.join();
 	}
+	if (t_procesarPing.joinable()) {
+		t_procesarPing.join();
+	}
+
 
 	if (this->getConexionConCliente() != NULL) {
 		this->getConexionConCliente()->cerrarConexion();

@@ -73,12 +73,13 @@ void Servidor::verificarConexiones() {
 				if (!this->conexionesActivas.at(i)->getConexionCerrada()) {
 					if (!this->conexionesActivas.at(i)->getConexionActiva()) {
 						this->conexionesActivas.at(i)->cerrarConexion();
+						delete (this->conexionesActivas.at(i));
 						this->conexionesActivas.erase(this->conexionesActivas.begin() + i);
 					}
 				}
 			}
 		}
-		std::this_thread::sleep_for(std::chrono::milliseconds(4000));
+		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 	}
 }
 

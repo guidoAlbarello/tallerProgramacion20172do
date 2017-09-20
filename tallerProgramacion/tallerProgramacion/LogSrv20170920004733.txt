@@ -1,0 +1,60 @@
+20-09-2017 12:47:33 - Debug - Iniciando servidor...
+20-09-2017 12:47:33 - Debug - [ServerConfig] Parseando configuracion del servidor: server-config.xml
+20-09-2017 12:47:33 - Debug - [ServerConfig] server-config.xml se parseo exitosamente.
+20-09-2017 12:47:33 - Debug - [ServerConfig] Configuracion del servidor: PUERTO: 15636, MAXIMOS CLIENTES: 8.
+20-09-2017 12:47:33 - Debug - Se creo correctamente el socket del servidor escuchando en el puerto = 15636
+20-09-2017 12:47:40 - Debug - PING
+20-09-2017 12:47:40 - Debug - Recibio un PING
+20-09-2017 12:47:40 - Debug - RESULTADO_PING
+20-09-2017 12:47:40 - Debug - Enviando respuesta de ping a cliente
+20-09-2017 12:47:42 - Debug - LOGJuan123
+20-09-2017 12:47:42 - Debug - Recibio un LOG
+20-09-2017 12:47:42 - Debug - El login fue satisfactorio
+20-09-2017 12:47:42 - Debug - Enviando mensaje
+20-09-2017 12:47:42 - Debug - RESULTADO_LOGINLOGIN_OKEl login fue satisfactorio
+20-09-2017 12:47:48 - Debug - PING
+20-09-2017 12:47:48 - Debug - Recibio un PING
+20-09-2017 12:47:48 - Debug - RESULTADO_PING
+20-09-2017 12:47:48 - Debug - Enviando respuesta de ping a cliente
+20-09-2017 12:47:56 - Debug - PING
+20-09-2017 12:47:56 - Debug - Recibio un PING
+20-09-2017 12:47:56 - Debug - RESULTADO_PING
+20-09-2017 12:47:56 - Debug - Enviando respuesta de ping a cliente
+20-09-2017 12:47:57 - Debug - PING
+20-09-2017 12:47:57 - Debug - Recibio un PING
+20-09-2017 12:47:57 - Debug - RESULTADO_PING
+20-09-2017 12:47:57 - Debug - Enviando respuesta de ping a cliente
+20-09-2017 12:48:02 - Debug - LOGMaria654
+20-09-2017 12:48:02 - Debug - Recibio un LOG
+20-09-2017 12:48:02 - Debug - El login fue satisfactorio
+20-09-2017 12:48:02 - Debug - Enviando mensaje
+20-09-2017 12:48:02 - Debug - RESULTADO_LOGINLOGIN_OKEl login fue satisfactorio
+20-09-2017 12:48:04 - Debug - PING
+20-09-2017 12:48:04 - Debug - Recibio un PING
+20-09-2017 12:48:04 - Debug - RESULTADO_PING
+20-09-2017 12:48:04 - Debug - Enviando respuesta de ping a cliente
+20-09-2017 12:48:05 - Debug - PING
+20-09-2017 12:48:05 - Debug - Recibio un PING
+20-09-2017 12:48:05 - Debug - RESULTADO_PING
+20-09-2017 12:48:05 - Debug - Enviando respuesta de ping a cliente
+20-09-2017 12:48:12 - Debug - PING
+20-09-2017 12:48:12 - Debug - Recibio un PING
+20-09-2017 12:48:12 - Debug - RESULTADO_PING
+20-09-2017 12:48:12 - Debug - Enviando respuesta de ping a cliente
+20-09-2017 12:48:13 - Debug - PING
+20-09-2017 12:48:13 - Debug - Recibio un PING
+20-09-2017 12:48:13 - Debug - RESULTADO_PING
+20-09-2017 12:48:13 - Debug - Enviando respuesta de ping a cliente
+20-09-2017 12:48:20 - Debug - PING
+20-09-2017 12:48:20 - Debug - Recibio un PING
+20-09-2017 12:48:20 - Debug - RESULTADO_PING
+20-09-2017 12:48:20 - Debug - Enviando respuesta de ping a cliente
+20-09-2017 12:48:25 - Debug - PING
+20-09-2017 12:48:25 - Debug - Recibio un PING
+20-09-2017 12:48:25 - Debug - RESULTADO_PING
+20-09-2017 12:48:25 - Debug - Enviando respuesta de ping a cliente
+20-09-2017 12:48:28 - Debug - PING
+20-09-2017 12:48:28 - Debug - Recibio un PING
+20-09-2017 12:48:28 - Debug - RESULTADO_PING
+20-09-2017 12:48:28 - Debug - Enviando respuesta de ping a cliente
+20-09-2017 12:48:29 - Debug - Desconectando a cliente por falta de respuesta...
