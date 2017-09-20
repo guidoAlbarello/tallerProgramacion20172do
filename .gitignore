@@ -8,6 +8,7 @@
 *.sln.docstates
 *.opendb
 .vs/
+*.txt
 
 
 Browse.VC.db

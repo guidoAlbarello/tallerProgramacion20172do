@@ -12,5 +12,6 @@ public:
 	bool realizarPeticionUsuarios();
 	bool devolverMensajesPrivados();
 	void borrarEntorno();
+
 	bool enviarSolicitudPing();
 };

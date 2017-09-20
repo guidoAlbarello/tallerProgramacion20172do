@@ -3,6 +3,7 @@
 
 class ManejadorDeConexionServidor : public ManejadorDeConexion {
 public:
+
 	void iniciarConexion(std::string puertoEscucha, int cantidadConexionesMaxima);
 	SOCKET hayClienteIntentandoConectarse(size_t conexionesActivas, int maxClientes);
 	void borrarEntorno();

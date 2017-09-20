@@ -2,6 +2,8 @@
 #include "Logger.h"
 #include <iostream>
 
+
+
 void ManejadorDeConexionServidor::iniciarConexion(std::string puertoEscucha, int cantidadConexionesMaxima) {
 	int resultadoConexion = this->socket->crearSocketServidor(puertoEscucha, cantidadConexionesMaxima);
 	if (resultadoConexion == 0) {

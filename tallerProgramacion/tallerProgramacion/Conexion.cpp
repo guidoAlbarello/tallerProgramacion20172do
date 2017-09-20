@@ -25,12 +25,14 @@ void Conexion::cerrarConexion() {
 		if (t_procesarDatosRecibidos.joinable()) {
 			t_procesarDatosRecibidos.join();
 		}
+
+		if (this->getConexionConCliente() != NULL) {
+			this->getConexionConCliente()->cerrarConexion();
+		}
 	} catch (exception e) {
 	}
 
-	if (this->getConexionConCliente() != NULL) {
-		this->getConexionConCliente()->cerrarConexion();
-	}
+	
 }
 
 void Conexion::procesarSolicitudPing() {
