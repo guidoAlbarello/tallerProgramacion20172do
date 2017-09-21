@@ -157,6 +157,8 @@ void Cliente::desconectarseDelServidor() {
 		}
 
 		if (this->conexionDelCliente != NULL) {
+			//Ver de ponerle un timeout al socket cuando se crea, para no cerrar el socket a lo negro
+			this->conexionDelCliente->getSocket().cerrarSocket();
 			this->conexionDelCliente->cerrarConexion();
 		}
 	} catch (exception e) {
