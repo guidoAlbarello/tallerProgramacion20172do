@@ -24,6 +24,7 @@ public:
 	~Constantes();
 	static Constantes* getInstance();
 	static constexpr const int PING_DELAY = 1000; // grande por ahora para que no moleste
+	static constexpr const int RECV_TIMEOUT = 3000;  //3 segundos
 private:
 	Constantes();
 	static Constantes* instance;
