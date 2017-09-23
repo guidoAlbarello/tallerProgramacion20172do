@@ -77,12 +77,10 @@ void Servidor::cerrarServidor() {
 void Servidor::verificarConexiones() {
 	if (this->conexionesActivas.size() > 0) {
 		for (int i = 0; i < this->conexionesActivas.size(); i++) {
-			if (!this->conexionesActivas.at(i)->getConexionCerrada()) {
-				if (!this->conexionesActivas.at(i)->getConexionActiva()) {
-					this->conexionesActivas.at(i)->cerrarConexion();
-					delete (this->conexionesActivas.at(i));
-					this->conexionesActivas.erase(this->conexionesActivas.begin() + i);
-				}
+			if (!this->conexionesActivas.at(i)->getConexionActiva()) {
+				this->conexionesActivas.at(i)->cerrarConexion();
+				delete (this->conexionesActivas.at(i));
+				this->conexionesActivas.erase(this->conexionesActivas.begin() + i);
 			}
 		}
 	}
@@ -144,7 +142,7 @@ void Servidor::correrCicloPrincipal() {
 						std::getline(std::cin, confirmacionUsuario);
 					}
 
-					if(confirmacionUsuario.compare("y"))
+					if(confirmacionUsuario.compare("y") == 0)
 						cerrarTodasLasConexiones();
 						cerrarServidor();
 				} else {

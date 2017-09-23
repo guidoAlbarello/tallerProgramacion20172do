@@ -8,7 +8,6 @@ Conexion::Conexion(SOCKET unSocket, Servidor* servidor) {
 	this->conexionConCliente->iniciarConexion();
 	this->conexionActiva = true;
 	this->conexionViva = true;
-	this->conexionCerrada = false;
 	this->usuarioConectado = NULL;
 	this->t_procesarDatosRecibidos = std::thread(&Conexion::procesarDatosRecibidos, this);
 }
@@ -20,7 +19,6 @@ Conexion::~Conexion() {
 void Conexion::cerrarConexion() {
 	this->conexionActiva = false;
 	this->conexionViva = false;
-	this->conexionCerrada = true;
 	try {
 		if (t_procesarDatosRecibidos.joinable()) {
 			t_procesarDatosRecibidos.join();
@@ -62,7 +60,6 @@ void Conexion::procesarSend_Message(MensajeDeRed* unMensajeDeRed) {
 			this->conexionConCliente->getSocket().enviarDatos(mensaje.c_str(), tamanio);
 		} else {
 			this->getUsuario()->enviarMensaje(usuarioDestinatario, unMensajeDeRed->getParametro(1));
-			this->servidor->enviarMensajePrivado(this->getUsuario()->getNombre(), unMensajeDeRed->getParametro(1));
 			ComandoCliente comando = ComandoCliente::RESULTADO_SEND_MESSAGE;
 			MensajeDeRed* mensajeDeRed = new MensajeDeRed(comando);
 			mensajeDeRed->agregarParametro("SEND_MESSAGE_OK"); // ResultCode

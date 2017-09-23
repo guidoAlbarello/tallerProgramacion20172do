@@ -18,7 +18,7 @@ void ManejadorDeConexionServidor::iniciarConexion(std::string puertoEscucha, int
 }
 
 SOCKET ManejadorDeConexionServidor::hayClienteIntentandoConectarse(size_t conexionesActivas, int maxClientes) {
-	if (conexionesActivas >= maxClientes) {
+	if (conexionesActivas > maxClientes) {
 		Logger::getInstance()->log(Error, "Un cliente no se pudo conectar debido a que se llego al maximo de conexiones aceptadas");
 		return INVALID_SOCKET;
 	}
