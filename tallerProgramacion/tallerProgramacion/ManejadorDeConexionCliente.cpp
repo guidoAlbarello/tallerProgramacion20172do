@@ -4,7 +4,7 @@
 #include "MensajeDeRed.h"
 #include <iostream>
 
-void ManejadorDeConexionCliente::iniciarConexion(std::string ipServidor, std::string puertoServidor) {
+bool ManejadorDeConexionCliente::iniciarConexion(std::string ipServidor, std::string puertoServidor) {
 	int resultadoConexion = this->socket->crearSocketCliente(ipServidor, puertoServidor);
 	this->t_EnviarDatos = std::thread(&ManejadorDeConexionCliente::enviarDatos, this);
 	this->t_RecibirDatos = std::thread(&ManejadorDeConexionCliente::recibirDatos, this);
@@ -12,10 +12,12 @@ void ManejadorDeConexionCliente::iniciarConexion(std::string ipServidor, std::st
 		Logger::getInstance()->log(Actividad, "El cliente con ip = " + ipServidor + " se ha conectado satisfactoriamente al servidor");
 		cout << "Se ha conectado satisfactoriamente al servidor" << endl;
 		this->conexionActiva = true;
+		return true;
 	} else {
 		Logger::getInstance()->log(Error, "El cliente con ip = " + ipServidor + " no se pudo conectar al servidor");
 		cout << "Fallo la conexion al servidor" << endl;
 		this->conexionActiva = false;
+		return false;
 	}
 }
 bool ManejadorDeConexionCliente::login(std::string user, std::string pass) {

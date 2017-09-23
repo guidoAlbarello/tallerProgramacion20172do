@@ -23,7 +23,6 @@ public:
 	void enviarChatGlobal(bool tipoDeChat, string unEmisor, string unMensaje);
 	void procesarSolicitudPing();
 	bool getConexionActiva() { return this->conexionActiva; };
-	bool getConexionCerrada() { return this->conexionCerrada; };
 private:
 	ManejadorDeConexionConexion* conexionConCliente;
 	void procesarSend_Message(MensajeDeRed* unMensajeDeRed);
@@ -34,7 +33,6 @@ private:
 	void procesarDatosRecibidos();
 	bool conexionActiva;
 	bool conexionViva;
-	bool conexionCerrada;
 	Servidor* servidor;
 
 };
