@@ -65,12 +65,13 @@ void Servidor::cerrarServidor() {
 		if (t_enviarChatGlobal.joinable()) {
 			t_enviarChatGlobal.join();
 		}
+
+		this->conexionDelServidor->cerrarConexion();
+		delete this->conexionDelServidor;
+		delete this->configuracion;
+		delete this->buzonDeChatGlobal;
 	} catch (exception e) {}
 
-	this->conexionDelServidor->cerrarConexion();
-	delete this->conexionDelServidor;
-	delete this->configuracion;
-	delete this->buzonDeChatGlobal;
 }
 
 void Servidor::verificarConexiones() {

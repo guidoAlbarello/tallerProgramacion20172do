@@ -16,7 +16,7 @@ class Constantes
 public:
 	static constexpr const char* CLIENTE = "CLIENTE";
 	static constexpr const char* SERVIDOR = "SERVIDOR";
-	static const char separador = char(6);
+	static constexpr const char separador = char(6);
 	string getComandoServidor(ComandoServidor comando);
 	string getComandoCliente(ComandoCliente);
 	ComandoServidor getConstComandoServidor(string comando);
@@ -24,6 +24,7 @@ public:
 	~Constantes();
 	static Constantes* getInstance();
 	static constexpr const int PING_DELAY = 1000; // grande por ahora para que no moleste
+	static constexpr const int RECV_TIMEOUT = 3000;  //3 segundos
 private:
 	Constantes();
 	static Constantes* instance;

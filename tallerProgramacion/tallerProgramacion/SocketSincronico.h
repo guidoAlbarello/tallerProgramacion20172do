@@ -7,6 +7,7 @@
 #include <winsock2.h>
 #include <WS2tcpip.h>
 #include <string>
+#include "Constantes.h"
 
 
 using namespace std;

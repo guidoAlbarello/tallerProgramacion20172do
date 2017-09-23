@@ -7,6 +7,7 @@ ManejadorDeConexionConexion::ManejadorDeConexionConexion(SOCKET unSocket) {
 	this->socket = new SocketSincronico(unSocket);
 }
 
+
 void ManejadorDeConexionConexion::iniciarConexion() {
 	this->t_EnviarDatos = std::thread(&ManejadorDeConexionConexion::enviarDatos, this);
 	this->t_RecibirDatos = std::thread(&ManejadorDeConexionConexion::recibirDatos, this);

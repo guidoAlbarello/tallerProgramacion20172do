@@ -155,13 +155,15 @@ void Cliente::desconectarseDelServidor() {
 		if (this->t_procesarPing.joinable()) {
 			t_procesarPing.join();
 		}
+
+		if (this->conexionDelCliente != NULL) {
+			this->conexionDelCliente->cerrarConexion();
+		}
 	} catch (exception e) {
 
 	}
 
-	if (this->conexionDelCliente != NULL) {
-		this->conexionDelCliente->cerrarConexion();
-	}
+	
 }
 
 void Cliente::hacerTestDeEstres() {

@@ -42,6 +42,9 @@ int SocketSincronico::crearSocketCliente(string unaIp, string unPuerto) {
 		return 1;
 	}
 
+	DWORD timeout = Constantes::RECV_TIMEOUT;
+	setsockopt(this->socketDeConexion, SOL_SOCKET, SO_RCVTIMEO, (const char*)&timeout, sizeof(timeout));
+
 	// Connect to server.
 	iResult = connect(this->socketDeConexion, ptr->ai_addr, (int)ptr->ai_addrlen);
 	if (iResult == SOCKET_ERROR) {

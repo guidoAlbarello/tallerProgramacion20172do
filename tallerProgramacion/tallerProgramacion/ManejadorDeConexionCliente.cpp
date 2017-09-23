@@ -12,8 +12,7 @@ void ManejadorDeConexionCliente::iniciarConexion(std::string ipServidor, std::st
 		Logger::getInstance()->log(Actividad, "El cliente con ip = " + ipServidor + " se ha conectado satisfactoriamente al servidor");
 		cout << "Se ha conectado satisfactoriamente al servidor" << endl;
 		this->conexionActiva = true;
-	}
-	else {
+	} else {
 		Logger::getInstance()->log(Error, "El cliente con ip = " + ipServidor + " no se pudo conectar al servidor");
 		cout << "Fallo la conexion al servidor" << endl;
 		this->conexionActiva = false;
@@ -25,9 +24,9 @@ bool ManejadorDeConexionCliente::login(std::string user, std::string pass) {
 	mensajeDeRed->agregarParametro(user);
 	mensajeDeRed->agregarParametro(pass);
 	string mensaje = mensajeDeRed->getComandoServidorSerializado();
-	int tamanio = mensaje.length() +1;
+	int tamanio = mensaje.length() + 1;
 	Logger::getInstance()->log(Debug, mensaje);
-	this->socket->enviarDatos(mensaje.c_str() , tamanio);
+	this->socket->enviarDatos(mensaje.c_str(), tamanio);
 
 	return true;
 }
@@ -39,7 +38,7 @@ bool ManejadorDeConexionCliente::enviarMensajeGlobal(string unMensaje) {
 	mensajeDeRed->agregarParametro("");
 	mensajeDeRed->agregarParametro(unMensaje);
 	string mensaje = mensajeDeRed->getComandoServidorSerializado();
-	int tamanio = mensaje.length() +1;;
+	int tamanio = mensaje.length() + 1;;
 	Logger::getInstance()->log(Debug, mensaje);
 	return this->socket->enviarDatos(mensaje.c_str(), tamanio);;
 }
@@ -50,12 +49,12 @@ bool ManejadorDeConexionCliente::enviarMensajePrivado(string unDestinatario, str
 	mensajeDeRed->agregarParametro(unDestinatario);
 	mensajeDeRed->agregarParametro(unMensaje);
 	string mensaje = mensajeDeRed->getComandoServidorSerializado();
-	int tamanio = mensaje.length() +1;
+	int tamanio = mensaje.length() + 1;
 	Logger::getInstance()->log(Debug, mensaje);
 	return this->socket->enviarDatos(mensaje.c_str(), tamanio);;
 }
 
-bool ManejadorDeConexionCliente::realizarPeticionUsuarios(){
+bool ManejadorDeConexionCliente::realizarPeticionUsuarios() {
 
 	MensajeDeRed *mensajeDeRed = new MensajeDeRed(ComandoServidor::USUARIOS);
 	string mensaje = mensajeDeRed->getComandoServidorSerializado();
@@ -68,14 +67,13 @@ bool ManejadorDeConexionCliente::devolverMensajesPrivados() {
 	Logger::getInstance()->log(Debug, "se realiza el envio de un RETRIEVE_MESSAGES");
 	MensajeDeRed *mensajeDeRed = new MensajeDeRed(ComandoServidor::RETRIEVE_MESSAGES);
 	string mensaje = mensajeDeRed->getComandoServidorSerializado();
-	int tamanio = mensaje.length() +1;
+	int tamanio = mensaje.length() + 1;
 	Logger::getInstance()->log(Debug, mensaje);
 	return this->socket->enviarDatos(mensaje.c_str(), tamanio);;
 }
 void ManejadorDeConexionCliente::borrarEntorno() {
 	this->socket->borrarEntornoWSA();
 }
-;
 
 bool ManejadorDeConexionCliente::enviarSolicitudPing() {
 	MensajeDeRed* mensajeDeRed = new MensajeDeRed(ComandoServidor::PING);
