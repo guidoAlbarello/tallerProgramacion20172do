@@ -144,10 +144,10 @@ void Servidor::correrCicloPrincipal() {
 
 					if(confirmacionUsuario.compare("y") == 0)
 						cerrarTodasLasConexiones();
-						cerrarServidor();
+						//cerrarServidor();
 				} else {
 					cerrarTodasLasConexiones();
-					cerrarServidor();
+					//cerrarServidor();
 				}
 				
 				break;
@@ -158,8 +158,9 @@ void Servidor::correrCicloPrincipal() {
 				mostrarUsuariosConectados();
 				break;
 			case '4':
-				servidorActivo = false;
+				//servidorActivo = false;
 				cerrarTodasLasConexiones();
+				cerrarServidor();
 				break;
 				/*case '5':
 					cout << "PUERTO " << this->configuracion->getPuerto() << " MAXCLIENTES: " << this->configuracion->getMaxClientes() << endl;

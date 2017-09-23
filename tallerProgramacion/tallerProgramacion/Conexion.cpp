@@ -24,13 +24,13 @@ void Conexion::cerrarConexion() {
 			t_procesarDatosRecibidos.join();
 		}
 
-		if (this->getConexionConCliente() != NULL) {
-			this->getConexionConCliente()->cerrarConexion();
+		if (this->conexionConCliente != NULL) {
+			this->conexionConCliente->cerrarConexion();
+			delete this->conexionConCliente;
 		}
 	} catch (exception e) {
+		Logger::getInstance()->log(Error, "Ocurrio un error al cerrar la conexion");
 	}
-
-	
 }
 
 void Conexion::procesarSolicitudPing() {

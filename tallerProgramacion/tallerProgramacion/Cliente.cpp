@@ -166,10 +166,8 @@ void Cliente::desconectarseDelServidor() {
 			delete this->conexionDelCliente;
 		}
 	} catch (exception e) {
-
+		Logger::getInstance()->log(Error, "Ocurrio un error al desconectarse del servidor");
 	}
-
-	
 }
 
 void Cliente::hacerTestDeEstres() {
