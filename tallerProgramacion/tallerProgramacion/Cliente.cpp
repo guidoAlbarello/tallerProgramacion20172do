@@ -15,6 +15,7 @@ Cliente * Cliente::getInstance() {
 }
 
 Cliente::Cliente() {
+	this->conexionDelCliente = new ManejadorDeConexionCliente();
 	this->clienteActivo = true;
 	this->estaLogueado = false;
 	this->conexionViva = false;
@@ -125,16 +126,13 @@ void Cliente::conectarseAlServidor() {
 	if (!this->conexionViva) {
 		Logger::getInstance()->log(Debug, "Conectando al servidor...");
 		std::cout << "Conectando al servidor..." << std::endl;
-		this->conexionDelCliente = new ManejadorDeConexionCliente();
-		if (this->conexionDelCliente->iniciarConexion(configuracion->getIP(), configuracion->getPuerto())) {
-			this->conexionViva = true;
-			this->t_procesarPing = std::thread(&Cliente::enviarPingAServidor, this);
-			this->t_procesarDatosRecibidos = std::thread(&Cliente::procesarDatosRecibidos, this);
+		if (t_procesarDatosRecibidos.joinable()) {
+			t_procesarDatosRecibidos.join();
 		}
-		else {
-			this->conexionViva = false;
-			std::cout << "No se pudo conectar al sevidor" << std::endl;
-		}
+		this->conexionDelCliente->iniciarConexion(configuracion->getIP(), configuracion->getPuerto());
+		this->conexionViva = true;
+		this->t_procesarPing = std::thread(&Cliente::enviarPingAServidor, this);
+		this->t_procesarDatosRecibidos = std::thread(&Cliente::procesarDatosRecibidos, this);
 	}
 	else {
 		std::cout << "Ya se encuentra conectado al servidor" << std::endl;
@@ -153,9 +151,9 @@ void Cliente::desconectarseDelServidor() {
 	this->estaLogueado = false;
 	this->conexionViva = false;
 	try {
-		if (t_procesarDatosRecibidos.joinable()) {
-			t_procesarDatosRecibidos.join();
-		}
+		//if (t_procesarDatosRecibidos.joinable()) {
+		//	t_procesarDatosRecibidos.join();
+		//}
 
 		if (this->t_procesarPing.joinable()) {
 			t_procesarPing.join();
@@ -163,11 +161,10 @@ void Cliente::desconectarseDelServidor() {
 
 		if (this->conexionDelCliente != NULL) {
 			this->conexionDelCliente->cerrarConexion();
-			delete this->conexionDelCliente;
 		}
 	} catch (exception e) {
-		Logger::getInstance()->log(Error, "Ocurrio un error al desconectarse del servidor");
-	}
+		Logger::getInstance()->log(Debug, "Ocurrio un error al desconectarse del servidor");
+	}	
 }
 
 void Cliente::hacerTestDeEstres() {
