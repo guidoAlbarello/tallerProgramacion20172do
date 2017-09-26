@@ -51,7 +51,6 @@ void Cliente::iniciarCliente() {
 }
 
 
-
 void Cliente::correrCicloPrincipal() {
 	std::string input;
 	while (clienteActivo) {
@@ -87,17 +86,6 @@ void Cliente::correrCicloPrincipal() {
 			case '8':
 				enviarMensajePrivado();
 				break;
-			case '9':
-				if (!this->estaLogueado) {
-					cout << "Necesita estar logueado para realizar esta accion." << endl;
-				}
-				else {
-					this->conexionDelCliente->realizarPeticionUsuarios();
-				}
-				break;
-				/*case '0':
-					cout << "IP " << this->configuracion->getIP() << " PUERTO: " << this->configuracion->getPuerto() << " PATH: " << this->configuracion->getPath() << endl;
-					break;*/
 			default:
 				break;
 			}
@@ -107,6 +95,7 @@ void Cliente::correrCicloPrincipal() {
 }
 
 void Cliente::mostrarMenuPrincipal() {
+	m_print.lock();
 	cout << "|----------------------------|" << std::endl;
 	cout << "|        Menu cliente        |" << std::endl;
 	cout << "|----------------------------|" << std::endl;
@@ -118,13 +107,15 @@ void Cliente::mostrarMenuPrincipal() {
 	std::cout << "6.Revisar Buzon" << std::endl;
 	std::cout << "7.Mensaje Chat" << std::endl;
 	std::cout << "8.Mensaje Privado" << std::endl;
-	std::cout << "9.Usuarios Logueados" << std::endl;
+	m_print.unlock();
 }
 
 void Cliente::conectarseAlServidor() {
 	if (!this->conexionViva) {
 		Logger::getInstance()->log(Debug, "Conectando al servidor...");
+		m_print.lock();
 		std::cout << "Conectando al servidor..." << std::endl;
+		m_print.unlock();
 		this->conexionDelCliente = new ManejadorDeConexionCliente();
 		if (t_procesarDatosRecibidos.joinable()) {
 			t_procesarDatosRecibidos.join();
@@ -137,11 +128,15 @@ void Cliente::conectarseAlServidor() {
 		}
 		else {
 			this->conexionViva = false;
+			m_print.lock();
 			std::cout << "No se pudo conectar al sevidor" << std::endl;
+			m_print.unlock();
 		}
 	}
 	else {
+		m_print.lock();
 		std::cout << "Ya se encuentra conectado al servidor" << std::endl;
+		m_print.unlock();
 	}
 }
 
@@ -152,15 +147,13 @@ void Cliente::desconectarseDelServidor() {
 	}
 
 	Logger::getInstance()->log(Debug, "Desconectando del servidor...");
+	m_print.lock();
 	std::cout << "Desconectando del servidor..." << std::endl;
+	m_print.unlock();
 
 	this->estaLogueado = false;
 	this->conexionViva = false;
 	try {
-		//if (t_procesarDatosRecibidos.joinable()) {
-		//	t_procesarDatosRecibidos.join();
-		//}
-
 		if (this->t_procesarPing.joinable()) {
 			t_procesarPing.join();
 		}
@@ -176,13 +169,17 @@ void Cliente::desconectarseDelServidor() {
 
 void Cliente::hacerTestDeEstres() {
 	if (!this->estaLogueado) {
+		m_print.lock();
 		cout << "Necesita estar logueado para realizar esta accion." << endl;
+		m_print.unlock();
 		return;
 	}
 
 	std::string stressFileName = this->configuracion->getPath();
 	if (!existeArchivo(stressFileName)) {
+		m_print.lock();
 		std::cout << "No existe el archivo de Test de Stress definido en la configuracion de usuario" << endl;
+		m_print.unlock();
 		Logger::getInstance()->log(Error, "No se pudo encontrar el archivo " + this->configuracion->getPath() + " para comenzar el test de stress");
 		return;
 	}
@@ -231,7 +228,9 @@ void Cliente::leerTestXML(std::string stressFileName, int stressTimeMillis) {
 		}
 	} catch (std::exception& e) {
 		Logger::getInstance()->log(LogMode::Error, "[Cliente.cpp] Hubo un error al parsear el archivo de configuracion del servidor.");
+		m_print.lock();
 		cout << e.what();
+		m_print.unlock();
 	}
 }
 
@@ -248,7 +247,9 @@ void Cliente::revisarBuzon() {
 
 	mostrarMenuBuzon();
 	Logger::getInstance()->log(Debug, "Mensajes recibidos: ");
+	m_print.lock();
 	std::cout << "Mensajes recibidos: " << std::endl;
+	m_print.unlock();
 
 	this->conexionDelCliente->devolverMensajesPrivados();
 }
@@ -310,12 +311,17 @@ void Cliente::enviarMensajePrivado() {
 		return;
 	}
 
+	this->conexionDelCliente->realizarPeticionUsuarios();
 	this->enviandoMensaje = true;
 	mostrarMenuMensajePrivado();
+	m_print.lock();
 	std::cout << "Ingrese el destinatario" << std::endl;
+	m_print.unlock();
 	std::string destinatario;
 	std::getline(std::cin, destinatario);
+	m_print.lock();
 	std::cout << "Ingrese el mensaje a enviar" << std::endl;
+	m_print.unlock();
 	std::string mensaje;
 	std::getline(std::cin, mensaje);
 
@@ -346,6 +352,7 @@ void Cliente::mostrarMensajesPrivados(MensajeDeRed * unMensajeDeRed) {
 }
 
 void Cliente::mostrarUsuariosConectados(MensajeDeRed * unMensajeDeRed) {
+	m_print.lock();
 	std::cout << "|----------------------------|" << std::endl;
 	std::cout << "|     Usuarios Logueados     |" << std::endl;
 	std::cout << "|----------------------------|" << std::endl;
@@ -353,6 +360,7 @@ void Cliente::mostrarUsuariosConectados(MensajeDeRed * unMensajeDeRed) {
 	for (i = 0; i < unMensajeDeRed->getCantidadDeParametros(); i++) {
 		std::cout << unMensajeDeRed->getParametro(i) << std::endl;
 	}
+	m_print.unlock();
 }
 
 void Cliente::procesarMensajesGlobales(MensajeDeRed * unMensajeDeRed) {
@@ -446,12 +454,14 @@ void Cliente::procesarDatosRecibidos() {
 
 void Cliente::mostrarMensajesGlobales() {
 	int i;
+	m_print.lock();
 	for (i = 0; i < this->buzonDeMensajesGlobales->getTamanio() && !enviandoMensaje; i++) {
 		Mensaje* unMensaje = this->buzonDeMensajesGlobales->verMensaje(i);
 
 		std::cout << unMensaje->getDestinatario() + " [" + unMensaje->getEmisor() + "]: " + unMensaje->getMensaje() << endl;
 
 	}
+	m_print.unlock();
 
 	if (i > 0)
 		this->buzonDeMensajesGlobales->eliminarMensajes(i); //esto de mostrar se peue hacer en otro thread si tira problemas e performance
@@ -460,20 +470,28 @@ void Cliente::mostrarMensajesGlobales() {
 void Cliente::procesarResultadoSendMessage(MensajeDeRed* mensajeDeRed) {
 	if (mensajeDeRed->getParametro(0) == "SEND_MESSAGE_OK") {
 		// Mensaje enviado satisfactoriamente
+		m_print.lock();
 		cout << mensajeDeRed->getParametro(1) << endl;
+		m_print.unlock();
 	} else if (mensajeDeRed->getParametro(0) == "SEND_MESSAGE_NOK") {
 		// Fallo el envio del mensaje
+		m_print.lock();
 		std::cout << mensajeDeRed->getParametro(1) << endl;
+		m_print.unlock();
 	}
 }
 
 void Cliente::procesarResultadoLogin(MensajeDeRed* mensajeDeRed) {
 	if (mensajeDeRed->getParametro(0) == "LOGIN_OK") {
 		this->estaLogueado = true;
+		m_print.lock();
 		cout << mensajeDeRed->getParametro(1) << endl;
+		m_print.unlock();
 	} else if (mensajeDeRed->getParametro(0) == "LOGIN_NOK") {
 		this->estaLogueado = false;
+		m_print.lock();
 		cout << mensajeDeRed->getParametro(1) << endl;
+		m_print.unlock();
 	}
 }
 
@@ -488,26 +506,34 @@ void Cliente::enviarPingAServidor() {
 }
 
 void Cliente::mostrarMenuLogin() {
+	m_print.lock();
 	cout << "|----------------------------|" << std::endl;
 	cout << "|            Login           |" << std::endl;
 	cout << "|----------------------------|" << std::endl;
+	m_print.unlock();
 }
 
 void Cliente::mostrarMenuBuzon() {
+	m_print.lock();
 	cout << "|----------------------------|" << std::endl;
 	cout << "|            Buzon           |" << std::endl;
 	cout << "|----------------------------|" << std::endl;
+	m_print.unlock();
 }
 
 void Cliente::mostrarMenuMensajeChat() {
+	m_print.lock();
 	cout << "|----------------------------|" << std::endl;
 	cout << "|        Mensaje Chat        |" << std::endl;
 	cout << "|----------------------------|" << std::endl;
+	m_print.unlock();
 }
 
 void Cliente::mostrarMenuMensajePrivado() {
+	m_print.lock();
 	cout << "|----------------------------|" << std::endl;
 	cout << "|       Mensaje Privado      |" << std::endl;
 	cout << "|----------------------------|" << std::endl;
+	m_print.unlock();
 }
 

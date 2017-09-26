@@ -36,6 +36,7 @@ protected:
 	std::thread t_procesarDatosRecibidos;
 	std::thread t_procesarPing;
 	std::mutex m_procesarPing;
+	std::mutex m_print;
 	Cliente();
 	~Cliente();
 	static Cliente* instance;
