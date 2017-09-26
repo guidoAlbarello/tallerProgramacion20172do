@@ -1,9 +1,10 @@
 <cliente>
 	<conexion>
-		<IP>127.0.0.1</IP>
+		<IP>190.194.205.85</IP>
 		<puerto>15636</puerto>
 	</conexion>
 	<testfile>
-		<path>stress-test.xml</path>
+		<path>/tmp/filetest_01</path>
 	</testfile>
 </cliente>
+

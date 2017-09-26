@@ -21,12 +21,13 @@ public:
 	Usuario* buscarUsuario(std::string unUsuario);
 	void iniciarServidor();
 	void cerrarServidor();
-	Usuario* validarLogin(MensajeDeRed* mensaje);
+	Usuario* validarLogin(MensajeDeRed* mensaje, string &mensajeResultado);
 	std::vector<Conexion*> getConexionesActivas();
 	std::vector<Usuario*> getUsuarios() { return this->configuracion->getUsuarios(); }
 	void recibirMensajeGlobal(string unEmisor, string unMensaje);
 	void enviarMensajePrivado(string unDestinatario, string unMensaje);
 	std::vector<Conexion*> conexionesActivas;
+	bool estaElUsuarioConectado(Usuario* unUsuario);
 protected:
 	Servidor();
 	~Servidor();

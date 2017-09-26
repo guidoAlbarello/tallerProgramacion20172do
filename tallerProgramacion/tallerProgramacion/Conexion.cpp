@@ -59,11 +59,15 @@ void Conexion::procesarSend_Message(MensajeDeRed* unMensajeDeRed) {
 			Logger::getInstance()->log(Debug, mensaje);
 			this->conexionConCliente->getSocket().enviarDatos(mensaje.c_str(), tamanio);
 		} else {
-			this->getUsuario()->enviarMensaje(usuarioDestinatario, unMensajeDeRed->getParametro(1));
 			ComandoCliente comando = ComandoCliente::RESULTADO_SEND_MESSAGE;
 			MensajeDeRed* mensajeDeRed = new MensajeDeRed(comando);
 			mensajeDeRed->agregarParametro("SEND_MESSAGE_OK"); // ResultCode
-			mensajeDeRed->agregarParametro("El envio del mensaje fue satisfactorio");
+			if (this->servidor->estaElUsuarioConectado(usuarioDestinatario)) {
+				this->getUsuario()->enviarMensaje(usuarioDestinatario, unMensajeDeRed->getParametro(1));
+				mensajeDeRed->agregarParametro("El envio del mensaje fue satisfactorio");
+			} else {
+				mensajeDeRed->agregarParametro("No se pudo enviar el mensaje. El destinatario no se encuentra conectado.");
+			}
 			string mensaje = mensajeDeRed->getComandoClienteSerializado();
 			int tamanio = mensaje.length() + 1;
 			Logger::getInstance()->log(Debug, "Enviando mensaje");
@@ -164,7 +168,9 @@ void Conexion::procesarDatosRecibidos() {
 	auto timeOut = std::chrono::high_resolution_clock::now();
 	while (conexionActiva) {
 		char* datosRecibidos = this->conexionConCliente->getMensaje();
+		
 		if (datosRecibidos != NULL) {
+			string mensajeResultado;
 			timeOut = std::chrono::high_resolution_clock::now();
 			Logger::getInstance()->log(Debug, datosRecibidos);
 			std::string datosRecibidosString(datosRecibidos);
@@ -174,14 +180,15 @@ void Conexion::procesarDatosRecibidos() {
 			case ComandoServidor::LOG:
 				Logger::getInstance()->log(Debug, "Recibio un LOG");
 				// Envia respuesta con el resultado del login
-				unUsuario = this->servidor->validarLogin(mensajeDeRed);
+				
+				unUsuario = this->servidor->validarLogin(mensajeDeRed, mensajeResultado);
 				if (unUsuario != NULL) {
 					this->usuarioConectado = unUsuario;
 					Logger::getInstance()->log(Debug, "El login fue satisfactorio");
 					ComandoCliente comando = ComandoCliente::RESULTADO_LOGIN;
 					MensajeDeRed* mensajeDeRed = new MensajeDeRed(comando);
 					mensajeDeRed->agregarParametro("LOGIN_OK"); // ResultCode
-					mensajeDeRed->agregarParametro("El login fue satisfactorio");
+					mensajeDeRed->agregarParametro(mensajeResultado);
 					string mensaje = mensajeDeRed->getComandoClienteSerializado();
 					int tamanio = mensaje.length() + 1;
 					Logger::getInstance()->log(Debug, "Enviando mensaje");
@@ -192,7 +199,7 @@ void Conexion::procesarDatosRecibidos() {
 					ComandoCliente comando = ComandoCliente::RESULTADO_LOGIN;
 					MensajeDeRed* mensajeDeRed = new MensajeDeRed(comando);
 					mensajeDeRed->agregarParametro("LOGIN_NOK"); // ResultCode
-					mensajeDeRed->agregarParametro("Login invalido");
+					mensajeDeRed->agregarParametro(mensajeResultado);
 					string mensaje = mensajeDeRed->getComandoClienteSerializado();
 					int tamanio = mensaje.length() + 1;
 					Logger::getInstance()->log(Debug, "Login invalido");

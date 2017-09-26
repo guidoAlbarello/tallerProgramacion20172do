@@ -22,7 +22,7 @@ public:
 	ManejadorDeConexionConexion* getConexionConCliente() { return this->conexionConCliente; };
 	void enviarChatGlobal(bool tipoDeChat, string unEmisor, string unMensaje);
 	void procesarSolicitudPing();
-	bool getConexionActiva() { return this->conexionActiva; };
+	bool getConexionActiva() { 	return this->conexionActiva; };
 private:
 	ManejadorDeConexionConexion* conexionConCliente;
 	void procesarSend_Message(MensajeDeRed* unMensajeDeRed);

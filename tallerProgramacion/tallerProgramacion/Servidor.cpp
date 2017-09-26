@@ -45,6 +45,19 @@ void Servidor::enviarMensajePrivado(string unDestinatario, string unMensaje) {
 	}
 }
 
+bool Servidor::estaElUsuarioConectado(Usuario * unUsuario) {
+	bool usuarioConectado = false;
+
+	for (std::vector<Conexion*>::iterator it = conexionesActivas.begin(); it != conexionesActivas.end() && !usuarioConectado; ++it) {
+		Conexion* unaConexion = (Conexion*)*it;
+		if(unaConexion->getUsuario() != NULL)
+			if (unaConexion->getUsuario()->getNombre().compare(unUsuario->getNombre()) == 0)
+				usuarioConectado = true;
+	}
+
+	return usuarioConectado;
+}
+
 void Servidor::iniciarServidor() {
 	Logger::getInstance()->log(Debug, "Iniciando servidor...");
 	this->leerServerConfig();
@@ -178,7 +191,6 @@ void Servidor::correrCicloPrincipal() {
 
 void Servidor::escucharClientes() {
 	while (this->servidorActivo) {
-		this->verificarConexiones();
 		SOCKET nuevoCliente = this->conexionDelServidor->hayClienteIntentandoConectarse(this->conexionesActivas.size(), this->configuracion->getMaxClientes());
 		if (nuevoCliente != INVALID_SOCKET) {
 			agregarNuevaConexionEntrante(nuevoCliente);
@@ -309,16 +321,27 @@ void Servidor::mostrarMenuUsuariosConectados() {
 	std::cout << "|----------------------------|" << std::endl;
 }
 
-Usuario* Servidor::validarLogin(MensajeDeRed* mensaje) {
+Usuario* Servidor::validarLogin(MensajeDeRed* mensaje, string &mensajeResultado) {
 	std::string usuario = mensaje->getParametro(0);
 	std::string contrasenia = mensaje->getParametro(1);
 
 	Usuario* unUsuario = this->usuarioValido(usuario, contrasenia);
+	if (unUsuario == NULL) {
+		mensajeResultado = "Login Invalido. EL usuario o la password son incorrectos.";
+		return unUsuario;
+	}
+	if (this->estaElUsuarioConectado(unUsuario)) {
+		mensajeResultado = "Login invalido. El usuario ya se encuentra conectado.";
+		unUsuario = NULL;
+	} else {
+		mensajeResultado = "El login fue satisfactorio";
+	}
 	return unUsuario;
 }
 
 void Servidor::enviarChatGlobal() {
 	while (servidorActivo) {
+		this->verificarConexiones();
 		int tamanioBuzon = buzonDeChatGlobal->getTamanio();
 		if (tamanioBuzon != 0) {
 			int i = 0;
@@ -326,7 +349,8 @@ void Servidor::enviarChatGlobal() {
 				Mensaje* unMensaje = this->buzonDeChatGlobal->verMensaje(i);
 				for (std::vector<Conexion*>::iterator it = conexionesActivas.begin(); it != conexionesActivas.end(); ++it) {
 					Conexion* unaConexion = (Conexion*)*it;
-					unaConexion->enviarChatGlobal(true, unMensaje->getEmisor(), unMensaje->getMensaje());
+					if(unaConexion->getUsuario() != NULL)
+						unaConexion->enviarChatGlobal(true, unMensaje->getEmisor(), unMensaje->getMensaje());
 				}
 
 			}
