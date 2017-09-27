@@ -470,14 +470,10 @@ void Cliente::mostrarMensajesGlobales() {
 void Cliente::procesarResultadoSendMessage(MensajeDeRed* mensajeDeRed) {
 	if (mensajeDeRed->getParametro(0) == "SEND_MESSAGE_OK") {
 		// Mensaje enviado satisfactoriamente
-		m_print.lock();
-		cout << mensajeDeRed->getParametro(1) << endl;
-		m_print.unlock();
+		Logger::getInstance()->log(Debug, mensajeDeRed->getParametro(1));
 	} else if (mensajeDeRed->getParametro(0) == "SEND_MESSAGE_NOK") {
 		// Fallo el envio del mensaje
-		m_print.lock();
-		std::cout << mensajeDeRed->getParametro(1) << endl;
-		m_print.unlock();
+		Logger::getInstance()->log(Debug, mensajeDeRed->getParametro(1));
 	}
 }
 
