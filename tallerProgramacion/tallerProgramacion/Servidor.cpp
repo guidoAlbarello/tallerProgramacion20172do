@@ -193,6 +193,7 @@ void Servidor::escucharClientes() {
 	while (this->servidorActivo) {
 		SOCKET nuevoCliente = this->conexionDelServidor->hayClienteIntentandoConectarse(this->conexionesActivas.size(), this->configuracion->getMaxClientes());
 		if (nuevoCliente != INVALID_SOCKET) {
+			Logger::getInstance()->log(Debug, "Se acepto la conexion de un nuevo cliente");
 			agregarNuevaConexionEntrante(nuevoCliente);
 		}
 	}

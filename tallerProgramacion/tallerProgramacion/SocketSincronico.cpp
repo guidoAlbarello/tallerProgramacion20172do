@@ -1,6 +1,5 @@
 #include "SocketSincronico.h"
 #include <iostream>
-#include "Logger.h"
 
 SocketSincronico::SocketSincronico() {
 }
@@ -218,7 +217,6 @@ int SocketSincronico::hayClienteIntentandoConectarse() {
 
 	// Accept a client socket
 	socketDelCliente = accept(this->socketDeConexion, NULL, NULL);
-	Logger::getInstance()->log(Debug, "Se acepto la conexion de un cliente");
 	return socketDelCliente;
 }
 
