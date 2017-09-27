@@ -221,7 +221,18 @@ void Cliente::leerTestXML(std::string stressFileName, int stressTimeMillis) {
 				std::string nuevoMensaje = unNodoMensaje->value();
 				this->conexionDelCliente->enviarMensajeGlobal(nuevoMensaje);
 			}
-			Logger::getInstance()->log(Actividad, "[Cliente.cpp] Finalizo el test de stress");
+			if (tConsumidoMs.count() <= stressTimeMillis) {
+				Logger::getInstance()->log(Actividad, "[Cliente.cpp] Finalizo el test de stress satisfactoriamente");
+				m_print.lock();
+				std::cout << "El test de stress finalizo satisfactoriamente" << std::endl;
+				m_print.unlock();
+			}
+			else {
+				Logger::getInstance()->log(Actividad, "[Cliente.cpp] Finalizo el test de stress sin enviar todos los mensajes");
+				m_print.lock();
+				std::cout << "El test de stress finalizo sin enviar todos los mensajes" << std::endl;
+				m_print.unlock();
+			}
 		}
 		else {
 			Logger::getInstance()->log(LogMode::Error, "[Cliente.cpp] No se encontro el nodo 'StressTest' en el archivo de test XML. No se puede realizar el test de estres.");
