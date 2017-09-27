@@ -71,6 +71,11 @@ void Servidor::cerrarServidor() {
 	Logger::getInstance()->log(Debug, "se realiza el cierre del servidor");
 	this->servidorActivo = false;
 	try {
+		this->conexionDelServidor->cerrarConexion();
+		delete this->conexionDelServidor;
+		delete this->configuracion;
+		delete this->buzonDeChatGlobal;
+
 		if (t_escucharClientes.joinable()) {
 			t_escucharClientes.join();
 		}
@@ -78,12 +83,9 @@ void Servidor::cerrarServidor() {
 		if (t_enviarChatGlobal.joinable()) {
 			t_enviarChatGlobal.join();
 		}
-
-		this->conexionDelServidor->cerrarConexion();
-		delete this->conexionDelServidor;
-		delete this->configuracion;
-		delete this->buzonDeChatGlobal;
-	} catch (exception e) {}
+	} catch (exception e) {
+		Logger::getInstance()->log(Error, "Ocurrio un error al cerrar el servidor");
+	}
 
 }
 
@@ -157,10 +159,8 @@ void Servidor::correrCicloPrincipal() {
 
 					if(confirmacionUsuario.compare("y") == 0)
 						cerrarTodasLasConexiones();
-						//cerrarServidor();
 				} else {
 					cerrarTodasLasConexiones();
-					//cerrarServidor();
 				}
 				
 				break;
@@ -171,17 +171,9 @@ void Servidor::correrCicloPrincipal() {
 				mostrarUsuariosConectados();
 				break;
 			case '4':
-				//servidorActivo = false;
 				cerrarTodasLasConexiones();
 				cerrarServidor();
 				break;
-				/*case '5':
-					cout << "PUERTO " << this->configuracion->getPuerto() << " MAXCLIENTES: " << this->configuracion->getMaxClientes() << endl;
-					for (int i = 0; i < this->configuracion->getUsuarios().size(); i++) {
-						cout << "Usuario: " << this->configuracion->getUsuarios()[i]->getNombre() << endl;
-					}
-
-					break;*/
 			default:
 				break;
 			}
@@ -193,7 +185,6 @@ void Servidor::escucharClientes() {
 	while (this->servidorActivo) {
 		SOCKET nuevoCliente = this->conexionDelServidor->hayClienteIntentandoConectarse(this->conexionesActivas.size(), this->configuracion->getMaxClientes());
 		if (nuevoCliente != INVALID_SOCKET) {
-			Logger::getInstance()->log(Debug, "Se acepto la conexion de un nuevo cliente");
 			agregarNuevaConexionEntrante(nuevoCliente);
 		}
 	}
