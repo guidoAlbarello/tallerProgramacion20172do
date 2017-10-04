@@ -127,18 +127,23 @@
     <ClInclude Include="Conexion.h" />
     <ClInclude Include="Config.h" />
     <ClInclude Include="Constantes.h" />
+    <ClInclude Include="Juego.h" />
     <ClInclude Include="Logger.h" />
     <ClInclude Include="ManejadorDeConexionCliente.h" />
     <ClInclude Include="ManejadorDeConexionConexion.h" />
     <ClInclude Include="ManejadorDeConexionServidor.h" />
     <ClInclude Include="Mensaje.h" />
     <ClInclude Include="MensajeDeRed.h" />
+    <ClInclude Include="ObjetoDeJuego.h" />
     <ClInclude Include="ParserDeMensajes.h" />
+    <ClInclude Include="Jugador.h" />
+    <ClInclude Include="Renderer.h" />
     <ClInclude Include="ServerConfig.h" />
     <ClInclude Include="ManejadorDeConexion.h" />
     <ClInclude Include="Servidor.h" />
     <ClInclude Include="SocketSincronico.h" />
     <ClInclude Include="Usuario.h" />
+    <ClInclude Include="Vector.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BuzonDeMensajes.cpp" />
@@ -147,6 +152,8 @@
     <ClCompile Include="Conexion.cpp" />
     <ClCompile Include="Config.cpp" />
     <ClCompile Include="Constantes.cpp" />
+    <ClCompile Include="Juego.cpp" />
+    <ClCompile Include="Jugador.cpp" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ManejadorDeConexion.cpp" />
@@ -154,7 +161,9 @@
     <ClCompile Include="ManejadorDeConexionConexion.cpp" />
     <ClCompile Include="ManejadorDeConexionServidor.cpp" />
     <ClCompile Include="MensajeDeRed.cpp" />
+    <ClCompile Include="ObjetoDeJuego.cpp" />
     <ClCompile Include="ParserDeMensajes.cpp" />
+    <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="ServerConfig.cpp" />
     <ClCompile Include="Servidor.cpp" />
     <ClCompile Include="SocketSincronico.cpp" />

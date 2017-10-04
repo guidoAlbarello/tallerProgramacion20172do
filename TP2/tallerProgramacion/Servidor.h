@@ -9,6 +9,7 @@
 #include <thread>
 #include "Logger.h"
 #include "MensajeDeRed.h"
+#include "Juego.h"
 
 const std::string SERVER_LOG_FILENAME_FORMAT = "LogSrv%Y%m%d%H%M%S.txt";
 
@@ -51,6 +52,8 @@ protected:
 	Usuario* usuarioValido(std::string usuario, std::string contrasenia);
 	void enviarChatGlobal();
 	void verificarConexiones();
+
+	Juego* elJuego;
 };
 
 #endif

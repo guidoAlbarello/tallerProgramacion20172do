@@ -17,6 +17,7 @@ Servidor::Servidor() {
 	this->servidorActivo = true;
 	this->configuracion = new ServerConfig();
 	this->buzonDeChatGlobal = new BuzonDeMensajes();
+	this->elJuego = new Juego();
 
 	//Seteando el nombre del log
 	Logger::getInstance()->setLogFileName(SERVER_LOG_FILENAME_FORMAT);
@@ -50,7 +51,7 @@ bool Servidor::estaElUsuarioConectado(Usuario * unUsuario) {
 
 	for (std::vector<Conexion*>::iterator it = conexionesActivas.begin(); it != conexionesActivas.end() && !usuarioConectado; ++it) {
 		Conexion* unaConexion = (Conexion*)*it;
-		if(unaConexion->getUsuario() != NULL)
+		if (unaConexion->getUsuario() != NULL)
 			if (unaConexion->getUsuario()->getNombre().compare(unUsuario->getNombre()) == 0)
 				usuarioConectado = true;
 	}
@@ -59,12 +60,19 @@ bool Servidor::estaElUsuarioConectado(Usuario * unUsuario) {
 }
 
 void Servidor::iniciarServidor() {
-	Logger::getInstance()->log(Debug, "Iniciando servidor...");
-	this->leerServerConfig();
-	this->conexionDelServidor->iniciarConexion(this->configuracion->getPuerto(), this->configuracion->getMaxClientes());
-	this->t_escucharClientes = std::thread(&Servidor::escucharClientes, this);
-	this->t_enviarChatGlobal = std::thread(&Servidor::enviarChatGlobal, this);
-	this->correrCicloPrincipal();
+	try {
+		Logger::getInstance()->log(Debug, "Iniciando servidor...");
+		this->leerServerConfig();
+		if (this->elJuego->iniciarJuego()) {   //pasasrle por param la configuracion del xml
+			this->conexionDelServidor->iniciarConexion(this->configuracion->getPuerto(), this->configuracion->getMaxClientes());
+
+			this->t_escucharClientes = std::thread(&Servidor::escucharClientes, this);
+			this->t_enviarChatGlobal = std::thread(&Servidor::enviarChatGlobal, this);
+			this->correrCicloPrincipal();
+		}
+	} catch (exception e) {
+
+	}
 }
 
 void Servidor::cerrarServidor() {
@@ -157,12 +165,12 @@ void Servidor::correrCicloPrincipal() {
 						std::getline(std::cin, confirmacionUsuario);
 					}
 
-					if(confirmacionUsuario.compare("y") == 0)
+					if (confirmacionUsuario.compare("y") == 0)
 						cerrarTodasLasConexiones();
 				} else {
 					cerrarTodasLasConexiones();
 				}
-				
+
 				break;
 			case '2':
 				cambiarNivelLogeo();
@@ -341,7 +349,7 @@ void Servidor::enviarChatGlobal() {
 				Mensaje* unMensaje = this->buzonDeChatGlobal->verMensaje(i);
 				for (std::vector<Conexion*>::iterator it = conexionesActivas.begin(); it != conexionesActivas.end(); ++it) {
 					Conexion* unaConexion = (Conexion*)*it;
-					if(unaConexion->getUsuario() != NULL)
+					if (unaConexion->getUsuario() != NULL)
 						unaConexion->enviarChatGlobal(true, unMensaje->getEmisor(), unMensaje->getMensaje());
 				}
 

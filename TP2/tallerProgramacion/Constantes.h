@@ -11,6 +11,8 @@ enum class ComandoServidor { LOG = '0', PING = '1', SEND_MESSAGE = '2', RETRIEVE
 enum class ComandoCliente { LOG = '0', PRINT = '1', VACIO = '2', RESULTADO_LOGIN = '3', RESULTADO_SEND_MESSAGE = '4', RESULTADO_RETRIEVE_MESSAGES = '5', RECIEVE_GLOBAL_MESSAGES = '6', RECIEVE_PRIVATE_MESSAGES = '7', RESULTADO_USUARIOS = '8', RESULTADO_PING
 	= '9'};
 
+typedef float Unidad;
+
 class Constantes
 {
 public:
