@@ -44,6 +44,15 @@ void Conexion::procesarSolicitudPing() {
 	this->conexionConCliente->getSocket().enviarDatos(mensaje.c_str(), tamanio);
 }
 
+void Conexion::procesarInput(MensajeDeRed* unMensajeDeRed) {
+	if (this->usuarioConectado != NULL) {
+		if (this->usuarioConectado->getJugador() != NULL) {
+			//bool entrada[];				//hacer el for
+			//this->usuarioConectado->getJugador()->recibirEntrada(i, entrada[i]);
+		}
+	}
+}
+
 void Conexion::procesarSend_Message(MensajeDeRed* unMensajeDeRed) {
 	if (unMensajeDeRed->getParametro(0).compare("") != 0) {
 		Usuario* usuarioDestinatario = this->servidor->buscarUsuario(unMensajeDeRed->getParametro(0));
@@ -222,6 +231,10 @@ void Conexion::procesarDatosRecibidos() {
 			case ComandoServidor::USUARIOS:
 				Logger::getInstance()->log(Debug, "Recibio peticion de Usuarios");
 				procesarPeticionListaDeUsuarios();
+				break;
+			case ComandoServidor::INPUT:
+				Logger::getInstance()->log(Debug, "Recibio Input");
+				procesarInput(mensajeDeRed);
 				break;
 			default:
 				Logger::getInstance()->log(Debug, datosRecibidos);

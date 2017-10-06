@@ -10,6 +10,7 @@
 #include <limits>
 #include "Logger.h"
 #include "MensajeDeRed.h"
+#include "Renderer.h"
 
 const std::string CLIENT_LOG_FILENAME_FORMAT = "LogCl%Y%m%d%H%M%S.txt";
 
@@ -59,6 +60,7 @@ protected:
 	bool existeArchivo(const std::string& nombre);
 	void enviarPingAServidor();
 	void leerTestXML(std::string stressFileName, int stressTestTime);
+	Renderer* renderer;
 };
 
 #endif

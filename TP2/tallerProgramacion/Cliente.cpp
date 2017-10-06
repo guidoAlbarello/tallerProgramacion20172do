@@ -290,9 +290,15 @@ void Cliente::logearseAlServidor() {
 		Logger::getInstance()->log(Debug, "Contrasenia: " + pass);
 
 		estaLogueado = this->conexionDelCliente->login(user, pass);
+
+		if (estaLogueado) {
+			renderer = new Renderer();
+			renderer->iniciarRenderer();
+		}
 		//mutex en el buffer de manejar conexion .- cuando haya q manejar input en el cliente, se le pasa el input desde le manejador de input al manejador de conexion. o se manda a cliente para q procese primerop si es necesario y d3sp el manejador de conexion
 	}
 	//}
+
 	correrCicloPrincipal();
 }
 

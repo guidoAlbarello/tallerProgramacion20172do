@@ -26,6 +26,22 @@ void Juego::obtenerEntrada() {
 	}
 }
 
+std::vector<ObjetoDeJuego*> Juego::getObjetosDeJuego() {
+	return this->objetosDeJuego;
+}
+
+std::vector<Jugador*> Juego::getJugadores() {
+	return this->jugadores;
+}
+
+Jugador * Juego::agregarJugador() {
+	
+	Jugador* nuevoJugador = new Jugador();
+	this->cantidadJugadores++;
+	
+	return nuevoJugador;
+}
+
 Juego::Juego() {
 	this->juegoActivo = true;
 }
@@ -36,7 +52,6 @@ void Juego::gameLoop() {
 	int nLoops;
 
 	while (juegoActivo) {
-
 		this->obtenerEntrada();
 		auto finIntervalo = chrono::high_resolution_clock::now();
 		auto dur = finIntervalo - inicioIntervalo;
@@ -49,6 +64,5 @@ void Juego::gameLoop() {
 			tiempoAcumulado -= 1000/FPS;
 			nLoops++;
 		}
-
 	}
 }

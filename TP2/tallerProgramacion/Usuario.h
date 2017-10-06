@@ -3,6 +3,7 @@
 #define USUARIO_H
 #include <iostream>
 #include "BuzonDeMensajes.h"
+#include "Jugador.h"
 
 class Usuario {
 public:
@@ -15,10 +16,16 @@ public:
 	void enviarMensaje(Usuario* unUsuario, std::string unMensaje);
 	void recibirMensaje(std::string unDestinatario, std::string unEmisor, std::string unMensaje);
 	BuzonDeMensajes* getBuzon() { return buzonDeMensajes; }
+	Jugador* getJugador() { return jugador; }
+	void setJugador(Jugador* unJugador) { this->jugador = unJugador; }
+	void setId(int id) { this->id = id; }
+	int getId() { return this->id; }
 private:
 	std::string nombre;
 	std::string password;
 	BuzonDeMensajes* buzonDeMensajes;
+	Jugador* jugador;
+	int id;
 };
 
 #endif

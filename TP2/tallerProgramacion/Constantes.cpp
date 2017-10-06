@@ -26,6 +26,8 @@ string Constantes::getComandoServidor(ComandoServidor comando)
 		return "VACIO";
 	case ComandoServidor::USUARIOS:
 		return "USUARIOS";
+	case ComandoServidor::INPUT:
+		return "INPUT";
 	default:
 		return "Not recognized..";
 	}
@@ -55,6 +57,9 @@ ComandoServidor Constantes::getConstComandoServidor(string comando){
 	if (comando.compare("USUARIOS") == 0)
 	{
 		return ComandoServidor::USUARIOS;
+	}
+	if (comando.compare("INPUT") == 0) {
+		return ComandoServidor::INPUT;
 	}
 	
 	return ComandoServidor::VACIO;

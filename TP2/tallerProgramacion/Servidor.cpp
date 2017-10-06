@@ -335,6 +335,7 @@ Usuario* Servidor::validarLogin(MensajeDeRed* mensaje, string &mensajeResultado)
 		unUsuario = NULL;
 	} else {
 		mensajeResultado = "El login fue satisfactorio";
+		unUsuario->setJugador(this->elJuego->agregarJugador());
 	}
 	return unUsuario;
 }

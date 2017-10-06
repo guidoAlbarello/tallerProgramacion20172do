@@ -25,6 +25,7 @@ public:
 	bool getConexionActiva() { 	return this->conexionActiva; };
 private:
 	ManejadorDeConexionConexion* conexionConCliente;
+	void procesarInput(MensajeDeRed* unMensajeDeRed);
 	void procesarSend_Message(MensajeDeRed* unMensajeDeRed);
 	void procesarRetrieve_Messages(MensajeDeRed* unMensajeDeRed);
 	void procesarPeticionListaDeUsuarios();
