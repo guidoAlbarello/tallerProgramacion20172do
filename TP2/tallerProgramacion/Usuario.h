@@ -18,14 +18,14 @@ public:
 	BuzonDeMensajes* getBuzon() { return buzonDeMensajes; }
 	Jugador* getJugador() { return jugador; }
 	void setJugador(Jugador* unJugador) { this->jugador = unJugador; }
-	void setId(int id) { this->id = id; }
-	int getId() { return this->id; }
+	void setId(int id) { this->jugador->setId(id); }
+	int getId() { return this->jugador->getId(); }
 private:
 	std::string nombre;
 	std::string password;
 	BuzonDeMensajes* buzonDeMensajes;
 	Jugador* jugador;
-	int id;
+
 };
 
 #endif
