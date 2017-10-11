@@ -124,7 +124,8 @@ void Cliente::conectarseAlServidor() {
 			this->conexionViva = true;
 			this->t_procesarPing = std::thread(&Cliente::enviarPingAServidor, this);
 			this->t_procesarDatosRecibidos = std::thread(&Cliente::procesarDatosRecibidos, this);
-			
+			this->renderer = new Renderer();
+			this->renderer->iniciarRenderer();
 		}
 		else {
 			this->conexionViva = false;
@@ -158,6 +159,8 @@ void Cliente::desconectarseDelServidor() {
 			t_procesarPing.join();
 		}
 
+		this->renderer->cerrarRenderer();
+		delete this->renderer;
 		if (this->conexionDelCliente != NULL) {
 			this->conexionDelCliente->cerrarConexion();
 			delete this->conexionDelCliente;
@@ -275,7 +278,7 @@ void Cliente::logearseAlServidor() {
 		cout << "Usted ya esta logueado." << endl;
 		return;
 	}
-
+		
 	while (!this->estaLogueado) {
 		std::string user;
 		std::string pass;

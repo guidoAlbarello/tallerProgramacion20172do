@@ -1,4 +1,7 @@
 #pragma once
+
+#ifndef JUEGO_H
+#define JUEGO_H
 #include "Constantes.h"
 #include <thread>
 #include <chrono>
@@ -30,3 +33,5 @@ private:
 	mutex m_jugadores;
 	mutex m_objetos;
 };
+
+#endif

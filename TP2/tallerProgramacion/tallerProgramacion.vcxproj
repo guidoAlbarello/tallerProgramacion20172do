@@ -22,7 +22,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{BAD4D5F7-E356-4DE5-9236-71499B629F41}</ProjectGuid>
     <RootNamespace>tallerProgramacion</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.14393.0</WindowsTargetPlatformVersion>
     <ProjectName>TP2</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -72,7 +72,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>$(SolutionDir)SDL2image\include;$(SolutionDir)SDL2_ttf-2.0.14\include;$(SolutionDir)SDL2_mixer-2.0.1\include;$(SolutionDir)SDL2-2.0.6\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\Gregorio\source\repos\tpTaller\TP2\SDL2image\lib\x64;C:\Users\Gregorio\source\repos\tpTaller\TP2\SDL2_ttf-2.0.14\lib\x64;C:\Users\Gregorio\source\repos\tpTaller\TP2\SDL2_mixer-2.0.1\lib\x64;$(SolutionDir)SDL2-2.0.6\lib\x64;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)SDL2_ttf-2.0.14\lib\x64;$(SolutionDir)SDL2image\lib\x64;$(SolutionDir)SDL2_mixer-2.0.1\lib\x64;$(SolutionDir)SDL2-2.0.6\lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -122,6 +122,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="BuzonDeMensajes.h" />
+    <ClInclude Include="Camara.h" />
     <ClInclude Include="ClientConfig.h" />
     <ClInclude Include="Cliente.h" />
     <ClInclude Include="Conexion.h" />
@@ -134,6 +135,7 @@
     <ClInclude Include="ManejadorDeConexionCliente.h" />
     <ClInclude Include="ManejadorDeConexionConexion.h" />
     <ClInclude Include="ManejadorDeConexionServidor.h" />
+    <ClInclude Include="ManejadorDeTexturas.h" />
     <ClInclude Include="Mensaje.h" />
     <ClInclude Include="MensajeDeRed.h" />
     <ClInclude Include="ObjetoDeJuego.h" />
@@ -144,11 +146,13 @@
     <ClInclude Include="ManejadorDeConexion.h" />
     <ClInclude Include="Servidor.h" />
     <ClInclude Include="SocketSincronico.h" />
+    <ClInclude Include="Sprite.h" />
     <ClInclude Include="Usuario.h" />
     <ClInclude Include="Vector.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BuzonDeMensajes.cpp" />
+    <ClCompile Include="Camara.cpp" />
     <ClCompile Include="ClientConfig.cpp" />
     <ClCompile Include="Cliente.cpp" />
     <ClCompile Include="Conexion.cpp" />
@@ -164,6 +168,7 @@
     <ClCompile Include="ManejadorDeConexionCliente.cpp" />
     <ClCompile Include="ManejadorDeConexionConexion.cpp" />
     <ClCompile Include="ManejadorDeConexionServidor.cpp" />
+    <ClCompile Include="ManejadorDeTexturas.cpp" />
     <ClCompile Include="MensajeDeRed.cpp" />
     <ClCompile Include="ObjetoDeJuego.cpp" />
     <ClCompile Include="ParserDeMensajes.cpp" />
@@ -171,7 +176,9 @@
     <ClCompile Include="ServerConfig.cpp" />
     <ClCompile Include="Servidor.cpp" />
     <ClCompile Include="SocketSincronico.cpp" />
+    <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Usuario.cpp" />
+    <ClCompile Include="Vector.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
