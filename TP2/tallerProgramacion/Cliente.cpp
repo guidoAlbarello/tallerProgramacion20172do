@@ -446,16 +446,10 @@ void Cliente::procesarDatosRecibidos() {
 			case ComandoCliente::UPDATE_MODEL:
 				Logger::getInstance()->log(Debug, "Recibio un un UPDATE_MODEL");
 
+				// TODO: este memcpy trae bien pero por alguna razon cuando sale del while explota, si se comenta se fixea
 				memcpy(&estadoJuego, datosRecibidos, sizeof(Constantes::EstadoJuego));
 				std::cout << "Estado juego:" << std::endl;
-				/*for (int i = 0; i < estadoJuego.estados.length; i++) {
-					std::cout << estadoJuego.estados[i].usuario << std::endl;
-					estadoJuego.estados.length()
-				}*/
-				/*std::cout << estadoJuego.estados[0].usuario << std::endl;
-				std::cout << estadoJuego.estados[1].usuario << std::endl;
-				std::cout << estadoJuego.estados[2].usuario << std::endl;
-				std::cout << estadoJuego.estados[3].usuario << std::endl;*/
+				std::cout << estadoJuego.estados[0].usuario << std::endl;
 
 				break;
 			case ComandoCliente::RESULTADO_PING:
