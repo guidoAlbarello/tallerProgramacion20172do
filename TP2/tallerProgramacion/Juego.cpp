@@ -37,8 +37,9 @@ std::vector<Jugador*> Juego::getJugadores() {
 Jugador * Juego::agregarJugador() {
 	
 	Jugador* nuevoJugador = new Jugador();
+	nuevoJugador->setId(cantidadJugadores);
 	this->cantidadJugadores++;
-	
+	this->jugadores.push_back(nuevoJugador);
 	return nuevoJugador;
 }
 
