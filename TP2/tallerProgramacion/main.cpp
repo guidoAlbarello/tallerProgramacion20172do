@@ -5,7 +5,7 @@ using namespace std;
 
 #define ES_SERVIDOR false
 
-int main(int argc, char* argv[]) {
+int main(int argc, char* argv[]) {	
 	std::string input;
 	Logger::getInstance()->setMode(Debug);
 	Logger::getInstance()->log(Debug, "Iniciando aplicacion");
@@ -36,6 +36,6 @@ int main(int argc, char* argv[]) {
 			break;
 		}
 	}
-			
+	
 	return 0;
 }

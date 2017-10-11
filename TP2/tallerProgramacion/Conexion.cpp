@@ -168,7 +168,18 @@ void Conexion::enviarChatGlobal(bool tipoDeChat, string unEmisor, string unMensa
 	int tamanio = mensaje.length() + 1;
 	Logger::getInstance()->log(Debug, "Enviando mensaje");
 	Logger::getInstance()->log(Debug, mensaje);
+
 	this->conexionConCliente->getSocket().enviarDatos(mensaje.c_str(), tamanio);
+}
+
+void Conexion::enviarUpdate(Constantes::EstadoJuego estado) {
+	Logger::getInstance()->log(Debug, "Enviando update");
+
+	int tamanio = sizeof(Constantes::EstadoJuego);
+	char* data = new char[sizeof(Constantes::EstadoJuego)];
+	memcpy(data, &estado, sizeof(Constantes::EstadoJuego));
+
+	this->conexionConCliente->getSocket().enviarDatos(data, tamanio);
 }
 
 

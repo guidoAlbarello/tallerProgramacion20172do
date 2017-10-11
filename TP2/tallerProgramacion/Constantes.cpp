@@ -22,8 +22,8 @@ string Constantes::getComandoServidor(ComandoServidor comando)
 		return "SEND_MESSAGE";
 	case ComandoServidor::RETRIEVE_MESSAGES:
 		return "RETRIEVE_MESSAGES";
-	case ComandoServidor::VACIO:
-		return "VACIO";
+	case ComandoServidor::UPDATE_MODEL:
+		return "UPDATE_MODEL";
 	case ComandoServidor::USUARIOS:
 		return "USUARIOS";
 	case ComandoServidor::INPUT:
@@ -50,9 +50,9 @@ ComandoServidor Constantes::getConstComandoServidor(string comando){
 	{
 		return ComandoServidor::RETRIEVE_MESSAGES;
 	}
-	if (comando.compare("VACIO") == 0)
+	if (comando.compare("UPDATE_MODEL") == 0)
 	{
-		return ComandoServidor::VACIO;
+		return ComandoServidor::UPDATE_MODEL;
 	}
 	if (comando.compare("USUARIOS") == 0)
 	{
@@ -61,8 +61,8 @@ ComandoServidor Constantes::getConstComandoServidor(string comando){
 	if (comando.compare("INPUT") == 0) {
 		return ComandoServidor::INPUT;
 	}
-	
-	return ComandoServidor::VACIO;
+
+	return ComandoServidor::UPDATE_MODEL;
 }
 
 string Constantes::getComandoCliente(ComandoCliente comando)
@@ -73,8 +73,8 @@ string Constantes::getComandoCliente(ComandoCliente comando)
 		return "LOG";
 	case ComandoCliente::PRINT:
 		return "PRINT";
-	case ComandoCliente::VACIO:
-		return "SEND_MESSAGE";
+	case ComandoCliente::UPDATE_MODEL:
+		return "UPDATE_MODEL";
 	case ComandoCliente::RESULTADO_LOGIN:
 		return "RESULTADO_LOGIN";
 	case ComandoCliente::RESULTADO_SEND_MESSAGE:
@@ -107,7 +107,6 @@ ComandoCliente Constantes::getConstComandoCliente(string comando) {
 	{
 		return ComandoCliente::RESULTADO_LOGIN;
 	}
-
 	if (comando.compare("RESULTADO_SEND_MESSAGE") == 0) {
 		return ComandoCliente::RESULTADO_SEND_MESSAGE;
 	}
@@ -131,7 +130,7 @@ ComandoCliente Constantes::getConstComandoCliente(string comando) {
 		return ComandoCliente::RESULTADO_USUARIOS;
 	}
 
-	return ComandoCliente::VACIO;
+	return ComandoCliente::UPDATE_MODEL;
 }
 
 

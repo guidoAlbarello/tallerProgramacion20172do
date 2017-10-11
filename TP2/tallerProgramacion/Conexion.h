@@ -21,6 +21,7 @@ public:
 	Usuario* getUsuario() { return usuarioConectado; }
 	ManejadorDeConexionConexion* getConexionConCliente() { return this->conexionConCliente; };
 	void enviarChatGlobal(bool tipoDeChat, string unEmisor, string unMensaje);
+	void enviarUpdate(Constantes::EstadoJuego estado);
 	void procesarSolicitudPing();
 	bool getConexionActiva() { 	return this->conexionActiva; };
 private:

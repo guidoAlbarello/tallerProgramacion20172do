@@ -67,7 +67,8 @@ void Servidor::iniciarServidor() {
 			this->conexionDelServidor->iniciarConexion(this->configuracion->getPuerto(), this->configuracion->getMaxClientes());
 
 			this->t_escucharClientes = std::thread(&Servidor::escucharClientes, this);
-			this->t_enviarChatGlobal = std::thread(&Servidor::enviarChatGlobal, this);
+			//this->t_enviarChatGlobal = std::thread(&Servidor::enviarChatGlobal, this);
+			this->t_updateModel = std::thread(&Servidor::updateModel, this);
 			this->correrCicloPrincipal();
 		}
 	} catch (exception e) {
@@ -88,8 +89,12 @@ void Servidor::cerrarServidor() {
 			t_escucharClientes.join();
 		}
 
-		if (t_enviarChatGlobal.joinable()) {
-			t_enviarChatGlobal.join();
+		//if (t_enviarChatGlobal.joinable()) {
+		//	t_enviarChatGlobal.join();
+		//}
+
+		if (t_updateModel.joinable()) {
+			t_updateModel.join();
 		}
 	} catch (exception e) {
 		Logger::getInstance()->log(Error, "Ocurrio un error al cerrar el servidor");
@@ -359,5 +364,58 @@ void Servidor::enviarChatGlobal() {
 				this->buzonDeChatGlobal->eliminarMensajes(i);
 		}
 	}
+}
+
+void Servidor::updateModel() {
+	while (servidorActivo) {
+		for (std::vector<Conexion*>::iterator it = conexionesActivas.begin(); it != conexionesActivas.end(); ++it) {
+			Conexion* unaConexion = (Conexion*)*it;
+			if (unaConexion->getUsuario() != NULL) {
+
+				// TODO: ver si es la clase Juego la que manda esto o el Servidor
+				Constantes::EstadoJugador estadoJugador1;
+				estadoJugador1.posX = 10.0;
+				estadoJugador1.posY = 20.0;
+				estadoJugador1.km = 22.5;
+				estadoJugador1.usuario = "tomas";
+				EstadoAuto estadoAuto1 = EstadoAuto::DERECHO;
+				estadoJugador1.estadoAuto = estadoAuto1;
+
+				Constantes::EstadoJugador estadoJugador2;
+				estadoJugador2.posX = 50.0;
+				estadoJugador2.posY = 50.0;
+				estadoJugador2.km = 22.5;
+				estadoJugador2.usuario = "pepe";
+				EstadoAuto estadoAuto2 = EstadoAuto::DOBLANDO_DER;
+				estadoJugador2.estadoAuto = estadoAuto2;
+
+				Constantes::EstadoJugador estadoJugador3;
+				estadoJugador3.posX = 50.0;
+				estadoJugador3.posY = 50.0;
+				estadoJugador3.km = 22.5;
+				estadoJugador3.usuario = "pepe";
+				EstadoAuto estadoAuto3 = EstadoAuto::DOBLANDO_DER;
+				estadoJugador3.estadoAuto = estadoAuto3;
+
+				Constantes::EstadoJugador estadoJugador4;
+				estadoJugador4.posX = 50.0;
+				estadoJugador4.posY = 50.0;
+				estadoJugador4.km = 22.5;
+				estadoJugador4.usuario = "pepe";
+				EstadoAuto estadoAuto4 = EstadoAuto::DOBLANDO_DER;
+				estadoJugador4.estadoAuto = estadoAuto4;
+
+				Constantes::EstadoJuego estadoJuego;
+				estadoJuego.estados[0] = estadoJugador1;
+				estadoJuego.estados[1] = estadoJugador2;
+				estadoJuego.estados[2] = estadoJugador3;
+				estadoJuego.estados[3] = estadoJugador4;
+
+				unaConexion->enviarUpdate(estadoJuego);
+			}
+		}
+		std::this_thread::sleep_for(std::chrono::milliseconds(Constantes::UPDATE_MODEL_DELAY));
+	}
+
 }
 

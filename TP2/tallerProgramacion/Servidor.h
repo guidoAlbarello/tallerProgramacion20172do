@@ -38,6 +38,7 @@ protected:
 	static Servidor* instance;
 	std::thread t_escucharClientes;
 	std::thread t_enviarChatGlobal;
+	std::thread t_updateModel;
 	bool servidorActivo;
 	void leerServerConfig();
 	void escucharClientes();
@@ -52,7 +53,7 @@ protected:
 	Usuario* usuarioValido(std::string usuario, std::string contrasenia);
 	void enviarChatGlobal();
 	void verificarConexiones();
-
+	void updateModel();
 	Juego* elJuego;
 };
 

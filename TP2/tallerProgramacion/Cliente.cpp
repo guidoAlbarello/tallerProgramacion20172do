@@ -417,6 +417,7 @@ void Cliente::procesarDatosRecibidos() {
 			timeOut = std::chrono::high_resolution_clock::now();
 			std::string datosRecibidosString(datosRecibidos);
 			MensajeDeRed* mensajeDeRed = new MensajeDeRed(datosRecibidosString, Constantes::CLIENTE); //LIBERAR este mensaje de red, no se borra nunca!!!!!!!!!
+			Constantes::EstadoJuego estadoJuego;
 
 			switch (mensajeDeRed->getComandoCliente()) {
 			case ComandoCliente::RESULTADO_LOGIN:
@@ -442,8 +443,20 @@ void Cliente::procesarDatosRecibidos() {
 				Logger::getInstance()->log(Debug, "Recibio un PRINT");
 				std::cout << datosRecibidosString << endl;
 				break;
-			case ComandoCliente::VACIO:
-				Logger::getInstance()->log(Debug, "Recibio un VACIO");
+			case ComandoCliente::UPDATE_MODEL:
+				Logger::getInstance()->log(Debug, "Recibio un un UPDATE_MODEL");
+
+				memcpy(&estadoJuego, datosRecibidos, sizeof(Constantes::EstadoJuego));
+				std::cout << "Estado juego:" << std::endl;
+				/*for (int i = 0; i < estadoJuego.estados.length; i++) {
+					std::cout << estadoJuego.estados[i].usuario << std::endl;
+					estadoJuego.estados.length()
+				}*/
+				/*std::cout << estadoJuego.estados[0].usuario << std::endl;
+				std::cout << estadoJuego.estados[1].usuario << std::endl;
+				std::cout << estadoJuego.estados[2].usuario << std::endl;
+				std::cout << estadoJuego.estados[3].usuario << std::endl;*/
+
 				break;
 			case ComandoCliente::RESULTADO_PING:
 				Logger::getInstance()->log(Debug, "Recibio un RESULTADO_PING");
