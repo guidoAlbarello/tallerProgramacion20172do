@@ -84,10 +84,10 @@
     <ClInclude Include="Jugador.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="Ltexture.h">
+    <ClInclude Include="LoggerView.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="LoggerView.h">
+    <ClInclude Include="Ltexture.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
   </ItemGroup>
@@ -158,10 +158,10 @@
     <ClCompile Include="Jugador.cpp">
       <Filter>Archivos de código fuente</Filter>
     </ClCompile>
-    <ClCompile Include="Ltexture.cpp">
+    <ClCompile Include="LoggerView.cpp">
       <Filter>Archivos de código fuente</Filter>
     </ClCompile>
-    <ClCompile Include="LoggerView.cpp">
+    <ClCompile Include="Ltexture.cpp">
       <Filter>Archivos de código fuente</Filter>
     </ClCompile>
   </ItemGroup>
