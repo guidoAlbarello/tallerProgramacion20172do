@@ -4,6 +4,7 @@ using namespace std;
 
 
 Usuario::Usuario() {
+	this->jugador = NULL;
 }
 
 Usuario::Usuario(std::string name, std::string pass) {
