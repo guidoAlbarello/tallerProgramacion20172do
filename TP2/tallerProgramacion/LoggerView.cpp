@@ -56,9 +56,10 @@ bool LoggerView::loadMedia()
 	return success;
 }
 
-void LoggerView::showLogin() {
+Usuario* LoggerView::showLogin() {
 	SDL_Color textColor = { 0, 0, 0, 0xFF };
 	bool success = true;
+	Usuario* usuario = new Usuario();
 
 	if (!gPromptTextTexture->loadFromRenderedText("Enter Username:", textColor))
 	{
@@ -110,10 +111,15 @@ void LoggerView::showLogin() {
 					{
 						if (isWrittingPassord == false) {
 							isWrittingPassord = true;
+							usuario->setNombre(inputText);
 							inputText = "";
 						}
 						else {
 							//procesar user y pass
+							quit = true;
+							renderText = false;
+							usuario->setPassword(inputText);
+							break;
 						}
 					}
 					//Handle backspace
@@ -176,6 +182,8 @@ void LoggerView::showLogin() {
 			SDL_RenderPresent(gRenderer);
 
 		}
+
+		return usuario;
 	}
 
 	//Disable text input

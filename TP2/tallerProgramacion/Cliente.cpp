@@ -3,6 +3,7 @@
 #include "../lib/rapidxml-1.13/rapidxml_print.hpp"
 #include <fstream>
 #include <chrono>
+#include "LoggerView.h"
 
 Cliente* Cliente::instance = 0;
 
@@ -54,7 +55,18 @@ void Cliente::iniciarCliente() {
 void Cliente::correrCicloPrincipal() {
 	std::string input;
 	while (clienteActivo) {
-		mostrarMenuPrincipal();
+		conectarseAlServidor();
+		logearseAlServidor();
+
+		if (this->estaLogueado) {
+			std::cout << "Login exitoso" << std::endl;
+		}
+		else {
+			std::cout << "Login fallido" << std::endl;
+		}
+		system("PAUSE");
+		/*
+		//mostrarMenuPrincipal();
 		std::getline(std::cin, input);
 		if (input.length() != 1) {
 			std::cout << "Debe ingresar una de las opciones" << std::endl;
@@ -90,7 +102,7 @@ void Cliente::correrCicloPrincipal() {
 				break;
 			}
 		}
-
+		*/
 	}
 }
 
@@ -279,7 +291,16 @@ void Cliente::logearseAlServidor() {
 		return;
 	}
 		
+
+	LoggerView loggerView = LoggerView(this->renderer->getRenderer());
 	while (!this->estaLogueado) {
+
+		Usuario* usuario = loggerView.showLogin();
+		std::cout << "Nombre de usuario: " << usuario->getNombre() << std::endl;
+		std::cout << "Pass: " << usuario->getPassword() << std::endl;
+
+		estaLogueado = this->conexionDelCliente->login(usuario->getNombre(), usuario->getPassword());
+		/*
 		std::string user;
 		std::string pass;
 		mostrarMenuLogin();
@@ -299,10 +320,11 @@ void Cliente::logearseAlServidor() {
 			renderer->iniciarRenderer();
 		}
 		//mutex en el buffer de manejar conexion .- cuando haya q manejar input en el cliente, se le pasa el input desde le manejador de input al manejador de conexion. o se manda a cliente para q procese primerop si es necesario y d3sp el manejador de conexion
+		*/
 	}
 	//}
 
-	correrCicloPrincipal();
+	//correrCicloPrincipal();
 }
 
 void Cliente::enviarMensajeAlChat() {

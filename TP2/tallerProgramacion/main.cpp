@@ -12,8 +12,8 @@ using namespace std;
 
 #define ES_SERVIDOR false
 //Screen dimension constants
-const int SCREEN_WIDTH = 640;
-const int SCREEN_HEIGHT = 480;
+const int SCREEN_WIDTH = 800;
+const int SCREEN_HEIGHT = 600;
 
 //Texture wrapper class
 
@@ -53,7 +53,7 @@ bool init()
 	}
 	else
 	{
-		
+		/*
 		//Set texture filtering to linear
 		if (!SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1"))
 		{
@@ -70,7 +70,7 @@ bool init()
 		else
 		{
 			printf("Window created");
-			
+
 			//Create vsynced renderer for window
 			gRenderer = SDL_CreateRenderer(gWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 			if (gRenderer == NULL)
@@ -85,26 +85,42 @@ bool init()
 				SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
 
 				//Initialize PNG loading
-				
+
 				int imgFlags = IMG_INIT_PNG;
 				if (!(IMG_Init(imgFlags) & imgFlags))
 				{
 					printf("SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError());
 					success = false;
 				}
-				
+
 				//Initialize SDL_ttf
-				
+
 				if (TTF_Init() == -1)
 				{
 					printf("SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError());
 					success = false;
 				}
-				
+
 			}
 		}
+	}*/
+
+		int imgFlags = IMG_INIT_PNG;
+		if (!(IMG_Init(imgFlags) & imgFlags))
+		{
+			printf("SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError());
+			success = false;
+		}
+
+		//Initialize SDL_ttf
+
+		if (TTF_Init() == -1)
+		{
+			printf("SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError());
+			success = false;
+		}
+
 	}
-	
 	return success;
 	
 
@@ -129,10 +145,6 @@ void close()
 }
 
 int main(int argc, char* argv[]) {
-	
-			
-	//Cliente::getInstance()->iniciarCliente();
-	//break;
 
 	printf("Inicializando");
 	if (!init())
@@ -141,9 +153,13 @@ int main(int argc, char* argv[]) {
 	}
 	else
 	{
-		LoggerView loggerView = LoggerView(gRenderer);
-		printf("Antes del showlogin");
-		loggerView.showLogin();
+		//LoggerView loggerView = LoggerView(gRenderer);
+		//printf("Antes del showlogin");
+		//loggerView.showLogin();
+
+		Cliente::getInstance()->iniciarCliente();
+		//break;
+
 
 	}
 

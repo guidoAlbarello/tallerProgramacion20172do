@@ -5,6 +5,7 @@
 
 #include "Ltexture.h"
 #include <string>
+#include "Usuario.h"
 
 using namespace std;
 
@@ -15,7 +16,7 @@ public:
 	~LoggerView();
 
 	bool loadMedia();
-	void showLogin();
+	Usuario* showLogin();
 
 private:
 	TTF_Font *gFont = NULL;
