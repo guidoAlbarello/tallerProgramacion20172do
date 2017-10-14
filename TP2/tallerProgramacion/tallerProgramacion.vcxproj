@@ -22,7 +22,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{BAD4D5F7-E356-4DE5-9236-71499B629F41}</ProjectGuid>
     <RootNamespace>tallerProgramacion</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.14393.0</WindowsTargetPlatformVersion>
     <ProjectName>TP2</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -129,6 +129,10 @@
     <ClInclude Include="Config.h" />
     <ClInclude Include="Constantes.h" />
     <ClInclude Include="Escenario.h" />
+    <ClInclude Include="EstadoJuego.h" />
+    <ClInclude Include="EstadoJuegoActivo.h" />
+    <ClInclude Include="EstadoLogeo.h" />
+    <ClInclude Include="EstadoMenu.h" />
     <ClInclude Include="Juego.h" />
     <ClInclude Include="Logger.h" />
     <ClInclude Include="LoggerView.h" />
@@ -137,6 +141,8 @@
     <ClInclude Include="ManejadorDeConexionConexion.h" />
     <ClInclude Include="ManejadorDeConexionServidor.h" />
     <ClInclude Include="ManejadorDeTexturas.h" />
+    <ClInclude Include="ManejadorInput.h" />
+    <ClInclude Include="MaquinaEsatdos.h" />
     <ClInclude Include="Mensaje.h" />
     <ClInclude Include="MensajeDeRed.h" />
     <ClInclude Include="ObjetoDeJuego.h" />
@@ -160,6 +166,9 @@
     <ClCompile Include="Config.cpp" />
     <ClCompile Include="Constantes.cpp" />
     <ClCompile Include="Escenario.cpp" />
+    <ClCompile Include="EstadoJuegoActivo.cpp" />
+    <ClCompile Include="EstadoLogeo.cpp" />
+    <ClCompile Include="EstadoMenu.cpp" />
     <ClCompile Include="Juego.cpp" />
     <ClCompile Include="Jugador.cpp" />
     <ClCompile Include="Logger.cpp" />
@@ -171,6 +180,8 @@
     <ClCompile Include="ManejadorDeConexionConexion.cpp" />
     <ClCompile Include="ManejadorDeConexionServidor.cpp" />
     <ClCompile Include="ManejadorDeTexturas.cpp" />
+    <ClCompile Include="ManejadorInput.cpp" />
+    <ClCompile Include="MaquinaEstados.cpp" />
     <ClCompile Include="MensajeDeRed.cpp" />
     <ClCompile Include="ObjetoDeJuego.cpp" />
     <ClCompile Include="ParserDeMensajes.cpp" />

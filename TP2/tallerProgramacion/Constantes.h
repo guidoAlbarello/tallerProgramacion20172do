@@ -3,6 +3,11 @@
 #define CONSTANTES_H
 
 #include <string>
+#include  <SDL.h>
+
+#define TECLA_DERECHA SDL_SCANCODE_RIGHT
+#define TECLA_IZQUIERDA SDL_SCANCODE_LEFT
+#define TECLA_ACELERAR SDL_SCANCODE_UP
 
 using namespace std;
 

@@ -13,48 +13,33 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Archivos de código fuente\EstadosJuego">
+      <UniqueIdentifier>{87a89155-a385-45c1-9dda-5f0ca973765d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de encabezado\EstadosJuego">
+      <UniqueIdentifier>{4bd26ed6-0537-437c-ae65-0cf5292d9b75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de código fuente\Manejadores">
+      <UniqueIdentifier>{6b4a2f04-670a-4b2c-9841-a830070ecf9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de encabezado\Manejadores">
+      <UniqueIdentifier>{2d14ca24-3f17-4fdf-9813-73045f46f951}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de código fuente\Red">
+      <UniqueIdentifier>{59ad35ac-d419-494a-b974-74b5f0565e05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de encabezado\Red">
+      <UniqueIdentifier>{366af0ad-7c1f-4573-8c5d-6f510bf50329}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de código fuente\Juego">
+      <UniqueIdentifier>{b06f5b4b-877c-4dcf-a145-15932322a88b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de encabezado\Juego">
+      <UniqueIdentifier>{07eb5202-7de9-4acd-bdf4-26ae2a0a4eab}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="SocketSincronico.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="Servidor.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="Cliente.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="ManejadorDeConexion.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="ClientConfig.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
     <ClInclude Include="Logger.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="ServerConfig.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="Usuario.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="BuzonDeMensajes.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="Mensaje.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="Conexion.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="ManejadorDeConexionCliente.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="ManejadorDeConexionServidor.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="ManejadorDeConexionConexion.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
     <ClInclude Include="Config.h">
@@ -63,63 +48,105 @@
     <ClInclude Include="Constantes.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="MensajeDeRed.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="ParserDeMensajes.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="Juego.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="ObjetoDeJuego.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
     <ClInclude Include="Vector.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="Renderer.h">
-      <Filter>Archivos de encabezado</Filter>
+    <ClInclude Include="EstadoJuego.h">
+      <Filter>Archivos de encabezado\EstadosJuego</Filter>
     </ClInclude>
-    <ClInclude Include="Jugador.h">
-      <Filter>Archivos de encabezado</Filter>
+    <ClInclude Include="EstadoLogeo.h">
+      <Filter>Archivos de encabezado\EstadosJuego</Filter>
     </ClInclude>
-    <ClInclude Include="LoggerView.h">
-      <Filter>Archivos de encabezado</Filter>
+    <ClInclude Include="EstadoMenu.h">
+      <Filter>Archivos de encabezado\EstadosJuego</Filter>
     </ClInclude>
-    <ClInclude Include="Ltexture.h">
-      <Filter>Archivos de encabezado</Filter>
+    <ClInclude Include="ManejadorDeConexion.h">
+      <Filter>Archivos de encabezado\Manejadores</Filter>
     </ClInclude>
-    <ClInclude Include="Camara.h">
-      <Filter>Archivos de encabezado</Filter>
+    <ClInclude Include="ManejadorDeConexionCliente.h">
+      <Filter>Archivos de encabezado\Manejadores</Filter>
     </ClInclude>
-    <ClInclude Include="Sprite.h">
-      <Filter>Archivos de encabezado</Filter>
+    <ClInclude Include="ManejadorDeConexionConexion.h">
+      <Filter>Archivos de encabezado\Manejadores</Filter>
+    </ClInclude>
+    <ClInclude Include="ManejadorDeConexionServidor.h">
+      <Filter>Archivos de encabezado\Manejadores</Filter>
     </ClInclude>
     <ClInclude Include="ManejadorDeTexturas.h">
-      <Filter>Archivos de encabezado</Filter>
+      <Filter>Archivos de encabezado\Manejadores</Filter>
+    </ClInclude>
+    <ClInclude Include="ManejadorInput.h">
+      <Filter>Archivos de encabezado\Manejadores</Filter>
+    </ClInclude>
+    <ClInclude Include="Usuario.h">
+      <Filter>Archivos de encabezado\Red</Filter>
+    </ClInclude>
+    <ClInclude Include="BuzonDeMensajes.h">
+      <Filter>Archivos de encabezado\Red</Filter>
+    </ClInclude>
+    <ClInclude Include="ClientConfig.h">
+      <Filter>Archivos de encabezado\Red</Filter>
+    </ClInclude>
+    <ClInclude Include="Conexion.h">
+      <Filter>Archivos de encabezado\Red</Filter>
+    </ClInclude>
+    <ClInclude Include="Mensaje.h">
+      <Filter>Archivos de encabezado\Red</Filter>
+    </ClInclude>
+    <ClInclude Include="MensajeDeRed.h">
+      <Filter>Archivos de encabezado\Red</Filter>
+    </ClInclude>
+    <ClInclude Include="ParserDeMensajes.h">
+      <Filter>Archivos de encabezado\Red</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerConfig.h">
+      <Filter>Archivos de encabezado\Red</Filter>
+    </ClInclude>
+    <ClInclude Include="SocketSincronico.h">
+      <Filter>Archivos de encabezado\Red</Filter>
+    </ClInclude>
+    <ClInclude Include="Servidor.h">
+      <Filter>Archivos de encabezado\Red</Filter>
+    </ClInclude>
+    <ClInclude Include="Cliente.h">
+      <Filter>Archivos de encabezado\Red</Filter>
+    </ClInclude>
+    <ClInclude Include="Camara.h">
+      <Filter>Archivos de encabezado\Juego</Filter>
     </ClInclude>
     <ClInclude Include="Escenario.h">
-      <Filter>Archivos de encabezado</Filter>
+      <Filter>Archivos de encabezado\Juego</Filter>
+    </ClInclude>
+    <ClInclude Include="LoggerView.h">
+      <Filter>Archivos de encabezado\Juego</Filter>
+    </ClInclude>
+    <ClInclude Include="Ltexture.h">
+      <Filter>Archivos de encabezado\Juego</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjetoDeJuego.h">
+      <Filter>Archivos de encabezado\Juego</Filter>
+    </ClInclude>
+    <ClInclude Include="Sprite.h">
+      <Filter>Archivos de encabezado\Juego</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer.h">
+      <Filter>Archivos de encabezado\Juego</Filter>
+    </ClInclude>
+    <ClInclude Include="Jugador.h">
+      <Filter>Archivos de encabezado\Juego</Filter>
+    </ClInclude>
+    <ClInclude Include="Juego.h">
+      <Filter>Archivos de encabezado\Juego</Filter>
+    </ClInclude>
+    <ClInclude Include="EstadoJuegoActivo.h">
+      <Filter>Archivos de encabezado\EstadosJuego</Filter>
+    </ClInclude>
+    <ClInclude Include="MaquinaEsatdos.h">
+      <Filter>Archivos de encabezado\EstadosJuego</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Constantes.cpp">
-      <Filter>Archivos de código fuente</Filter>
-    </ClCompile>
-    <ClCompile Include="MensajeDeRed.cpp">
-      <Filter>Archivos de código fuente</Filter>
-    </ClCompile>
-    <ClCompile Include="ParserDeMensajes.cpp">
-      <Filter>Archivos de código fuente</Filter>
-    </ClCompile>
-    <ClCompile Include="BuzonDeMensajes.cpp">
-      <Filter>Archivos de código fuente</Filter>
-    </ClCompile>
-    <ClCompile Include="ClientConfig.cpp">
-      <Filter>Archivos de código fuente</Filter>
-    </ClCompile>
-    <ClCompile Include="Cliente.cpp">
       <Filter>Archivos de código fuente</Filter>
     </ClCompile>
     <ClCompile Include="Config.cpp">
@@ -128,68 +155,98 @@
     <ClCompile Include="main.cpp">
       <Filter>Archivos de código fuente</Filter>
     </ClCompile>
-    <ClCompile Include="ManejadorDeConexionCliente.cpp">
-      <Filter>Archivos de código fuente</Filter>
-    </ClCompile>
-    <ClCompile Include="Servidor.cpp">
-      <Filter>Archivos de código fuente</Filter>
-    </ClCompile>
-    <ClCompile Include="ManejadorDeConexionServidor.cpp">
-      <Filter>Archivos de código fuente</Filter>
-    </ClCompile>
-    <ClCompile Include="SocketSincronico.cpp">
-      <Filter>Archivos de código fuente</Filter>
-    </ClCompile>
-    <ClCompile Include="Usuario.cpp">
-      <Filter>Archivos de código fuente</Filter>
-    </ClCompile>
-    <ClCompile Include="ServerConfig.cpp">
-      <Filter>Archivos de código fuente</Filter>
-    </ClCompile>
-    <ClCompile Include="ManejadorDeConexion.cpp">
-      <Filter>Archivos de código fuente</Filter>
-    </ClCompile>
-    <ClCompile Include="ManejadorDeConexionConexion.cpp">
-      <Filter>Archivos de código fuente</Filter>
-    </ClCompile>
     <ClCompile Include="Logger.cpp">
-      <Filter>Archivos de código fuente</Filter>
-    </ClCompile>
-    <ClCompile Include="Conexion.cpp">
-      <Filter>Archivos de código fuente</Filter>
-    </ClCompile>
-    <ClCompile Include="Juego.cpp">
-      <Filter>Archivos de código fuente</Filter>
-    </ClCompile>
-    <ClCompile Include="ObjetoDeJuego.cpp">
-      <Filter>Archivos de código fuente</Filter>
-    </ClCompile>
-    <ClCompile Include="Renderer.cpp">
-      <Filter>Archivos de código fuente</Filter>
-    </ClCompile>
-    <ClCompile Include="Jugador.cpp">
-      <Filter>Archivos de código fuente</Filter>
-    </ClCompile>
-    <ClCompile Include="LoggerView.cpp">
-      <Filter>Archivos de código fuente</Filter>
-    </ClCompile>
-    <ClCompile Include="Ltexture.cpp">
-      <Filter>Archivos de código fuente</Filter>
-    </ClCompile>
-    <ClCompile Include="Camara.cpp">
-      <Filter>Archivos de código fuente</Filter>
-    </ClCompile>
-    <ClCompile Include="Sprite.cpp">
       <Filter>Archivos de código fuente</Filter>
     </ClCompile>
     <ClCompile Include="Vector.cpp">
       <Filter>Archivos de código fuente</Filter>
     </ClCompile>
+    <ClCompile Include="EstadoLogeo.cpp">
+      <Filter>Archivos de código fuente\EstadosJuego</Filter>
+    </ClCompile>
+    <ClCompile Include="EstadoMenu.cpp">
+      <Filter>Archivos de código fuente\EstadosJuego</Filter>
+    </ClCompile>
+    <ClCompile Include="ManejadorDeConexion.cpp">
+      <Filter>Archivos de código fuente\Manejadores</Filter>
+    </ClCompile>
+    <ClCompile Include="ManejadorDeConexionCliente.cpp">
+      <Filter>Archivos de código fuente\Manejadores</Filter>
+    </ClCompile>
+    <ClCompile Include="ManejadorDeConexionConexion.cpp">
+      <Filter>Archivos de código fuente\Manejadores</Filter>
+    </ClCompile>
+    <ClCompile Include="ManejadorDeConexionServidor.cpp">
+      <Filter>Archivos de código fuente\Manejadores</Filter>
+    </ClCompile>
     <ClCompile Include="ManejadorDeTexturas.cpp">
-      <Filter>Archivos de código fuente</Filter>
+      <Filter>Archivos de código fuente\Manejadores</Filter>
+    </ClCompile>
+    <ClCompile Include="ManejadorInput.cpp">
+      <Filter>Archivos de código fuente\Manejadores</Filter>
+    </ClCompile>
+    <ClCompile Include="Cliente.cpp">
+      <Filter>Archivos de código fuente\Red</Filter>
+    </ClCompile>
+    <ClCompile Include="Conexion.cpp">
+      <Filter>Archivos de código fuente\Red</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerConfig.cpp">
+      <Filter>Archivos de código fuente\Red</Filter>
+    </ClCompile>
+    <ClCompile Include="ClientConfig.cpp">
+      <Filter>Archivos de código fuente\Red</Filter>
+    </ClCompile>
+    <ClCompile Include="Usuario.cpp">
+      <Filter>Archivos de código fuente\Red</Filter>
+    </ClCompile>
+    <ClCompile Include="SocketSincronico.cpp">
+      <Filter>Archivos de código fuente\Red</Filter>
+    </ClCompile>
+    <ClCompile Include="MensajeDeRed.cpp">
+      <Filter>Archivos de código fuente\Red</Filter>
+    </ClCompile>
+    <ClCompile Include="Servidor.cpp">
+      <Filter>Archivos de código fuente\Red</Filter>
+    </ClCompile>
+    <ClCompile Include="BuzonDeMensajes.cpp">
+      <Filter>Archivos de código fuente\Red</Filter>
+    </ClCompile>
+    <ClCompile Include="ParserDeMensajes.cpp">
+      <Filter>Archivos de código fuente\Red</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjetoDeJuego.cpp">
+      <Filter>Archivos de código fuente\Juego</Filter>
+    </ClCompile>
+    <ClCompile Include="Sprite.cpp">
+      <Filter>Archivos de código fuente\Juego</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer.cpp">
+      <Filter>Archivos de código fuente\Juego</Filter>
+    </ClCompile>
+    <ClCompile Include="Ltexture.cpp">
+      <Filter>Archivos de código fuente\Juego</Filter>
+    </ClCompile>
+    <ClCompile Include="LoggerView.cpp">
+      <Filter>Archivos de código fuente\Juego</Filter>
+    </ClCompile>
+    <ClCompile Include="Camara.cpp">
+      <Filter>Archivos de código fuente\Juego</Filter>
     </ClCompile>
     <ClCompile Include="Escenario.cpp">
-      <Filter>Archivos de código fuente</Filter>
+      <Filter>Archivos de código fuente\Juego</Filter>
+    </ClCompile>
+    <ClCompile Include="Juego.cpp">
+      <Filter>Archivos de código fuente\Juego</Filter>
+    </ClCompile>
+    <ClCompile Include="Jugador.cpp">
+      <Filter>Archivos de código fuente\Juego</Filter>
+    </ClCompile>
+    <ClCompile Include="EstadoJuegoActivo.cpp">
+      <Filter>Archivos de código fuente\EstadosJuego</Filter>
+    </ClCompile>
+    <ClCompile Include="MaquinaEstados.cpp">
+      <Filter>Archivos de código fuente\EstadosJuego</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

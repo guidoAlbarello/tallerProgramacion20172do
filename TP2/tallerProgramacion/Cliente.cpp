@@ -23,7 +23,7 @@ Cliente::Cliente() {
 	this->configuracion = new ClientConfig();
 	this->buzonDeMensajesGlobales = new BuzonDeMensajes(); //LIBERAR LA MEMORIA  DEL BUZON
 	this->enviandoMensaje = false;
-
+	this->maquinaDeEstados = new MaquinaEstados();
 	//Seteando el nombre del log
 	Logger::getInstance()->setLogFileName(CLIENT_LOG_FILENAME_FORMAT);
 }
@@ -49,7 +49,7 @@ void Cliente::leerClientConfig() {
 void Cliente::iniciarCliente() {
 	Logger::getInstance()->log(Debug, "Iniciando cliente...");
 	this->leerClientConfig();
-	this->correrCicloPrincipal();
+	this->correrCicloPrincipal();  //iniciarMaquinaEstados
 }
 
 

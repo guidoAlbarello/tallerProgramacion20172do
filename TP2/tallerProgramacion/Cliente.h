@@ -12,6 +12,7 @@
 #include "MensajeDeRed.h"
 #include "Renderer.h"
 #include "LoggerView.h"
+#include "MaquinaEsatdos.h"
 #include "Ltexture.h"
 const std::string CLIENT_LOG_FILENAME_FORMAT = "LogCl%Y%m%d%H%M%S.txt";
 
@@ -22,6 +23,7 @@ public:
 	void cerrarCliente();
 
 protected:
+	MaquinaEstados* maquinaDeEstados;
 	void mostrarMensajesPrivados(MensajeDeRed* unMensajeDeRed);
 	void procesarMensajesGlobales(MensajeDeRed* unMensajeDeRed);
 	void procesarMensajesPrivados(MensajeDeRed* unMensajeDeRed);
