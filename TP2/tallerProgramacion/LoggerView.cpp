@@ -29,33 +29,6 @@ LoggerView::~LoggerView()
 	gFont = NULL;
 }
 
-bool LoggerView::loadMedia()
-{
-	//Loading success flag
-	bool success = true;
-
-	//Open the font
-	gFont = TTF_OpenFont("lazy.ttf", 28);
-	if (gFont == NULL)
-	{
-		printf("Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError());
-		success = false;
-	}
-	else
-	{
-		//Render the prompt
-		SDL_Color textColor = { 0, 0, 0, 0xFF };
-
-		if (!gPromptTextTexture->loadFromRenderedText("Enter Text:", textColor))
-		{
-			printf("Failed to render prompt text!\n");
-			success = false;
-		}
-	}
-
-	return success;
-}
-
 Usuario* LoggerView::showLogin() {
 	SDL_Color textColor = { 0, 0, 0, 0xFF };
 	bool success = true;
@@ -67,6 +40,7 @@ Usuario* LoggerView::showLogin() {
 		success = false;
 	}
 	if (!gPromptPasswordTextTexture->loadFromRenderedText("Enter Password:", textColor))
+	//if (!gPromptPasswordTextTexture->loadFromFile("fondo/sky.png"))
 	{
 		printf("Failed to render prompt text!\n");
 		success = false;
@@ -87,104 +61,97 @@ Usuario* LoggerView::showLogin() {
 	//Enable text input
 	SDL_StartTextInput();
 
-	if (!loadMedia())
+	bool isWrittingPassord = false;
+	while (!quit)
 	{
-		printf("Failed to load media!\n");
-	} else 
-	{
-		//While application is running
-		bool isWrittingPassord = false;
-		while (!quit)
+		bool renderText = false;
+		//Handle events on queue
+		while (SDL_PollEvent(&e) != 0)
 		{
-			bool renderText = false;
-			//Handle events on queue
-			while (SDL_PollEvent(&e) != 0)
+			//Special key input
+			if (e.type == SDL_KEYDOWN)
 			{
-				//Special key input
-				if (e.type == SDL_KEYDOWN)
+				if (e.key.keysym.sym == SDLK_ESCAPE)
 				{
-					if (e.key.keysym.sym == SDLK_ESCAPE)
-					{
+					quit = true;
+				}
+				if (e.key.keysym.sym == SDLK_RETURN)
+				{
+					if (isWrittingPassord == false) {
+						isWrittingPassord = true;
+						usuario->setNombre(inputText);
+						inputText = "";
+					}
+					else {
+						//procesar user y pass
 						quit = true;
-					}
-					if (e.key.keysym.sym == SDLK_RETURN)
-					{
-						if (isWrittingPassord == false) {
-							isWrittingPassord = true;
-							usuario->setNombre(inputText);
-							inputText = "";
-						}
-						else {
-							//procesar user y pass
-							quit = true;
-							renderText = false;
-							usuario->setPassword(inputText);
-							break;
-						}
-					}
-					//Handle backspace
-					if (e.key.keysym.sym == SDLK_BACKSPACE && inputText.length() > 0)
-					{
-						//lop off character
-						inputText.pop_back();
-						renderText = true;
+						renderText = false;
+						usuario->setPassword(inputText);
+						break;
 					}
 				}
-				//Special text input event
-				else if (e.type == SDL_TEXTINPUT)
+				//Handle backspace
+				if (e.key.keysym.sym == SDLK_BACKSPACE && inputText.length() > 0)
 				{
-					//Append character
-					inputText += e.text.text;
+					//lop off character
+					inputText.pop_back();
 					renderText = true;
 				}
 			}
-
-			//Rerender text if needed
-			if (renderText)
+			//Special text input event
+			else if (e.type == SDL_TEXTINPUT)
 			{
-				//Text is not empty
-				if (inputText != "")
-				{
-					if (!isWrittingPassord) {
-						//Render new text
-						gInputTextTexture->loadFromRenderedText(inputText.c_str(), textColor);
-					}
-					else {
-						gInputPasswordTextTexture->loadFromRenderedText(inputText.c_str(), textColor);
-					}
-				}
-				//Text is empty
-				else
-				{
-					if (!isWrittingPassord) {
-						//Render space texture
-						gInputTextTexture->loadFromRenderedText(" ", textColor);
-					}
-					else {
-						gInputPasswordTextTexture->loadFromRenderedText(" ", textColor);
-					}
-				}
+				//Append character
+				inputText += e.text.text;
+				renderText = true;
 			}
-
-			//Clear screen
-			SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
-			SDL_RenderClear(gRenderer);
-
-			//Render text textures
-			int h1 = gPromptTextTexture->getHeight() + gInputTextTexture->getHeight();
-			int h2 = h1 + gPromptPasswordTextTexture->getHeight();
-			gPromptTextTexture->render((SCREEN_WIDTH - gPromptTextTexture->getWidth()) / 2, 0);
-			gInputTextTexture->render((SCREEN_WIDTH - gInputTextTexture->getWidth()) / 2, gPromptTextTexture->getHeight());
-			gPromptPasswordTextTexture->render((SCREEN_WIDTH - gPromptPasswordTextTexture->getWidth()) / 2, h1);
-			gInputPasswordTextTexture->render((SCREEN_WIDTH - gInputPasswordTextTexture->getWidth()) / 2, h2);
-
-			//Update screen
-			SDL_RenderPresent(gRenderer);
-
 		}
 
-		return usuario;
+		//Rerender text if needed
+		if (renderText)
+		{
+			//Text is not empty
+			if (inputText != "")
+			{
+				if (!isWrittingPassord) {
+					//Render new text
+					gInputTextTexture->loadFromRenderedText(inputText.c_str(), textColor);
+				}
+				else {
+					gInputPasswordTextTexture->loadFromRenderedText(inputText.c_str(), textColor);
+				}
+			}
+			//Text is empty
+			else
+			{
+				if (!isWrittingPassord) {
+					//Render space texture
+					gInputTextTexture->loadFromRenderedText(" ", textColor);
+				}
+				else {
+					gInputPasswordTextTexture->loadFromRenderedText(" ", textColor);
+				}
+			}
+		}
+
+		//Clear screen
+		SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
+		SDL_RenderClear(gRenderer);
+
+		//Render text textures
+		int h1 = gPromptTextTexture->getHeight() + gInputTextTexture->getHeight();
+		int h2 = h1 + gPromptPasswordTextTexture->getHeight();
+		gPromptTextTexture->render((SCREEN_WIDTH - gPromptTextTexture->getWidth()) / 2, 0);
+		gInputTextTexture->render((SCREEN_WIDTH - gInputTextTexture->getWidth()) / 2, gPromptTextTexture->getHeight());
+		gPromptPasswordTextTexture->render((SCREEN_WIDTH - gPromptPasswordTextTexture->getWidth()) / 2, h1);
+		gInputPasswordTextTexture->render((SCREEN_WIDTH - gInputPasswordTextTexture->getWidth()) / 2, h2);
+
+		//Update screen
+		SDL_RenderPresent(gRenderer);
+
 	}
+
+	return usuario;
 
 	//Disable text input
 	SDL_StopTextInput();

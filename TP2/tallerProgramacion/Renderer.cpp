@@ -2,8 +2,8 @@
 
 Renderer::Renderer() {
 	this->rendererActivo = true;
-	this->anchoVentana = 640;
-	this->altoVentana = 480;
+	this->anchoVentana = 800;
+	this->altoVentana = 600;
 }
 
 Renderer::Renderer(int ancho, int alto) {
@@ -85,6 +85,10 @@ void Renderer::cerrarRenderer() {
 	TTF_Quit();
 	IMG_Quit();
 	SDL_Quit();
+}
+
+void Renderer::reset() {
+	SDL_RenderPresent(gRenderer);
 }
 
 void Renderer::draw() {

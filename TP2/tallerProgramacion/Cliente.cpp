@@ -4,6 +4,7 @@
 #include <fstream>
 #include <chrono>
 #include "LoggerView.h"
+#include "Juego.h"
 
 Cliente* Cliente::instance = 0;
 
@@ -293,13 +294,23 @@ void Cliente::logearseAlServidor() {
 		
 
 	LoggerView loggerView = LoggerView(this->renderer->getRenderer());
-	while (!this->estaLogueado) {
 
-		Usuario* usuario = loggerView.showLogin();
-		std::cout << "Nombre de usuario: " << usuario->getNombre() << std::endl;
-		std::cout << "Pass: " << usuario->getPassword() << std::endl;
 
-		estaLogueado = this->conexionDelCliente->login(usuario->getNombre(), usuario->getPassword());
+	Usuario* usuario = loggerView.showLogin();
+	std::cout << "Nombre de usuario: " << usuario->getNombre() << std::endl;
+	std::cout << "Pass: " << usuario->getPassword() << std::endl;
+
+	estaLogueado = this->conexionDelCliente->login(usuario->getNombre(), usuario->getPassword());
+	if (!estaLogueado) {
+		std::cout << "Login fallido" << std::endl;
+		return;
+	}
+
+	else {
+		std::cout << "Login ok" << std::endl;
+		Juego* juego = new Juego(this->renderer);
+		juego->iniciarJuego();
+	}
 		/*
 		std::string user;
 		std::string pass;
@@ -321,7 +332,7 @@ void Cliente::logearseAlServidor() {
 		}
 		//mutex en el buffer de manejar conexion .- cuando haya q manejar input en el cliente, se le pasa el input desde le manejador de input al manejador de conexion. o se manda a cliente para q procese primerop si es necesario y d3sp el manejador de conexion
 		*/
-	}
+
 	//}
 
 	//correrCicloPrincipal();

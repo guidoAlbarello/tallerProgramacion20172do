@@ -13,6 +13,7 @@ public:
 	bool iniciarRenderer();
 	void cerrarRenderer();
 	SDL_Renderer* getRenderer() { return this->gRenderer; }
+	void reset();
 	
 private:
 	std::thread t_draw;

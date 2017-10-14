@@ -1,6 +1,8 @@
 #include "Juego.h"
+#include <iostream>
 
 bool Juego::iniciarJuego() {
+	this->iniciarEscenario();
 	this->t_gameLoop = std::thread(&Juego::gameLoop, this);
 	return true;
 }
@@ -26,6 +28,10 @@ void Juego::obtenerEntrada() {
 	}
 }
 
+void Juego::agregarObjetoDeJuego(ObjetoDeJuego* objetoDeJuego) {
+	this->objetosDeJuego.push_back(objetoDeJuego);
+}
+
 std::vector<ObjetoDeJuego*> Juego::getObjetosDeJuego() {
 	return this->objetosDeJuego;
 }
@@ -36,7 +42,7 @@ std::vector<Jugador*> Juego::getJugadores() {
 
 Jugador * Juego::agregarJugador() {
 	
-	Jugador* nuevoJugador = new Jugador();
+	Jugador* nuevoJugador = new Jugador(renderer->getRenderer());
 	nuevoJugador->setId(cantidadJugadores);
 	this->cantidadJugadores++;
 	this->jugadores.push_back(nuevoJugador);
@@ -45,6 +51,19 @@ Jugador * Juego::agregarJugador() {
 
 Juego::Juego() {
 	this->juegoActivo = true;
+}
+
+Juego::Juego(Renderer* renderer) {
+	this->renderer = renderer;
+	this->juegoActivo = true;
+	this->escenario = new Escenario(renderer);
+}
+
+void Juego::iniciarEscenario() {
+	SDL_RenderClear(renderer->getRenderer());
+	escenario->iniciar();
+	SDL_RenderPresent(renderer->getRenderer());
+	//renderer->reset();
 }
 
 void Juego::gameLoop() {	
@@ -60,6 +79,7 @@ void Juego::gameLoop() {
 		inicioIntervalo = chrono::high_resolution_clock::now();
 		tiempoAcumulado += ms;
 		nLoops = 0;
+		//cout << "game loop" << endl;
 		while (tiempoAcumulado >= 1000/FPS  && nLoops < MAX_SKIP_FRAMES) {
 			this->update(1000/FPS);
 			tiempoAcumulado -= 1000/FPS;
