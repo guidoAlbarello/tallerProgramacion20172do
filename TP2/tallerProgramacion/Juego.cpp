@@ -12,7 +12,7 @@ void Juego::update(Unidad tiempoDelta) {
 	//update de todos los elementos del juego
 	for (int i = 0; i < this->objetosDeJuego.size(); i++) {
 		ObjetoDeJuego* unObjeto = this->objetosDeJuego[i];
-		unObjeto->update(tiempoDelta);								//podria hacerse alguna estructura q tenga la pos de los jugadores, y solo updatear lo q esta cerca de esos jugadores en vez de todas las entidades. 
+		unObjeto->update(tiempoDelta);	//podria hacerse alguna estructura q tenga la pos de los jugadores, y solo updatear lo q esta cerca de esos jugadores en vez de todas las entidades. 
 	}
 
 	for (int i = 0; i < this->jugadores.size(); i++) {
@@ -20,7 +20,6 @@ void Juego::update(Unidad tiempoDelta) {
 		unJugador->update(tiempoDelta);
 	}
 
-	SDL_RenderPresent(renderer->getRenderer());
 }
 
 void Juego::obtenerEntrada() {
@@ -92,7 +91,9 @@ void Juego::gameLoop() {
 			this->update(1000/FPS);
 			tiempoAcumulado -= 1000/FPS;
 			nLoops++;
-			SDL_Delay(50);
+			//Este valor depende de los FPSs, pero a 25 fps, son 40ms por frame 
+			SDL_Delay(40);
 		}
+		SDL_RenderPresent(renderer->getRenderer());
 	}
 }
