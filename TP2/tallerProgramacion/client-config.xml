@@ -1,6 +1,6 @@
 <cliente>
 	<conexion>
-		<IP>190.194.205.85</IP>
+		<IP>127.0.0.1</IP>
 		<puerto>15636</puerto>
 	</conexion>
 	<testfile>
