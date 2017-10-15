@@ -11,6 +11,7 @@ public:
 	void iniciar();
 	~Escenario();
 private:
-	Ltexture* texture;
+	Ltexture* cielo;
+	Ltexture* colinas;
 };
 #endif

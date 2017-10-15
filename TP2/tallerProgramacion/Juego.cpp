@@ -1,5 +1,6 @@
 #include "Juego.h"
 #include <iostream>
+#include "Carro.h"
 
 bool Juego::iniciarJuego() {
 	this->iniciarEscenario();
@@ -18,6 +19,8 @@ void Juego::update(Unidad tiempoDelta) {
 		Jugador* unJugador = this->jugadores[i];
 		unJugador->update(tiempoDelta);
 	}
+
+	SDL_RenderPresent(renderer->getRenderer());
 }
 
 void Juego::obtenerEntrada() {
@@ -70,6 +73,11 @@ void Juego::gameLoop() {
 	auto inicioIntervalo = chrono::high_resolution_clock::now();
 	double tiempoAcumulado = 0;
 	int nLoops;
+	
+	/*por ahora lo creo aca.. pero en realidad lo tendria q leer del xml*/
+	Carro * carro = new Carro(renderer->getRenderer());
+	carro->inicializar("imagenes/player_straight.png");
+	this->objetosDeJuego.push_back(carro);
 
 	while (juegoActivo) {
 		this->obtenerEntrada();
@@ -84,6 +92,7 @@ void Juego::gameLoop() {
 			this->update(1000/FPS);
 			tiempoAcumulado -= 1000/FPS;
 			nLoops++;
+			SDL_Delay(50);
 		}
 	}
 }

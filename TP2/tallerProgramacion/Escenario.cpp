@@ -2,23 +2,35 @@
 #include <iostream>
 
 Escenario::Escenario(Renderer* renderer) {
-	texture = new Ltexture(renderer->getRenderer());
+	cielo = new Ltexture(renderer->getRenderer());
+	colinas = new Ltexture(renderer->getRenderer());
 }
 
 void Escenario::iniciar() {
 	//renderear fondo... todo hardcodeado
 	std::cout << "iniciando escenario" << std::endl;
-	if (texture->loadFromFile("fondo/sky.png")) {
-		std::cout << "levanto bien" << std::endl;
-		texture->render(0, 0);
+	if (cielo->loadFromFile("fondo/sky.png")) {
+		std::cout << "levanto bien el asset del cielo" << std::endl;
+		cielo->render(0, 0);
 	}
 	else {
-		std::cout << "levanto mal" << std::endl;
+		std::cout << "levanto el asset del cielo" << std::endl;
+	}
+	if (colinas->loadFromFile("fondo/hills.png")) {
+		std::cout << "levanto bien el asset de las colinas" << std::endl;
+		colinas->render(0, 120);
+		//120 porque el asset mide 480, entonces 480 + 120 = 600
+	}
+	else {
+		std::cout << "levanto mal el asset de las colinas" << std::endl;
 	}
 }
 
 Escenario::~Escenario() {
-	if (texture != NULL) {
-		texture->free();
+	if (cielo != NULL) {
+		cielo->free();
+	}
+	if (colinas != NULL) {
+		colinas->free();
 	}
 }

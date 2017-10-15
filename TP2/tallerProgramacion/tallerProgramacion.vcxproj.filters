@@ -144,6 +144,9 @@
     <ClInclude Include="MaquinaEsatdos.h">
       <Filter>Archivos de encabezado\EstadosJuego</Filter>
     </ClInclude>
+    <ClInclude Include="Carro.h">
+      <Filter>Archivos de encabezado\Juego</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Constantes.cpp">
@@ -247,6 +250,9 @@
     </ClCompile>
     <ClCompile Include="MaquinaEstados.cpp">
       <Filter>Archivos de código fuente\EstadosJuego</Filter>
+    </ClCompile>
+    <ClCompile Include="Carro.cpp">
+      <Filter>Archivos de código fuente\Juego</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
