@@ -14,15 +14,13 @@ public:
 	void cerrarRenderer();
 	SDL_Renderer* getRenderer() { return this->gRenderer; }
 	void reset();
-	
+	int getAnchoVentana() { return this->anchoVentana; }
+	int getAltoVentana() { return this->altoVentana; }
 private:
-	std::thread t_draw;
 	SDL_Window* gWindow = NULL;
 	SDL_Renderer* gRenderer = NULL;
 	TTF_Font *gFont = NULL;
 	int anchoVentana, altoVentana;
-	void draw();
-	bool rendererActivo;
 };
 
 #endif

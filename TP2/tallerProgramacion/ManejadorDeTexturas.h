@@ -8,16 +8,19 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <map>
+#include "Camara.h"
 
 class ManejadorDeTexturas {
 public:
 	static ManejadorDeTexturas* getInstance();
-	void drawAnimatedSprite(std::string id, int x, int y, int ancho, int alto, int filaActual, int frameActual, int posicionCamara, int anchoPantalla, int zIndex,
+	void drawAnimatedSprite(std::string id, int x, int y, int ancho, int alto, int filaActual, int frameActual, int anchoPantalla, int zIndex,
 			SDL_Renderer *pRenderer, SDL_RendererFlip flip);
-	void drawStaticSprite(std::string id, int x, int y, int ancho, int alto, int posicionCamara, int anchoPantalla, int zIndex,
+	void drawStaticSprite(std::string id, int x, int y, int ancho, int alto, int anchoPantalla, int zIndex,
 			SDL_Renderer* pRenderer, SDL_RendererFlip flip);
 	bool ManejadorDeTexturas::load(std::string fileName, std::string	id, SDL_Renderer* pRenderer);
+	void setCamara(Camara* unaCamara) { this->camara = unaCamara; }
 private:
+	Camara* camara;
 	static ManejadorDeTexturas* instance;
 	ManejadorDeTexturas();
 	~ManejadorDeTexturas();

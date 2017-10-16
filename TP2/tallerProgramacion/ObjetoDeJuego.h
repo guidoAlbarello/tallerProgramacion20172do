@@ -12,10 +12,12 @@ public:
 	void inicializar(string path);
 	ObjetoDeJuego();
 	ObjetoDeJuego(SDL_Renderer* renderer);
+	int getZIndex() { return this->zIndex; }
 	~ObjetoDeJuego();
 protected:
 	Ltexture* texture;
 	Vector posicion;
+	int zIndex;
 };
 
 #endif

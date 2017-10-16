@@ -4,6 +4,7 @@
 
 #include "EstadoJuego.h"
 #include <vector>
+#include "Renderer.h"
 
 class MaquinaEstados {
 public:
@@ -14,6 +15,7 @@ public:
 	void popState();
 private:
 	std::vector<EstadoJuego*> estadosDeJuego;
+	Renderer* renderer;
 };
 
 #endif

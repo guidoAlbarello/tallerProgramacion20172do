@@ -1,13 +1,11 @@
 #include "Renderer.h"
 
 Renderer::Renderer() {
-	this->rendererActivo = true;
 	this->anchoVentana = 800;
 	this->altoVentana = 600;
 }
 
 Renderer::Renderer(int ancho, int alto) {
-	this->rendererActivo = true;
 	this->anchoVentana = ancho;
 	this->altoVentana = alto;
 }
@@ -71,10 +69,7 @@ bool Renderer::iniciarRenderer() {
 
 void Renderer::cerrarRenderer() {
 	//Free global font
-	this->rendererActivo = false;
-	if (this->t_draw.joinable()) {
-		t_draw.join();
-	}
+	
 	//Destroy window	
 	SDL_DestroyRenderer(gRenderer);
 	SDL_DestroyWindow(gWindow);
@@ -91,9 +86,3 @@ void Renderer::reset() {
 	SDL_RenderPresent(gRenderer);
 }
 
-void Renderer::draw() {
-	while (rendererActivo) {
-		//sort z index
-		//for i in objects < mapa graficar
-	}
-}

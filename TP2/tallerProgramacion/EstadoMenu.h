@@ -8,7 +8,7 @@ class MenuState : public EstadoJuego {
 public:
 	void update();
 	void render();
-	bool onEnter();
+	bool onEnter(Renderer* renderer);
 	bool onExit();
 	std::string getStateID() const { return s_menuID; }
 private:

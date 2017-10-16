@@ -13,7 +13,7 @@ void MaquinaEstados::render() {
 
 void MaquinaEstados::pushState(EstadoJuego *pState) {
 	estadosDeJuego.push_back(pState);
-	estadosDeJuego.back()->onEnter();
+	estadosDeJuego.back()->onEnter(this->renderer);
 }
 
 void MaquinaEstados::popState() {
@@ -38,5 +38,5 @@ void MaquinaEstados::changeState(EstadoJuego *pState) {
 	// push back our new state
 	estadosDeJuego.push_back(pState);
 	// initialise it
-	estadosDeJuego.back()->onEnter();
+	estadosDeJuego.back()->onEnter(this->renderer);
 }

@@ -41,6 +41,8 @@ protected:
 	std::thread t_procesarPing;
 	std::mutex m_procesarPing;
 	std::mutex m_print;
+	std::thread t_render;
+	void render();
 	Cliente();
 	~Cliente();
 	static Cliente* instance;

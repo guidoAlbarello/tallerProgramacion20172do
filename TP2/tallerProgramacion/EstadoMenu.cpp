@@ -7,7 +7,7 @@ void MenuState::update() {
 void MenuState::render() {
 	// rellenar
 }
-bool MenuState::onEnter() {
+bool MenuState::onEnter(Renderer* renderer) {
 	//iniciarMenu
 	return true;
 }

@@ -2,19 +2,22 @@
 
 const std::string EstadoLogeo::s_playID = "LOGEO";
 void EstadoLogeo::update() {
-	// rellenar
+	loggerView->update();
 }
 
 void EstadoLogeo::render() {
-	// rellenar
+	loggerView->render();
 }
 
-bool EstadoLogeo::onEnter() {
+bool EstadoLogeo::onEnter(Renderer* renderer) {
 	//iniciar logeo
+	this->loggerView = new LoggerView(this->renderer->getRenderer());
+	loggerView->init();
 	return true;
 }
 
 bool EstadoLogeo::onExit() {
 	//cerrar logeo 
+	loggerView->close();
 	return true;
 }

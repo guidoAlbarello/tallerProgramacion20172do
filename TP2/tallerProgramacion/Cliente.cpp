@@ -16,6 +16,16 @@ Cliente * Cliente::getInstance() {
 	return instance;
 }
 
+void Cliente::render() {
+	while (clienteActivo) {
+		this->maquinaDeEstados->update(); //pasar entrada, estado juego
+
+		SDL_RenderClear(this->renderer->getRenderer());
+		this->maquinaDeEstados->render();
+		SDL_RenderPresent(this->renderer->getRenderer());
+	}
+}
+
 Cliente::Cliente() {
 	this->clienteActivo = true;
 	this->estaLogueado = false;
@@ -45,13 +55,11 @@ void Cliente::leerClientConfig() {
 	this->configuracion->leerConfiguracion();
 }
 
-
 void Cliente::iniciarCliente() {
 	Logger::getInstance()->log(Debug, "Iniciando cliente...");
 	this->leerClientConfig();
 	this->correrCicloPrincipal();  //iniciarMaquinaEstados
 }
-
 
 void Cliente::correrCicloPrincipal() {
 	std::string input;
@@ -172,6 +180,9 @@ void Cliente::desconectarseDelServidor() {
 			t_procesarPing.join();
 		}
 
+		if (this->t_render.joinable()) {
+			t_render.join();
+		}
 		this->renderer->cerrarRenderer();
 		delete this->renderer;
 		if (this->conexionDelCliente != NULL) {
@@ -299,7 +310,7 @@ void Cliente::logearseAlServidor() {
 	Usuario* usuario = loggerView.showLogin();
 	std::cout << "Nombre de usuario: " << usuario->getNombre() << std::endl;
 	std::cout << "Pass: " << usuario->getPassword() << std::endl;
-
+	//esto tiene q ir a la parte del update del estado, , donde eliminar el usuario ?= 
 	estaLogueado = this->conexionDelCliente->login(usuario->getNombre(), usuario->getPassword());
 	if (!estaLogueado) {
 		std::cout << "Login fallido" << std::endl;
@@ -308,7 +319,7 @@ void Cliente::logearseAlServidor() {
 
 	else {
 		std::cout << "Login ok" << std::endl;
-		Juego* juego = new Juego(this->renderer);
+		Juego* juego = new Juego();
 		juego->iniciarJuego();
 	}
 		/*
@@ -390,7 +401,6 @@ void Cliente::enviarMensajePrivado() {
 	this->enviandoMensaje = false;
 }
 
-
 void Cliente::mostrarMensajesPrivados(MensajeDeRed * unMensajeDeRed) {
 	if (unMensajeDeRed->getParametro(0).compare("RESULTADO_RETRIEVE_MESSAGES_OK") == 0) {
 		for (int i = 1; i < unMensajeDeRed->getCantidadDeParametros(); i++) {
@@ -441,7 +451,6 @@ void Cliente::procesarMensajesPrivados(MensajeDeRed * unMensajeDeRed) {
 
 	}
 }
-
 
 /* Procesa comandos recibidos desde el servidor */
 void Cliente::procesarDatosRecibidos() {

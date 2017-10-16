@@ -53,11 +53,6 @@ Jugador * Juego::agregarJugador() {
 
 Juego::Juego() {
 	this->juegoActivo = true;
-}
-
-Juego::Juego(Renderer* renderer) {
-	this->renderer = renderer;
-	this->juegoActivo = true;
 	this->escenario = new Escenario(renderer);
 }
 
@@ -73,11 +68,6 @@ void Juego::gameLoop() {
 	double tiempoAcumulado = 0;
 	int nLoops;
 	
-	/*por ahora lo creo aca.. pero en realidad lo tendria q leer del xml*/
-	Carro * carro = new Carro(renderer->getRenderer());
-	carro->inicializar("imagenes/player_straight.png");
-	this->objetosDeJuego.push_back(carro);
-
 	while (juegoActivo) {
 		this->obtenerEntrada();
 		auto finIntervalo = chrono::high_resolution_clock::now();
@@ -86,14 +76,11 @@ void Juego::gameLoop() {
 		inicioIntervalo = chrono::high_resolution_clock::now();
 		tiempoAcumulado += ms;
 		nLoops = 0;
-		//cout << "game loop" << endl;
+
 		while (tiempoAcumulado >= 1000/FPS  && nLoops < MAX_SKIP_FRAMES) {
 			this->update(1000/FPS);
 			tiempoAcumulado -= 1000/FPS;
 			nLoops++;
-			//Este valor depende de los FPSs, pero a 25 fps, son 40ms por frame 
-			SDL_Delay(40);
 		}
-		SDL_RenderPresent(renderer->getRenderer());
 	}
 }

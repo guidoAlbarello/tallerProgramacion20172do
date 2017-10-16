@@ -19,7 +19,6 @@
 class Juego {
 public:
 	Juego();
-	Juego(Renderer *renderer);
 	bool iniciarJuego();
 	void update(Unidad tiempoDelta);
 	void obtenerEntrada();

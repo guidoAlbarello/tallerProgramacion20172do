@@ -11,31 +11,31 @@ ManejadorDeTexturas * ManejadorDeTexturas::getInstance() {
 }
 
 ManejadorDeTexturas::ManejadorDeTexturas() {
-
+	
 }
 
-void ManejadorDeTexturas::drawAnimatedSprite(std::string id, int x, int y, int ancho, int alto, int filaActual, int frameActual, int posicionCamara, int anchoPantalla, int zIndex, SDL_Renderer * pRenderer, SDL_RendererFlip flip) {
+void ManejadorDeTexturas::drawAnimatedSprite(std::string id, int x, int y, int ancho, int alto, int filaActual, int frameActual, int anchoPantalla, int zIndex, SDL_Renderer * pRenderer, SDL_RendererFlip flip) {
 	SDL_Rect srcRect;
 	SDL_Rect destRect;
 	srcRect.x = ancho * frameActual;
 	srcRect.y = alto * (filaActual - 1);
 	srcRect.w = destRect.w = ancho;
 	srcRect.h = destRect.h = alto;
-	destRect.x = (x - ancho / 2) - posicionCamara + anchoPantalla / 2;
+	destRect.x = (x - ancho / 2) - camara->getPosicion()->getX() + anchoPantalla / 2;
 	destRect.y = (y - alto / 2);
 	destRect.x /= zIndex * FACTOR_PERSPECTIVA;
 	destRect.y /= zIndex * FACTOR_PERSPECTIVA;
 	SDL_RenderCopyEx(pRenderer, texturas[id], &srcRect, &destRect, 0, 0, flip);
 }
 
-void ManejadorDeTexturas::drawStaticSprite(std::string id, int x, int y, int ancho, int alto, int posicionCamara, int anchoPantalla, int zIndex, SDL_Renderer* pRenderer, SDL_RendererFlip flip) {
+void ManejadorDeTexturas::drawStaticSprite(std::string id, int x, int y, int ancho, int alto, int anchoPantalla, int zIndex, SDL_Renderer* pRenderer, SDL_RendererFlip flip) {
 	SDL_Rect srcRect;
 	SDL_Rect destRect;
 	srcRect.x = 0;
 	srcRect.y = 0;
 	srcRect.w = destRect.w = ancho;
 	srcRect.h = destRect.h = alto;
-	destRect.x = (x - ancho / 2) - posicionCamara + anchoPantalla / 2;
+	destRect.x = (x - ancho / 2) - camara->getPosicion()->getX() + anchoPantalla / 2;
 	destRect.y = (y - alto / 2);
 	destRect.x /= zIndex * FACTOR_PERSPECTIVA;
 	destRect.y /= zIndex * FACTOR_PERSPECTIVA;
