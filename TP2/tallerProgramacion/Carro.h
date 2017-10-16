@@ -24,6 +24,7 @@ class Carro : public ObjetoDeJuego {
 		void setEstado(int nuevoEstado);
 		int getEstado();
 		void update(Unidad delta);
+		void leerEntrada(std::vector<SDL_Keycode> entradas);
 	private:
 		int estado;
 		SDL_Renderer* renderer;

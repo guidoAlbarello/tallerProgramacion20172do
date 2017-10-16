@@ -17,6 +17,10 @@ void ObjetoDeJuego::update(Unidad delta) {
 	texture->render(0, 0);
 }
 
+void ObjetoDeJuego::leerEntrada(std::vector<SDL_Keycode> entradas) {
+
+}
+
 void ObjetoDeJuego::leerEntrada() {
 }
 

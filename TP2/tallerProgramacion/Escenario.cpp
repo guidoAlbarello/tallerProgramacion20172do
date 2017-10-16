@@ -34,3 +34,24 @@ Escenario::~Escenario() {
 		colinas->free();
 	}
 }
+void Escenario::update(Unidad delta) {
+	//pregunto x el estado
+	//en base a eso... updateo la posicion a renderear
+	if (cielo->loadFromFile("fondo/sky.png")) {
+		cielo->render(0, 0);
+	}
+	else {
+		std::cout << "levanto mal el asset del cielo" << std::endl;
+	}
+	if (colinas->loadFromFile("fondo/hills.png")) {
+		colinas->render(0, 120);
+		//120 porque el asset mide 480, entonces 480 + 120 = 600
+	}
+	else {
+		std::cout << "levanto mal el asset de las colinas" << std::endl;
+	}
+}
+
+void Escenario::leerEntrada(std::vector<SDL_Keycode> entradas) {
+	//recibo una copia....
+}

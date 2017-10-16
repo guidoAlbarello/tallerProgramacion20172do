@@ -155,6 +155,7 @@ void Cliente::conectarseAlServidor() {
 }
 
 void Cliente::desconectarseDelServidor() {
+	
 	if (!this->conexionViva) {
 		cout << "Usted no esta conectado con el servidor." << endl;
 		return;
@@ -181,6 +182,7 @@ void Cliente::desconectarseDelServidor() {
 	} catch (exception e) {
 		Logger::getInstance()->log(Debug, "Ocurrio un error al desconectarse del servidor");
 	}	
+	
 }
 
 void Cliente::hacerTestDeEstres() {
@@ -503,11 +505,13 @@ void Cliente::procesarDatosRecibidos() {
 			if (mensajeDeRed != NULL)
 				delete mensajeDeRed;
 		}
+		/*
 		if (std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - timeOut).count() > (Constantes::PING_DELAY + 1000 * 3)) {
 			this->desconectarseDelServidor();
 			Logger::getInstance()->log(Debug, "Se desconecto un cliente del servidor por falta de respuesta al ping");
 			std::cout << "Se ha desconectado del servidor" << std::endl;
 		}
+		*/
 		mostrarMensajesGlobales();
 	}
 }

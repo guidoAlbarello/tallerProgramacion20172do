@@ -37,6 +37,7 @@ private:
 	thread t_gameLoop;
 	std::vector<ObjetoDeJuego*> objetosDeJuego;
 	std::vector<Jugador*> jugadores;
+	std::vector<SDL_Keycode> entradas;
 	mutex m_jugadores;
 	mutex m_objetos;
 };
