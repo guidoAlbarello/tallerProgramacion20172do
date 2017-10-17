@@ -518,19 +518,19 @@ void Cliente::procesarResultadoSendMessage(MensajeDeRed* mensajeDeRed) {
 }
 
 void Cliente::procesarResultadoLogin(MensajeDeRed* mensajeDeRed) {
-	/*if (mensajeDeRed->getParametro(0) == "LOGIN_OK") {*/
+	if (mensajeDeRed->getParametro(0) == "LOGIN_OK") {
 		this->estaLogueado = true;
 		this->maquinaDeEstados->changeState(new EstadoJuegoActivo());
 		m_print.lock();
 		cout << mensajeDeRed->getParametro(1) << endl;
 		m_print.unlock();
-	/*} else if (mensajeDeRed->getParametro(0) == "LOGIN_NOK") {
+	} else if (mensajeDeRed->getParametro(0) == "LOGIN_NOK") {
 		this->estaLogueado = false;
 		this->maquinaDeEstados->changeState(new EstadoLogeo());
 		m_print.lock();
 		cout << mensajeDeRed->getParametro(1) << endl;
 		m_print.unlock();
-	}*/
+	}
 }
 
 void Cliente::enviarPingAServidor() {
