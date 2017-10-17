@@ -30,7 +30,7 @@ bool LoggerView::init() {
 	textColor = { 0, 0, 0, 0xFF };
 	success = true;
 	usuario = new Usuario();
-
+	datosCargados = false;
 	if (!gPromptTextTexture->loadFromRenderedText("Enter Username:", textColor)) {
 		//printf("Failed to render prompt text!\n");
 		success = false;
@@ -41,19 +41,14 @@ bool LoggerView::init() {
 		//printf("Failed to render prompt text!\n");
 		success = false;
 	}
-
+	//The current input text.
+	inputText = "User Name";
+	gInputTextTexture->loadFromRenderedText(inputText.c_str(), textColor);
+	isWrittingPassord = false;
 	return false;
 }
 
 void LoggerView::render() {
-	//The current input text.
-	std::string inputText = "User Name";
-	gInputTextTexture->loadFromRenderedText(inputText.c_str(), textColor);
-
-
-	//Enable text input
-
-	bool isWrittingPassord = false;
 	//Clear screen
 	SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
 	SDL_RenderClear(gRenderer);
@@ -69,48 +64,66 @@ void LoggerView::render() {
 	//Update screen
 	SDL_RenderPresent(gRenderer);
 
-	//Disable text input
-	SDL_StopTextInput();
+
 }
 
 void LoggerView::update() {
 	bool quit = false, renderText = false;
-	SDL_Event e = ManejadorInput::getInstance()->getEntradaTexto(inputText);
-	if (e.type == SDL_KEYDOWN) {
-		if (e.key.keysym.sym == SDLK_ESCAPE) {
-			quit = true;		//cambiar
-		}
-		if (e.key.keysym.sym == SDLK_RETURN) {
-			if (isWrittingPassword == false) {
-				isWrittingPassword = true;
-				usuario->setNombre(inputText);
-				inputText = "";
-			} else {
-				//procesar user y pass
+	//Event handler
+	//Event handler
+	SDL_Event e;
+
+	//Set text color as black
+
+	
+
+
+	//Enable text input
+	SDL_StartTextInput();
+
+	
+
+	//Handle events on queue
+	while (SDL_PollEvent(&e) != 0) {
+		//Special key input
+		if (e.type == SDL_KEYDOWN) {
+			if (e.key.keysym.sym == SDLK_ESCAPE) {
 				quit = true;
-				renderText = false;
-				usuario->setPassword(inputText);
+			}
+			if (e.key.keysym.sym == SDLK_RETURN) {
+				if (isWrittingPassord == false) {
+					isWrittingPassord = true;
+					usuario->setNombre(inputText);
+					inputText = "";
+				} else {
+					//procesar user y pass
+					quit = true;
+					datosCargados = true;
+					renderText = false;
+					usuario->setPassword(inputText);
+					break;
+				}
+			}
+			//Handle backspace
+			if (e.key.keysym.sym == SDLK_BACKSPACE && inputText.length() > 0) {
+				//lop off character
+				inputText.pop_back();
+				renderText = true;
 			}
 		}
-		//Handle backspace
-		if (e.key.keysym.sym == SDLK_BACKSPACE && inputText.length() > 0) {
-			//lop off character
-			inputText.pop_back();
+		//Special text input event
+		else if (e.type == SDL_TEXTINPUT) {
+			//Append character
+			inputText += e.text.text;
 			renderText = true;
 		}
-	}
-	//Special text input event
-	else if (e.type == SDL_TEXTINPUT) {
-		//Append character
-		inputText += e.text.text;
-		renderText = true;
 	}
 
 	//Rerender text if needed
 	if (renderText) {
 		//Text is not empty
 		if (inputText != "") {
-			if (!isWrittingPassword) {
+			if (!isWrittingPassord) {
 				//Render new text
 				gInputTextTexture->loadFromRenderedText(inputText.c_str(), textColor);
 			} else {
@@ -119,7 +132,7 @@ void LoggerView::update() {
 		}
 		//Text is empty
 		else {
-			if (!isWrittingPassword) {
+			if (!isWrittingPassord) {
 				//Render space texture
 				gInputTextTexture->loadFromRenderedText(" ", textColor);
 			} else {
@@ -127,6 +140,15 @@ void LoggerView::update() {
 			}
 		}
 	}
+
+	SDL_StopTextInput();
+}
+
+Usuario * LoggerView::getUsuario() {
+	if (datosCargados)
+		return this->usuario;
+	else
+		return NULL;
 }
 
 bool LoggerView::close() {

@@ -3,10 +3,10 @@
 #ifndef ESTADO_MENU_H
 #define ESTADO_MENU_H
 #include"EstadoJuego.h"
-
-class MenuState : public EstadoJuego {
+#include "ManejadorDeConexionCliente.h"
+class EstadoEspera : public EstadoJuego {
 public:
-	void update();
+	void update(ManejadorDeConexionCliente* conexionCliente);
 	void render();
 	bool onEnter(Renderer* renderer);
 	bool onExit();

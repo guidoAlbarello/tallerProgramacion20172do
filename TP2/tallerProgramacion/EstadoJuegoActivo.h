@@ -6,10 +6,10 @@
 #include <vector>
 #include "Sprite.h"
 #include <algorithm>
-
+#include "ManejadorDeConexionCliente.h"
 class EstadoJuegoActivo : public EstadoJuego {
 public:
-	void update();
+	void update(ManejadorDeConexionCliente* conexionCliente);
 	void render();
 	bool onEnter(Renderer* renderer);
 	bool onExit();

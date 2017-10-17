@@ -14,6 +14,9 @@
 #include "LoggerView.h"
 #include "MaquinaEsatdos.h"
 #include "Ltexture.h"
+#include "EstadoJuegoActivo.h"
+#include "EstadoLogeo.h"
+
 const std::string CLIENT_LOG_FILENAME_FORMAT = "LogCl%Y%m%d%H%M%S.txt";
 
 class Cliente {

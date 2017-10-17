@@ -133,7 +133,7 @@
     <ClInclude Include="EstadoJuego.h" />
     <ClInclude Include="EstadoJuegoActivo.h" />
     <ClInclude Include="EstadoLogeo.h" />
-    <ClInclude Include="EstadoMenu.h" />
+    <ClInclude Include="EstadoEspera.h" />
     <ClInclude Include="Juego.h" />
     <ClInclude Include="Logger.h" />
     <ClInclude Include="LoggerView.h" />
@@ -170,7 +170,7 @@
     <ClCompile Include="Escenario.cpp" />
     <ClCompile Include="EstadoJuegoActivo.cpp" />
     <ClCompile Include="EstadoLogeo.cpp" />
-    <ClCompile Include="EstadoMenu.cpp" />
+    <ClCompile Include="EstadoEspera.cpp" />
     <ClCompile Include="Juego.cpp" />
     <ClCompile Include="Jugador.cpp" />
     <ClCompile Include="Logger.cpp" />

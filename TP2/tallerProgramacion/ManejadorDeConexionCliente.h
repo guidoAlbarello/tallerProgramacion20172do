@@ -1,3 +1,8 @@
+#pragma once
+#ifndef  MANEJADOR_DE_CONEXION_CLIENTE_H
+#define MANEJADOR_DE_CONEXION__CLIENTE_H
+
+
 #include "ManejadorDeConexion.h"
 
 using namespace std;
@@ -15,3 +20,5 @@ public:
 
 	bool enviarSolicitudPing();
 };
+
+#endif

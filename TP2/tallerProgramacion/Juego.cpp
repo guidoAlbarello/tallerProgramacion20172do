@@ -53,13 +53,13 @@ Jugador * Juego::agregarJugador() {
 
 Juego::Juego() {
 	this->juegoActivo = true;
-	this->escenario = new Escenario(renderer);
+	//this->escenario = new Escenario(renderer);
 }
 
 void Juego::iniciarEscenario() {
-	SDL_RenderClear(renderer->getRenderer());
-	escenario->iniciar();
-	SDL_RenderPresent(renderer->getRenderer());
+	//SDL_RenderClear(renderer->getRenderer());
+	//escenario->iniciar();
+	//SDL_RenderPresent(renderer->getRenderer());
 	//renderer->reset();
 }
 

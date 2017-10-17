@@ -3,9 +3,10 @@
 #define ESTADO_LOGEO_H
 #include "EstadoJuego.h"
 #include "LoggerView.h"
+#include "ManejadorDeConexionCliente.h"
 class EstadoLogeo : public EstadoJuego {
 public:
-	void update();
+	void update(ManejadorDeConexionCliente* conexionCliente);
 	void render();
 	bool onEnter(Renderer* renderer);
 	bool onExit();

@@ -18,11 +18,12 @@ Cliente * Cliente::getInstance() {
 
 void Cliente::render() {
 	while (clienteActivo) {
-		this->maquinaDeEstados->update(); //pasar entrada, estado juego
-
-		SDL_RenderClear(this->renderer->getRenderer());
-		this->maquinaDeEstados->render();
-		SDL_RenderPresent(this->renderer->getRenderer());
+		
+		if (this->renderer != NULL) {
+			SDL_RenderClear(this->renderer->getRenderer());
+			this->maquinaDeEstados->render();
+			SDL_RenderPresent(this->renderer->getRenderer());
+		}
 	}
 }
 
@@ -36,6 +37,7 @@ Cliente::Cliente() {
 	this->maquinaDeEstados = new MaquinaEstados();
 	//Seteando el nombre del log
 	Logger::getInstance()->setLogFileName(CLIENT_LOG_FILENAME_FORMAT);
+
 }
 
 Cliente::~Cliente() {
@@ -58,60 +60,25 @@ void Cliente::leerClientConfig() {
 void Cliente::iniciarCliente() {
 	Logger::getInstance()->log(Debug, "Iniciando cliente...");
 	this->leerClientConfig();
-	this->correrCicloPrincipal();  //iniciarMaquinaEstados
+	conectarseAlServidor();
+	this->t_render = std::thread(&Cliente::render, this);
+	if (!this->conexionViva) {
+		cout << "Necesita estar conectado con el servidor para realizar esta accion." << endl;
+		return;
+	}
+
+	if (this->estaLogueado) {
+		cout << "Usted ya esta logueado." << endl;
+		return;
+	}
+
+	this->maquinaDeEstados->changeState(new EstadoLogeo());
+	this->correrCicloPrincipal();
 }
 
 void Cliente::correrCicloPrincipal() {
-	std::string input;
 	while (clienteActivo) {
-		conectarseAlServidor();
-		logearseAlServidor();
-
-		if (this->estaLogueado) {
-			std::cout << "Login exitoso" << std::endl;
-		}
-		else {
-			std::cout << "Login fallido" << std::endl;
-		}
-		system("PAUSE");
-		/*
-		//mostrarMenuPrincipal();
-		std::getline(std::cin, input);
-		if (input.length() != 1) {
-			std::cout << "Debe ingresar una de las opciones" << std::endl;
-		} else {
-			char opcionElegida = input[0];
-			Logger::getInstance()->log(Actividad, "Se ingresa la opcion " + input + " en el menu del cliente");
-			switch (opcionElegida) {
-			case '1':
-				conectarseAlServidor();
-				break;
-			case '2':
-				desconectarseDelServidor();
-				break;
-			case '3':
-				cerrarCliente();
-				break;
-			case '4':
-				logearseAlServidor();
-				break;
-			case '5':
-				hacerTestDeEstres();
-				break;
-			case '6':
-				revisarBuzon();
-				break;
-			case '7':
-				enviarMensajeAlChat();
-				break;
-			case '8':
-				enviarMensajePrivado();
-				break;
-			default:
-				break;
-			}
-		}
-		*/
+		this->maquinaDeEstados->update(this->conexionDelCliente);
 	}
 }
 
@@ -147,9 +114,13 @@ void Cliente::conectarseAlServidor() {
 			this->t_procesarDatosRecibidos = std::thread(&Cliente::procesarDatosRecibidos, this);
 			this->renderer = new Renderer();
 			this->renderer->iniciarRenderer();
+			this->maquinaDeEstados->setRenderer(this->renderer);
 		}
 		else {
 			this->conexionViva = false;
+			if (t_render.joinable()) {
+				t_render.join();
+			}
 			m_print.lock();
 			std::cout << "No se pudo conectar al sevidor" << std::endl;
 			m_print.unlock();
@@ -513,7 +484,7 @@ void Cliente::procesarDatosRecibidos() {
 				delete mensajeDeRed;
 		}
 		if (std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - timeOut).count() > (Constantes::PING_DELAY + 1000 * 3)) {
-			this->desconectarseDelServidor();
+			//this->desconectarseDelServidor();
 			Logger::getInstance()->log(Debug, "Se desconecto un cliente del servidor por falta de respuesta al ping");
 			std::cout << "Se ha desconectado del servidor" << std::endl;
 		}
@@ -547,17 +518,19 @@ void Cliente::procesarResultadoSendMessage(MensajeDeRed* mensajeDeRed) {
 }
 
 void Cliente::procesarResultadoLogin(MensajeDeRed* mensajeDeRed) {
-	if (mensajeDeRed->getParametro(0) == "LOGIN_OK") {
+	/*if (mensajeDeRed->getParametro(0) == "LOGIN_OK") {*/
 		this->estaLogueado = true;
+		this->maquinaDeEstados->changeState(new EstadoJuegoActivo());
 		m_print.lock();
 		cout << mensajeDeRed->getParametro(1) << endl;
 		m_print.unlock();
-	} else if (mensajeDeRed->getParametro(0) == "LOGIN_NOK") {
+	/*} else if (mensajeDeRed->getParametro(0) == "LOGIN_NOK") {
 		this->estaLogueado = false;
+		this->maquinaDeEstados->changeState(new EstadoLogeo());
 		m_print.lock();
 		cout << mensajeDeRed->getParametro(1) << endl;
 		m_print.unlock();
-	}
+	}*/
 }
 
 void Cliente::enviarPingAServidor() {

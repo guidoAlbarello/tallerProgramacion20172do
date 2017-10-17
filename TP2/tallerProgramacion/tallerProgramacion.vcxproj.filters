@@ -57,9 +57,6 @@
     <ClInclude Include="EstadoLogeo.h">
       <Filter>Archivos de encabezado\EstadosJuego</Filter>
     </ClInclude>
-    <ClInclude Include="EstadoMenu.h">
-      <Filter>Archivos de encabezado\EstadosJuego</Filter>
-    </ClInclude>
     <ClInclude Include="ManejadorDeConexion.h">
       <Filter>Archivos de encabezado\Manejadores</Filter>
     </ClInclude>
@@ -147,6 +144,9 @@
     <ClInclude Include="Carro.h">
       <Filter>Archivos de encabezado\Juego</Filter>
     </ClInclude>
+    <ClInclude Include="EstadoEspera.h">
+      <Filter>Archivos de encabezado\EstadosJuego</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Constantes.cpp">
@@ -165,9 +165,6 @@
       <Filter>Archivos de código fuente</Filter>
     </ClCompile>
     <ClCompile Include="EstadoLogeo.cpp">
-      <Filter>Archivos de código fuente\EstadosJuego</Filter>
-    </ClCompile>
-    <ClCompile Include="EstadoMenu.cpp">
       <Filter>Archivos de código fuente\EstadosJuego</Filter>
     </ClCompile>
     <ClCompile Include="ManejadorDeConexion.cpp">
@@ -253,6 +250,9 @@
     </ClCompile>
     <ClCompile Include="Carro.cpp">
       <Filter>Archivos de código fuente\Juego</Filter>
+    </ClCompile>
+    <ClCompile Include="EstadoEspera.cpp">
+      <Filter>Archivos de código fuente\EstadosJuego</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

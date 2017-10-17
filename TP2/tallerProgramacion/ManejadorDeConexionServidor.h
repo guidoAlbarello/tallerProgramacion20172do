@@ -1,3 +1,7 @@
+#pragma once
+#ifndef  MANEJADOR_DE_CONEXION_SERVIDOR_H
+#define MANEJADOR_DE_CONEXION_SERVIDOR_H
+
 #include "ManejadorDeConexion.h"
 #include <vector>
 
@@ -11,3 +15,5 @@ protected:
 	std::thread t_escucharClientes;
 
 };
+
+#endif

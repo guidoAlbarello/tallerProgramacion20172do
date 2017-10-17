@@ -26,18 +26,6 @@ bool ManejadorInput::estaTeclaPresionada(SDL_Scancode key) {
 	return false;
 }
 
-SDL_Event ManejadorInput::getEntradaTexto(std::string& inputText) {
-	SDL_Event e;
-	SDL_Keycode teclaPresionada;
-	while (SDL_PollEvent(&e) != 0) {
-		if (e.type == SDL_TEXTINPUT) {
-			inputText += e.text.text;
-		}
-	}
-
-	return e;
-}
-
 ManejadorInput::ManejadorInput() {
 
 }

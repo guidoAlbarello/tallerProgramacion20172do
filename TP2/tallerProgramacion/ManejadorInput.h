@@ -9,7 +9,6 @@ public:
 	static ManejadorInput* getInstance();
 	void update();
 	bool estaTeclaPresionada(SDL_Scancode key);
-	SDL_Event getEntradaTexto(std::string& inputText);
 private:
 	const Uint8* estadoTeclado;
 	ManejadorInput();

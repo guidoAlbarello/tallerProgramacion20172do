@@ -20,6 +20,7 @@ public:
 	bool close();
 	Usuario* showLogin();
 	void update();
+	Usuario* getUsuario();
 private:
 	TTF_Font *gFont = NULL;
 	const int SCREEN_WIDTH = 640;
@@ -33,7 +34,8 @@ private:
 	Ltexture* gPromptPasswordTextTexture;
 	Ltexture* gInputPasswordTextTexture;
 	std::string inputText;
-	bool isWrittingPassword = false;
+	bool isWrittingPassord = false;
+	bool datosCargados = false;
 };
 
 #endif
