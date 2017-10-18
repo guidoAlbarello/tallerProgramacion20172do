@@ -121,9 +121,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Arbol.h" />
     <ClInclude Include="BuzonDeMensajes.h" />
     <ClInclude Include="Camara.h" />
     <ClInclude Include="Carro.h" />
+    <ClInclude Include="Cartel.h" />
     <ClInclude Include="ClientConfig.h" />
     <ClInclude Include="Cliente.h" />
     <ClInclude Include="Conexion.h" />
@@ -143,10 +145,13 @@
     <ClInclude Include="ManejadorDeConexionServidor.h" />
     <ClInclude Include="ManejadorDeTexturas.h" />
     <ClInclude Include="ManejadorInput.h" />
+    <ClInclude Include="Mapa.h" />
+    <ClInclude Include="MapaView.h" />
     <ClInclude Include="MaquinaEsatdos.h" />
     <ClInclude Include="Mensaje.h" />
     <ClInclude Include="MensajeDeRed.h" />
     <ClInclude Include="ObjetoDeJuego.h" />
+    <ClInclude Include="ObjetoFijo.h" />
     <ClInclude Include="ParserDeMensajes.h" />
     <ClInclude Include="Jugador.h" />
     <ClInclude Include="Renderer.h" />
@@ -155,13 +160,18 @@
     <ClInclude Include="Servidor.h" />
     <ClInclude Include="SocketSincronico.h" />
     <ClInclude Include="Sprite.h" />
+    <ClInclude Include="Tramo.h" />
+    <ClInclude Include="TramoCurvo.h" />
+    <ClInclude Include="TramoRecto.h" />
     <ClInclude Include="Usuario.h" />
     <ClInclude Include="Vector.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Arbol.cpp" />
     <ClCompile Include="BuzonDeMensajes.cpp" />
     <ClCompile Include="Camara.cpp" />
     <ClCompile Include="Carro.cpp" />
+    <ClCompile Include="Cartel.cpp" />
     <ClCompile Include="ClientConfig.cpp" />
     <ClCompile Include="Cliente.cpp" />
     <ClCompile Include="Conexion.cpp" />
@@ -183,15 +193,21 @@
     <ClCompile Include="ManejadorDeConexionServidor.cpp" />
     <ClCompile Include="ManejadorDeTexturas.cpp" />
     <ClCompile Include="ManejadorInput.cpp" />
+    <ClCompile Include="Mapa.cpp" />
+    <ClCompile Include="MapaView.cpp" />
     <ClCompile Include="MaquinaEstados.cpp" />
     <ClCompile Include="MensajeDeRed.cpp" />
     <ClCompile Include="ObjetoDeJuego.cpp" />
+    <ClCompile Include="ObjetoFijo.cpp" />
     <ClCompile Include="ParserDeMensajes.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="ServerConfig.cpp" />
     <ClCompile Include="Servidor.cpp" />
     <ClCompile Include="SocketSincronico.cpp" />
     <ClCompile Include="Sprite.cpp" />
+    <ClCompile Include="Tramo.cpp" />
+    <ClCompile Include="TramoCurvo.cpp" />
+    <ClCompile Include="TramoRecto.cpp" />
     <ClCompile Include="Usuario.cpp" />
     <ClCompile Include="Vector.cpp" />
   </ItemGroup>
