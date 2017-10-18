@@ -12,7 +12,7 @@
 #include "MensajeDeRed.h"
 #include "Renderer.h"
 #include "LoggerView.h"
-#include "MaquinaEsatdos.h"
+#include "MaquinaEstados.h"
 #include "Ltexture.h"
 #include "EstadoJuegoActivo.h"
 #include "EstadoLogeo.h"

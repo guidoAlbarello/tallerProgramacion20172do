@@ -12,13 +12,18 @@ public:
 	Renderer(int ancho, int alto);
 	bool iniciarRenderer();
 	void cerrarRenderer();
-	SDL_Renderer* getRenderer() { return this->gRenderer; }
+	SDL_Renderer* getRendererJuego() { return this->gRendererJuego; }
+	SDL_Renderer* getRendererMapa() { return this->gRendererMapa; }
+	SDL_Window* getWindowJuego() { return this->gWindowJuego; }
+	SDL_Window* getWindowMapa() { return this->gWindowMapa; }
 	void reset();
 	int getAnchoVentana() { return this->anchoVentana; }
 	int getAltoVentana() { return this->altoVentana; }
 private:
-	SDL_Window* gWindow = NULL;
-	SDL_Renderer* gRenderer = NULL;
+	SDL_Window* gWindowJuego = NULL;
+	SDL_Window* gWindowMapa = NULL;
+	SDL_Renderer* gRendererJuego = NULL;
+	SDL_Renderer* gRendererMapa = NULL;
 	TTF_Font *gFont = NULL;
 	int anchoVentana, altoVentana;
 };

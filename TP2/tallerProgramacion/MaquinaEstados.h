@@ -19,6 +19,7 @@ private:
 	std::vector<EstadoJuego*> estadosDeJuego;
 	Renderer* renderer;
 	std::mutex m_estado;
+	bool terminoIniciar;
 };
 
 #endif

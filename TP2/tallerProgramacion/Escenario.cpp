@@ -2,8 +2,8 @@
 #include <iostream>
 
 Escenario::Escenario(Renderer* renderer) {
-	cielo = new Ltexture(renderer->getRenderer());
-	colinas = new Ltexture(renderer->getRenderer());
+	cielo = new Ltexture(renderer->getRendererJuego());
+	colinas = new Ltexture(renderer->getRendererJuego());
 }
 
 void Escenario::iniciar() {

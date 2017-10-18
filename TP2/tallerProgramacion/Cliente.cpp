@@ -20,9 +20,9 @@ void Cliente::render() {
 	while (clienteActivo) {
 		
 		if (this->renderer != NULL) {
-			SDL_RenderClear(this->renderer->getRenderer());
+			SDL_RenderClear(this->renderer->getRendererJuego());
 			this->maquinaDeEstados->render();
-			SDL_RenderPresent(this->renderer->getRenderer());
+			SDL_RenderPresent(this->renderer->getRendererJuego());
 		}
 	}
 }
@@ -275,7 +275,7 @@ void Cliente::logearseAlServidor() {
 	}
 		
 
-	LoggerView loggerView = LoggerView(this->renderer->getRenderer());
+	LoggerView loggerView = LoggerView(this->renderer->getRendererJuego());
 
 
 	Usuario* usuario = loggerView.showLogin();
@@ -463,9 +463,9 @@ void Cliente::procesarDatosRecibidos() {
 				Logger::getInstance()->log(Debug, "Recibio un un UPDATE_MODEL");
 
 				// TODO: este memcpy trae bien pero por alguna razon cuando sale del while explota, si se comenta se fixea
-				memcpy(&estadoJuego, datosRecibidos, sizeof(Constantes::EstadoJuego));
-				std::cout << "Estado juego:" << std::endl;
-				std::cout << estadoJuego.estados[0].usuario << std::endl;
+				//memcpy(&estadoJuego, datosRecibidos, sizeof(Constantes::EstadoJuego));
+				/*std::cout << "Estado juego:" << std::endl;
+				std::cout << estadoJuego.estados[0].usuario << std::endl;*/
 
 				break;
 			case ComandoCliente::RESULTADO_PING:
@@ -539,8 +539,6 @@ void Cliente::enviarPingAServidor() {
 		this->conexionDelCliente->enviarSolicitudPing();
 		std::this_thread::sleep_for(std::chrono::milliseconds(Constantes::PING_DELAY));
 	}
-
-
 }
 
 void Cliente::mostrarMenuLogin() {

@@ -1,4 +1,4 @@
-#include "MaquinaEsatdos.h"
+#include "MaquinaEstados.h"
 
 void MaquinaEstados::update(ManejadorDeConexionCliente* conexionCliente) {
 	m_estado.lock();
@@ -8,11 +8,11 @@ void MaquinaEstados::update(ManejadorDeConexionCliente* conexionCliente) {
 	m_estado.unlock();
 }
 void MaquinaEstados::render() {
-	
-	if (!estadosDeJuego.empty()) {
-		estadosDeJuego.back()->render();
+	if (this->terminoIniciar) {
+		if (!estadosDeJuego.empty()) {
+			estadosDeJuego.back()->render();
+		}
 	}
-	
 }
 
 void MaquinaEstados::pushState(EstadoJuego *pState) {
@@ -35,6 +35,7 @@ void MaquinaEstados::popState() {
 
 void MaquinaEstados::changeState(EstadoJuego *pState) {
 	m_estado.lock();
+	this->terminoIniciar = false;
 	if (!estadosDeJuego.empty()) {
 		if (estadosDeJuego.back()->getStateID() == pState->getStateID()) {
 			return; // do nothing
@@ -47,6 +48,8 @@ void MaquinaEstados::changeState(EstadoJuego *pState) {
 	// push back our new state
 	estadosDeJuego.push_back(pState);
 	// initialise it
+	pState->setRenderer(this->renderer);
 	estadosDeJuego.back()->onEnter(this->renderer);
+	this->terminoIniciar = true;
 	m_estado.unlock();
 }

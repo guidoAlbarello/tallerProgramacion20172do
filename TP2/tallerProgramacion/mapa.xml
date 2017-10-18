@@ -1,0 +1,20 @@
+<mapa>
+	<tramo longitud="5" tipo="recta">
+		<arbol posicion="izquierda" ubicacion="4"></arbol>
+	</tramo>
+	<tramo longitud="20" tipo="recta">
+		<arbol posicion="izquierda" ubicacion="4"></arbol>
+	</tramo>
+	<tramo tipo="curva" sentido="derecha">
+		<cartel posicion="derecha" ubicacion="1" valor="60"></cartel>
+		<arbol posicion="izquierda" ubicacion="1.5"></arbol>
+	</tramo>
+	<tramo longitud="5" tipo="recta">
+		<arbol posicion="derecha" ubicacion="1.5"></arbol>
+		<cartel posicion="derecha" ubicacion="2" valor="80"></cartel>
+		<arbol posicion="izquierda" ubicacion="2.5"></arbol>
+	</tramo>
+	<tramo longitud="2" tipo="recta" sentido="derecha">
+		<arbol posicion="izquierda" ubicacion="1"></arbol>
+	</tramo>
+</mapa>

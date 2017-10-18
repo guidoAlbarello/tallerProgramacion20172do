@@ -7,6 +7,8 @@
 #include "Sprite.h"
 #include <algorithm>
 #include "ManejadorDeConexionCliente.h"
+#include "MapaView.h"
+
 class EstadoJuegoActivo : public EstadoJuego {
 public:
 	void update(ManejadorDeConexionCliente* conexionCliente);
@@ -14,10 +16,11 @@ public:
 	bool onEnter(Renderer* renderer);
 	bool onExit();
 	std::string getStateID() const { return s_playID; }
+
 private:
 	static const std::string s_playID;
 	std::vector<Sprite*> sprites;
-	//declarar mapa
+	MapaView* mapaView;
 
 	void inicializarMapa();
 	void inicializarObjetos();

@@ -255,8 +255,8 @@ void Conexion::procesarDatosRecibidos() {
 		}
 
 		if (std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - timeOut).count() > (Constantes::PING_DELAY + 1000 * 3)) {
-			this->conexionActiva = false;
-			this->conexionViva = false;
+			this->conexionActiva = false; 
+			this->conexionViva = false; 
 			//this->cerrarConexion();
 		}
 	}

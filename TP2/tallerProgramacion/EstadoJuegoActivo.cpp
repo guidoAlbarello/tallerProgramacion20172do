@@ -4,8 +4,10 @@ const std::string EstadoJuegoActivo::s_playID = "JUEGO_ACTIVO";
 void EstadoJuegoActivo::update(ManejadorDeConexionCliente* conexionCliente) {
 	ManejadorInput::getInstance()->update();
 }
+
 void EstadoJuegoActivo::render() {
 	if (inicializado) {
+		this->mapaView->render();
 		sort(sprites.begin(), sprites.end(), [](Sprite* a, Sprite* b)->bool {
 			return a->getZIndex() > b->getZIndex();
 		});
@@ -20,7 +22,7 @@ bool EstadoJuegoActivo::onEnter(Renderer* renderer) {
 	inicializarMapa();
 	inicializarObjetos();
 	this->renderer = renderer;
-	inicializado = true;
+	this->inicializado = true;
 	return true;
 }
 
@@ -30,15 +32,23 @@ bool EstadoJuegoActivo::onExit() {
 	return true;
 }
 
-void EstadoJuegoActivo::inicializarMapa() {//inicializar la estructura de datos de mapa
+void EstadoJuegoActivo::inicializarMapa() {
+	this->mapaView = new MapaView(this->renderer);
+	this->mapaView->init();
+
 }
 
-void EstadoJuegoActivo::inicializarObjetos() {//inicializar la estrucutra de datos de objetos
+void EstadoJuegoActivo::inicializarObjetos() {
+	//inicializar la estrucutra de datos de objetos
+
 
 }
 
-void EstadoJuegoActivo::limpiarMapa() {//liberar memoria mapa
+void EstadoJuegoActivo::limpiarMapa() {
+	delete this->mapaView;
 }
 
-void EstadoJuegoActivo::limpiarObjetos() {//liberar memoria objetos
+void EstadoJuegoActivo::limpiarObjetos() {
+	//liberar memoria objetos
+
 }
