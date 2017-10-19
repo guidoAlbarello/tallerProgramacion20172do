@@ -172,12 +172,12 @@ void Conexion::enviarChatGlobal(bool tipoDeChat, string unEmisor, string unMensa
 	this->conexionConCliente->getSocket().enviarDatos(mensaje.c_str(), tamanio);
 }
 
-void Conexion::enviarUpdate(Constantes::EstadoJuego estado) {
+void Conexion::enviarUpdate(EstadoModeloJuego estado) {
 	Logger::getInstance()->log(Debug, "Enviando update");
 
-	int tamanio = sizeof(Constantes::EstadoJuego);
-	char* data = new char[sizeof(Constantes::EstadoJuego)];
-	memcpy(data, &estado, sizeof(Constantes::EstadoJuego));
+	int tamanio = sizeof(EstadoModeloJuego);
+	char* data = new char[sizeof(EstadoModeloJuego)];
+	memcpy(data, &estado, sizeof(EstadoModeloJuego));
 
 	this->conexionConCliente->getSocket().enviarDatos(data, tamanio);
 }

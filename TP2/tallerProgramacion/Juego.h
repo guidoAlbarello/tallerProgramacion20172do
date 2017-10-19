@@ -25,6 +25,7 @@ public:
 	void agregarObjetoDeJuego(ObjetoDeJuego* objetoDeJuego);
 	std::vector<ObjetoDeJuego*> getObjetosDeJuego();
 	std::vector<Jugador*> getJugadores();
+	EstadoModeloJuego getEstadoJuego() { return this->estadoJuego; }
 	Jugador* agregarJugador();
 	Escenario * escenario;
 private:
@@ -38,6 +39,7 @@ private:
 	std::vector<Jugador*> jugadores;
 	mutex m_jugadores;
 	mutex m_objetos;
+	EstadoModeloJuego estadoJuego;
 };
 
 #endif

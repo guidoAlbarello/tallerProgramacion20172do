@@ -433,7 +433,7 @@ void Cliente::procesarDatosRecibidos() {
 			timeOut = std::chrono::high_resolution_clock::now();
 			std::string datosRecibidosString(datosRecibidos);
 			MensajeDeRed* mensajeDeRed = new MensajeDeRed(datosRecibidosString, Constantes::CLIENTE); //LIBERAR este mensaje de red, no se borra nunca!!!!!!!!!
-			Constantes::EstadoJuego estadoJuego;
+			EstadoModeloJuego estadoModeloJuego;
 
 			switch (mensajeDeRed->getComandoCliente()) {
 			case ComandoCliente::RESULTADO_LOGIN:
@@ -461,12 +461,8 @@ void Cliente::procesarDatosRecibidos() {
 				break;
 			case ComandoCliente::UPDATE_MODEL:
 				Logger::getInstance()->log(Debug, "Recibio un un UPDATE_MODEL");
-
-				// TODO: este memcpy trae bien pero por alguna razon cuando sale del while explota, si se comenta se fixea
-				//memcpy(&estadoJuego, datosRecibidos, sizeof(Constantes::EstadoJuego));
-				/*std::cout << "Estado juego:" << std::endl;
-				std::cout << estadoJuego.estados[0].usuario << std::endl;*/
-
+				memcpy(&estadoModeloJuego, datosRecibidos, sizeof(EstadoModeloJuego));
+				// TODO: renderizar en base a los datos recibidos
 				break;
 			case ComandoCliente::RESULTADO_PING:
 				Logger::getInstance()->log(Debug, "Recibio un RESULTADO_PING");
