@@ -48,7 +48,7 @@ public:
 	~Constantes();
 	static Constantes* getInstance();
 	static constexpr const int PING_DELAY = 10000;
-	static constexpr const int RECV_TIMEOUT = 30000;
+	static constexpr const int RECV_TIMEOUT = 25000;
 	static constexpr const int UPDATE_MODEL_DELAY = 15000;
 	static constexpr const int MAX_CLIENTES = 8;
 

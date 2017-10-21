@@ -479,7 +479,13 @@ void Cliente::procesarDatosRecibidos() {
 			if (mensajeDeRed != NULL)
 				delete mensajeDeRed;
 		}
-		if (std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - timeOut).count() > (Constantes::PING_DELAY + 1000 * 3)) {
+		else {
+			timeOut = std::chrono::high_resolution_clock::now();
+		}
+
+
+		double tiempoTardado = std::chrono::duration_cast<std::chrono::duration<double, std::ratio<1>>>(std::chrono::high_resolution_clock::now() - timeOut).count() * 1000;
+		if (tiempoTardado > (Constantes::PING_DELAY)) {
 			//this->desconectarseDelServidor();
 			Logger::getInstance()->log(Debug, "Se desconecto un cliente del servidor por falta de respuesta al ping");
 			std::cout << "Se ha desconectado del servidor" << std::endl;

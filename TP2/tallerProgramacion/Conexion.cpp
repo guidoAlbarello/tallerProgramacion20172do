@@ -253,8 +253,12 @@ void Conexion::procesarDatosRecibidos() {
 			if (datosRecibidos != NULL)
 				free(datosRecibidos);
 		}
+		else {
+			timeOut = std::chrono::high_resolution_clock::now();
+		}
 
-		if (std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - timeOut).count() > (Constantes::PING_DELAY + 1000 * 3)) {
+		double tiempoTardado = std::chrono::duration_cast<std::chrono::duration<double, std::ratio<1>>>(std::chrono::high_resolution_clock::now() - timeOut).count() * 1000;
+		if (tiempoTardado > (Constantes::PING_DELAY)) {
 			this->conexionActiva = false; 
 			this->conexionViva = false; 
 			//this->cerrarConexion();
