@@ -47,7 +47,7 @@ void Conexion::procesarSolicitudPing() {
 void Conexion::procesarInput(MensajeDeRed* unMensajeDeRed) {
 	if (this->usuarioConectado != NULL) {
 		if (this->usuarioConectado->getJugador() != NULL) {
-			//bool entrada[];				//hacer el for
+			//for (int i = 0; i < 3; i++)
 			//this->usuarioConectado->getJugador()->recibirEntrada(i, entrada[i]);
 		}
 	}

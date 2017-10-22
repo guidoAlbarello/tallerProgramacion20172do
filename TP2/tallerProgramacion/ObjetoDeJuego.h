@@ -17,6 +17,7 @@ public:
 protected:
 	Ltexture* texture;
 	Vector posicion;
+	Vector velocidad;
 	int zIndex;
 };
 
