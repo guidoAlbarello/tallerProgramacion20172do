@@ -2,7 +2,11 @@
 
 const std::string EstadoJuegoActivo::s_playID = "JUEGO_ACTIVO";
 void EstadoJuegoActivo::update(ManejadorDeConexionCliente* conexionCliente) {
-	ManejadorInput::getInstance()->update();
+	
+	if (inicializado) {
+		ManejadorInput::getInstance()->update();
+		conexionCliente->enviarEntrada();
+	}
 	//updatear posicion sprites y escenario (copiar del estado de jeugo a los objetos)
 }
 

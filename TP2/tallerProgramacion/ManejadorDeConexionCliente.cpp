@@ -4,6 +4,7 @@
 #include "MensajeDeRed.h"
 #include <iostream>
 
+
 bool ManejadorDeConexionCliente::iniciarConexion(std::string ipServidor, std::string puertoServidor) {
 	int resultadoConexion = this->socket->crearSocketCliente(ipServidor, puertoServidor);
 	this->t_EnviarDatos = std::thread(&ManejadorDeConexionCliente::enviarDatos, this);
@@ -86,3 +87,14 @@ bool ManejadorDeConexionCliente::enviarSolicitudPing() {
 	return this->socket->enviarDatos(mensaje.c_str(), tamanio);;
 }
 
+void ManejadorDeConexionCliente::enviarEntrada() {
+	Logger::getInstance()->log(Debug, "se realiza el envio de una entrada");
+	MensajeDeRed *mensajeDeRed = new MensajeDeRed(ComandoServidor::INPUT);
+
+	bool teclas[3];
+	teclas[0] = ManejadorInput::getInstance()->estaTeclaPresionada(SDL_SCANCODE_UP);
+	teclas[1] = ManejadorInput::getInstance()->estaTeclaPresionada(SDL_SCANCODE_RIGHT);
+	teclas[2] = ManejadorInput::getInstance()->estaTeclaPresionada(SDL_SCANCODE_LEFT);
+	int tamanio = 3;
+	this->socket->enviarDatos((char*) teclas, tamanio);;
+}
