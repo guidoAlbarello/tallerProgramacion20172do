@@ -11,6 +11,7 @@
 
 using namespace std;
 
+typedef float Unidad;
 // Actualizar a medida que necesitemos
 enum class ComandoServidor { LOG = '0', PING = '1', SEND_MESSAGE = '2', RETRIEVE_MESSAGES = '3', UPDATE_MODEL = '4', USUARIOS = '5', INPUT = '6'};
 enum class ComandoCliente { LOG = '0', PRINT = '1', UPDATE_MODEL = '2', RESULTADO_LOGIN = '3', RESULTADO_SEND_MESSAGE = '4', RESULTADO_RETRIEVE_MESSAGES = '5', RECIEVE_GLOBAL_MESSAGES = '6', RECIEVE_PRIVATE_MESSAGES = '7', RESULTADO_USUARIOS = '8', RESULTADO_PING = '9'};
@@ -18,22 +19,29 @@ enum class EstadoAuto { DERECHO = '0', DOBLANDO_IZQ = '1', DOBLANDO_DER = '2' };
 
 struct EstadoJugador {
 	int id;
-	float posXCamara;
-	float posYCamara;
-	float posX;
-	float posY;
+	Unidad posXCamara;
+	Unidad posYCamara;
+	Unidad posX;
+	Unidad posY;
 	EstadoAuto estadoAuto;
 	bool conectado;
+};
+
+struct EstadoEscenario {
+	Unidad cieloX;
+	Unidad cieloY;
+	Unidad colinasX;
+	Unidad colinasY;
 };
 
 struct EstadoModeloJuego
 {
 	/*EstadoJugador estados[Constantes::MAX_CLIENTES];*/
-	EstadoJugador estados[4];
+	EstadoJugador estadoJugadores[4];
+	EstadoEscenario estadoEscenario;
 };
 
 
-typedef float Unidad;
 
 class Constantes
 {

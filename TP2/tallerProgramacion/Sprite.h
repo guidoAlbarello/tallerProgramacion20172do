@@ -10,6 +10,8 @@ class Renderer;
 
 class Sprite : public ObjetoDeJuego {
 public:
+	void renderStatic(Renderer* renderer);
+	void load(std::string fileName,SDL_Renderer* pRenderer);
 	void render(Renderer* renderer);
 private:
 	int ancho, alto, filaActual, frameActual;

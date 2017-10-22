@@ -5,6 +5,7 @@
 class Jugador : public ObjetoDeJuego {  //tal vez diferenciar entre movil y estatico
 public:
 	Jugador(SDL_Renderer* renderer);
+	void update(Unidad delta);
 	void recibirEntrada(int pos, bool estadoEntrada);
 	void setId(int id) { this->id = id; }
 	int getId() { return this->id; }

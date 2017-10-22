@@ -8,6 +8,8 @@
 #include <algorithm>
 #include "ManejadorDeConexionCliente.h"
 #include "MapaView.h"
+#include <map>
+#include "Escenario.h"
 
 class EstadoJuegoActivo : public EstadoJuego {
 public:
@@ -19,9 +21,9 @@ public:
 
 private:
 	static const std::string s_playID;
-	std::vector<Sprite*> sprites;
+	std::map<int, Sprite*> sprites;
 	MapaView* mapaView;
-
+	Escenario* escenario;
 	void inicializarMapa();
 	void inicializarObjetos();
 	void limpiarMapa();

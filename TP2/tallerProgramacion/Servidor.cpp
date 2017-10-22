@@ -378,7 +378,7 @@ void Servidor::updateModel() {
 				dummyJugador.id = 1;
 				dummyJugador.conectado = true;
 				dummyJugador.estadoAuto = EstadoAuto::DOBLANDO_DER;
-				estadoModeloJuego.estados[0] = dummyJugador;
+				estadoModeloJuego.estadoJugadores[0] = dummyJugador;
 				unaConexion->enviarUpdate(estadoModeloJuego);
 				//unaConexion->enviarUpdate(this->elJuego->getEstadoJuego());
 			}

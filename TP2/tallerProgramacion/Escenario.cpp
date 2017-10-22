@@ -2,12 +2,22 @@
 #include <iostream>
 
 Escenario::Escenario(Renderer* renderer) {
-	cielo = new Ltexture(renderer->getRendererJuego());
-	colinas = new Ltexture(renderer->getRendererJuego());
+	this->cielo = new Sprite();
+	this->colinas = new Sprite();
+	this->renderer = renderer;
+}
+
+Escenario::Escenario() {
+	posicionCielo = Vector(0,0); 
+	posicionColinas = Vector(0,0);
 }
 
 void Escenario::iniciar() {
-	//renderear fondo... todo hardcodeado
+	
+	this->cielo->load("fondo/sky.png",renderer->getRendererJuego());
+	this->colinas->load("fondo/hills.png", renderer->getRendererJuego());
+	
+	/*//renderear fondo... todo hardcodeado
 	std::cout << "iniciando escenario" << std::endl;
 	if (cielo->loadFromFile("fondo/sky.png")) {
 		std::cout << "levanto bien el asset del cielo" << std::endl;
@@ -23,14 +33,24 @@ void Escenario::iniciar() {
 	}
 	else {
 		std::cout << "levanto mal el asset de las colinas" << std::endl;
-	}
+	}*/
 }
 
 Escenario::~Escenario() {
 	if (cielo != NULL) {
-		cielo->free();
+		delete cielo;
 	}
 	if (colinas != NULL) {
-		colinas->free();
+		delete colinas;
 	}
+}
+
+void Escenario::update(Unidad deltaTiempo) {
+	posicionCielo.setX( posicionCielo.getX() + VELOCIDAD_CIELO * deltaTiempo);
+	posicionColinas.setX(posicionColinas.getX() + VELOCIDAD_COLINAS * deltaTiempo);
+}
+
+void Escenario::render() {
+	this->colinas->render(renderer);
+	this->cielo->render(renderer);
 }

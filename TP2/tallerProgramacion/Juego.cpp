@@ -10,6 +10,9 @@ bool Juego::iniciarJuego() {
 
 void Juego::update(Unidad tiempoDelta) {
 	//update de todos los elementos del juego
+
+	this->escenario->update(tiempoDelta);
+
 	for (int i = 0; i < this->objetosDeJuego.size(); i++) {
 		ObjetoDeJuego* unObjeto = this->objetosDeJuego[i];
 		unObjeto->update(tiempoDelta);	//podria hacerse alguna estructura q tenga la pos de los jugadores, y solo updatear lo q esta cerca de esos jugadores en vez de todas las entidades. 
@@ -53,7 +56,7 @@ Jugador * Juego::agregarJugador() {
 
 Juego::Juego() {
 	this->juegoActivo = true;
-	//this->escenario = new Escenario(renderer);
+	this->escenario = new Escenario();
 }
 
 void Juego::iniciarEscenario() {
