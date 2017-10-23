@@ -2,16 +2,26 @@
 #ifndef ESCENARIO_H
 #define ESCENARIO_H
 
-#include "Ltexture.h"
-#include "Renderer.h"
+#define VELOCIDAD_CIELO 2.0
+#define VELOCIDAD_COLINAS 1.0
+
+#include "Sprite.h"
+#include "Vector.h"
+#include "Constantes.h"
 
 class Escenario {
 public:
+	Escenario();
 	Escenario(Renderer* renderer);
 	void iniciar();
 	~Escenario();
+	void update(Unidad deltaTiempo);
+	void render();
 private:
-	Ltexture* cielo;
-	Ltexture* colinas;
+	Vector posicionCielo;
+	Vector posicionColinas;
+	Sprite* cielo;
+	Sprite* colinas;
+	Renderer* renderer;
 };
 #endif

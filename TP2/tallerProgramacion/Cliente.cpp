@@ -461,7 +461,7 @@ void Cliente::procesarDatosRecibidos() {
 				std::cout << datosRecibidosString << endl;
 				break;
 			case ComandoCliente::UPDATE_MODEL:
-				Logger::getInstance()->log(Debug, "Recibio un un UPDATE_MODEL");
+				Logger::getInstance()->log(Debug, "Recibio un UPDATE_MODEL");
 				memcpy(&estadoModeloJuego, datosRecibidos, sizeof(EstadoModeloJuego));
 				procesarEstadoModelo(estadoModeloJuego);
 				break;
@@ -512,8 +512,8 @@ void Cliente::mostrarMensajesGlobales() {
 
 void Cliente::procesarEstadoModelo(EstadoModeloJuego estadoModeloJuego) {
 	if (!this->juegoIniciado && estadoModeloJuego.iniciado) {
-		this->maquinaDeEstados->changeState(new EstadoJuegoActivo());
 		this->juegoIniciado = true;
+		this->maquinaDeEstados->changeState(new EstadoJuegoActivo());
 	}
 
 

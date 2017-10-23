@@ -11,7 +11,7 @@ ManejadorDeTexturas * ManejadorDeTexturas::getInstance() {
 }
 
 ManejadorDeTexturas::ManejadorDeTexturas() {
-	
+	this->camara = new Camara();
 }
 
 void ManejadorDeTexturas::drawAnimatedSprite(std::string id, int x, int y, int ancho, int alto, int filaActual, int frameActual, int anchoPantalla, int zIndex, SDL_Renderer * pRenderer, SDL_RendererFlip flip) {

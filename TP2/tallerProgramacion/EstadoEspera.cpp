@@ -1,20 +1,18 @@
 #include "EstadoEspera.h"
 
-const std::string EstadoEspera::s_menuID = "MENU";
 void EstadoEspera::update(ManejadorDeConexionCliente* conexionCliente) {
-	// rellenar
+	this->esperaView->update();
 }
 void EstadoEspera::render() {
-	// rellenar
-	int i = 0; // borrame!
+	esperaView->render();
 }
 bool EstadoEspera::onEnter(Renderer* renderer) {
-	//iniciarMenu
 	this->renderer = renderer;
-
+	this->esperaView = new EsperaView(this->renderer->getRendererJuego());
+	esperaView->init();
 	return true;
 }
 bool EstadoEspera::onExit() {
-	//cerrarmenu
+	esperaView->close();
 	return true;
 }

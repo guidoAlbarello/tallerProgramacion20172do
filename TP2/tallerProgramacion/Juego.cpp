@@ -10,6 +10,21 @@ bool Juego::iniciarJuego() {
 
 void Juego::update(Unidad tiempoDelta) {
 	//update de todos los elementos del juego
+
+	this->escenario->update(tiempoDelta);
+
+	// Se hardcodea el estado del juego
+	EstadoModeloJuego estadoModeloJuego;
+	EstadoJugador dummyJugador;
+	dummyJugador.id = 1;
+	dummyJugador.conectado = true;
+	dummyJugador.estadoAuto = EstadoAuto::DOBLANDO_DER;
+	dummyJugador.posX = 100;
+	dummyJugador.posY = 100;
+	estadoModeloJuego.estadoJugadores[0] = dummyJugador;
+	this->estadoJuego = estadoModeloJuego;
+
+
 	for (int i = 0; i < this->objetosDeJuego.size(); i++) {
 		ObjetoDeJuego* unObjeto = this->objetosDeJuego[i];
 		unObjeto->update(tiempoDelta);	//podria hacerse alguna estructura q tenga la pos de los jugadores, y solo updatear lo q esta cerca de esos jugadores en vez de todas las entidades. 
@@ -23,16 +38,6 @@ void Juego::update(Unidad tiempoDelta) {
 	if (this->jugadores.size() >= Constantes::CANT_JUGADORES_INICIAR) {
 		this->estadoJuego.iniciado = true;
 	}
-
-	// Prueba, borrame!
-	EstadoModeloJuego estadoModeloJuego;
-	EstadoJugador dummyJugador;
-	dummyJugador.id = 1;
-	dummyJugador.conectado = true;
-	dummyJugador.estadoAuto = EstadoAuto::DOBLANDO_DER;
-	estadoModeloJuego.estados[0] = dummyJugador;
-	estadoModeloJuego.iniciado = false;
-	this->estadoJuego = estadoModeloJuego;
 
 }
 
@@ -67,7 +72,7 @@ Jugador* Juego::agregarJugador() {
 
 Juego::Juego() {
 	this->juegoActivo = true;
-	//this->escenario = new Escenario(renderer);
+	this->escenario = new Escenario();
 }
 
 void Juego::iniciarEscenario() {
