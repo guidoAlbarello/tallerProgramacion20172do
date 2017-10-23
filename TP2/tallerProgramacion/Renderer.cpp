@@ -26,7 +26,7 @@ bool Renderer::iniciarRenderer() {
 		}
 
 		//Create window
-		gWindowJuego = SDL_CreateWindow("SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, anchoVentana, altoVentana, SDL_WINDOW_SHOWN);
+		gWindowJuego = SDL_CreateWindow("Outrun", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, anchoVentana, altoVentana, SDL_WINDOW_SHOWN);
 		if (gWindowJuego == NULL) {
 			printf("Window could not be created! SDL Error: %s\n", SDL_GetError());
 			success = false;

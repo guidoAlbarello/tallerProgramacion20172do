@@ -16,6 +16,7 @@
 #include "Ltexture.h"
 #include "EstadoJuegoActivo.h"
 #include "EstadoLogeo.h"
+#include "EstadoEspera.h"
 
 const std::string CLIENT_LOG_FILENAME_FORMAT = "LogCl%Y%m%d%H%M%S.txt";
 
@@ -32,6 +33,7 @@ protected:
 	void procesarMensajesPrivados(MensajeDeRed* unMensajeDeRed);
 	void procesarResultadoSendMessage(MensajeDeRed* mensajeDeRed);
 	void procesarResultadoLogin(MensajeDeRed* mensajeDeRed);
+	void procesarEstadoModelo(EstadoModeloJuego estadoModeloJuego);
 	ManejadorDeConexionCliente* conexionDelCliente;
 	BuzonDeMensajes* buzonDeMensajesGlobales;
 	virtual void correrCicloPrincipal();
@@ -39,6 +41,7 @@ protected:
 	bool clienteActivo;
 	bool estaLogueado;
 	bool conexionViva; // Manejada por los pings
+	bool juegoIniciado;
 	void leerClientConfig();
 	std::thread t_procesarDatosRecibidos;
 	std::thread t_procesarPing;

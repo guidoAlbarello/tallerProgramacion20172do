@@ -35,6 +35,7 @@ Cliente::Cliente() {
 	this->buzonDeMensajesGlobales = new BuzonDeMensajes(); //LIBERAR LA MEMORIA  DEL BUZON
 	this->enviandoMensaje = false;
 	this->maquinaDeEstados = new MaquinaEstados();
+	this->juegoIniciado = false;
 	//Seteando el nombre del log
 	Logger::getInstance()->setLogFileName(CLIENT_LOG_FILENAME_FORMAT);
 
@@ -462,7 +463,7 @@ void Cliente::procesarDatosRecibidos() {
 			case ComandoCliente::UPDATE_MODEL:
 				Logger::getInstance()->log(Debug, "Recibio un un UPDATE_MODEL");
 				memcpy(&estadoModeloJuego, datosRecibidos, sizeof(EstadoModeloJuego));
-				// TODO: renderizar en base a los datos recibidos
+				procesarEstadoModelo(estadoModeloJuego);
 				break;
 			case ComandoCliente::RESULTADO_PING:
 				Logger::getInstance()->log(Debug, "Recibio un RESULTADO_PING");
@@ -509,6 +510,15 @@ void Cliente::mostrarMensajesGlobales() {
 		this->buzonDeMensajesGlobales->eliminarMensajes(i); //esto de mostrar se peue hacer en otro thread si tira problemas e performance
 }
 
+void Cliente::procesarEstadoModelo(EstadoModeloJuego estadoModeloJuego) {
+	if (!this->juegoIniciado && estadoModeloJuego.iniciado) {
+		this->maquinaDeEstados->changeState(new EstadoJuegoActivo());
+		this->juegoIniciado = true;
+	}
+
+
+}
+
 void Cliente::procesarResultadoSendMessage(MensajeDeRed* mensajeDeRed) {
 	if (mensajeDeRed->getParametro(0) == "SEND_MESSAGE_OK") {
 		// Mensaje enviado satisfactoriamente
@@ -522,7 +532,8 @@ void Cliente::procesarResultadoSendMessage(MensajeDeRed* mensajeDeRed) {
 void Cliente::procesarResultadoLogin(MensajeDeRed* mensajeDeRed) {
 	if (mensajeDeRed->getParametro(0) == "LOGIN_OK") {
 		this->estaLogueado = true;
-		this->maquinaDeEstados->changeState(new EstadoJuegoActivo());
+		//this->maquinaDeEstados->changeState(new EstadoJuegoActivo());
+		this->maquinaDeEstados->changeState(new EstadoEspera());
 		m_print.lock();
 		cout << mensajeDeRed->getParametro(1) << endl;
 		m_print.unlock();

@@ -6,9 +6,12 @@ void EstadoEspera::update(ManejadorDeConexionCliente* conexionCliente) {
 }
 void EstadoEspera::render() {
 	// rellenar
+	int i = 0; // borrame!
 }
 bool EstadoEspera::onEnter(Renderer* renderer) {
 	//iniciarMenu
+	this->renderer = renderer;
+
 	return true;
 }
 bool EstadoEspera::onExit() {

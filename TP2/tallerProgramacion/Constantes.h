@@ -30,6 +30,7 @@ struct EstadoModeloJuego
 {
 	/*EstadoJugador estados[Constantes::MAX_CLIENTES];*/
 	EstadoJugador estados[4];
+	bool iniciado;
 };
 
 
@@ -51,6 +52,7 @@ public:
 	static constexpr const int RECV_TIMEOUT = 25000;
 	static constexpr const int UPDATE_MODEL_DELAY = 15000;
 	static constexpr const int MAX_CLIENTES = 8;
+	static constexpr const int CANT_JUGADORES_INICIAR = 1;
 
 private:
 	Constantes();

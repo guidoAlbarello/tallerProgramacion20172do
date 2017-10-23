@@ -10,6 +10,7 @@ Usuario::Usuario() {
 Usuario::Usuario(std::string name, std::string pass) {
 	this->nombre = name;
 	this->password = pass;
+	this->jugador = NULL;
 
 	this->buzonDeMensajes = new BuzonDeMensajes();
 }

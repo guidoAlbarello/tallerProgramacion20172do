@@ -20,6 +20,20 @@ void Juego::update(Unidad tiempoDelta) {
 		unJugador->update(tiempoDelta);
 	}
 
+	if (this->jugadores.size() >= Constantes::CANT_JUGADORES_INICIAR) {
+		this->estadoJuego.iniciado = true;
+	}
+
+	// Prueba, borrame!
+	EstadoModeloJuego estadoModeloJuego;
+	EstadoJugador dummyJugador;
+	dummyJugador.id = 1;
+	dummyJugador.conectado = true;
+	dummyJugador.estadoAuto = EstadoAuto::DOBLANDO_DER;
+	estadoModeloJuego.estados[0] = dummyJugador;
+	estadoModeloJuego.iniciado = false;
+	this->estadoJuego = estadoModeloJuego;
+
 }
 
 void Juego::obtenerEntrada() {
@@ -42,9 +56,9 @@ std::vector<Jugador*> Juego::getJugadores() {
 	return this->jugadores;
 }
 
-Jugador * Juego::agregarJugador() {
-	
-	Jugador* nuevoJugador = new Jugador(renderer->getRendererJuego());
+Jugador* Juego::agregarJugador() {
+	//Jugador* nuevoJugador = new Jugador(renderer->getRendererJuego()); // No se pasa el renderer porque lo tiene el cliente
+	Jugador* nuevoJugador = new Jugador();
 	nuevoJugador->setId(cantidadJugadores);
 	this->cantidadJugadores++;
 	this->jugadores.push_back(nuevoJugador);

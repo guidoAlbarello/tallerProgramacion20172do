@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef ESTADO_MENU_H
-#define ESTADO_MENU_H
+#ifndef ESTADO_ESPERA_H
+#define ESTADO_ESPERA_H
 #include"EstadoJuego.h"
 #include "ManejadorDeConexionCliente.h"
 class EstadoEspera : public EstadoJuego {

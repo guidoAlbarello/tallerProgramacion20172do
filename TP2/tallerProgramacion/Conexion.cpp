@@ -200,7 +200,6 @@ void Conexion::procesarDatosRecibidos() {
 			case ComandoServidor::LOG:
 				Logger::getInstance()->log(Debug, "Recibio un LOG");
 				// Envia respuesta con el resultado del login
-				
 				unUsuario = this->servidor->validarLogin(mensajeDeRed, mensajeResultado);
 				if (unUsuario != NULL) {
 					this->usuarioConectado = unUsuario;

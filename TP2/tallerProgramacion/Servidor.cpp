@@ -372,15 +372,7 @@ void Servidor::updateModel() {
 		for (std::vector<Conexion*>::iterator it = conexionesActivas.begin(); it != conexionesActivas.end(); ++it) {
 			Conexion* unaConexion = (Conexion*)*it;
 			if (unaConexion->getUsuario() != NULL && unaConexion->getConexionActiva()) {
-				// Prueba, borrame!
-				EstadoModeloJuego estadoModeloJuego;
-				EstadoJugador dummyJugador;
-				dummyJugador.id = 1;
-				dummyJugador.conectado = true;
-				dummyJugador.estadoAuto = EstadoAuto::DOBLANDO_DER;
-				estadoModeloJuego.estados[0] = dummyJugador;
-				unaConexion->enviarUpdate(estadoModeloJuego);
-				//unaConexion->enviarUpdate(this->elJuego->getEstadoJuego());
+				unaConexion->enviarUpdate(this->elJuego->getEstadoJuego());
 			}
 		}
 		std::this_thread::sleep_for(std::chrono::milliseconds(Constantes::UPDATE_MODEL_DELAY));
