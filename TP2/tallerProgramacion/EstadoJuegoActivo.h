@@ -20,6 +20,7 @@ public:
 	std::string getStateID() const { return s_playID; }
 
 private:
+	EstadoModeloJuego estadoModeloJuego;
 	static const std::string s_playID;
 	std::map<int, Sprite*> sprites;
 	MapaView* mapaView;

@@ -8,6 +8,24 @@ void EstadoJuegoActivo::update(ManejadorDeConexionCliente* conexionCliente) {
 		conexionCliente->enviarEntrada();
 	}
 	//updatear posicion sprites y escenario (copiar del estado de jeugo a los objetos)
+	//hago el update de cada sprite enelmap
+	for (std::map<int, Sprite*>::iterator it = sprites.begin(); it != sprites.end(); ++it) {
+		it->second->setFilaActual(0);//por q tiene 1 sola fila
+		EstadoJugador estado = estadoModeloJuego.estadoJugadores[it->first];
+
+		switch (estado.estadoAuto) {
+		case EstadoAuto::DERECHO:
+			it->second->setFrameActual(0);
+			break;
+		case EstadoAuto::DOBLANDO_IZQ:
+			it->second->setFrameActual(1);
+			break;
+		case EstadoAuto::DOBLANDO_DER:
+			it->second->setFrameActual(2);
+			break;
+		}
+
+	}
 }
 
 template <typename T1, typename T2>
@@ -53,9 +71,11 @@ void EstadoJuegoActivo::inicializarMapa() {
 }
 
 void EstadoJuegoActivo::inicializarObjetos() {
-	//inicializar la estrucutra de datos de objetos
-
-
+	// creo los sprites del map
+	for (int i = 0; i < sizeof(estadoModeloJuego.estadoJugadores); i++) {
+		sprites[i] = new Sprite();
+		//sprites[i]->load("imagenes/player" + std::to_string(i+1) + ".png", this->renderer->getRendererJuego);
+	}
 }
 
 void EstadoJuegoActivo::limpiarMapa() {
