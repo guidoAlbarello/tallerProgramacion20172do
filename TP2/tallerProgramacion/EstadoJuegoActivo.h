@@ -22,7 +22,8 @@ public:
 private:
 	EstadoModeloJuego estadoModeloJuego;
 	static const std::string s_playID;
-	std::map<int, Sprite*> sprites;
+	std::map<int, Sprite*> spritesMap;
+	std::vector<Sprite*> spritesVec;
 	MapaView* mapaView;
 	Escenario* escenario;
 	void inicializarMapa();

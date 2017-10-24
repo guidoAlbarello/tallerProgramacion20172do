@@ -171,6 +171,9 @@
     <ClInclude Include="Mapa.h">
       <Filter>Archivos de encabezado\Juego</Filter>
     </ClInclude>
+    <ClInclude Include="EsperaView.h">
+      <Filter>Archivos de encabezado\Juego</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Constantes.cpp">
@@ -300,6 +303,9 @@
       <Filter>Archivos de código fuente\Juego</Filter>
     </ClCompile>
     <ClCompile Include="Mapa.cpp">
+      <Filter>Archivos de código fuente\Juego</Filter>
+    </ClCompile>
+    <ClCompile Include="EsperaView.cpp">
       <Filter>Archivos de código fuente\Juego</Filter>
     </ClCompile>
   </ItemGroup>

@@ -2,14 +2,15 @@
 
 const std::string EstadoJuegoActivo::s_playID = "JUEGO_ACTIVO";
 void EstadoJuegoActivo::update(ManejadorDeConexionCliente* conexionCliente) {
-	
+
 	if (inicializado) {
 		ManejadorInput::getInstance()->update();
 		conexionCliente->enviarEntrada();
 	}
 	//updatear posicion sprites y escenario (copiar del estado de jeugo a los objetos)
 	//hago el update de cada sprite enelmap
-	for (std::map<int, Sprite*>::iterator it = sprites.begin(); it != sprites.end(); ++it) {
+
+	for (std::map<int, Sprite*>::iterator it = spritesMap.begin(); it != spritesMap.end(); ++it) {
 		it->second->setFilaActual(0);//por q tiene 1 sola fila
 		EstadoJugador estado = estadoModeloJuego.estadoJugadores[it->first];
 
@@ -28,23 +29,17 @@ void EstadoJuegoActivo::update(ManejadorDeConexionCliente* conexionCliente) {
 	}
 }
 
-template <typename T1, typename T2>
-struct mayor {
-	typedef pair<int, Sprite*> type;
-	bool operator ()(type const& a, type const& b) const {
-		return a.second->getZIndex() > b.second->getZIndex();
-	}
-};
-
 void EstadoJuegoActivo::render() {
 	if (inicializado) {
 		this->escenario->render();
 		this->mapaView->render();
-		
-		//sort(sprites.begin(), sprites.end(), mayor<int, Sprite*>());
 
-		for (std::map<int, Sprite*>::iterator it = sprites.begin(); it != sprites.end(); ++it) {
-			it->second->render(renderer);
+		sort(spritesVec.begin(), spritesVec.end(), [](Sprite* a, Sprite* b)->bool {
+			return a->getZIndex() > b->getZIndex();
+		});
+
+		for (int i = 0; i < spritesVec.size(); i++) {
+			spritesVec[i]->render(this->renderer);
 		}
 	}
 }
@@ -73,8 +68,11 @@ void EstadoJuegoActivo::inicializarMapa() {
 void EstadoJuegoActivo::inicializarObjetos() {
 	// creo los sprites del map
 	for (int i = 0; i < sizeof(estadoModeloJuego.estadoJugadores); i++) {
-		sprites[i] = new Sprite();
-		//sprites[i]->load("imagenes/player" + std::to_string(i+1) + ".png", this->renderer->getRendererJuego);
+		Sprite* unSprite = new Sprite();
+		std::string fileName = "imagenes/player" + std::to_string(i + 1) + ".png";
+		unSprite->load(fileName, this->renderer->getRendererJuego());
+		spritesVec.push_back(unSprite);
+		spritesMap[i] = unSprite;
 	}
 }
 
