@@ -369,17 +369,31 @@ void Servidor::enviarChatGlobal() {
 }
 
 void Servidor::updateModel() {
+	bool yaEnvioEstado = false;
 	while (servidorActivo) {
 		if (elJuego->jugadoresCargados()) {
-			EstadoModeloJuego* nuevoEstado = this->elJuego->getEstadoJuego();
-			for (std::vector<Conexion*>::iterator it = conexionesActivas.begin(); it != conexionesActivas.end(); ++it) {
-				Conexion* unaConexion = (Conexion*)*it;
-				if (unaConexion->getUsuario() != NULL && unaConexion->getConexionActiva()) {
-					unaConexion->enviarUpdate(nuevoEstado); //cambiar a putnero y agregar el estado conectado de cada jugador , delete estado
+			if (yaEnvioEstado) {									//este if asqueroso cambiarlo. chequear q pase de estado esperar jugadores a init, de otra forma
+				EstadoModeloJuego* nuevoEstado = this->elJuego->getEstadoJuego();
+				for (std::vector<Conexion*>::iterator it = conexionesActivas.begin(); it != conexionesActivas.end(); ++it) {
+					Conexion* unaConexion = (Conexion*)*it;
+					if (unaConexion->getUsuario() != NULL && unaConexion->getConexionActiva()) {
+						unaConexion->enviarUpdate(nuevoEstado); 
+					}
 				}
+				this->elJuego->liberarModeloEstado(nuevoEstado);
+			} else {
+				EstadoInicialJuego* estadoInicial = this->elJuego->getEstadoJuegoInicial();
+				for (std::vector<Conexion*>::iterator it = conexionesActivas.begin(); it != conexionesActivas.end(); ++it) {
+					Conexion* unaConexion = (Conexion*)*it;
+					if (unaConexion->getUsuario() != NULL && unaConexion->getConexionActiva()) {
+						unaConexion->inicializarClienteJuego(estadoInicial);  //    !!!!!!!!!!!!!!!!!!!!esto va a haber q mandarlo cuando se reconecte el cliente tmb. aca solo se va a mandar la primera vez !!!!!!!
+					}
+				}
+				if(estadoInicial != NULL)
+					delete estadoInicial;
 			}
-			this->elJuego->liberarModeloEstado(nuevoEstado);
-		}
+			yaEnvioEstado = true;
+		} 
 		std::this_thread::sleep_for(std::chrono::milliseconds(Constantes::UPDATE_MODEL_DELAY));//esdto se podria cambiar x un while hasta q no pase el intervalo de tiempo, y mientras q no pase aprovechar el tiempo para hacer clean ups  
 	}
 

@@ -138,9 +138,6 @@
     <ClInclude Include="EstadoJuegoActivo.h">
       <Filter>Archivos de encabezado\EstadosJuego</Filter>
     </ClInclude>
-    <ClInclude Include="MaquinaEsatdos.h">
-      <Filter>Archivos de encabezado\EstadosJuego</Filter>
-    </ClInclude>
     <ClInclude Include="Carro.h">
       <Filter>Archivos de encabezado\Juego</Filter>
     </ClInclude>
@@ -173,6 +170,9 @@
     </ClInclude>
     <ClInclude Include="EsperaView.h">
       <Filter>Archivos de encabezado\Juego</Filter>
+    </ClInclude>
+    <ClInclude Include="MaquinaEstados.h">
+      <Filter>Archivos de encabezado\EstadosJuego</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

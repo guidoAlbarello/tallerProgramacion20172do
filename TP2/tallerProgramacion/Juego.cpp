@@ -57,18 +57,33 @@ EstadoModeloJuego* Juego::getEstadoJuego() {
 		nuevoEstado->estadoJugadores[i].estadoAuto = unJugador->getEstado();
 		nuevoEstado->estadoJugadores[i].posX = unJugador->getPosicionX();
 		nuevoEstado->estadoJugadores[i].posY = unJugador->getPosicionY();
+		nuevoEstado->estadoJugadores[i].posXCamara = unJugador->getCamara()->getPosicion()->getX();
+		nuevoEstado->estadoJugadores[i].posYCamara = unJugador->getCamara()->getPosicion()->getY();
 	}
+	
+	nuevoEstado->tamanio = Constantes::CANT_JUGADORES_INICIAR;
 
 	nuevoEstado->estadoEscenario.cieloX = escenario->getPosicionCielo()->getX();
 	nuevoEstado->estadoEscenario.cieloY = escenario->getPosicionCielo()->getY();
 	nuevoEstado->estadoEscenario.colinasX = escenario->getPosicionColinas()->getX();
 	nuevoEstado->estadoEscenario.colinasY = escenario->getPosicionColinas()->getY();
-	nuevoEstado->iniciado = true;
 	return nuevoEstado;
 }
 
 void Juego::liberarModeloEstado(EstadoModeloJuego * unEstado) {
 	delete unEstado;
+}
+
+EstadoInicialJuego * Juego::getEstadoJuegoInicial() {
+	EstadoInicialJuego* estado = new EstadoInicialJuego();
+
+	for (int i = 0; i < jugadores.size(); i++) {
+		Jugador* unJugador = jugadores[i];
+		estado->id[i] = unJugador->getId();
+	}
+	estado->tamanio = Constantes::CANT_JUGADORES_INICIAR; //cambiar cuando sea dinamico
+
+	return estado;
 }
 
 Jugador* Juego::agregarJugador() {

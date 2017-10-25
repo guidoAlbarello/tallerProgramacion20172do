@@ -33,7 +33,11 @@ void MaquinaEstados::popState() {
 	m_estado.unlock();
 }
 
-void MaquinaEstados::changeState(EstadoJuego *pState) {
+void MaquinaEstados::recieveInput(void * param) {
+	estadosDeJuego.back()->recieveInput(param);
+}
+
+void MaquinaEstados::changeState(EstadoJuego *pState, void * param) {
 	m_estado.lock();
 	this->terminoIniciar = false;
 	if (!estadosDeJuego.empty()) {
@@ -50,6 +54,7 @@ void MaquinaEstados::changeState(EstadoJuego *pState) {
 	// initialise it
 	pState->setRenderer(this->renderer);
 	estadosDeJuego.back()->onEnter(this->renderer);
+	estadosDeJuego.back()->setParametro(param);
 	this->terminoIniciar = true;
 	m_estado.unlock();
 }

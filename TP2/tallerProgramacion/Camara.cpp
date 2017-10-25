@@ -8,3 +8,7 @@ Camara::Camara() {
 void Camara::update() {
 
 }
+
+Vector * Camara::getPosicionTarget() {
+	return target->getPosicion();
+}

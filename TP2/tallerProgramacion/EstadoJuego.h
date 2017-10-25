@@ -12,7 +12,9 @@ public:
 	virtual bool onEnter(Renderer* renderer) = 0;
 	virtual bool onExit() = 0;
 	virtual std::string getStateID() const = 0;
-	virtual void setRenderer(Renderer* renderer) { this->renderer = renderer; }
+	void setRenderer(Renderer* renderer) { this->renderer = renderer; }
+	virtual void recieveInput(void* param) {}
+	virtual void setParametro(void* param) {}
 protected:
 	Renderer* renderer;
 	bool inicializado = false;

@@ -190,6 +190,22 @@ void Conexion::enviarUpdate(EstadoModeloJuego* estado) {
 		free(data);
 }
 
+void Conexion::inicializarClienteJuego(EstadoInicialJuego * estado) {
+	Logger::getInstance()->log(Debug, "Enviando init");
+
+	int tamanio = sizeof(EstadoInicialJuego) + 4 + 1;  //+ tamaño "update_model" + caracter separador
+	char* data = new char[tamanio];
+	std::string strComando = "INIT" + Constantes::separador;
+	const char* comando = strComando.c_str();
+	memcpy(data, &comando, 5);
+	memcpy(data + 5, estado, sizeof(EstadoInicialJuego));
+
+	this->conexionConCliente->getSocket().enviarDatos(data, tamanio);
+
+	if (data != NULL)
+		free(data);
+}
+
 
 /* Procesa los mensajes recibidos por los clientes */
 void Conexion::procesarDatosRecibidos() {
@@ -216,6 +232,7 @@ void Conexion::procesarDatosRecibidos() {
 					ComandoCliente comando = ComandoCliente::RESULTADO_LOGIN;
 					MensajeDeRed* mensajeDeRed = new MensajeDeRed(comando);
 					mensajeDeRed->agregarParametro("LOGIN_OK"); // ResultCode
+					mensajeDeRed->agregarParametro(to_string(usuarioConectado->getJugador()->getId()));
 					mensajeDeRed->agregarParametro(mensajeResultado);
 					string mensaje = mensajeDeRed->getComandoClienteSerializado();
 					int tamanio = mensaje.length() + 1;

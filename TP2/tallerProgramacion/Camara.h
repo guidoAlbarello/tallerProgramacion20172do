@@ -11,6 +11,8 @@ public:
 	void setTarget(ObjetoDeJuego* target) { this->target = target; }
 	Vector* getPosicion() { return this->posicion; }
 	void update();
+	void setPosicion(int x, int y) { posicion->setX(x); posicion->setY(y); }
+	Vector* getPosicionTarget();
 private:
 	ObjetoDeJuego* target;
 	Vector* posicion;

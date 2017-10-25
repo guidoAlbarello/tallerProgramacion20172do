@@ -19,6 +19,8 @@ public:
 	void render();
 	Vector* getPosicionCielo() { return &posicionCielo; }
 	Vector* getPosicionColinas() { return &posicionColinas; }
+	void setPosicionCielo(int x, int y) { posicionCielo.setX(x); posicionCielo.setY(y); }
+	void setPosicionColinas(int x, int y) { posicionColinas.setX(x); posicionColinas.setY(y); }
 private:
 	Vector posicionCielo;
 	Vector posicionColinas;

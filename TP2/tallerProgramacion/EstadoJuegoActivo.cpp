@@ -10,23 +10,37 @@ void EstadoJuegoActivo::update(ManejadorDeConexionCliente* conexionCliente) {
 	//updatear posicion sprites y escenario (copiar del estado de jeugo a los objetos)
 	//hago el update de cada sprite enelmap
 
-	for (std::map<int, Sprite*>::iterator it = spritesMap.begin(); it != spritesMap.end(); ++it) {
-		it->second->setFilaActual(0);//por q tiene 1 sola fila
-		EstadoJugador estado = estadoModeloJuego.estadoJugadores[it->first];
+	for (int i = 0; i < estadoModeloJuego->tamanio; ++i) {
 
-		switch (estado.estadoAuto) {
+		m_estadoModelo.lock();
+		EstadoJugador* estado = &(estadoModeloJuego->estadoJugadores[i]);  //lockear solo esta parte, o todo el update asi updatea todo un frame. 
+		m_estadoModelo.unlock();
+
+		Sprite* unSprite = spritesMap[estado->id];
+		unSprite->setFilaActual(0);//por q tiene 1 sola fila
+
+		switch (estado->estadoAuto) {
 		case EstadoAuto::DERECHO:
-			it->second->setFrameActual(0);
+			unSprite->setFrameActual(0);
 			break;
 		case EstadoAuto::DOBLANDO_IZQ:
-			it->second->setFrameActual(1);
+			unSprite->setFrameActual(1);
 			break;
 		case EstadoAuto::DOBLANDO_DER:
-			it->second->setFrameActual(2);
+			unSprite->setFrameActual(2);
 			break;
 		}
 
+		unSprite->setPosicionInt(estado->posX, estado->posY);
+
+		if (estado->id == idJugador)
+			this->camara->setPosicion(estado->posXCamara, estado->posYCamara);
 	}
+
+	m_estadoModelo.lock();
+	this->escenario->setPosicionCielo(estadoModeloJuego->estadoEscenario.cieloX, estadoModeloJuego->estadoEscenario.cieloY);
+	this->escenario->setPosicionColinas(estadoModeloJuego->estadoEscenario.colinasX, estadoModeloJuego->estadoEscenario.colinasY);
+	m_estadoModelo.unlock();
 }
 
 void EstadoJuegoActivo::render() {
@@ -46,10 +60,9 @@ void EstadoJuegoActivo::render() {
 
 bool EstadoJuegoActivo::onEnter(Renderer* renderer) {
 	this->escenario = new Escenario(renderer);
+	this->camara = new Camara();
+	ManejadorDeTexturas::getInstance()->setCamara(camara);
 	inicializarMapa();
-	inicializarObjetos();
-	this->renderer = renderer;
-	this->inicializado = true;
 	return true;
 }
 
@@ -59,20 +72,34 @@ bool EstadoJuegoActivo::onExit() {
 	return true;
 }
 
+void EstadoJuegoActivo::recieveInput(void * param) {
+	m_estadoModelo.lock();
+	estadoModeloJuego = (EstadoModeloJuego*) param;
+	m_estadoModelo.unlock();
+}
+
+void EstadoJuegoActivo::setParametro(void * param) {
+	inicializarObjetos((EstadoInicialJuego*) param);//pasar tambien pos inicial de camara ?? 
+	this->renderer = renderer;
+	this->inicializado = true;
+}
+
 void EstadoJuegoActivo::inicializarMapa() {
 	this->mapaView = new MapaView(this->renderer);
 	this->mapaView->init();
 
 }
 
-void EstadoJuegoActivo::inicializarObjetos() {
+void EstadoJuegoActivo::inicializarObjetos(EstadoInicialJuego* unEstado) {
+	
+	idJugador = unEstado->idJugador;
 	// creo los sprites del map
-	for (int i = 0; i < sizeof(estadoModeloJuego.estadoJugadores); i++) {
+	for (int i = 0; i < unEstado->tamanio; i++) {
 		Sprite* unSprite = new Sprite();
-		std::string fileName = "imagenes/player" + std::to_string(i + 1) + ".png";
+		std::string fileName = "imagenes/player" + std::to_string(i + 1) + ".png";//el path de la imagen o el nombre deberia venir el struct
 		unSprite->load(fileName, this->renderer->getRendererJuego());
 		spritesVec.push_back(unSprite);
-		spritesMap[i] = unSprite;
+		spritesMap[unEstado->id[i]] = unSprite;
 	}
 }
 

@@ -148,7 +148,7 @@
     <ClInclude Include="ManejadorInput.h" />
     <ClInclude Include="Mapa.h" />
     <ClInclude Include="MapaView.h" />
-    <ClInclude Include="MaquinaEsatdos.h" />
+    <ClInclude Include="MaquinaEstados.h" />
     <ClInclude Include="Mensaje.h" />
     <ClInclude Include="MensajeDeRed.h" />
     <ClInclude Include="ObjetoDeJuego.h" />

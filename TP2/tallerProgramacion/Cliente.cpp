@@ -434,7 +434,8 @@ void Cliente::procesarDatosRecibidos() {
 			timeOut = std::chrono::high_resolution_clock::now();
 			std::string datosRecibidosString(datosRecibidos);
 			MensajeDeRed* mensajeDeRed = new MensajeDeRed(datosRecibidosString, Constantes::CLIENTE); 
-			EstadoModeloJuego estadoModeloJuego;
+			EstadoModeloJuego* estadoModeloJuego = NULL;
+			EstadoInicialJuego* estadoInicialJuego = NULL;
 
 			switch (mensajeDeRed->getComandoCliente()) {
 			case ComandoCliente::RESULTADO_LOGIN:
@@ -460,9 +461,16 @@ void Cliente::procesarDatosRecibidos() {
 				Logger::getInstance()->log(Debug, "Recibio un PRINT");
 				std::cout << datosRecibidosString << endl;
 				break;
+			case ComandoCliente::INIT:
+				Logger::getInstance()->log(Debug, "Recibio un INIT");
+				estadoInicialJuego = new EstadoInicialJuego();
+				memcpy(estadoInicialJuego, datosRecibidos, sizeof(EstadoInicialJuego));
+				iniciarJuego(estadoInicialJuego);
+				break;
 			case ComandoCliente::UPDATE_MODEL:
 				Logger::getInstance()->log(Debug, "Recibio un UPDATE_MODEL");
-				memcpy(&estadoModeloJuego, datosRecibidos, sizeof(EstadoModeloJuego));
+				estadoModeloJuego = new EstadoModeloJuego();
+				memcpy(estadoModeloJuego, datosRecibidos, sizeof(EstadoModeloJuego));
 				procesarEstadoModelo(estadoModeloJuego);
 				break;
 			case ComandoCliente::RESULTADO_PING:
@@ -479,6 +487,10 @@ void Cliente::procesarDatosRecibidos() {
 				free(datosRecibidos);
 			if (mensajeDeRed != NULL)
 				delete mensajeDeRed;
+			if (estadoInicialJuego != NULL)
+				delete estadoInicialJuego;
+			if (estadoModeloJuego != NULL)
+				delete estadoModeloJuego;
 		}
 		else {
 			timeOut = std::chrono::high_resolution_clock::now();
@@ -510,13 +522,16 @@ void Cliente::mostrarMensajesGlobales() {
 		this->buzonDeMensajesGlobales->eliminarMensajes(i); //esto de mostrar se peue hacer en otro thread si tira problemas e performance
 }
 
-void Cliente::procesarEstadoModelo(EstadoModeloJuego estadoModeloJuego) {
-	if (!this->juegoIniciado && estadoModeloJuego.iniciado) {
+void Cliente::iniciarJuego(EstadoInicialJuego* unEstado) {
+	if (!this->juegoIniciado) {
+		unEstado->idJugador = this->idJugador;
 		this->juegoIniciado = true;
-		this->maquinaDeEstados->changeState(new EstadoJuegoActivo());
+		this->maquinaDeEstados->changeState(new EstadoJuegoActivo(), unEstado);
 	}
+}
 
-
+void Cliente::procesarEstadoModelo(EstadoModeloJuego* estadoModeloJuego) {
+	this->maquinaDeEstados->recieveInput(estadoModeloJuego);
 }
 
 void Cliente::procesarResultadoSendMessage(MensajeDeRed* mensajeDeRed) {
@@ -532,10 +547,11 @@ void Cliente::procesarResultadoSendMessage(MensajeDeRed* mensajeDeRed) {
 void Cliente::procesarResultadoLogin(MensajeDeRed* mensajeDeRed) {
 	if (mensajeDeRed->getParametro(0) == "LOGIN_OK") {
 		this->estaLogueado = true;
+		this->idJugador = stoi(mensajeDeRed->getParametro(1));
 		//this->maquinaDeEstados->changeState(new EstadoJuegoActivo());
 		this->maquinaDeEstados->changeState(new EstadoEspera());
 		m_print.lock();
-		cout << mensajeDeRed->getParametro(1) << endl;
+		cout << mensajeDeRed->getParametro(2) << endl;
 		m_print.unlock();
 	} else if (mensajeDeRed->getParametro(0) == "LOGIN_NOK") {
 		this->estaLogueado = false;
@@ -545,6 +561,8 @@ void Cliente::procesarResultadoLogin(MensajeDeRed* mensajeDeRed) {
 		m_print.unlock();
 	}
 }
+
+
 
 void Cliente::enviarPingAServidor() {
 	while (this->conexionViva) {

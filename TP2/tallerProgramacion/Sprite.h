@@ -15,8 +15,9 @@ public:
 	void render(Renderer* renderer);
 	void setFilaActual(int fila) { filaActual = fila; };
 	void setFrameActual(int frame) { frameActual = frame; };
+	void setPosicionInt(int x, int y) { this->x = x; this->y = y; }
 private:
-	int ancho, alto, filaActual, frameActual;
+	int ancho, alto, filaActual, frameActual, x,y;
 	std::string id;
 };
 

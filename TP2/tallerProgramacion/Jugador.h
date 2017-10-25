@@ -1,7 +1,10 @@
 #pragma once
 #ifndef JUGADOR_H
 #define JUGADOR_H
+
 #include "ObjetoDeJuego.h"
+#include "Camara.h"
+
 #define ACELERACION_AUTO_X 1.0
 #define ACELERACION_AUTO_Y 4.0
 #define FACTOR_DESACELERACION_X 0.2
@@ -28,10 +31,12 @@ public:
 	EstadoAuto getEstado() { return estado; }
 	bool estaConectado() { return conectado; }
 	void setEstadoConexion(bool estaConectado) { this->conectado = estaConectado; }
+	Camara* getCamara() { return this->camara; }
 protected:
 	bool entrada[Constantes::CANT_TECLAS];
 	int id;
 	bool conectado = false;
 	EstadoAuto estado = EstadoAuto::DERECHO;
+	Camara* camara;
 };
 #endif

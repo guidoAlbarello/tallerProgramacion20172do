@@ -12,9 +12,10 @@ public:
 	void update(ManejadorDeConexionCliente* conexionCliente);
 	void render();
 	void pushState(EstadoJuego* pState);
-	void changeState(EstadoJuego* pState);
+	void changeState(EstadoJuego* pState, void* param = NULL);
 	void popState();
 	void setRenderer(Renderer* renderer) { this->renderer = renderer; }
+	void recieveInput(void* param);
 private:
 	std::vector<EstadoJuego*> estadosDeJuego;
 	Renderer* renderer;

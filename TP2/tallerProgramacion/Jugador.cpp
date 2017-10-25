@@ -1,7 +1,9 @@
 #include "Jugador.h"
 
 Jugador::Jugador() {
-
+	ObjetoDeJuego();
+	camara = new Camara();
+	camara->setTarget(this);
 }
 
 Jugador::Jugador(SDL_Renderer* renderer) : ObjetoDeJuego(renderer) {
@@ -26,6 +28,7 @@ void Jugador::update(Unidad delta) {
 	posicion.setX(posicion.getX() + velocidad.getX());  //retocar un poco mas tal vez, multiplicar por delta la velocidad ? 
 	posicion.setY(posicion.getY() + velocidad.getY());
 }
+
 void Jugador::recibirEntrada(int pos, bool estadoEntrada) {
 	entrada[pos] = estadoEntrada;
 }
