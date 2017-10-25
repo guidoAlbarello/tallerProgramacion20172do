@@ -74,7 +74,10 @@ bool EstadoJuegoActivo::onExit() {
 
 void EstadoJuegoActivo::recieveInput(void * param) {
 	m_estadoModelo.lock();
-	estadoModeloJuego = (EstadoModeloJuego*) param;
+	if (estadoModeloJuego != NULL)
+		free(estadoModeloJuego);
+	estadoModeloJuego = new EstadoModeloJuego();
+	memcpy(estadoModeloJuego, param, sizeof(EstadoModeloJuego));
 	m_estadoModelo.unlock();
 }
 
