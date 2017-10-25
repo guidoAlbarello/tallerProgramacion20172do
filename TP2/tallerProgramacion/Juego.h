@@ -14,7 +14,7 @@
 
 
 #define MAX_SKIP_FRAMES 5
-#define FPS 25
+#define FPS Constantes::FPS
 
 class Juego {
 public:
@@ -25,9 +25,9 @@ public:
 	void agregarObjetoDeJuego(ObjetoDeJuego* objetoDeJuego);
 	std::vector<ObjetoDeJuego*> getObjetosDeJuego();
 	std::vector<Jugador*> getJugadores();
-	EstadoModeloJuego getEstadoJuego() { return this->estadoJuego; }
+	EstadoModeloJuego* getEstadoJuego();
 	Jugador* agregarJugador();
-
+	void liberarModeloEstado(EstadoModeloJuego* unEstado);
 private:
 	Renderer* renderer;
 	int cantidadJugadores;
@@ -39,7 +39,6 @@ private:
 	std::vector<Jugador*> jugadores;
 	mutex m_jugadores;
 	mutex m_objetos;
-	EstadoModeloJuego estadoJuego;
 	Escenario* escenario;
 };
 

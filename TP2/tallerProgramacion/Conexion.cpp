@@ -19,6 +19,8 @@ Conexion::~Conexion() {
 void Conexion::cerrarConexion() {
 	this->conexionActiva = false;
 	this->conexionViva = false;
+	this->getUsuario()->getJugador()->setEstadoConexion(false);
+
 	try {
 		if (t_procesarDatosRecibidos.joinable()) {
 			t_procesarDatosRecibidos.join();
@@ -44,11 +46,11 @@ void Conexion::procesarSolicitudPing() {
 	this->conexionConCliente->getSocket().enviarDatos(mensaje.c_str(), tamanio);
 }
 
-void Conexion::procesarInput(MensajeDeRed* unMensajeDeRed) {
+void Conexion::procesarInput(bool* entrada) {
 	if (this->usuarioConectado != NULL) {
 		if (this->usuarioConectado->getJugador() != NULL) {
-			//for (int i = 0; i < 3; i++)
-			//this->usuarioConectado->getJugador()->recibirEntrada(i, entrada[i]);
+			for (int i = 0; i < Constantes::CANT_TECLAS; i++)
+				this->usuarioConectado->getJugador()->recibirEntrada(i, entrada[i]);
 		}
 	}
 }
@@ -172,14 +174,20 @@ void Conexion::enviarChatGlobal(bool tipoDeChat, string unEmisor, string unMensa
 	this->conexionConCliente->getSocket().enviarDatos(mensaje.c_str(), tamanio);
 }
 
-void Conexion::enviarUpdate(EstadoModeloJuego estado) {
+void Conexion::enviarUpdate(EstadoModeloJuego* estado) {
 	Logger::getInstance()->log(Debug, "Enviando update");
 
-	int tamanio = sizeof(EstadoModeloJuego);
-	char* data = new char[sizeof(EstadoModeloJuego)];
-	memcpy(data, &estado, sizeof(EstadoModeloJuego));
+	int tamanio = sizeof(EstadoModeloJuego) + 12 + 1;  //+ tamaño "update_model" + caracter separador
+	char* data = new char[tamanio];
+	std::string strComando = "UPDATE_MODEL" + Constantes::separador;
+	const char* comando = strComando.c_str();
+	memcpy(data, &comando, 13);
+	memcpy(data+13, estado, sizeof(EstadoModeloJuego));
 
 	this->conexionConCliente->getSocket().enviarDatos(data, tamanio);
+
+	if(data != NULL)
+		free(data);
 }
 
 
@@ -196,6 +204,7 @@ void Conexion::procesarDatosRecibidos() {
 			std::string datosRecibidosString(datosRecibidos);
 			MensajeDeRed *mensajeDeRed = new MensajeDeRed(datosRecibidosString, Constantes::SERVIDOR);
 			Usuario* unUsuario = NULL;
+			bool entrada[Constantes::CANT_TECLAS];
 			switch (mensajeDeRed->getComandoServidor()) {
 			case ComandoServidor::LOG:
 				Logger::getInstance()->log(Debug, "Recibio un LOG");
@@ -244,7 +253,8 @@ void Conexion::procesarDatosRecibidos() {
 				break;
 			case ComandoServidor::INPUT:
 				Logger::getInstance()->log(Debug, "Recibio Input");
-				procesarInput(mensajeDeRed);
+				memcpy(&entrada, datosRecibidos, sizeof(bool) * Constantes::CANT_TECLAS);
+				procesarInput(entrada);
 				break;
 			default:
 				Logger::getInstance()->log(Debug, datosRecibidos);

@@ -23,9 +23,15 @@ public:
 	void desacelerar(Unidad delta);
 	void dejarDoblarDerecha(Unidad delta);
 	void dejarDoblarIzquierda(Unidad delta);
+	Unidad getPosicionX() { return posicion.getX(); }
+	Unidad getPosicionY() { return posicion.getY(); }
+	EstadoAuto getEstado() { return estado; }
+	bool estaConectado() { return conectado; }
+	void setEstadoConexion(bool estaConectado) { this->conectado = estaConectado; }
 protected:
-	bool entrada[3];
+	bool entrada[Constantes::CANT_TECLAS];
 	int id;
+	bool conectado = false;
 	EstadoAuto estado = EstadoAuto::DERECHO;
 };
 #endif

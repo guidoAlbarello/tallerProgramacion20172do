@@ -17,6 +17,8 @@ public:
 	~Escenario();
 	void update(Unidad deltaTiempo);
 	void render();
+	Vector* getPosicionCielo() { return &posicionCielo; }
+	Vector* getPosicionColinas() { return &posicionColinas; }
 private:
 	Vector posicionCielo;
 	Vector posicionColinas;

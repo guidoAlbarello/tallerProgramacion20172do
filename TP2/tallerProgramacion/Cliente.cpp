@@ -433,7 +433,7 @@ void Cliente::procesarDatosRecibidos() {
 		if (datosRecibidos != NULL) {
 			timeOut = std::chrono::high_resolution_clock::now();
 			std::string datosRecibidosString(datosRecibidos);
-			MensajeDeRed* mensajeDeRed = new MensajeDeRed(datosRecibidosString, Constantes::CLIENTE); //LIBERAR este mensaje de red, no se borra nunca!!!!!!!!!
+			MensajeDeRed* mensajeDeRed = new MensajeDeRed(datosRecibidosString, Constantes::CLIENTE); 
 			EstadoModeloJuego estadoModeloJuego;
 
 			switch (mensajeDeRed->getComandoCliente()) {

@@ -87,13 +87,24 @@ bool ManejadorDeConexionCliente::enviarSolicitudPing() {
 }
 
 void ManejadorDeConexionCliente::enviarEntrada() {
-	Logger::getInstance()->log(Debug, "se realiza el envio de una entrada");
-	MensajeDeRed *mensajeDeRed = new MensajeDeRed(ComandoServidor::INPUT);
+	
+	Logger::getInstance()->log(Debug, "Enviando entrada");
 
 	bool teclas[3];
 	teclas[0] = ManejadorInput::getInstance()->estaTeclaPresionada(SDL_SCANCODE_UP);
 	teclas[1] = ManejadorInput::getInstance()->estaTeclaPresionada(SDL_SCANCODE_RIGHT);
 	teclas[2] = ManejadorInput::getInstance()->estaTeclaPresionada(SDL_SCANCODE_LEFT);
-	int tamanio = 3;
-	this->socket->enviarDatos((char*) teclas, tamanio);;
+	int tamanio = 3 * sizeof(bool) + 5 + 1;
+
+
+	char* data = new char[tamanio];
+	std::string strComando = "INPUT" + Constantes::separador;
+	const char* comando = strComando.c_str();
+	memcpy(data, &comando, 6);
+	memcpy(data + 6, &teclas, sizeof(bool) * 3);
+
+	this->socket->enviarDatos((char*)data, tamanio);;
+
+	if (data != NULL)
+		free(data);
 }

@@ -21,12 +21,12 @@ public:
 	Usuario* getUsuario() { return usuarioConectado; }
 	ManejadorDeConexionConexion* getConexionConCliente() { return this->conexionConCliente; };
 	void enviarChatGlobal(bool tipoDeChat, string unEmisor, string unMensaje);
-	void enviarUpdate(EstadoModeloJuego estado);
+	void enviarUpdate(EstadoModeloJuego* estado);
 	void procesarSolicitudPing();
 	bool getConexionActiva() { 	return this->conexionActiva; };
 private:
 	ManejadorDeConexionConexion* conexionConCliente;
-	void procesarInput(MensajeDeRed* unMensajeDeRed);
+	void procesarInput(bool* entrada);
 	void procesarSend_Message(MensajeDeRed* unMensajeDeRed);
 	void procesarRetrieve_Messages(MensajeDeRed* unMensajeDeRed);
 	void procesarPeticionListaDeUsuarios();

@@ -13,18 +13,6 @@ void Juego::update(Unidad tiempoDelta) {
 
 	this->escenario->update(tiempoDelta);
 
-	// Se hardcodea el estado del juego
-	EstadoModeloJuego estadoModeloJuego;
-	EstadoJugador dummyJugador;
-	dummyJugador.id = 1;
-	dummyJugador.conectado = true;
-	dummyJugador.estadoAuto = EstadoAuto::DOBLANDO_DER;
-	dummyJugador.posX = 100;
-	dummyJugador.posY = 100;
-	estadoModeloJuego.estadoJugadores[0] = dummyJugador;
-	this->estadoJuego = estadoModeloJuego;
-
-
 	for (int i = 0; i < this->objetosDeJuego.size(); i++) {
 		ObjetoDeJuego* unObjeto = this->objetosDeJuego[i];
 		unObjeto->update(tiempoDelta);	//podria hacerse alguna estructura q tenga la pos de los jugadores, y solo updatear lo q esta cerca de esos jugadores en vez de todas las entidades. 
@@ -33,10 +21,6 @@ void Juego::update(Unidad tiempoDelta) {
 	for (int i = 0; i < this->jugadores.size(); i++) {
 		Jugador* unJugador = this->jugadores[i];
 		unJugador->update(tiempoDelta);
-	}
-
-	if (this->jugadores.size() >= Constantes::CANT_JUGADORES_INICIAR) {
-		this->estadoJuego.iniciado = true;
 	}
 
 }
@@ -61,14 +45,40 @@ std::vector<Jugador*> Juego::getJugadores() {
 	return this->jugadores;
 }
 
+EstadoModeloJuego* Juego::getEstadoJuego() {
+	EstadoModeloJuego* nuevoEstado = new EstadoModeloJuego();
+	
+	for (int i = 0; i < Constantes::CANT_JUGADORES_INICIAR; i++) { //solo envia  el estado de los jugadores, deberia mandar el de todas las entidades, cambiar esto cuando haya mas objetos.
+		Jugador* unJugador = jugadores[i];
+		nuevoEstado->estadoJugadores[i].id = unJugador->getId();
+		nuevoEstado->estadoJugadores[i].conectado = unJugador->estaConectado();
+		nuevoEstado->estadoJugadores[i].estadoAuto = unJugador->getEstado();
+		nuevoEstado->estadoJugadores[i].posX = unJugador->getPosicionX();
+		nuevoEstado->estadoJugadores[i].posY = unJugador->getPosicionY();
+	} 
+
+	nuevoEstado->estadoEscenario.cieloX = escenario->getPosicionCielo()->getX();
+	nuevoEstado->estadoEscenario.cieloY = escenario->getPosicionCielo()->getY();
+	nuevoEstado->estadoEscenario.colinasX = escenario->getPosicionColinas()->getX();
+	nuevoEstado->estadoEscenario.colinasY = escenario->getPosicionColinas()->getY();
+
+	nuevoEstado->iniciado = true;
+	return nuevoEstado;
+}
+
+void Juego::liberarModeloEstado(EstadoModeloJuego * unEstado) {
+	delete unEstado;
+}
+
 Jugador* Juego::agregarJugador() {
-	//Jugador* nuevoJugador = new Jugador(renderer->getRendererJuego()); // No se pasa el renderer porque lo tiene el cliente
 	Jugador* nuevoJugador = new Jugador();
 	nuevoJugador->setId(cantidadJugadores);
 	this->cantidadJugadores++;
 	this->jugadores.push_back(nuevoJugador);
 	return nuevoJugador;
 }
+
+
 
 Juego::Juego() {
 	this->juegoActivo = true;
