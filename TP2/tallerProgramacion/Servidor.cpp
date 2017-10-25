@@ -370,14 +370,16 @@ void Servidor::enviarChatGlobal() {
 
 void Servidor::updateModel() {
 	while (servidorActivo) {
-		EstadoModeloJuego* nuevoEstado = this->elJuego->getEstadoJuego();
-		for (std::vector<Conexion*>::iterator it = conexionesActivas.begin(); it != conexionesActivas.end(); ++it) {
-			Conexion* unaConexion = (Conexion*)*it;
-			if (unaConexion->getUsuario() != NULL && unaConexion->getConexionActiva()) {
-				unaConexion->enviarUpdate(nuevoEstado); //cambiar a putnero y agregar el estado conectado de cada jugador , delete estado
+		if (elJuego->jugadoresCargados()) {
+			EstadoModeloJuego* nuevoEstado = this->elJuego->getEstadoJuego();
+			for (std::vector<Conexion*>::iterator it = conexionesActivas.begin(); it != conexionesActivas.end(); ++it) {
+				Conexion* unaConexion = (Conexion*)*it;
+				if (unaConexion->getUsuario() != NULL && unaConexion->getConexionActiva()) {
+					unaConexion->enviarUpdate(nuevoEstado); //cambiar a putnero y agregar el estado conectado de cada jugador , delete estado
+				}
 			}
+			this->elJuego->liberarModeloEstado(nuevoEstado);
 		}
-		this->elJuego->liberarModeloEstado(nuevoEstado);
 		std::this_thread::sleep_for(std::chrono::milliseconds(Constantes::UPDATE_MODEL_DELAY));//esdto se podria cambiar x un while hasta q no pase el intervalo de tiempo, y mientras q no pase aprovechar el tiempo para hacer clean ups  
 	}
 

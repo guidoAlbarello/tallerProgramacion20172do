@@ -45,9 +45,11 @@ std::vector<Jugador*> Juego::getJugadores() {
 	return this->jugadores;
 }
 
+
+
 EstadoModeloJuego* Juego::getEstadoJuego() {
 	EstadoModeloJuego* nuevoEstado = new EstadoModeloJuego();
-	
+
 	for (int i = 0; i < Constantes::CANT_JUGADORES_INICIAR; i++) { //solo envia  el estado de los jugadores, deberia mandar el de todas las entidades, cambiar esto cuando haya mas objetos.
 		Jugador* unJugador = jugadores[i];
 		nuevoEstado->estadoJugadores[i].id = unJugador->getId();
@@ -55,13 +57,12 @@ EstadoModeloJuego* Juego::getEstadoJuego() {
 		nuevoEstado->estadoJugadores[i].estadoAuto = unJugador->getEstado();
 		nuevoEstado->estadoJugadores[i].posX = unJugador->getPosicionX();
 		nuevoEstado->estadoJugadores[i].posY = unJugador->getPosicionY();
-	} 
+	}
 
 	nuevoEstado->estadoEscenario.cieloX = escenario->getPosicionCielo()->getX();
 	nuevoEstado->estadoEscenario.cieloY = escenario->getPosicionCielo()->getY();
 	nuevoEstado->estadoEscenario.colinasX = escenario->getPosicionColinas()->getX();
 	nuevoEstado->estadoEscenario.colinasY = escenario->getPosicionColinas()->getY();
-
 	nuevoEstado->iniciado = true;
 	return nuevoEstado;
 }
@@ -92,11 +93,11 @@ void Juego::iniciarEscenario() {
 	//renderer->reset();
 }
 
-void Juego::gameLoop() {	
+void Juego::gameLoop() {
 	auto inicioIntervalo = chrono::high_resolution_clock::now();
 	double tiempoAcumulado = 0;
 	int nLoops;
-	
+
 	while (juegoActivo) {
 		this->obtenerEntrada();
 		auto finIntervalo = chrono::high_resolution_clock::now();
@@ -106,9 +107,9 @@ void Juego::gameLoop() {
 		tiempoAcumulado += ms;
 		nLoops = 0;
 
-		while (tiempoAcumulado >= 1000/FPS  && nLoops < MAX_SKIP_FRAMES) {
-			this->update(1000/FPS);
-			tiempoAcumulado -= 1000/FPS;
+		while (tiempoAcumulado >= 1000 / FPS  && nLoops < MAX_SKIP_FRAMES) {
+			this->update(1000 / FPS);
+			tiempoAcumulado -= 1000 / FPS;
 			nLoops++;
 		}
 	}

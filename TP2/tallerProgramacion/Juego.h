@@ -28,6 +28,7 @@ public:
 	EstadoModeloJuego* getEstadoJuego();
 	Jugador* agregarJugador();
 	void liberarModeloEstado(EstadoModeloJuego* unEstado);
+	bool jugadoresCargados() { return jugadores.size() == Constantes::CANT_JUGADORES_INICIAR; }
 private:
 	Renderer* renderer;
 	int cantidadJugadores;
