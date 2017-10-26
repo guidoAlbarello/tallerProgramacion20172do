@@ -3,6 +3,7 @@
 #include "Carro.h"
 
 bool Juego::iniciarJuego() {
+	this->cantidadJugadores = 0;
 	this->iniciarEscenario();
 	this->t_gameLoop = std::thread(&Juego::gameLoop, this);
 	return true;

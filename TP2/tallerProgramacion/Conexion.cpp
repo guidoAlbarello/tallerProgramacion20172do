@@ -179,7 +179,8 @@ void Conexion::enviarUpdate(EstadoModeloJuego* estado) {
 
 	int tamanio = sizeof(EstadoModeloJuego) + 12 + 1;  //+ tamaño "update_model" + caracter separador
 	char* data = new char[tamanio];
-	std::string strComando = "UPDATE_MODEL" + Constantes::separador;
+	std::string strComando = "UPDATE_MODEL";
+	strComando.append(&Constantes::separador);
 	const char* comando = strComando.c_str();
 	memcpy(data, &comando, 13);
 	memcpy(data+13, estado, sizeof(EstadoModeloJuego));
@@ -192,18 +193,26 @@ void Conexion::enviarUpdate(EstadoModeloJuego* estado) {
 
 void Conexion::inicializarClienteJuego(EstadoInicialJuego * estado) {
 	Logger::getInstance()->log(Debug, "Enviando init");
+	ComandoCliente comando = ComandoCliente::INIT;
+	string resultado;
 
-	int tamanio = sizeof(EstadoInicialJuego) + 4 + 1;  //+ tamaño "update_model" + caracter separador
-	char* data = new char[tamanio];
-	std::string strComando = "INIT" + Constantes::separador;
-	const char* comando = strComando.c_str();
-	memcpy(data, &comando, 5);
-	memcpy(data + 5, estado, sizeof(EstadoInicialJuego));
+	MensajeDeRed* mensajeDeRed = new MensajeDeRed(comando);
+	mensajeDeRed->agregarParametro(std::to_string(estado->idJugador));
+	mensajeDeRed->agregarParametro(std::to_string(estado->tamanio));
+	std::string strArrayIds;
+	for (int i = 0; i < Constantes::CANT_JUGADORES_INICIAR; i++) {
+		strArrayIds.append(std::to_string(estado->id[i]));
+		if (i != Constantes::CANT_JUGADORES_INICIAR - 1) {
+			strArrayIds.append(&Constantes::separadorIds);
+		}
+	}
+	mensajeDeRed->agregarParametro(strArrayIds);
+	string mensaje = mensajeDeRed->getComandoClienteSerializado();
+	int tamanio = mensaje.length() + 1;
+	Logger::getInstance()->log(Debug, "Enviando mensaje");
+	Logger::getInstance()->log(Debug, mensaje);
 
-	this->conexionConCliente->getSocket().enviarDatos(data, tamanio);
-
-	if (data != NULL)
-		free(data);
+	this->conexionConCliente->getSocket().enviarDatos(mensaje.c_str(), tamanio);
 }
 
 

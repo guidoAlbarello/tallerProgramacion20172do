@@ -3,7 +3,7 @@
 #define CONSTANTES_H
 
 #include <string>
-#include  <SDL.h>
+#include <SDL.h>
 
 #define TECLA_DERECHA SDL_SCANCODE_RIGHT
 #define TECLA_IZQUIERDA SDL_SCANCODE_LEFT
@@ -24,6 +24,7 @@ public:
 	static constexpr const char* CLIENTE = "CLIENTE";
 	static constexpr const char* SERVIDOR = "SERVIDOR";
 	static constexpr const char separador = char(6);
+	static constexpr const char separadorIds = char(44);
 	string getComandoServidor(ComandoServidor comando);
 	string getComandoCliente(ComandoCliente);
 	ComandoServidor getConstComandoServidor(string comando);

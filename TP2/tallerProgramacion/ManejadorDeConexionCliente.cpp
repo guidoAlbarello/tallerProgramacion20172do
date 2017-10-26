@@ -98,7 +98,8 @@ void ManejadorDeConexionCliente::enviarEntrada() {
 
 
 	char* data = new char[tamanio];
-	std::string strComando = "INPUT" + Constantes::separador;
+	std::string strComando = "INPUT";
+	strComando.append(&Constantes::separador);
 	const char* comando = strComando.c_str();
 	memcpy(data, &comando, 6);
 	memcpy(data + 6, &teclas, sizeof(bool) * 3);

@@ -463,9 +463,7 @@ void Cliente::procesarDatosRecibidos() {
 				break;
 			case ComandoCliente::INIT:
 				Logger::getInstance()->log(Debug, "Recibio un INIT");
-				estadoInicialJuego = new EstadoInicialJuego();
-				memcpy(estadoInicialJuego, datosRecibidos, sizeof(EstadoInicialJuego));
-				iniciarJuego(estadoInicialJuego);
+				iniciarJuego(mensajeDeRed);
 				break;
 			case ComandoCliente::UPDATE_MODEL:
 				Logger::getInstance()->log(Debug, "Recibio un UPDATE_MODEL");
@@ -522,11 +520,21 @@ void Cliente::mostrarMensajesGlobales() {
 		this->buzonDeMensajesGlobales->eliminarMensajes(i); //esto de mostrar se peue hacer en otro thread si tira problemas e performance
 }
 
-void Cliente::iniciarJuego(EstadoInicialJuego* unEstado) {
+void Cliente::iniciarJuego(MensajeDeRed* mensajeInit) {
 	if (!this->juegoIniciado) {
-		unEstado->idJugador = this->idJugador;
+		EstadoInicialJuego* estadoInicial = new EstadoInicialJuego();
+		estadoInicial->idJugador = atoi(mensajeInit->getParametro(0).c_str());
+		estadoInicial->tamanio = atoi(mensajeInit->getParametro(1).c_str());
+
+		std::string tmpParseString = mensajeInit->getParametro(2);
+
+		for (int i = 0; i < Constantes::CANT_JUGADORES_INICIAR; i++) {
+			int posSeparadorIds = tmpParseString.find_first_of(&Constantes::separadorIds);
+			estadoInicial->id[i] = atoi(tmpParseString.substr(0, posSeparadorIds).c_str());
+			tmpParseString.erase(0, posSeparadorIds + 1);
+		}
 		this->juegoIniciado = true;
-		this->maquinaDeEstados->changeState(new EstadoJuegoActivo(), unEstado);
+		this->maquinaDeEstados->changeState(new EstadoJuegoActivo(), estadoInicial);
 	}
 }
 

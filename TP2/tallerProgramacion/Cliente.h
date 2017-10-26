@@ -34,7 +34,7 @@ protected:
 	void procesarResultadoSendMessage(MensajeDeRed* mensajeDeRed);
 	void procesarResultadoLogin(MensajeDeRed* mensajeDeRed);
 	void procesarEstadoModelo(EstadoModeloJuego* estadoModeloJuego);
-	void iniciarJuego(EstadoInicialJuego* unEstadoInicial);
+	void iniciarJuego(MensajeDeRed* unEstadoInicial);
 	int idJugador = -1;
 	ManejadorDeConexionCliente* conexionDelCliente;
 	BuzonDeMensajes* buzonDeMensajesGlobales;

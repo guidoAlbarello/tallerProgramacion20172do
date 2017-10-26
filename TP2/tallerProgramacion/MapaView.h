@@ -49,6 +49,7 @@ public:
 private:
 	const int SCREEN_WIDTH = 640;
 	const int SCREEN_HEIGHT = 480;
+	const int ESCALA_MAPA = 1;
 
 	Mapa* mapa;
 

@@ -34,14 +34,14 @@ int ParserDeMensajes::getCantidadDeParametros(string mensaje){
 }
 
 ComandoServidor ParserDeMensajes::getComandoServidor(string mensaje) {
-	std::size_t found = mensaje.find_first_of(Constantes::getInstance()->separador);
+	std::size_t found = mensaje.find_first_of(&Constantes::getInstance()->separador);
 	string comandoStr = mensaje.substr(0, found);
 
 	return Constantes::getInstance()->getConstComandoServidor(comandoStr);
 }
 
 ComandoCliente ParserDeMensajes::getComandoCliente(string mensaje) {
-	std::size_t found = mensaje.find_first_of(Constantes::getInstance()->separador);
+	std::size_t found = mensaje.find_first_of(&Constantes::getInstance()->separador);
 	string comandoStr = mensaje.substr(0, found);
 
 	return Constantes::getInstance()->getConstComandoCliente(comandoStr);

@@ -54,7 +54,9 @@ void MapaView::dibujarBordes(SDL_Renderer* renderer) {
 	SDL_RenderDrawLine(renderer, lineBottom.x1, lineBottom.y1, lineBottom.x2, lineBottom.y2);
 	Line lineLeft = { 10, 20, 10, 580 };
 	SDL_RenderDrawLine(renderer, lineLeft.x1, lineLeft.y1, lineLeft.x2, lineLeft.y2);
-	Line lineRight = { 790, 20, 790, 580 };
+	Line lineRightMapa = { 790, 20, 790, 580 };
+	SDL_RenderDrawLine(renderer, lineRightMapa.x1, lineRightMapa.y1, lineRightMapa.x2, lineRightMapa.y2);
+	Line lineRight = { 700, 20, 700, 580 };
 	SDL_RenderDrawLine(renderer, lineRight.x1, lineRight.y1, lineRight.x2, lineRight.y2);
 }
 

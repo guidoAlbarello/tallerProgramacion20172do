@@ -9,38 +9,39 @@ void EstadoJuegoActivo::update(ManejadorDeConexionCliente* conexionCliente) {
 	}
 	//updatear posicion sprites y escenario (copiar del estado de jeugo a los objetos)
 	//hago el update de cada sprite enelmap
+	if (estadoModeloJuego != NULL) {
+		for (int i = 0; i < estadoModeloJuego->tamanio; ++i) {
 
-	for (int i = 0; i < estadoModeloJuego->tamanio; ++i) {
+			m_estadoModelo.lock();
+			EstadoJugador* estado = &(estadoModeloJuego->estadoJugadores[i]);  //lockear solo esta parte, o todo el update asi updatea todo un frame. 
+			m_estadoModelo.unlock();
 
-		m_estadoModelo.lock();
-		EstadoJugador* estado = &(estadoModeloJuego->estadoJugadores[i]);  //lockear solo esta parte, o todo el update asi updatea todo un frame. 
-		m_estadoModelo.unlock();
+			Sprite* unSprite = spritesMap[estado->id];
+			unSprite->setFilaActual(0);//por q tiene 1 sola fila
 
-		Sprite* unSprite = spritesMap[estado->id];
-		unSprite->setFilaActual(0);//por q tiene 1 sola fila
+			switch (estado->estadoAuto) {
+			case EstadoAuto::DERECHO:
+				unSprite->setFrameActual(0);
+				break;
+			case EstadoAuto::DOBLANDO_IZQ:
+				unSprite->setFrameActual(1);
+				break;
+			case EstadoAuto::DOBLANDO_DER:
+				unSprite->setFrameActual(2);
+				break;
+			}
 
-		switch (estado->estadoAuto) {
-		case EstadoAuto::DERECHO:
-			unSprite->setFrameActual(0);
-			break;
-		case EstadoAuto::DOBLANDO_IZQ:
-			unSprite->setFrameActual(1);
-			break;
-		case EstadoAuto::DOBLANDO_DER:
-			unSprite->setFrameActual(2);
-			break;
+			unSprite->setPosicionInt(estado->posX, estado->posY);
+
+			if (estado->id == idJugador)
+				this->camara->setPosicion(estado->posXCamara, estado->posYCamara);
 		}
 
-		unSprite->setPosicionInt(estado->posX, estado->posY);
-
-		if (estado->id == idJugador)
-			this->camara->setPosicion(estado->posXCamara, estado->posYCamara);
+		m_estadoModelo.lock();
+		this->escenario->setPosicionCielo(estadoModeloJuego->estadoEscenario.cieloX, estadoModeloJuego->estadoEscenario.cieloY);
+		this->escenario->setPosicionColinas(estadoModeloJuego->estadoEscenario.colinasX, estadoModeloJuego->estadoEscenario.colinasY);
+		m_estadoModelo.unlock();
 	}
-
-	m_estadoModelo.lock();
-	this->escenario->setPosicionCielo(estadoModeloJuego->estadoEscenario.cieloX, estadoModeloJuego->estadoEscenario.cieloY);
-	this->escenario->setPosicionColinas(estadoModeloJuego->estadoEscenario.colinasX, estadoModeloJuego->estadoEscenario.colinasY);
-	m_estadoModelo.unlock();
 }
 
 void EstadoJuegoActivo::render() {
