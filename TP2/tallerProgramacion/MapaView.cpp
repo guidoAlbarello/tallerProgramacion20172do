@@ -47,7 +47,7 @@ void MapaView::update() {
 }
 
 void MapaView::dibujarBordes(SDL_Renderer* renderer) {
-	// Dibuja bordes del mapa x1,y1,x2,y2
+	// Dibuja bordes del mapa
 	Line lineTop = { 10, 20, 790, 20 };
 	SDL_RenderDrawLine(renderer, lineTop.x1, lineTop.y1, lineTop.x2, lineTop.y2);
 	Line lineBottom = { 10, 580, 790, 580 };

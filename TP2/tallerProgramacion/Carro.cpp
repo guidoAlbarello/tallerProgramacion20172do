@@ -3,6 +3,7 @@
 Carro::Carro(SDL_Renderer* renderer) : ObjetoDeJuego(renderer) {
 	this->renderer = renderer;
 	this->estado = DERECHO;
+	this->texture = NULL;
 }
 
 void Carro::update(Unidad delta) {

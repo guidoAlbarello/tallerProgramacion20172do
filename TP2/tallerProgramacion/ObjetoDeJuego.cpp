@@ -1,7 +1,7 @@
 #include "ObjetoDeJuego.h"
 
 ObjetoDeJuego::ObjetoDeJuego() {
-
+	this->texture = NULL;
 }
 ObjetoDeJuego::ObjetoDeJuego(SDL_Renderer* renderer) {
 	//this->texture = new Ltexture(renderer);

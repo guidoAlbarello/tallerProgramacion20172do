@@ -4,10 +4,12 @@ Jugador::Jugador() {
 	ObjetoDeJuego();
 	camara = new Camara();
 	camara->setTarget(this);
+	this->texture = NULL;
 }
 
 Jugador::Jugador(SDL_Renderer* renderer) : ObjetoDeJuego(renderer) {
 	//se llamo automaticamente al constructor de la superclase
+	this->texture = NULL;
 }
 void Jugador::update(Unidad delta) {
 	if (entrada[0]) 		//tecla arriba
