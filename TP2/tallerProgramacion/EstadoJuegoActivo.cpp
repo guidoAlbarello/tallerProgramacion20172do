@@ -102,6 +102,7 @@ void EstadoJuegoActivo::inicializarObjetos(EstadoInicialJuego* unEstado) {
 		Sprite* unSprite = new Sprite();
 		std::string fileName = "imagenes/player" + std::to_string(i + 1) + ".png";//el path de la imagen o el nombre deberia venir el struct
 		unSprite->load(fileName, this->renderer->getRendererJuego());
+		unSprite->setAnchoYAlto(40, 40); //cambiarlo a los alores q son 
 		spritesVec.push_back(unSprite);
 		spritesMap[unEstado->id[i]] = unSprite;
 	}

@@ -182,7 +182,7 @@ void Conexion::enviarUpdate(EstadoModeloJuego* estado) {
 	std::string strComando = "UPDATE_MODEL";
 	strComando.append(&Constantes::separador);
 	const char* comando = strComando.c_str();
-	memcpy(data, &comando, 13);
+	memcpy(data, comando, 13);
 	memcpy(data+13, estado, sizeof(EstadoModeloJuego));
 	this->conexionConCliente->getSocket().enviarDatos(data, tamanio);
 
@@ -278,7 +278,7 @@ void Conexion::procesarDatosRecibidos() {
 				break;
 			case ComandoServidor::INPUT:
 				Logger::getInstance()->log(Debug, "Recibio Input");
-				memcpy(&entrada, datosRecibidos, sizeof(bool) * Constantes::CANT_TECLAS);
+				memcpy(entrada, datosRecibidos + 6, sizeof(bool) * Constantes::CANT_TECLAS);
 				procesarInput(entrada);
 				break;
 			default:
