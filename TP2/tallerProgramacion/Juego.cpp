@@ -118,14 +118,14 @@ void Juego::gameLoop() {
 		this->obtenerEntrada();
 		auto finIntervalo = chrono::high_resolution_clock::now();
 		auto dur = finIntervalo - inicioIntervalo;
-		auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(dur).count();
+		auto ms = std::chrono::duration_cast<std::chrono::nanoseconds>(dur).count();
 		inicioIntervalo = chrono::high_resolution_clock::now();
-		tiempoAcumulado += ms;
+		tiempoAcumulado +=  ms/1000000.0;
 		nLoops = 0;
 
-		while (tiempoAcumulado >= 1000 / FPS  && nLoops < MAX_SKIP_FRAMES) {
-			this->update(1000 / FPS);
-			tiempoAcumulado -= 1000 / FPS;
+		while (tiempoAcumulado >= 1000.0 / Constantes::FPS  && nLoops < MAX_SKIP_FRAMES) {
+			this->update(1000.0 / Constantes::FPS);
+			tiempoAcumulado -= 1000.0 / Constantes::FPS;
 			nLoops++;
 		}
 	}

@@ -184,7 +184,6 @@ void Conexion::enviarUpdate(EstadoModeloJuego* estado) {
 	const char* comando = strComando.c_str();
 	memcpy(data, &comando, 13);
 	memcpy(data+13, estado, sizeof(EstadoModeloJuego));
-
 	this->conexionConCliente->getSocket().enviarDatos(data, tamanio);
 
 	if(data != NULL)

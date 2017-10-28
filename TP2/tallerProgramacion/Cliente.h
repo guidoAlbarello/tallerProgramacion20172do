@@ -73,6 +73,7 @@ protected:
 	bool existeArchivo(const std::string& nombre);
 	void enviarPingAServidor();
 	void leerTestXML(std::string stressFileName, int stressTestTime);
+	bool esUnUpdateModel(char* datosRecibidos);
 	Renderer* renderer;
 };
 

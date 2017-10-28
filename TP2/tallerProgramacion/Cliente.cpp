@@ -468,7 +468,7 @@ void Cliente::procesarDatosRecibidos() {
 			case ComandoCliente::UPDATE_MODEL:
 				Logger::getInstance()->log(Debug, "Recibio un UPDATE_MODEL");
 				estadoModeloJuego = new EstadoModeloJuego();
-				memcpy(estadoModeloJuego, datosRecibidos, sizeof(EstadoModeloJuego));
+				memcpy(estadoModeloJuego, datosRecibidos + 12 + 1, sizeof(EstadoModeloJuego));
 				procesarEstadoModelo(estadoModeloJuego);
 				break;
 			case ComandoCliente::RESULTADO_PING:
