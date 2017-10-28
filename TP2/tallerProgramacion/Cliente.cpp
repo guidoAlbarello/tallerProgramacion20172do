@@ -18,7 +18,6 @@ Cliente * Cliente::getInstance() {
 
 void Cliente::render() {
 	while (clienteActivo) {
-		
 		if (this->renderer != NULL) {
 			SDL_RenderClear(this->renderer->getRendererJuego());
 			this->maquinaDeEstados->render();
@@ -62,7 +61,6 @@ void Cliente::iniciarCliente() {
 	Logger::getInstance()->log(Debug, "Iniciando cliente...");
 	this->leerClientConfig();
 	conectarseAlServidor();
-	this->t_render = std::thread(&Cliente::render, this);
 	if (!this->conexionViva) {
 		cout << "Necesita estar conectado con el servidor para realizar esta accion." << endl;
 		return;
@@ -74,6 +72,7 @@ void Cliente::iniciarCliente() {
 	}
 
 	this->maquinaDeEstados->changeState(new EstadoLogeo());
+	this->t_render = std::thread(&Cliente::render, this);
 	this->correrCicloPrincipal();
 }
 

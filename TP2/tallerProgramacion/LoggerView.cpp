@@ -6,6 +6,7 @@ LoggerView::LoggerView(SDL_Renderer* renderer) {
 	gInputTextTexture = new Ltexture(gRenderer);
 	gPromptPasswordTextTexture = new Ltexture(gRenderer);
 	gInputPasswordTextTexture = new Ltexture(gRenderer);
+	gBackgroundImage = new Ltexture(gRenderer);
 }
 
 LoggerView::~LoggerView() {
@@ -21,6 +22,10 @@ LoggerView::~LoggerView() {
 	if (gInputPasswordTextTexture != NULL) {
 		gInputPasswordTextTexture->free();
 	}
+	if (gBackgroundImage != NULL) {
+		gBackgroundImage->free();
+	}
+
 	TTF_CloseFont(gFont);
 	delete usuario;
 	gFont = NULL;
@@ -31,18 +36,20 @@ bool LoggerView::init() {
 	success = true;
 	usuario = new Usuario();
 	datosCargados = false;
-	if (!gPromptTextTexture->loadFromRenderedText("Enter Username:", textColor)) {
-		//printf("Failed to render prompt text!\n");
+	if (!gPromptTextTexture->loadFromRenderedText("Usuario:", textColor)) {
+		Logger::getInstance()->log(Error, "Ocurrio un error al iniciar la textura Usuario:");
 		success = false;
 	}
-	if (!gPromptPasswordTextTexture->loadFromRenderedText("Enter Password:", textColor))
-		//if (!gPromptPasswordTextTexture->loadFromFile("fondo/sky.png"))
-	{
-		//printf("Failed to render prompt text!\n");
+	if (!gPromptPasswordTextTexture->loadFromRenderedText("Contraseña:", textColor)) {
+		Logger::getInstance()->log(Error, "Ocurrio un error al iniciar la textura Contraseña:");
 		success = false;
 	}
-	//The current input text.
-	inputText = "User Name";
+	if (!gBackgroundImage->loadFromFile("imagenes/init_background.bmp")) {
+		Logger::getInstance()->log(Error, "Ocurrio un error al iniciar la imagen de fondo de logueo");
+		success = false;
+	}
+
+	inputText = "Su usuario";
 	gInputTextTexture->loadFromRenderedText(inputText.c_str(), textColor);
 	isWrittingPassord = false;
 	return false;
@@ -53,18 +60,23 @@ void LoggerView::render() {
 	SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
 	SDL_RenderClear(gRenderer);
 
+	// Render imagen fondo
+	SDL_Rect* rectanguloFullscreen = new SDL_Rect();
+	rectanguloFullscreen->w = 800;
+	rectanguloFullscreen->h = 600;
+	gBackgroundImage->render(0, 0, rectanguloFullscreen);
+
+
 	//Render text textures
 	int h1 = gPromptTextTexture->getHeight() + gInputTextTexture->getHeight();
 	int h2 = h1 + gPromptPasswordTextTexture->getHeight();
-	gPromptTextTexture->render((SCREEN_WIDTH - gPromptTextTexture->getWidth()) / 2, 0);
-	gInputTextTexture->render((SCREEN_WIDTH - gInputTextTexture->getWidth()) / 2, gPromptTextTexture->getHeight());
-	gPromptPasswordTextTexture->render((SCREEN_WIDTH - gPromptPasswordTextTexture->getWidth()) / 2, h1);
-	gInputPasswordTextTexture->render((SCREEN_WIDTH - gInputPasswordTextTexture->getWidth()) / 2, h2);
+	gPromptTextTexture->render(150 + (SCREEN_WIDTH - gPromptTextTexture->getWidth()) / 2, 280);
+	gInputTextTexture->render(150 + (SCREEN_WIDTH - gInputTextTexture->getWidth()) / 2, 310);
+	gPromptPasswordTextTexture->render(150 + (SCREEN_WIDTH - gPromptPasswordTextTexture->getWidth()) / 2, 360);
+	gInputPasswordTextTexture->render(150 + (SCREEN_WIDTH - gInputPasswordTextTexture->getWidth()) / 2, 390);
 
 	//Update screen
 	SDL_RenderPresent(gRenderer);
-
-
 }
 
 void LoggerView::update() {
