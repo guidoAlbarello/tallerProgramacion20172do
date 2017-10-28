@@ -7,6 +7,8 @@
 #include <string>
 #include "Usuario.h"
 #include "ManejadorInput.h"
+#include "Logger.h"
+
 using namespace std;
 
 class LoggerView
@@ -23,8 +25,8 @@ public:
 	Usuario* getUsuario();
 private:
 	TTF_Font *gFont = NULL;
-	const int SCREEN_WIDTH = 640;
-	const int SCREEN_HEIGHT = 480;
+	const int SCREEN_WIDTH = 800;
+	const int SCREEN_HEIGHT = 600;
 	SDL_Color textColor;
 	bool success;
 	Usuario* usuario;
@@ -33,6 +35,7 @@ private:
 	Ltexture* gInputTextTexture;
 	Ltexture* gPromptPasswordTextTexture;
 	Ltexture* gInputPasswordTextTexture;
+	Ltexture* gBackgroundImage;
 	std::string inputText;
 	bool isWrittingPassord = false;
 	bool datosCargados = false;

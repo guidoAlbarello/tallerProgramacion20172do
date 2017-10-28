@@ -4,6 +4,7 @@
 #define ESPERA_VIEW_H
 #include"EstadoJuego.h"
 #include "Ltexture.h"
+#include "Logger.h"
 
 
 class EsperaView
@@ -18,11 +19,12 @@ public:
 	void update();
 private:
 	TTF_Font *gFont = NULL;
-	const int SCREEN_WIDTH = 640;
-	const int SCREEN_HEIGHT = 480;
+	const int SCREEN_WIDTH = 800;
+	const int SCREEN_HEIGHT = 600;
 	SDL_Color textColor;
 	SDL_Renderer* gRenderer = NULL;
 	Ltexture* gResutladoLoginTexture;
+	Ltexture* gBackgroundImage;
 };
 
 #endif
