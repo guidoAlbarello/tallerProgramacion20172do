@@ -284,12 +284,13 @@ void Cliente::logearseAlServidor() {
 	//esto tiene q ir a la parte del update del estado, , donde eliminar el usuario ?= 
 	estaLogueado = this->conexionDelCliente->login(usuario->getNombre(), usuario->getPassword());
 	if (!estaLogueado) {
-		std::cout << "Login fallido" << std::endl;
+		Logger::getInstance()->log(Debug, "El login fue incorrecto");
 		return;
 	}
 
 	else {
-		std::cout << "Login ok" << std::endl;
+		Logger::getInstance()->log(Debug, "El login fue satisfactorio");
+		Logger::getInstance()->log(Debug, "Iniciando juego...");
 		Juego* juego = new Juego();
 		juego->iniciarJuego();
 	}

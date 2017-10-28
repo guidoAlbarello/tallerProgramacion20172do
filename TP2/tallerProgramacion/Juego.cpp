@@ -46,8 +46,6 @@ std::vector<Jugador*> Juego::getJugadores() {
 	return this->jugadores;
 }
 
-
-
 EstadoModeloJuego* Juego::getEstadoJuego() {
 	EstadoModeloJuego* nuevoEstado = new EstadoModeloJuego();
 
@@ -94,8 +92,6 @@ Jugador* Juego::agregarJugador() {
 	this->jugadores.push_back(nuevoJugador);
 	return nuevoJugador;
 }
-
-
 
 Juego::Juego() {
 	this->juegoActivo = true;
