@@ -14,7 +14,6 @@
 
 
 #define MAX_SKIP_FRAMES 5
-#define FPS Constantes::FPS
 
 class Juego {
 public:
