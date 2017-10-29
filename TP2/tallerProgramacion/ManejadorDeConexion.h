@@ -3,6 +3,7 @@
 #ifndef  MANEJADOR_DE_CONEXION_H
 #define MANEJADOR_DE_CONEXION_H
 
+#define USAR_COLA_MENSAJES false
 #include "SocketSincronico.h"
 #include <thread>
 #include <mutex>
@@ -38,6 +39,7 @@ protected:
 	std::condition_variable condicion_recibir;
 	std::vector<char*> mensajesEntrantes;
 
+	char* mensajeRecibido;
 	char* bufferDatosRecibidos;
 	char* bufferDatosAEnviar;
 	int tamanioDatosAEnviar;

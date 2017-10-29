@@ -5,6 +5,7 @@ ManejadorDeConexion::ManejadorDeConexion() {
 	bufferDatosAEnviar = NULL;
 	bufferDatosRecibidos = NULL;
 	conexionActiva = true;
+	mensajeRecibido = NULL;
 }
 
 ManejadorDeConexion::ManejadorDeConexion(SOCKET unSocket) {
@@ -31,12 +32,19 @@ void  ManejadorDeConexion::notificarDatoARecibir() {
 
 char* ManejadorDeConexion::getMensaje() {
 	char* primerMensaje = NULL;
-	m_bufferDatosRecibidos.lock();
-	if (this->mensajesEntrantes.size() > 0) {
-		primerMensaje = this->mensajesEntrantes.at(0);
-		this->mensajesEntrantes.erase(this->mensajesEntrantes.begin());
+	if (USAR_COLA_MENSAJES) {
+		m_bufferDatosRecibidos.lock();
+		if (this->mensajesEntrantes.size() > 0) {
+			primerMensaje = this->mensajesEntrantes.at(0);
+			this->mensajesEntrantes.erase(this->mensajesEntrantes.begin());
+		}
+		m_bufferDatosRecibidos.unlock();
+	} else {
+		m_bufferDatosRecibidos.lock();
+		primerMensaje = mensajeRecibido;
+		mensajeRecibido = NULL;					//esto puede ser el causante de muchos crash random por el free de memoria en conexion.cpp procesarDatosRecibidos
+		m_bufferDatosRecibidos.unlock();
 	}
-	m_bufferDatosRecibidos.unlock();
 	return primerMensaje;
 }
 
@@ -58,12 +66,20 @@ void ManejadorDeConexion::enviarDatos() {
 void ManejadorDeConexion::recibirDatos() {
 
 	while (conexionActiva) {
-
 		char *datosRecibidos = this->socket->recibirDatos();
 		if (datosRecibidos != NULL) {
-			m_bufferDatosRecibidos.lock();
-			mensajesEntrantes.push_back(datosRecibidos);
-			m_bufferDatosRecibidos.unlock();
+			if (USAR_COLA_MENSAJES) {
+				m_bufferDatosRecibidos.lock();
+				mensajesEntrantes.push_back(datosRecibidos);
+				m_bufferDatosRecibidos.unlock();
+			} else {
+				m_bufferDatosRecibidos.lock();
+				if (mensajeRecibido != NULL) {
+					free(mensajeRecibido);
+				}
+				mensajeRecibido = datosRecibidos;
+				m_bufferDatosRecibidos.unlock();
+			}
 		}
 	}
 }

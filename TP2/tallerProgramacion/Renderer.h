@@ -21,6 +21,7 @@ public:
 	void reset();
 	int getAnchoVentana() { return this->anchoVentana; }
 	int getAltoVentana() { return this->altoVentana; }
+	void setAnchoYAlto(int ancho, int alto) { anchoVentana = ancho; altoVentana = alto; }
 private:
 	SDL_Window* gWindowJuego = NULL;
 	SDL_Window* gWindowMapa = NULL;

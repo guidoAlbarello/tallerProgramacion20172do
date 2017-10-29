@@ -284,8 +284,9 @@ void Conexion::procesarDatosRecibidos() {
 			default:
 				Logger::getInstance()->log(Debug, datosRecibidos);
 			}
-			if (datosRecibidos != NULL)
+			if (datosRecibidos != NULL) {
 				free(datosRecibidos);
+			}
 		}
 		else {
 			timeOut = std::chrono::high_resolution_clock::now();
