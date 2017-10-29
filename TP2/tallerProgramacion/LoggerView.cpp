@@ -49,7 +49,8 @@ bool LoggerView::init() {
 		success = false;
 	}
 
-	inputText = "Su usuario";
+	inputText = "";
+	//aca estaba el error decia su suario y se sumaba al otro
 	gInputTextTexture->loadFromRenderedText(inputText.c_str(), textColor);
 	isWrittingPassord = false;
 	return false;
