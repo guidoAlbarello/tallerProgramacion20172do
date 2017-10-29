@@ -88,6 +88,7 @@ EstadoInicialJuego * Juego::getEstadoJuegoInicial() {
 Jugador* Juego::agregarJugador() {
 	Jugador* nuevoJugador = new Jugador();
 	nuevoJugador->setId(cantidadJugadores);
+	nuevoJugador->setPosicion(0,0);
 	this->cantidadJugadores++;
 	this->jugadores.push_back(nuevoJugador);
 	return nuevoJugador;

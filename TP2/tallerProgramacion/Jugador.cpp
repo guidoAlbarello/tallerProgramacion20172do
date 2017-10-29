@@ -5,6 +5,8 @@ Jugador::Jugador() {
 	camara = new Camara();
 	camara->setTarget(this);
 	this->texture = NULL;
+	velocidad.setX(0);
+	velocidad.setY(0);
 }
 
 Jugador::Jugador(SDL_Renderer* renderer) : ObjetoDeJuego(renderer) {
@@ -69,15 +71,20 @@ void Jugador::desacelerar(Unidad delta) {
 void Jugador::dejarDoblarDerecha(Unidad delta) {
 	if (velocidad.getX() > 0)
 		this->velocidad.setY(this->velocidad.getY() - ACELERACION_AUTO_X * delta * FACTOR_DESACELERACION_Y);
-	else
+	else {
 		velocidad.setX(0);
+		this->estado = EstadoAuto::DERECHO;
+	}
 }
 
 void Jugador::dejarDoblarIzquierda(Unidad delta) {
+
 	if (velocidad.getX() < 0)
 		this->velocidad.setY(this->velocidad.getY() + ACELERACION_AUTO_X * delta * FACTOR_DESACELERACION_Y);
-	else
+	else {
 		velocidad.setX(0);
+		this->estado = EstadoAuto::DERECHO;
+	}
 }
 
 

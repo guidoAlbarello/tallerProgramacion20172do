@@ -18,7 +18,7 @@ void EstadoJuegoActivo::update(ManejadorDeConexionCliente* conexionCliente) {
 
 			Sprite* unSprite = spritesMap[estado->id];
 			if (unSprite != NULL) {
-				unSprite->setFilaActual(0);//por q tiene 1 sola fila
+				unSprite->setFilaActual(1);//por q tiene 1 sola fila
 
 				switch (estado->estadoAuto) {
 				case EstadoAuto::DERECHO:
@@ -99,32 +99,14 @@ void EstadoJuegoActivo::inicializarObjetos(EstadoInicialJuego* unEstado) {
 	for (int i = 0; i < unEstado->tamanio; i++) {
 		Sprite* unSprite = new Sprite();
 		std::string fileName = "imagenes/player" + std::to_string(i + 1) + ".png";//el path de la imagen o el nombre deberia venir el struct
+		unSprite->setId(to_string(i));
 		unSprite->load(fileName, this->renderer->getRendererJuego());
-		unSprite->setAnchoYAlto(40, 40); //cambiarlo a los alores q son 
+		unSprite->setAnchoYAlto(80, 40); //cambiarlo a los alores q son 
+		unSprite->setPosicionInt(0, 0);
 		unSprite->setId(std::to_string(unEstado->id[i]));
 		spritesVec.push_back(unSprite);
 		spritesMap[unEstado->id[i]] = unSprite;
 	}
-
-	// Se cargan los sprites propios del escenario aca y se agregan a la lista de sprites, en vez de que los tenga el escenario
-	Sprite* spriteCielo = new Sprite();
-	std::string skyFileName = "fondo/sky.png";
-	spriteCielo->setId("cielo");
-	spriteCielo->load(skyFileName, this->renderer->getRendererJuego()); // Setear el id antes del load!
-	spriteCielo->setPosicion(0, 0);
-	spriteCielo->setAnchoYAlto(800, 200);
-	spritesVec.push_back(spriteCielo);
-	spritesMap[unEstado->tamanio + 1] = spriteCielo;
-
-	Sprite* spritePasto = new Sprite();
-	std::string hillsFileName = "fondo/hills.png";
-	spritePasto->setId("colinas");
-	spritePasto->load(hillsFileName, this->renderer->getRendererJuego()); // Setear el id antes del load!
-	spritePasto->setPosicion(0, 200);
-	spritePasto->setAnchoYAlto(800, 50);
-	spritesVec.push_back(spritePasto);
-	spritesMap[unEstado->tamanio + 2] = spritePasto;
-
 }
 
 void EstadoJuegoActivo::limpiarMapa() {

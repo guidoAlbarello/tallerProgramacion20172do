@@ -2,8 +2,8 @@
 #ifndef ESCENARIO_H
 #define ESCENARIO_H
 
-#define VELOCIDAD_CIELO 2.0
-#define VELOCIDAD_COLINAS 1.0
+#define VELOCIDAD_CIELO 0.1
+#define VELOCIDAD_COLINAS 0.05
 
 #include "Sprite.h"
 #include "Vector.h"
@@ -19,8 +19,10 @@ public:
 	void render();
 	Vector* getPosicionCielo() { return &posicionCielo; }
 	Vector* getPosicionColinas() { return &posicionColinas; }
-	void setPosicionCielo(int x, int y) { posicionCielo.setX(x); posicionCielo.setY(y); }
-	void setPosicionColinas(int x, int y) { posicionColinas.setX(x); posicionColinas.setY(y); }
+	void setPosicionCielo(int x, int y) { cielo->getPosicion()->setX(x); cielo->getPosicion()->setY(y); }
+	void setPosicionColinas(int x, int y) { colinas->getPosicion()->setX(x); colinas->getPosicion()->setY(y); }
+	bool limiteImagenCielo() { return posicionCielo.getX() < 800; }
+	bool limiteImagenColinas() { return posicionColinas.getX() < 800; }
 private:
 	Vector posicionCielo;
 	Vector posicionColinas;

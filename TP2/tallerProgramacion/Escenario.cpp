@@ -3,6 +3,8 @@
 
 Escenario::Escenario(Renderer* renderer) {
 	this->renderer = renderer;
+	colinas = new Sprite();
+	cielo = new Sprite();
 }
 
 Escenario::Escenario() {
@@ -11,26 +13,18 @@ Escenario::Escenario() {
 
 void Escenario::iniciar() {
 	
-	//this->cielo->load("fondo/sky.png", renderer->getRendererJuego());
-	//this->colinas->load("fondo/hills.png", renderer->getRendererJuego());
+	// Se cargan los sprites propios del escenario aca y se agregan a la lista de sprites, en vez de que los tenga el escenario
+	std::string skyFileName = "fondo/sky.png";
+	cielo->setId("cielo");
+	cielo->load(skyFileName, this->renderer->getRendererJuego()); // Setear el id antes del load!
+	cielo->setPosicion(0, 0);
+	cielo->setAnchoYAlto(800, 200);
 	
-	/*//renderear fondo... todo hardcodeado
-	std::cout << "iniciando escenario" << std::endl;
-	if (cielo->loadFromFile("fondo/sky.png")) {
-		std::cout << "levanto bien el asset del cielo" << std::endl;
-		cielo->render(0, 0);
-	}
-	else {
-		std::cout << "levanto el asset del cielo" << std::endl;
-	}
-	if (colinas->loadFromFile("fondo/hills.png")) {
-		std::cout << "levanto bien el asset de las colinas" << std::endl;
-		colinas->render(0, 120);
-		//120 porque el asset mide 480, entonces 480 + 120 = 600
-	}
-	else {
-		std::cout << "levanto mal el asset de las colinas" << std::endl;
-	}*/
+	std::string hillsFileName = "fondo/hills.png";
+	colinas->setId("colinas");
+	colinas->load(hillsFileName, this->renderer->getRendererJuego()); // Setear el id antes del load!
+	colinas->setPosicion(0, 200);
+	colinas->setAnchoYAlto(800, 300);
 }
 
 Escenario::~Escenario() {
@@ -43,11 +37,18 @@ Escenario::~Escenario() {
 }
 
 void Escenario::update(Unidad deltaTiempo) {
-	posicionCielo.setX( posicionCielo.getX() + VELOCIDAD_CIELO * deltaTiempo);
-	posicionColinas.setX(posicionColinas.getX() + VELOCIDAD_COLINAS * deltaTiempo);
+	if(limiteImagenCielo())
+		posicionCielo.setX( posicionCielo.getX() + VELOCIDAD_CIELO * deltaTiempo);
+	else
+		posicionCielo.setX(0);
+
+	if (limiteImagenColinas())
+		posicionColinas.setX(posicionColinas.getX() + VELOCIDAD_COLINAS * deltaTiempo);
+	else
+		posicionColinas.setX(0);
 }
 
 void Escenario::render() {
-	//this->colinas->render(renderer);
-	//this->cielo->render(renderer);
+	this->cielo->renderStatic(renderer);
+	this->colinas->renderStatic(renderer);
 }

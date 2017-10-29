@@ -13,7 +13,7 @@
 class ManejadorDeTexturas {
 public:
 	static ManejadorDeTexturas* getInstance();
-	void drawAnimatedSprite(std::string id, int x, int y, int ancho, int alto, int filaActual, int frameActual, int anchoPantalla, int zIndex,
+	void drawAnimatedSprite(std::string id, int x, int y, int ancho, int alto, int filaActual, int frameActual, int anchoPantalla, int altoPantalla, int zIndex,
 			SDL_Renderer *pRenderer, SDL_RendererFlip flip);
 	void drawStaticSprite(std::string id, int x, int y, int ancho, int alto, int anchoPantalla, int zIndex,
 			SDL_Renderer* pRenderer, SDL_RendererFlip flip);
