@@ -82,13 +82,7 @@ void LoggerView::render() {
 void LoggerView::update() {
 	bool quit = false, renderText = false;
 	//Event handler
-	//Event handler
 	SDL_Event e;
-
-	//Set text color as black
-
-	
-
 
 	//Enable text input
 	SDL_StartTextInput();

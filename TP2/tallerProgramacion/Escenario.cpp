@@ -2,20 +2,17 @@
 #include <iostream>
 
 Escenario::Escenario(Renderer* renderer) {
-	this->cielo = new Sprite();
-	this->colinas = new Sprite();
 	this->renderer = renderer;
 }
 
 Escenario::Escenario() {
-	posicionCielo = Vector(0,0); 
-	posicionColinas = Vector(0,0);
+
 }
 
 void Escenario::iniciar() {
 	
-	this->cielo->load("fondo/sky.png",renderer->getRendererJuego());
-	this->colinas->load("fondo/hills.png", renderer->getRendererJuego());
+	//this->cielo->load("fondo/sky.png", renderer->getRendererJuego());
+	//this->colinas->load("fondo/hills.png", renderer->getRendererJuego());
 	
 	/*//renderear fondo... todo hardcodeado
 	std::cout << "iniciando escenario" << std::endl;
@@ -51,6 +48,6 @@ void Escenario::update(Unidad deltaTiempo) {
 }
 
 void Escenario::render() {
-	this->colinas->render(renderer);
-	this->cielo->render(renderer);
+	//this->colinas->render(renderer);
+	//this->cielo->render(renderer);
 }

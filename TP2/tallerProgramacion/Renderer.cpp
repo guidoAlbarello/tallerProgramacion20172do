@@ -17,87 +17,66 @@ bool Renderer::iniciarRenderer() {
 
 	//Initialize SDL
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-		printf("SDL could not initialize! SDL Error: %s\n", SDL_GetError());
+		Logger::getInstance()->log(Error, "No se pudo inicializar SDL");
 		success = false;
 	} else {
 		//Set texture filtering to linear
 		if (!SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1")) {
-			printf("Warning: Linear texture filtering not enabled!");
+			Logger::getInstance()->log(Debug, "Warning: Linear texture filtering not enabled!");
 		}
 
 		//Create window
 		gWindowJuego = SDL_CreateWindow("Outrun", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, anchoVentana, altoVentana, SDL_WINDOW_SHOWN);
 		if (gWindowJuego == NULL) {
-			printf("Window could not be created! SDL Error: %s\n", SDL_GetError());
+			Logger::getInstance()->log(Error, "Window juego could not be created!");
 			success = false;
 		} else {
-			printf("Window created");
-
+			Logger::getInstance()->log(Debug, "Window juego created");
 			//Create vsynced renderer for window
 			gRendererJuego = SDL_CreateRenderer(gWindowJuego, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 			if (gRendererJuego == NULL) {
-				printf("Renderer could not be created! SDL Error: %s\n", SDL_GetError());
+				Logger::getInstance()->log(Error, "Renderer juego could not be created!");
 				success = false;
 			} else {
-				printf("Renderer created");
+				Logger::getInstance()->log(Debug, "Renderer juego created");
 				//Initialize renderer color
 				SDL_SetRenderDrawColor(gRendererJuego, 0xFF, 0xFF, 0xFF, 0xFF);
 
 				//Initialize PNG loading
-
 				int imgFlags = IMG_INIT_PNG;
 				if (!(IMG_Init(imgFlags) & imgFlags)) {
-					printf("SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError());
+					Logger::getInstance()->log(Error, "SDL_image could not initialize!");
 					success = false;
 				}
 
 				//Initialize SDL_ttf
-
 				if (TTF_Init() == -1) {
-					printf("SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError());
+					Logger::getInstance()->log(Error, "SDL_ttf could not initialize!");
 					success = false;
 				}
-
 			}
 		}
-
 
 		//Create mapa window
 		this->gWindowMapa = SDL_CreateWindow("Circuito", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, anchoVentana, altoVentana, SDL_WINDOW_SHOWN);
 		if (gWindowMapa == NULL) {
-			printf("Window mapa could not be created! SDL Error: %s\n", SDL_GetError());
+			Logger::getInstance()->log(Error, "Window mapa could not be created!");
 			success = false;
 		}
 		else {
-			printf("Window created");
-
+			Logger::getInstance()->log(Debug, "Window mapa created!");
 			//Create vsynced renderer for window
 			this->gRendererMapa = SDL_CreateRenderer(gWindowMapa, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 			if (gRendererMapa == NULL) {
-				printf("Renderer could not be created! SDL Error: %s\n", SDL_GetError());
+				Logger::getInstance()->log(Error, "Renderer mapa could not be created!");
 				success = false;
 			}
 			else {
-				printf("Renderer created");
-				//Initialize renderer color
-				SDL_SetRenderDrawColor(gRendererMapa, 242, 242, 242, 255);
-
-				//Initialize PNG loading
-				/*int imgFlags = IMG_INIT_PNG;
-				if (!(IMG_Init(imgFlags) & imgFlags)) {
-					printf("SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError());
-					success = false;
-				}*/
-
-				//Initialize SDL_ttf
-				/*if (TTF_Init() == -1) {
-					printf("SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError());
-					success = false;
-				}*/
+				Logger::getInstance()->log(Debug, "Renderer mapa created!");
+				SDL_SetRenderDrawColor(gRendererMapa, 242, 242, 242, 255); // Initialize renderer color
 			}
 		}
 	}
-
 	return success;
 }
 

@@ -17,6 +17,7 @@ public:
 	void setFrameActual(int frame) { frameActual = frame; };
 	void setPosicionInt(int x, int y) { this->x = x; this->y = y; }
 	void setAnchoYAlto(int ancho, int alto) { this->ancho = ancho; this->alto = alto; }
+	void setId(std::string id) { this->id = id; };
 private:
 	int ancho, alto, filaActual, frameActual, x,y;
 	std::string id;

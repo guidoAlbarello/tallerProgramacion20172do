@@ -28,7 +28,6 @@ private:
 	std::vector<Sprite*> spritesVec;
 	MapaView* mapaView;
 	Escenario* escenario;
-	void inicializarMapa();
 	void inicializarObjetos(EstadoInicialJuego* unEstado);
 	void limpiarMapa();
 	void limpiarObjetos();
