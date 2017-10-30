@@ -99,11 +99,10 @@ void EstadoJuegoActivo::inicializarObjetos(EstadoInicialJuego* unEstado) {
 	for (int i = 0; i < unEstado->tamanio; i++) {
 		Sprite* unSprite = new Sprite();
 		std::string fileName = "imagenes/player" + std::to_string(i + 1) + ".png";//el path de la imagen o el nombre deberia venir el struct
-		unSprite->setId(to_string(i));
-		unSprite->load(fileName, this->renderer->getRendererJuego());
 		unSprite->setAnchoYAlto(80, 40); //cambiarlo a los alores q son 
 		unSprite->setPosicionInt(0, 0);
 		unSprite->setId(std::to_string(unEstado->id[i]));
+		unSprite->load(fileName, this->renderer->getRendererJuego());
 		spritesVec.push_back(unSprite);
 		spritesMap[unEstado->id[i]] = unSprite;
 	}

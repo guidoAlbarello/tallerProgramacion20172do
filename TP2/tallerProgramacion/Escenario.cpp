@@ -3,8 +3,6 @@
 
 Escenario::Escenario(Renderer* renderer) {
 	this->renderer = renderer;
-	colinas = new Sprite();
-	cielo = new Sprite();
 }
 
 Escenario::Escenario() {
@@ -12,19 +10,24 @@ Escenario::Escenario() {
 }
 
 void Escenario::iniciar() {
-	
 	// Se cargan los sprites propios del escenario aca y se agregan a la lista de sprites, en vez de que los tenga el escenario
+	cielo = new Sprite();
 	std::string skyFileName = "fondo/sky.png";
 	cielo->setId("cielo");
-	cielo->load(skyFileName, this->renderer->getRendererJuego()); // Setear el id antes del load!
 	cielo->setPosicion(0, 0);
+	posicionCielo.setX(0);
+	posicionCielo.setY(0);
 	cielo->setAnchoYAlto(800, 200);
-	
+	cielo->load(skyFileName, this->renderer->getRendererJuego()); // Setear el id antes del load!
+
+	colinas = new Sprite();
 	std::string hillsFileName = "fondo/hills.png";
 	colinas->setId("colinas");
-	colinas->load(hillsFileName, this->renderer->getRendererJuego()); // Setear el id antes del load!
 	colinas->setPosicion(0, 200);
-	colinas->setAnchoYAlto(800, 300);
+	posicionCielo.setX(0);
+	posicionCielo.setY(200);
+	colinas->setAnchoYAlto(800, 50);
+	colinas->load(hillsFileName, this->renderer->getRendererJuego()); // Setear el id antes del load!
 }
 
 Escenario::~Escenario() {
@@ -38,7 +41,7 @@ Escenario::~Escenario() {
 
 void Escenario::update(Unidad deltaTiempo) {
 	if(limiteImagenCielo())
-		posicionCielo.setX( posicionCielo.getX() + VELOCIDAD_CIELO * deltaTiempo);
+		posicionCielo.setX(posicionCielo.getX() + VELOCIDAD_CIELO * deltaTiempo);
 	else
 		posicionCielo.setX(0);
 

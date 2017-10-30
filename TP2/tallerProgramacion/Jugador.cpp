@@ -79,7 +79,6 @@ void Jugador::dejarDoblarDerecha(Unidad delta) {
 }
 
 void Jugador::dejarDoblarIzquierda(Unidad delta) {
-
 	if (velocidad.getX() < 0)
 		this->velocidad.setY(this->velocidad.getY() + ACELERACION_AUTO_X * delta * FACTOR_DESACELERACION_Y);
 	else {

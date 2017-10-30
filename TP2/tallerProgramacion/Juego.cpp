@@ -80,6 +80,12 @@ EstadoInicialJuego * Juego::getEstadoJuegoInicial() {
 		Jugador* unJugador = jugadores[i];
 		estado->id[i] = unJugador->getId();
 	}
+
+	escenario->getPosicionCielo()->setX(0);
+	escenario->getPosicionCielo()->setY(0);
+	escenario->getPosicionColinas()->setX(0);
+	escenario->getPosicionColinas()->setY(200);
+
 	estado->tamanio = Constantes::CANT_JUGADORES_INICIAR; //cambiar cuando sea dinamico
 
 	return estado;
