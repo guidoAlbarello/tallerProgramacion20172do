@@ -26,7 +26,7 @@ bool Renderer::iniciarRendererJuego() {
 		}
 
 		//Create window
-		gWindowJuego = SDL_CreateWindow("Outrun", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, anchoVentana, altoVentana, SDL_WINDOW_SHOWN);
+		gWindowJuego = SDL_CreateWindow("Outrun", 100, 100, anchoVentana, altoVentana, SDL_WINDOW_SHOWN);
 		if (gWindowJuego == NULL) {
 			Logger::getInstance()->log(Error, "Window juego could not be created!");
 			success = false;
@@ -77,7 +77,7 @@ bool Renderer::iniciarRendererMapa() {
 		}
 
 		//Create mapa window
-		this->gWindowMapa = SDL_CreateWindow("Circuito", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, anchoVentana, altoVentana, SDL_WINDOW_SHOWN);
+		this->gWindowMapa = SDL_CreateWindow("Circuito", 500, 100, anchoVentana, altoVentana, SDL_WINDOW_SHOWN);
 		if (gWindowMapa == NULL) {
 			Logger::getInstance()->log(Error, "Window mapa could not be created!");
 			success = false;
