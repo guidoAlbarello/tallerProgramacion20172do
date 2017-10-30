@@ -12,7 +12,8 @@ class Renderer {
 public:
 	Renderer();
 	Renderer(int ancho, int alto);
-	bool iniciarRenderer();
+	bool iniciarRendererJuego();
+	bool iniciarRendererMapa();
 	void cerrarRenderer();
 	SDL_Renderer* getRendererJuego() { return this->gRendererJuego; }
 	SDL_Renderer* getRendererMapa() { return this->gRendererMapa; }

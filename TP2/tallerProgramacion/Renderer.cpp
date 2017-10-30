@@ -10,7 +10,7 @@ Renderer::Renderer(int ancho, int alto) {
 	this->altoVentana = alto;
 }
 
-bool Renderer::iniciarRenderer() {
+bool Renderer::iniciarRendererJuego() {
 
 	//Initialization flag
 	bool success = true;
@@ -55,6 +55,25 @@ bool Renderer::iniciarRenderer() {
 					success = false;
 				}
 			}
+		}
+	}
+	return success;
+}
+
+bool Renderer::iniciarRendererMapa() {
+
+	//Initialization flag
+	bool success = true;
+
+	//Initialize SDL
+	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+		Logger::getInstance()->log(Error, "No se pudo inicializar SDL");
+		success = false;
+	}
+	else {
+		//Set texture filtering to linear
+		if (!SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1")) {
+			Logger::getInstance()->log(Debug, "Warning: Linear texture filtering not enabled!");
 		}
 
 		//Create mapa window
