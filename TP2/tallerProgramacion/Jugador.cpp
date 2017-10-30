@@ -73,7 +73,8 @@ void Jugador::dejarDoblarDerecha(Unidad delta) {
 		this->velocidad.setY(this->velocidad.getY() - ACELERACION_AUTO_X * delta * FACTOR_DESACELERACION_Y);
 	else {
 		velocidad.setX(0);
-		this->estado = EstadoAuto::DERECHO;
+		if(!entrada[2])
+			this->estado = EstadoAuto::DERECHO;
 	}
 }
 
@@ -83,7 +84,8 @@ void Jugador::dejarDoblarIzquierda(Unidad delta) {
 		this->velocidad.setY(this->velocidad.getY() + ACELERACION_AUTO_X * delta * FACTOR_DESACELERACION_Y);
 	else {
 		velocidad.setX(0);
-		this->estado = EstadoAuto::DERECHO;
+		if (!entrada[1])
+			this->estado = EstadoAuto::DERECHO;
 	}
 }
 
