@@ -20,6 +20,7 @@ public:
 	void dibujarSprite(std::string id, int x, int y, int ancho, int alto, int anchoPantalla, int zIndex, SDL_Renderer* pRenderer, SDL_RendererFlip flip);
 	bool load(std::string fileName, std::string	id, SDL_Renderer* pRenderer);
 	void setCamara(Camara* unaCamara) { this->camara = unaCamara; }
+	void dibujarTramo(int x, int y, int anchoPantalla, int altoPantalla, SDL_Renderer* renderer);
 private:
 	Camara* camara;
 	static ManejadorDeTexturas* instance;

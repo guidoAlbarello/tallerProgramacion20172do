@@ -78,5 +78,21 @@ bool ManejadorDeTexturas::load(std::string fileName, std::string id, SDL_Rendere
 	return false;
 }
 
+void ManejadorDeTexturas::dibujarTramo(int x, int y, int anchoPantalla, int altoPantalla, SDL_Renderer* renderer) {
+	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255); // the rect color (solid red)
+	SDL_Rect tramo;
+	tramo.x = x;
+	tramo.y = y;
+	tramo.h = 50;
+	tramo.w = 200;
+	if (y != 0) {
+		tramo.x /= y * FACTOR_PERSPECTIVA;
+		tramo.y /= y * FACTOR_PERSPECTIVA;
+	}
+	tramo.x += -camara->getPosicion()->getX() + anchoPantalla / 2;
+	tramo.y += -camara->getPosicion()->getY() + altoPantalla * 3 / 4;
+	SDL_RenderFillRect(renderer, &tramo);
+}
+
 ManejadorDeTexturas::~ManejadorDeTexturas() {
 }

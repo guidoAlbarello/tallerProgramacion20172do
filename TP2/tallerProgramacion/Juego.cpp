@@ -56,8 +56,8 @@ EstadoModeloJuego* Juego::getEstadoJuego() {
 		nuevoEstado->estadoJugadores[i].estadoAuto = unJugador->getEstado();
 		nuevoEstado->estadoJugadores[i].posX = unJugador->getPosicionX();
 		nuevoEstado->estadoJugadores[i].posY = unJugador->getPosicionY();
-		nuevoEstado->estadoJugadores[i].posXCamara = unJugador->getCamara()->getPosicion()->getX();
-		nuevoEstado->estadoJugadores[i].posYCamara = unJugador->getCamara()->getPosicion()->getY();
+		nuevoEstado->estadoJugadores[i].posXCamara = unJugador->getCamara()->getPosicionTarget()->getX();
+		nuevoEstado->estadoJugadores[i].posYCamara = unJugador->getCamara()->getPosicionTarget()->getY();
 	}
 	
 	nuevoEstado->tamanio = Constantes::CANT_JUGADORES_INICIAR;

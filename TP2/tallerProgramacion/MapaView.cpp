@@ -17,7 +17,7 @@ void MapaView::init() {
 	this->mapa = new Mapa();
 }
 
-void MapaView::render() {
+void MapaView::renderMiniMap() {
 	SDL_Window* window = this->gRenderer->getWindowMapa();
 	SDL_Renderer* renderer = this->gRenderer->getRendererMapa();
 	SDL_SetRenderDrawColor(renderer, 242, 242, 242, 255);
@@ -28,6 +28,10 @@ void MapaView::render() {
 	this->dibujarMapa(renderer);
 
 	SDL_RenderPresent(renderer); // render window
+}
+
+void MapaView::render(Renderer* renderer) {
+	ManejadorDeTexturas::getInstance()->dibujarTramo(0,0, renderer->getAnchoVentana(), renderer->getAltoVentana(), renderer->getRendererJuego());
 }
 
 bool MapaView::loadMedia() {

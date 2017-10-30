@@ -48,8 +48,12 @@ void EstadoJuegoActivo::update(ManejadorDeConexionCliente* conexionCliente) {
 
 void EstadoJuegoActivo::render() {
 	if (inicializado) {
+		
+		SDL_SetRenderDrawColor(renderer->getRendererJuego(), 242, 242, 242, 255);
+		SDL_RenderClear(this->renderer->getRendererJuego());
 		this->escenario->render();
-		this->mapaView->render();
+		
+		this->mapaView->render(this->renderer);
 
 		sort(spritesVec.begin(), spritesVec.end(), [](Sprite* a, Sprite* b)->bool {
 			return a->getZIndex() > b->getZIndex();
@@ -58,6 +62,9 @@ void EstadoJuegoActivo::render() {
 		for (int i = 0; i < spritesVec.size(); i++) {
 			spritesVec[i]->render(this->renderer);
 		}
+		SDL_RenderPresent(this->renderer->getRendererJuego());
+
+		this->mapaView->renderMiniMap();
 	}
 }
 

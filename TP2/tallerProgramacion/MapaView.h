@@ -8,7 +8,7 @@
 #include "Constantes.h"
 #include "Mapa.h"
 #include "TramoCurvo.h"
-
+#include "ManejadorDeTexturas.h"
 
 #define PI 3.14159265
 
@@ -36,7 +36,8 @@ public:
 	MapaView(Renderer* renderer);
 	~MapaView();
 	void init();
-	void render();
+	void renderMiniMap();
+	void render(Renderer* renderer);
 	bool loadMedia();
 	bool close();
 	void update();

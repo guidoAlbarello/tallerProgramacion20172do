@@ -19,9 +19,7 @@ Cliente * Cliente::getInstance() {
 void Cliente::render() {
 	while (clienteActivo) {
 		if (this->renderer != NULL) {
-			SDL_RenderClear(this->renderer->getRendererJuego());
 			this->maquinaDeEstados->render();
-			SDL_RenderPresent(this->renderer->getRendererJuego());
 		}
 	}
 }
