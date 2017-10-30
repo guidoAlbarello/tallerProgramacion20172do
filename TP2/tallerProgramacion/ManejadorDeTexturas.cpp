@@ -19,10 +19,17 @@ void ManejadorDeTexturas::drawAnimatedSprite(std::string id, int x, int y, int a
 	SDL_Rect destRect;
 	srcRect.x = ancho * frameActual;
 	srcRect.y = alto * (filaActual - 1);
-	srcRect.w = destRect.w = ancho;
-	srcRect.h = destRect.h = alto;
-	destRect.x = (x - ancho / 2);
-	destRect.y = (y - alto / 2);
+	//srcRect.w = destRect.w = ancho;
+	//srcRect.h = destRect.h = alto;
+	//destRect.x = (x - ancho / 2);
+	//destRect.y = (y - alto / 2);
+	//esti para ver el auto al doble de grande
+	srcRect.w = ancho;
+	destRect.w = ancho*3/2;
+	srcRect.h = alto;
+	destRect.h = alto*3/2;
+	destRect.x = (x - destRect.w/2);
+	destRect.y = (y - destRect.h/2);
 	if (zIndex != 0) {
 		destRect.x /= zIndex * FACTOR_PERSPECTIVA;
 		destRect.y /= zIndex * FACTOR_PERSPECTIVA;

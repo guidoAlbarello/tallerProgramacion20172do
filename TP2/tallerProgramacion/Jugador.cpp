@@ -1,5 +1,6 @@
 #include "Jugador.h"
 
+#include <iostream>
 Jugador::Jugador() {
 	ObjetoDeJuego();
 	camara = new Camara();
@@ -21,15 +22,27 @@ void Jugador::update(Unidad delta) {
 
 	if (entrada[1])			//tecla derecha
 		doblarDerecha(delta);
+	//else
+		//dejarDoblarDerecha(delta);
 	else
-		dejarDoblarDerecha(delta);
 
-	if (entrada[2])			//tecla izquierda
-		doblarIzquierda(delta);
-	else
-		dejarDoblarIzquierda(delta);
+		if (entrada[2])			//tecla izquierda
+			doblarIzquierda(delta);
+		else
+			//else
+				//dejarDoblarIzquierda(delta);
+			if (estado == EstadoAuto::DOBLANDO_DER)
+				dejarDoblarDerecha(delta);
+			else
+				if (estado == EstadoAuto::DOBLANDO_IZQ)
+					dejarDoblarIzquierda(delta);
 
-	posicion.setX(posicion.getX() + velocidad.getX());  //retocar un poco mas tal vez, multiplicar por delta la velocidad ? 
+	// los 340 q aparecen son la mitaddel alcho de la pantlla menos el ancho de la imagen
+	// agrande la imagen en 1/2 la veia muychica cualquir csa se puede cambiar
+	if ((posicion.getX() + velocidad.getX()) >= -340 & (posicion.getX() + velocidad.getX()) <= 340) {
+		posicion.setX(posicion.getX() + velocidad.getX());  //retocar un poco mas tal vez, multiplicar por delta la velocidad ? 
+	}
+
 	posicion.setY(posicion.getY() + velocidad.getY());
 }
 
@@ -69,23 +82,23 @@ void Jugador::desacelerar(Unidad delta) {
 }
 
 void Jugador::dejarDoblarDerecha(Unidad delta) {
-	if (velocidad.getX() > 0)
-		this->velocidad.setY(this->velocidad.getY() - ACELERACION_AUTO_X * delta * FACTOR_DESACELERACION_Y);
-	else {
+	//if (velocidad.getX() > 0)
+	//	this->velocidad.setY(this->velocidad.getY() - ACELERACION_AUTO_X * delta * FACTOR_DESACELERACION_Y);
+	//else {
 		velocidad.setX(0);
 		if(!entrada[2])
 			this->estado = EstadoAuto::DERECHO;
-	}
+	//}
 }
 
 void Jugador::dejarDoblarIzquierda(Unidad delta) {
-	if (velocidad.getX() < 0)
-		this->velocidad.setY(this->velocidad.getY() + ACELERACION_AUTO_X * delta * FACTOR_DESACELERACION_Y);
-	else {
+	//if (velocidad.getX() < 0)
+	//	this->velocidad.setY(this->velocidad.getY() + ACELERACION_AUTO_X * delta * FACTOR_DESACELERACION_Y);
+	//else {
 		velocidad.setX(0);
 		if (!entrada[1])
 			this->estado = EstadoAuto::DERECHO;
-	}
+	//}
 }
 
 
