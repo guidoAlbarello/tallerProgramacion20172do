@@ -31,7 +31,9 @@ void MapaView::renderMiniMap() {
 }
 
 void MapaView::render(Renderer* renderer) {
-	ManejadorDeTexturas::getInstance()->dibujarTramo(0,0, renderer->getAnchoVentana(), renderer->getAltoVentana(), renderer->getRendererJuego());
+	for (int i = 100; i > 0; i--) {
+		ManejadorDeTexturas::getInstance()->dibujarTramo(0, i * 50, 600, 50, renderer->getAnchoVentana(), renderer->getAltoVentana(), renderer->getRendererJuego(), i % 2 == 0);
+	}
 }
 
 bool MapaView::loadMedia() {
