@@ -111,7 +111,7 @@ void Cliente::conectarseAlServidor() {
 			this->t_procesarPing = std::thread(&Cliente::enviarPingAServidor, this);
 			this->t_procesarDatosRecibidos = std::thread(&Cliente::procesarDatosRecibidos, this);
 			this->renderer = new Renderer();
-			this->renderer->iniciarRenderer();
+			this->renderer->iniciarRendererJuego();
 			this->maquinaDeEstados->setRenderer(this->renderer);
 		}
 		else {

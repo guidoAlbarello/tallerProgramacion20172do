@@ -10,7 +10,7 @@ Renderer::Renderer(int ancho, int alto) {
 	this->altoVentana = alto;
 }
 
-bool Renderer::iniciarRenderer() {
+bool Renderer::iniciarRendererJuego() {
 
 	//Initialization flag
 	bool success = true;
@@ -26,7 +26,7 @@ bool Renderer::iniciarRenderer() {
 		}
 
 		//Create window
-		gWindowJuego = SDL_CreateWindow("Outrun", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, anchoVentana, altoVentana, SDL_WINDOW_SHOWN);
+		gWindowJuego = SDL_CreateWindow("Outrun", 100, 100, anchoVentana, altoVentana, SDL_WINDOW_SHOWN);
 		if (gWindowJuego == NULL) {
 			Logger::getInstance()->log(Error, "Window juego could not be created!");
 			success = false;
@@ -56,9 +56,28 @@ bool Renderer::iniciarRenderer() {
 				}
 			}
 		}
+	}
+	return success;
+}
+
+bool Renderer::iniciarRendererMapa() {
+
+	//Initialization flag
+	bool success = true;
+
+	//Initialize SDL
+	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+		Logger::getInstance()->log(Error, "No se pudo inicializar SDL");
+		success = false;
+	}
+	else {
+		//Set texture filtering to linear
+		if (!SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1")) {
+			Logger::getInstance()->log(Debug, "Warning: Linear texture filtering not enabled!");
+		}
 
 		//Create mapa window
-		this->gWindowMapa = SDL_CreateWindow("Circuito", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, anchoVentana, altoVentana, SDL_WINDOW_SHOWN);
+		this->gWindowMapa = SDL_CreateWindow("Circuito", 500, 100, anchoVentana, altoVentana, SDL_WINDOW_SHOWN);
 		if (gWindowMapa == NULL) {
 			Logger::getInstance()->log(Error, "Window mapa could not be created!");
 			success = false;
