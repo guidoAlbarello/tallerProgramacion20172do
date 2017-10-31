@@ -88,8 +88,6 @@ void LoggerView::update() {
 	//Enable text input
 	SDL_StartTextInput();
 
-	
-
 	//Handle events on queue
 	while (SDL_PollEvent(&e) != 0) {
 		//Special key input
@@ -98,17 +96,22 @@ void LoggerView::update() {
 				quit = true;
 			}
 			if (e.key.keysym.sym == SDLK_RETURN) {
-				if (isWrittingPassord == false) {
-					isWrittingPassord = true;
-					usuario->setNombre(inputText);
-					inputText = "";
-				} else {
-					//procesar user y pass
-					quit = true;
-					datosCargados = true;
-					renderText = false;
-					usuario->setPassword(inputText);
-					break;
+				if (inputText != "") {
+					if (isWrittingPassord == false) {
+						isWrittingPassord = true;
+						usuario->setNombre(inputText);
+						inputText = "";
+					}
+					else {
+						//procesar user y pass
+						if (inputText != "") {
+							quit = true;
+							datosCargados = true;
+							renderText = false;
+							usuario->setPassword(inputText);
+							break;
+						}
+					}
 				}
 			}
 			//Handle backspace
@@ -147,7 +150,6 @@ void LoggerView::update() {
 			}
 		}
 	}
-
 	SDL_StopTextInput();
 }
 

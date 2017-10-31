@@ -69,10 +69,12 @@ void Mapa::cargarMapaDesdeXML() {
 		}
 
 		//Itero entre los tramos y analizo cada uno de ellos
+		int contadorTramos = 0;
+		int metrosAcumulados = 0;
 		for (rapidxml::xml_node<>* unNodoTramo = nodoMapa->first_node("tramo"); unNodoTramo; unNodoTramo = unNodoTramo->next_sibling("tramo")) {
 			rapidxml::xml_attribute<>* attTipoTramo = unNodoTramo->first_attribute("tipo");
 			rapidxml::xml_attribute<>* attLongitud = unNodoTramo->first_attribute("longitud");
-
+			rapidxml::xml_attribute<>* attSentido;
 			if (attTipoTramo == NULL || attLongitud == NULL) {
 				Logger::getInstance()->log(LogMode::Debug, "[MAPA] Se encontro un tramo sin atributo 'tipo' o 'longitud'. Se procede a ignorar el tramo.");
 				continue;
@@ -81,17 +83,26 @@ void Mapa::cargarMapaDesdeXML() {
 			TipoTramo tipoTramo = obtenerTipoDeTramo(attTipoTramo->value());
 
 			if (tipoTramo == TipoTramo::Recta) {
-				this->tramosDelMapa.push_back(new TramoRecto(stoi(attLongitud->value())));
+				TramoRecto* tramoRecto = new TramoRecto(stoi(attLongitud->value()));
+				tramoRecto->setId(contadorTramos);
+				tramoRecto->setMetroInicio(metrosAcumulados);
+				metrosAcumulados += stoi(attLongitud->value());
+				this->tramosDelMapa.push_back(tramoRecto);
 			}
 			else {
-				rapidxml::xml_attribute<>* attSentido = unNodoTramo->first_attribute("sentido");
+				attSentido = unNodoTramo->first_attribute("sentido");
 				if (attSentido == NULL) {
 					Logger::getInstance()->log(LogMode::Debug, "[MAPA] Se encontro un tramo de tipo 'curva' sin el atributo 'sentido'. Se procede a ignorar el tramo.");
 					continue;
 				}
-				this->tramosDelMapa.push_back(new TramoCurvo(stoi(attLongitud->value()), obtenerSentidoCurva(attSentido->value())));
+				TramoCurvo* tramoCurvo = new TramoCurvo(stoi(attLongitud->value()), obtenerSentidoCurva(attSentido->value()));
+				tramoCurvo->setId(contadorTramos);
+				tramoCurvo->setMetroInicio(metrosAcumulados);
+				metrosAcumulados += stoi(attLongitud->value());
+				this->tramosDelMapa.push_back(tramoCurvo);
 			}
 
+			// Objetos del tramo
 			for (rapidxml::xml_node<>* unNodo = unNodoTramo->first_node(); unNodo; unNodo = unNodo->next_sibling()) {
 				std::string nombreNodo = unNodo->name();
 				rapidxml::xml_attribute<>* attPosicion = unNodo->first_attribute("posicion");
@@ -104,19 +115,23 @@ void Mapa::cargarMapaDesdeXML() {
 				}
 
 				if (nombreNodo == "arbol") {
-					this->objetosDelMapa.push_back(new Arbol(stoi(attUbicacion->value()), obtenerPosicion(attPosicion->value())));
+					ObjetoFijo* objeto = new Arbol(stoi(attUbicacion->value()), obtenerPosicion(attPosicion->value()));
+					objeto->setTramo(contadorTramos);
+					this->objetosDelMapa.push_back(objeto);
 				}
 				else if (nombreNodo == "cartel") {
 					rapidxml::xml_attribute<>* attCartel = unNodo->first_attribute("cartel");
-
 					if (attCartel == NULL) {
 						Logger::getInstance()->log(LogMode::Debug, "[MAPA] Se encontro un cartel sin el atributo 'valor'. Se procede a ignorar el cartel.");
 						continue;
 					}
-
-					this->objetosDelMapa.push_back(new Cartel(stoi(attUbicacion->value()), obtenerPosicion(attPosicion->value()), obtenerMaximaVelocidad(attCartel->value())));
+					ObjetoFijo* objeto = new Cartel(stoi(attUbicacion->value()), obtenerPosicion(attPosicion->value()), obtenerMaximaVelocidad(attCartel->value()));
+					objeto->setTramo(contadorTramos);
+					this->objetosDelMapa.push_back(objeto);
 				}
 			}
+
+			contadorTramos++;
 		}
 
 		Logger::getInstance()->log(LogMode::Actividad, "[MAPA] Finalizo la lectura del mapa");

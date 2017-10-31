@@ -10,9 +10,14 @@ class ObjetoFijo : public ObjetoDeJuego {
 public:
 	Posicion getPosicion();
 	int getUbicacionKM();
+	int getTramo() { return this->tramo; }
+	void setTramo(int tramo) {
+		this->tramo = tramo;
+	}
 protected:
 	Posicion posicion;
-	int ubicacionKM;
+	int ubicacionMetros;
+	int tramo;
 };
 
-#endif#pragma once
+#endif

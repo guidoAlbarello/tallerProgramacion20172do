@@ -5,7 +5,7 @@ MaximaVelocidad Cartel::getMaximaVelocidad() {
 }
 
 Cartel::Cartel(int ubicacionKM, Posicion posicion, MaximaVelocidad maximaVelocidad) {
-	this->ubicacionKM = ubicacionKM;
+	this->ubicacionMetros = ubicacionKM;
 	this->posicion = posicion;
 	this->maximaVelocidad = maximaVelocidad;
 }

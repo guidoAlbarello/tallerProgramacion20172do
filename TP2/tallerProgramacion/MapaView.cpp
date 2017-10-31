@@ -60,16 +60,26 @@ void MapaView::dibujarBordes(SDL_Renderer* renderer) {
 	SDL_RenderDrawLine(renderer, lineLeft.x1, lineLeft.y1, lineLeft.x2, lineLeft.y2);
 	Line lineRightMapa = { 790, 20, 790, 580 };
 	SDL_RenderDrawLine(renderer, lineRightMapa.x1, lineRightMapa.y1, lineRightMapa.x2, lineRightMapa.y2);
-	Line lineRight = { 700, 20, 700, 580 };
+	Line lineRight = { SCREEN_WIDTH - MENU_OFFSET_RIGHT, 20, SCREEN_WIDTH - MENU_OFFSET_RIGHT, 580 };
 	SDL_RenderDrawLine(renderer, lineRight.x1, lineRight.y1, lineRight.x2, lineRight.y2);
+
+
+	// pruebaaa
+	SDL_Rect* srcrect = new SDL_Rect();
+	srcrect->x = 15;
+	srcrect->y = 15;
+	srcrect->w = TAMAÑO_INDICADOR_OBJETO;
+	srcrect->h = TAMAÑO_INDICADOR_OBJETO;
+	SDL_RenderDrawRect(renderer, srcrect);
+
 }
 
 void MapaView::dibujarMapa(SDL_Renderer* renderer) {
-	Coordenada coordenadaInicio = { 200, 300 };
+	Coordenada coordenadaInicio = { 200, 100 };
 	Coordenada* coordenadaUltimoTramo = new Coordenada();
 	coordenadaUltimoTramo->x = 200;
 	coordenadaUltimoTramo->y = 300;
-	Orientacion ultimaOrientacion = Orientacion::ESTE;
+	Orientacion ultimaOrientacion = Orientacion::SUR;
 	int longitudTotal = 0;
 	std::vector<Tramo*> tramos = this->mapa->getTramosDelMapa();
 	for (std::vector<Tramo*>::iterator it = tramos.begin(); it != tramos.end(); ++it) {
@@ -78,6 +88,7 @@ void MapaView::dibujarMapa(SDL_Renderer* renderer) {
 		longitudTotal += tramoActual->getLongitud();
 		Line tramo;
 		TramoCurvo* tramoCurvo;
+		// TODO: hacer el metodo que dibuja los objetos a los costados, va haber que aplicarle la transformada a los puntitos tb parece
 		if (tipoTramo == Recta) {
 			ultimaOrientacion = this->unirTramoRecto(ultimaOrientacion, coordenadaUltimoTramo->x, coordenadaUltimoTramo->y, tramoActual->getLongitud(), coordenadaUltimoTramo, renderer);
 		}
@@ -91,7 +102,7 @@ void MapaView::dibujarMapa(SDL_Renderer* renderer) {
 Orientacion MapaView::unirTramoRotado(int grados, SentidoCurva sentidoRotacion, Orientacion orientacionAnterior, int ultimaX, int ultimaY, int longitud, Coordenada* coordenadaUltimoTramo, SDL_Renderer* renderer) {
 	Line lineaADibujar = {};
 	Orientacion orientacionNueva;
-
+	longitud = longitud * ESCALA_MAPA;
 	if (orientacionAnterior == Orientacion::ESTE) {
 		if (sentidoRotacion == SCDerecha) {
 			lineaADibujar = { ultimaX, ultimaY, (int)(ultimaX + cos(PI / 4) * longitud), (int)(ultimaY + sin(PI / 4) * longitud) };
@@ -172,15 +183,22 @@ Orientacion MapaView::unirTramoRotado(int grados, SentidoCurva sentidoRotacion, 
 			orientacionNueva = Orientacion::ESTE;
 		}
 	}
-	coordenadaUltimoTramo->x = lineaADibujar.x2;
-	coordenadaUltimoTramo->y = lineaADibujar.y2;
-	SDL_RenderDrawLine(renderer, lineaADibujar.x1, lineaADibujar.y1, lineaADibujar.x2, lineaADibujar.y2);
-	return orientacionNueva;
+
+	if (validarLineaDibujable(lineaADibujar)) {
+		coordenadaUltimoTramo->x = lineaADibujar.x2;
+		coordenadaUltimoTramo->y = lineaADibujar.y2;
+		SDL_RenderDrawLine(renderer, lineaADibujar.x1, lineaADibujar.y1, lineaADibujar.x2, lineaADibujar.y2);
+		return orientacionNueva;
+	}
+	else {
+		return orientacionAnterior;
+	}
 }
 
 Orientacion MapaView::unirTramoRecto(Orientacion orientacionAnterior, int ultimaX, int ultimaY, int longitud, Coordenada* coordenadaUltimoTramo, SDL_Renderer* renderer) {
 	Line lineaADibujar = {};
 	Orientacion orientacionNueva;
+	longitud = longitud * ESCALA_MAPA;
 
 	if (orientacionAnterior == Orientacion::ESTE) {
 		lineaADibujar = { ultimaX, ultimaY, ultimaX + longitud, ultimaY };
@@ -214,8 +232,27 @@ Orientacion MapaView::unirTramoRecto(Orientacion orientacionAnterior, int ultima
 		lineaADibujar = { ultimaX, ultimaY, (int)(ultimaX + cos(PI / 4) * longitud), (int)(ultimaY + sin(PI / 4) * longitud) };
 		orientacionNueva = Orientacion::SURESTE;
 	}
-	coordenadaUltimoTramo->x = lineaADibujar.x2;
-	coordenadaUltimoTramo->y = lineaADibujar.y2;
-	SDL_RenderDrawLine(renderer, lineaADibujar.x1, lineaADibujar.y1, lineaADibujar.x2, lineaADibujar.y2);
-	return orientacionNueva;
+
+	if (validarLineaDibujable(lineaADibujar)) {
+		coordenadaUltimoTramo->x = lineaADibujar.x2;
+		coordenadaUltimoTramo->y = lineaADibujar.y2;
+		SDL_RenderDrawLine(renderer, lineaADibujar.x1, lineaADibujar.y1, lineaADibujar.x2, lineaADibujar.y2);
+		return orientacionNueva;
+	}
+	else {
+		return orientacionAnterior;
+	}
+}
+
+bool MapaView::validarLineaDibujable(Line lineaADibujar) {
+	bool excede = lineaADibujar.x1 > SCREEN_WIDTH - MENU_OFFSET_RIGHT || lineaADibujar.x1 < 0 
+		|| lineaADibujar.x2 > SCREEN_WIDTH - MENU_OFFSET_RIGHT 	|| lineaADibujar.x2 < 0 
+		|| lineaADibujar.y1 > SCREEN_HEIGHT || lineaADibujar.y1 < 0 || lineaADibujar.y2 > SCREEN_HEIGHT 
+		|| lineaADibujar.y2 < 0;
+	if (excede) {
+		ESCALA_MAPA = ESCALA_MAPA * FACTOR_DECREMENTO_ESCALA;
+		this->renderMiniMap();
+		return false;
+	}
+	return true;
 }

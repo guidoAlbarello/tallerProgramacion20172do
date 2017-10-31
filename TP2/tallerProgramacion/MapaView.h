@@ -45,18 +45,17 @@ public:
 	void dibujarMapa(SDL_Renderer* renderer);
 	Orientacion unirTramoRotado(int grados, SentidoCurva sentidoRotacion, Orientacion orientacionAnterior, int ultimaX, int ultimaY, int longitud, Coordenada* coordenadaUltimoTramo, SDL_Renderer* renderer);
 	Orientacion unirTramoRecto(Orientacion orientacionAnterior, int ultimaX, int ultimaY, int longitud, Coordenada* coordenadaUltimoTramo, SDL_Renderer* renderer);
-
-
+	bool validarLineaDibujable(Line lineaADibujar);
+	static constexpr const int SCREEN_WIDTH = 800;
+	static constexpr const int SCREEN_HEIGHT = 600;
+	static constexpr const int MENU_OFFSET_RIGHT = 100;
+	static constexpr const int TAMAÑO_INDICADOR_OBJETO = 3;
+	float ESCALA_MAPA = 0.75;
+	float FACTOR_DECREMENTO_ESCALA = 2 / 3;
+	
 private:
-	const int SCREEN_WIDTH = 800;
-	const int SCREEN_HEIGHT = 600;
-	const int ESCALA_MAPA = 1;
-
 	Mapa* mapa;
-
 	Renderer* gRenderer = NULL;
-	//Ltexture* gFondoTexture;
-	//Ltexture* gMapaTexture;
 };
 
 #endif
