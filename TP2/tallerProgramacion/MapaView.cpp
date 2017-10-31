@@ -35,8 +35,8 @@ void MapaView::render(Renderer* renderer) {
 	int base = getTramoActual();
 	float x = 0, dx = 0;
 	for (int i = 0; i < DISTANCIA_DIBUJADO; i++) {
-		Segmento* unSegmento = tramos[base + i % tramos.size()];			//agregar chequeo distancia dibujado > tamaño array
-		ManejadorDeTexturas::getInstance()->dibujarTramo(unSegmento, 800, renderer->getAnchoVentana(), renderer->getAltoVentana(), renderer->getRendererJuego(), i % 2 == 0, x);
+		Segmento* unSegmento = tramos[base + i];			//agregar chequeo distancia dibujado > tamaño array
+		ManejadorDeTexturas::getInstance()->dibujarTramo(unSegmento, ANCHO_TRAMO, renderer->getAnchoVentana(), renderer->getAltoVentana(), renderer->getRendererJuego(),(base+i), x);
 		x += dx;
 		dx += unSegmento->curva;
 	}
@@ -277,8 +277,8 @@ void MapaView::initTramos() {
 		unSegmento->p2.x = 0;
 		unSegmento->p1.y = 0;
 		unSegmento->p2.y = 0;
-		unSegmento->p1.z = i * 100;
-		unSegmento->p2.z = (i+1) * 100;
+		unSegmento->p1.z = i * ALTO_TRAMO;
+		unSegmento->p2.z = (i+1) * ALTO_TRAMO;
 		unSegmento->curva = 0;
 		if ( i > 100 && i < 200)
 			unSegmento->curva = 2;
