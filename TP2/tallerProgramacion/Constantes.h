@@ -75,4 +75,23 @@ struct EstadoModeloJuego {
 	EstadoEscenario estadoEscenario;
 	int tamanio;
 };
+
+struct Line {
+	int x1;
+	int y1;
+	int x2;
+	int y2;
+};
+
+struct Coordenada {
+	float x;
+	float y;
+	float z;
+};
+
+struct Segmento {
+	Coordenada p1;
+	Coordenada p2;
+	float curva;
+};
 #endif

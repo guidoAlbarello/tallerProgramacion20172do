@@ -11,21 +11,10 @@
 #include "ManejadorDeTexturas.h"
 
 #define PI 3.14159265
-
+#define DISTANCIA_DIBUJADO 80
 using namespace std;
 
-struct Line
-{
-	int x1;
-	int y1;
-	int x2;
-	int y2;
-};
 
-struct Coordenada {
-	int x;
-	int y;
-};
 
 enum class Orientacion { ESTE = '0', NORESTE = '1', NORTE = '2', NOROESTE = '3', OESTE = '4', SUROESTE = '5', SUR = '6', SURESTE = '7' };
 
@@ -52,10 +41,12 @@ public:
 	static constexpr const int TAMAÑO_INDICADOR_OBJETO = 3;
 	float ESCALA_MAPA = 0.75;
 	float FACTOR_DECREMENTO_ESCALA = 2 / 3;
-	
+	int getTramoActual();
+	void initTramos();
 private:
 	Mapa* mapa;
 	Renderer* gRenderer = NULL;
+	std::vector<Segmento*> tramos;
 };
 
 #endif

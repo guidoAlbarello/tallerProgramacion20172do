@@ -15,6 +15,7 @@ MapaView::~MapaView()
 
 void MapaView::init() {
 	this->mapa = new Mapa();
+	initTramos();
 }
 
 void MapaView::renderMiniMap() {
@@ -31,8 +32,13 @@ void MapaView::renderMiniMap() {
 }
 
 void MapaView::render(Renderer* renderer) {
-	for (int i = 100; i > 0; i--) {
-		ManejadorDeTexturas::getInstance()->dibujarTramo(0, i * 50, 600, 50, renderer->getAnchoVentana(), renderer->getAltoVentana(), renderer->getRendererJuego(), i % 2 == 0);
+	int base = getTramoActual();
+	float x = 0, dx = 0;
+	for (int i = 0; i < DISTANCIA_DIBUJADO; i++) {
+		Segmento* unSegmento = tramos[base + i % tramos.size()];			//agregar chequeo distancia dibujado > tamaño array
+		ManejadorDeTexturas::getInstance()->dibujarTramo(unSegmento, 800, renderer->getAnchoVentana(), renderer->getAltoVentana(), renderer->getRendererJuego(), i % 2 == 0, x);
+		x += dx;
+		dx += unSegmento->curva;
 	}
 }
 
@@ -257,4 +263,25 @@ bool MapaView::validarLineaDibujable(Line lineaADibujar) {
 		return false;
 	}
 	return true;
+}
+
+int MapaView::getTramoActual() {
+	int pos = ManejadorDeTexturas::getInstance()->getCamara()->getPosicion()->getY() / 100;
+	return pos;
+}
+
+void MapaView::initTramos() {
+	for (int i = 0; i < 1000; i++) {
+		Segmento* unSegmento = new Segmento();
+		unSegmento->p1.x = 0;
+		unSegmento->p2.x = 0;
+		unSegmento->p1.y = 0;
+		unSegmento->p2.y = 0;
+		unSegmento->p1.z = i * 100;
+		unSegmento->p2.z = (i+1) * 100;
+		unSegmento->curva = 0;
+		if ( i > 100 && i < 200)
+			unSegmento->curva = 2;
+		tramos.push_back(unSegmento);
+	}
 }

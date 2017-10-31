@@ -37,6 +37,9 @@
     <Filter Include="Archivos de encabezado\Juego">
       <UniqueIdentifier>{07eb5202-7de9-4acd-bdf4-26ae2a0a4eab}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Archivos de recursos\GFX">
+      <UniqueIdentifier>{5bb6157d-cb42-447b-96f1-7439f6d8b463}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Logger.h">
@@ -174,6 +177,21 @@
     <ClInclude Include="MaquinaEstados.h">
       <Filter>Archivos de encabezado\EstadosJuego</Filter>
     </ClInclude>
+    <ClInclude Include="SDL2_framerate.h">
+      <Filter>Archivos de recursos\GFX</Filter>
+    </ClInclude>
+    <ClInclude Include="SDL2_gfxPrimitives.h">
+      <Filter>Archivos de recursos\GFX</Filter>
+    </ClInclude>
+    <ClInclude Include="SDL2_gfxPrimitives_font.h">
+      <Filter>Archivos de recursos\GFX</Filter>
+    </ClInclude>
+    <ClInclude Include="SDL2_imageFilter.h">
+      <Filter>Archivos de recursos\GFX</Filter>
+    </ClInclude>
+    <ClInclude Include="SDL2_rotozoom.h">
+      <Filter>Archivos de recursos\GFX</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Constantes.cpp">
@@ -307,6 +325,18 @@
     </ClCompile>
     <ClCompile Include="EsperaView.cpp">
       <Filter>Archivos de código fuente\Juego</Filter>
+    </ClCompile>
+    <ClCompile Include="SDL2_framerate.c">
+      <Filter>Archivos de recursos\GFX</Filter>
+    </ClCompile>
+    <ClCompile Include="SDL2_gfxPrimitives.c">
+      <Filter>Archivos de recursos\GFX</Filter>
+    </ClCompile>
+    <ClCompile Include="SDL2_imageFilter.c">
+      <Filter>Archivos de recursos\GFX</Filter>
+    </ClCompile>
+    <ClCompile Include="SDL2_rotozoom.c">
+      <Filter>Archivos de recursos\GFX</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

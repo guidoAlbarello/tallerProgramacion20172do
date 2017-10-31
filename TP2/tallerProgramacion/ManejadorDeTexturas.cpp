@@ -80,31 +80,61 @@ bool ManejadorDeTexturas::load(std::string fileName, std::string id, SDL_Rendere
 	return false;
 }
 
-void ManejadorDeTexturas::dibujarTramo(int x, int y, int ancho, int alto, int anchoPantalla, int altoPantalla, SDL_Renderer* renderer, bool grisOscuro) {
-	if (grisOscuro)
-		SDL_SetRenderDrawColor(renderer, 125, 125, 125, 255);
+void ManejadorDeTexturas::dibujarTramo(Segmento* unSegmento, int ancho, int anchoPantalla, int altoPantalla, SDL_Renderer* renderer, int n,float x) {
+	Coordenada p1 = unSegmento->p1;
+	Coordenada p2 = unSegmento->p2;
+	int anchoSuperior = ancho;
+	int anchoInferior = ancho;
+	int ancho1 = ancho;
+	int ancho2 = ancho;
+	proyectar(p1, ancho1, anchoPantalla, altoPantalla,x);
+	proyectar(p2, ancho2, anchoPantalla, altoPantalla,x);
+
+	anchoSuperior = ancho2 ;
+	anchoInferior = ancho1 ;
+
+	Sint16 vxPasto[4] = { -anchoPantalla, -anchoPantalla, anchoPantalla, anchoPantalla };
+	Sint16 vyPasto[4] = { p1.y, p2.y, p2.y, p1.y };
+	Sint16 vxBorde[4] = { p1.x - anchoInferior *1.2,p2.x - anchoSuperior*1.2,p2.x + anchoSuperior*1.2 ,p1.x + anchoInferior*1.2 };
+	Sint16 vyBorde[4] = { p1.y,p2.y,p2.y,p1.y };
+	Sint16 vxTramo[4] = { p1.x - anchoInferior ,p2.x - anchoSuperior,p2.x + anchoSuperior ,p1.x + anchoInferior };
+	Sint16 vyTramo[4] = { p1.y,p2.y,p2.y,p1.y };
+
+	if ((n / 3) % 2)
+		filledPolygonRGBA(renderer, vxPasto, vyPasto, 4, 20, 200, 20, 255);
 	else
-		SDL_SetRenderDrawColor(renderer, 175, 175, 175, 255);
+		filledPolygonRGBA(renderer, vxPasto, vyPasto, 4, 5, 160, 2, 255);
 
-	float zIndex = camara->getPosicion()->getY() - 1 - y - alto / 2;
-	SDL_Rect tramo;
+	if ((n/3)%2)
+		filledPolygonRGBA(renderer, vxBorde, vyBorde, 4, 255, 255,255, 255);
+	else
+		filledPolygonRGBA(renderer, vxBorde, vyBorde, 4, 0, 0, 0, 255);
+	
+	if ((n / 3) % 2)
+		filledPolygonRGBA(renderer, vxTramo, vyTramo, 4, 115, 115,115, 255);
+	else
+		filledPolygonRGBA(renderer, vxTramo, vyTramo, 4, 110, 110, 110, 255);
+}
 
-
-	tramo.y = (y - alto / 2 - camara->getPosicion()->getY() - 1);
-	tramo.h = alto;
-	tramo.w = ancho;
-	if (tramo.y != 0) {
-		//tramo.h *= normZIndex(y);
-		tramo.w /= normZIndex(y) * 3;
-	}
-	tramo.x = x - tramo.w / 2;
-	tramo.x = tramo.x + anchoPantalla / 2 - camara->getPosicion()->getX();
-	tramo.y = -tramo.y + altoPantalla * 3 / 4;
-	SDL_RenderFillRect(renderer, &tramo);
+void ManejadorDeTexturas::proyectar(Coordenada & p, int& ancho, int anchoPantalla, int altoPantalla,float x) {
+	float scalado = 0;
+	if ((p.z - camara->getPosicion()->getY() - 1) != 0)
+		scalado = abs(0.6 / (p.z - camara->getPosicion()->getY() - 1));
+	else
+		ancho = 0;
+	p.x -= camara->getPosicion()->getX() - x;
+	p.y -= 300;
+	
+	p.x = (1 + scalado * p.x) * anchoPantalla / 2;
+	p.y = (1 - scalado * p.y ) * altoPantalla / 2;
+	ancho = scalado * ancho * anchoPantalla / 2;
+	
+	if (ancho < MINIMO_ANCHO)
+		ancho = MINIMO_ANCHO;
 }
 
 float ManejadorDeTexturas::normZIndex(float zIndex) {
-	float normalizado;
+	/*float normalizado;
 
 	if (zIndex > Z_FAR + camara->getPosicion()->getY())
 		normalizado = 0;
@@ -114,8 +144,10 @@ float ManejadorDeTexturas::normZIndex(float zIndex) {
 		else
 			normalizado = (zIndex - Z_NEAR - camara->getPosicion()->getY()) / Z_FAR;
 
-	return abs(normalizado);
+	return abs(normalizado);*/
+	return 0;
 }
 
 ManejadorDeTexturas::~ManejadorDeTexturas() {
 }
+
