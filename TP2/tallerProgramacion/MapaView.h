@@ -47,9 +47,11 @@ public:
 	float FACTOR_DECREMENTO_ESCALA = 0.66;
 	
 private:
+	int getTramoActual();
 	Mapa* mapa;
 	Renderer* gRenderer = NULL;
 	std::vector<Segmento*> tramos;
+	void initTramos();
 };
 
 #endif
