@@ -59,7 +59,6 @@ void MapaView::update() {
 }
 
 void MapaView::dibujarBordes(SDL_Renderer* renderer) {
-	// Dibuja bordes del mapa
 	Line lineTop = { 10, 20, 790, 20 };
 	SDL_RenderDrawLine(renderer, lineTop.x1, lineTop.y1, lineTop.x2, lineTop.y2);
 	Line lineBottom = { 10, 580, 790, 580 };
@@ -86,21 +85,23 @@ void MapaView::dibujarMapa(SDL_Renderer* renderer) {
 		longitudTotal += tramoActual->getLongitud();
 		Line tramo;
 		TramoCurvo* tramoCurvo;
+		std::vector<ObjetoFijo*> objetosDelMapaConUbicacion;
 		if (tipoTramo == Recta) {
-			this->dibujarObjetosTramo(this->mapa->getObjetosDelMapa(), ultimaOrientacion, coordenadaUltimoTramo->x, coordenadaUltimoTramo->y, tramoActual->getLongitud(), tramoActual->getMetroInicio(), coordenadaUltimoTramo, SentidoCurva::NINGUNO, renderer);
+			objetosDelMapaConUbicacion = this->dibujarObjetosTramo(this->mapa->getObjetosDelMapa(), ultimaOrientacion, coordenadaUltimoTramo->x, coordenadaUltimoTramo->y, tramoActual->getLongitud(), tramoActual->getMetroInicio(), coordenadaUltimoTramo, SentidoCurva::NINGUNO, renderer);
 			ultimaOrientacion = this->unirTramoRecto(ultimaOrientacion, coordenadaUltimoTramo->x, coordenadaUltimoTramo->y, tramoActual->getLongitud(), coordenadaUltimoTramo, renderer);		
 		}
 		if (tipoTramo == Curva) {
 			tramoCurvo = (TramoCurvo*)tramoActual;
-			this->dibujarObjetosTramo(this->mapa->getObjetosDelMapa(), ultimaOrientacion, coordenadaUltimoTramo->x, coordenadaUltimoTramo->y, tramoActual->getLongitud(), tramoActual->getMetroInicio(), coordenadaUltimoTramo, tramoCurvo->getSentido(), renderer);
+			objetosDelMapaConUbicacion = this->dibujarObjetosTramo(this->mapa->getObjetosDelMapa(), ultimaOrientacion, coordenadaUltimoTramo->x, coordenadaUltimoTramo->y, tramoActual->getLongitud(), tramoActual->getMetroInicio(), coordenadaUltimoTramo, tramoCurvo->getSentido(), renderer);
 			ultimaOrientacion = unirTramoRotado(tramoCurvo->getSentido(), ultimaOrientacion, coordenadaUltimoTramo->x, coordenadaUltimoTramo->y, tramoActual->getLongitud(), coordenadaUltimoTramo, renderer);
 		}
+		this->mapa->setObjetosDelMapa(objetosDelMapaConUbicacion);
 	}
 }
 
-
-void MapaView::dibujarObjetosTramo(std::vector<ObjetoFijo*> objetosDelMapa, Orientacion orientacionAnterior, int ultimaX, int ultimaY, int longitud, int metroInicio, Coordenada* coordenadaUltimoTramo, SentidoCurva sentidoRotacion, SDL_Renderer* renderer) {
+std::vector<ObjetoFijo*> MapaView::dibujarObjetosTramo(std::vector<ObjetoFijo*> objetosDelMapa, Orientacion orientacionAnterior, int ultimaX, int ultimaY, int longitud, int metroInicio, Coordenada* coordenadaUltimoTramo, SentidoCurva sentidoRotacion, SDL_Renderer* renderer) {
 	SDL_Rect* rectObjeto = new SDL_Rect();
+	std::vector<ObjetoFijo*> objetosDelMapaConUbicacion;
 	for (std::vector<ObjetoFijo*>::iterator it = objetosDelMapa.begin(); it != objetosDelMapa.end(); ++it) {
 		ObjetoFijo* objetoActual = *it;
 		if (objetoActual->getUbicacionM() > metroInicio && objetoActual->getUbicacionM() <= metroInicio + longitud) {
@@ -227,9 +228,13 @@ void MapaView::dibujarObjetosTramo(std::vector<ObjetoFijo*> objetosDelMapa, Orie
 					rectObjeto->y = (int)(ultimaY + sin(PI / 4) * posicionRelativaATramo);
 				}
 			}
+			objetoActual->setXMapa(rectObjeto->x);
+			objetoActual->setYMapa(rectObjeto->y);
 		}
+		objetosDelMapaConUbicacion.push_back(objetoActual);
 		SDL_RenderDrawRect(renderer, rectObjeto);
 	}
+	return objetosDelMapaConUbicacion;
 }
 
 
