@@ -71,7 +71,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir)SDL2image\include;$(SolutionDir)SDL2_ttf-2.0.14\include;$(SolutionDir)SDL2_mixer-2.0.1\include;$(SolutionDir)SDL2-2.0.6\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)SDL_gfx-2.0.25;$(SolutionDir)SDL2image\include;$(SolutionDir)SDL2_ttf-2.0.14\include;$(SolutionDir)SDL2_mixer-2.0.1\include;$(SolutionDir)SDL2-2.0.6\include;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Users\SouLsCronoS\Desktop\SDL2-2.0.6\lib\x64;$(SolutionDir)SDL2_ttf-2.0.14\lib\x64;$(SolutionDir)SDL2image\lib\x64;$(SolutionDir)SDL2_mixer-2.0.1\lib\x64;$(SolutionDir)SDL2-2.0.6\lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -156,6 +156,11 @@
     <ClInclude Include="ParserDeMensajes.h" />
     <ClInclude Include="Jugador.h" />
     <ClInclude Include="Renderer.h" />
+    <ClInclude Include="SDL2_framerate.h" />
+    <ClInclude Include="SDL2_gfxPrimitives.h" />
+    <ClInclude Include="SDL2_gfxPrimitives_font.h" />
+    <ClInclude Include="SDL2_imageFilter.h" />
+    <ClInclude Include="SDL2_rotozoom.h" />
     <ClInclude Include="ServerConfig.h" />
     <ClInclude Include="ManejadorDeConexion.h" />
     <ClInclude Include="Servidor.h" />
@@ -203,6 +208,10 @@
     <ClCompile Include="ObjetoFijo.cpp" />
     <ClCompile Include="ParserDeMensajes.cpp" />
     <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="SDL2_framerate.c" />
+    <ClCompile Include="SDL2_gfxPrimitives.c" />
+    <ClCompile Include="SDL2_imageFilter.c" />
+    <ClCompile Include="SDL2_rotozoom.c" />
     <ClCompile Include="ServerConfig.cpp" />
     <ClCompile Include="Servidor.cpp" />
     <ClCompile Include="SocketSincronico.cpp" />
