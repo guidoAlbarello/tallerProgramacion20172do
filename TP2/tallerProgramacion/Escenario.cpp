@@ -40,7 +40,10 @@ Escenario::~Escenario() {
 }
 
 void Escenario::update(Unidad deltaTiempo) {
-	posicionCielo.setX((int(posicionCielo.getX() + VELOCIDAD_CIELO * deltaTiempo)) % cielo->getAncho());
+	if (limiteImagenCielo())
+		posicionCielo.setX((int(posicionCielo.getX() + VELOCIDAD_CIELO * deltaTiempo)));
+	else
+		posicionCielo.setX(0);
 	//posicionColinas.setX((int(posicionColinas.getX() + VELOCIDAD_COLINAS * deltaTiempo)) % colinas->getAncho());
 }
 
