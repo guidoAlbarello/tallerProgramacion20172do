@@ -13,6 +13,7 @@ public:
 	Mapa();
 	std::vector<Tramo*> getTramosDelMapa();
 	std::vector<ObjetoFijo*> getObjetosDelMapa();
+	void setObjetosDelMapa(std::vector<ObjetoFijo*> objetosDelMapa) { this->objetosDelMapa = objetosDelMapa; }
 private:
 	void cargarMapaDesdeXML();
 	std::vector<Tramo*> tramosDelMapa;
