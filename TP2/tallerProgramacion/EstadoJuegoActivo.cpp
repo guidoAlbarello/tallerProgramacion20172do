@@ -48,7 +48,6 @@ void EstadoJuegoActivo::update(ManejadorDeConexionCliente* conexionCliente) {
 
 void EstadoJuegoActivo::render() {
 	if (inicializado) {
-		
 		SDL_SetRenderDrawColor(renderer->getRendererJuego(), 242, 242, 242, 255);
 		SDL_RenderClear(this->renderer->getRendererJuego());
 		this->escenario->render();
@@ -101,8 +100,8 @@ void EstadoJuegoActivo::setParametro(void * param) {
 }
 
 void EstadoJuegoActivo::inicializarObjetos(EstadoInicialJuego* unEstado) {
-	
 	idJugador = unEstado->idJugador;
+	this->cantJugadores = unEstado->tamanio;
 	// creo los sprites del map
 	for (int i = 0; i < unEstado->tamanio; i++) {
 		Sprite* unSprite = new Sprite();

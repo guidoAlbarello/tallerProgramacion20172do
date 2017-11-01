@@ -21,6 +21,8 @@ public:
 	std::string getStateID() const { return s_playID; }
 	void recieveInput(void* param);
 	void setParametro(void* param);
+	int getCantidadJugadores() { return this->cantJugadores; }
+	void setCantidadJugadores(int cantidadJugadores) { this->cantJugadores = cantidadJugadores; }
 private:
 	EstadoModeloJuego* estadoModeloJuego;
 	static const std::string s_playID;
@@ -34,6 +36,7 @@ private:
 	std::mutex m_estadoModelo;
 	Camara* camara;
 	int idJugador;
+	int cantJugadores;
 };
 
 #endif
