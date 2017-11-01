@@ -41,9 +41,9 @@ void MaquinaEstados::changeState(EstadoJuego *pState, void * param) {
 	m_estado.lock();
 	this->terminoIniciar = false;
 	if (!estadosDeJuego.empty()) {
-		if (estadosDeJuego.back()->getStateID() == pState->getStateID()) {
+		/*if (estadosDeJuego.back()->getStateID() == pState->getStateID()) {
 			return; // do nothing
-		}
+		}*/
 		if (estadosDeJuego.back()->onExit()) {
 			delete estadosDeJuego.back();
 			estadosDeJuego.pop_back();
