@@ -43,15 +43,16 @@ public:
 	void update();
 	void dibujarBordes(SDL_Renderer* renderer);
 	void dibujarMapa(SDL_Renderer* renderer);
-	Orientacion unirTramoRotado(int grados, SentidoCurva sentidoRotacion, Orientacion orientacionAnterior, int ultimaX, int ultimaY, int longitud, Coordenada* coordenadaUltimoTramo, SDL_Renderer* renderer);
+	Orientacion unirTramoRotado(SentidoCurva sentidoRotacion, Orientacion orientacionAnterior, int ultimaX, int ultimaY, int longitud, Coordenada* coordenadaUltimoTramo, SDL_Renderer* renderer);
 	Orientacion unirTramoRecto(Orientacion orientacionAnterior, int ultimaX, int ultimaY, int longitud, Coordenada* coordenadaUltimoTramo, SDL_Renderer* renderer);
+	void dibujarObjetosTramo(std::vector<ObjetoFijo*> objetosDelMapa, Orientacion orientacionAnterior, int ultimaX, int ultimaY, int longitud, int metroInicio, Coordenada* coordenadaUltimoTramo, SentidoCurva sentidoRotacion, SDL_Renderer* renderer);
 	bool validarLineaDibujable(Line lineaADibujar);
 	static constexpr const int SCREEN_WIDTH = 800;
 	static constexpr const int SCREEN_HEIGHT = 600;
 	static constexpr const int MENU_OFFSET_RIGHT = 100;
 	static constexpr const int TAMAÑO_INDICADOR_OBJETO = 3;
 	float ESCALA_MAPA = 0.75;
-	float FACTOR_DECREMENTO_ESCALA = 2 / 3;
+	float FACTOR_DECREMENTO_ESCALA = 0.66;
 	
 private:
 	Mapa* mapa;

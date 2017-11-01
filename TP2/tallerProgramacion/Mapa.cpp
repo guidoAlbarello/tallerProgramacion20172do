@@ -120,12 +120,12 @@ void Mapa::cargarMapaDesdeXML() {
 					this->objetosDelMapa.push_back(objeto);
 				}
 				else if (nombreNodo == "cartel") {
-					rapidxml::xml_attribute<>* attCartel = unNodo->first_attribute("cartel");
-					if (attCartel == NULL) {
+					rapidxml::xml_attribute<>* attValor = unNodo->first_attribute("valor");
+					if (attValor == NULL) {
 						Logger::getInstance()->log(LogMode::Debug, "[MAPA] Se encontro un cartel sin el atributo 'valor'. Se procede a ignorar el cartel.");
 						continue;
 					}
-					ObjetoFijo* objeto = new Cartel(stoi(attUbicacion->value()), obtenerPosicion(attPosicion->value()), obtenerMaximaVelocidad(attCartel->value()));
+					ObjetoFijo* objeto = new Cartel(stoi(attUbicacion->value()), obtenerPosicion(attPosicion->value()), obtenerMaximaVelocidad(attValor->value()));
 					objeto->setTramo(contadorTramos);
 					this->objetosDelMapa.push_back(objeto);
 				}
