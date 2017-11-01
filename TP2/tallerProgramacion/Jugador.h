@@ -5,7 +5,7 @@
 #include "ObjetoDeJuego.h"
 #include "Camara.h"
 #define ACELERACION_AUTO_X 0.5
-#define ACELERACION_AUTO_Y 1
+#define ACELERACION_AUTO_Y 0.8
 #define FACTOR_DESACELERACION_X 0.2
 #define FACTOR_DESACELERACION_Y 0.9
 #define LIMITE_VELOCIDAD_AUTO_X 8.0
@@ -35,6 +35,7 @@ protected:
 	bool entrada[Constantes::CANT_TECLAS];
 	int id;
 	bool conectado = false;
+	bool acelerando = false;
 	EstadoAuto estado = EstadoAuto::DERECHO;
 	Camara* camara;
 };

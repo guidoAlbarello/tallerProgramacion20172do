@@ -17,27 +17,38 @@ ManejadorDeTexturas::ManejadorDeTexturas() {
 }
 
 void ManejadorDeTexturas::drawAnimatedSprite(std::string id, int x, int y, int ancho, int alto, int filaActual, int frameActual, int anchoPantalla, int altoPantalla, SDL_Renderer * pRenderer, SDL_RendererFlip flip) {
-	float zIndex = abs(camara->getPosicion()->getY() - 1 - y);		//hacer y - h/2 en vez de - y!!!!!!!!!!
+	/*float zIndex = abs(camara->getPosicion()->getY() - 1 - y);		//hacer y - h/2 en vez de - y!!!!!!!!!!
 	SDL_Rect srcRect;
 	SDL_Rect destRect;
 	srcRect.x = ancho * frameActual;
 	srcRect.y = alto * (filaActual - 1);
-	//srcRect.w = destRect.w = ancho;
-	//srcRect.h = destRect.h = alto;
-	//destRect.x = (x - ancho / 2);
-	//destRect.y = (y - alto / 2);
-	//esti para ver el auto al doble de grande
 	srcRect.w = ancho;
 	destRect.w = ancho * 3 / 2;
 	srcRect.h = alto;
 	destRect.h = alto * 3 / 2;
 	destRect.x = (x - destRect.w / 2);
 	destRect.y = -(y - destRect.h / 2 - camara->getPosicion()->getY() - 1);
-	if (destRect.y != 0) {
-		//destRect.y *= FACTOR_PERSPECTIVA;//agregar h y w 
-	}
+
 	destRect.x += -camara->getPosicion()->getX() + anchoPantalla / 2;
-	destRect.y += altoPantalla * 3 / 4;
+	destRect.y += altoPantalla * 3 / 4;*/
+
+	Coordenada p1;
+	SDL_Rect destRect;
+	SDL_Rect srcRect;
+	srcRect.x = ancho * frameActual;
+	srcRect.y = alto * (filaActual - 1);
+	srcRect.w = ancho;
+	srcRect.h = alto;
+	int anchoDest = ancho;
+	p1.x = x;
+	p1.y = 0;
+	p1.z = y + 330;
+	proyectar(p1, anchoDest, anchoPantalla, altoPantalla, -45);
+	destRect.x = p1.x;
+	destRect.y = p1.y;
+	destRect.w = ancho * 3 / 2;
+	destRect.h = alto * 3 / 2;
+
 	SDL_RenderCopyEx(pRenderer, texturas[id], &srcRect, &destRect, 0, 0, flip);
 }
 
@@ -87,57 +98,72 @@ bool ManejadorDeTexturas::load(std::string fileName, std::string id, SDL_Rendere
 	return false;
 }
 
-void ManejadorDeTexturas::dibujarTramo(Segmento* unSegmento, int ancho, int anchoPantalla, int altoPantalla, SDL_Renderer* renderer, int n,float x) {
+void ManejadorDeTexturas::dibujarTramo(Segmento* unSegmento, int ancho, int anchoPantalla, int altoPantalla, SDL_Renderer* renderer, int n, float x) {
 	Coordenada p1 = unSegmento->p1;
 	Coordenada p2 = unSegmento->p2;
-	int anchoSuperior = ancho;
-	int anchoInferior = ancho;
+	int anchoSuperior;
+	int anchoInferior;
+
 	int ancho1 = ancho;
 	int ancho2 = ancho;
-	proyectar(p1, ancho1, anchoPantalla, altoPantalla,x);
-	proyectar(p2, ancho2, anchoPantalla, altoPantalla,x);
+	proyectar(p1, ancho1, anchoPantalla, altoPantalla, x);
+	proyectar(p2, ancho2, anchoPantalla, altoPantalla, x);
 
-	anchoSuperior = ancho2 ;
-	anchoInferior = ancho1 ;
+	anchoSuperior = ancho2;
+	anchoInferior = ancho1;
 
 	Sint16 vxPasto[4] = { -anchoPantalla, -anchoPantalla, anchoPantalla, anchoPantalla };
 	Sint16 vyPasto[4] = { p1.y, p2.y, p2.y, p1.y };
 	Sint16 vxBorde[4] = { p1.x - anchoInferior *1.2,p2.x - anchoSuperior*1.2,p2.x + anchoSuperior*1.2 ,p1.x + anchoInferior*1.2 };
 	Sint16 vyBorde[4] = { p1.y,p2.y,p2.y,p1.y };
+	
 	Sint16 vxTramo[4] = { p1.x - anchoInferior ,p2.x - anchoSuperior,p2.x + anchoSuperior ,p1.x + anchoInferior };
 	Sint16 vyTramo[4] = { p1.y,p2.y,p2.y,p1.y };
 
 	if ((n / 3) % 2)
-		filledPolygonRGBA(renderer, vxPasto, vyPasto, 4, 20, 200, 20, 255);
+		filledPolygonRGBA(renderer, vxPasto, vyPasto, 4, 20, 170, 20, 255);
 	else
-		filledPolygonRGBA(renderer, vxPasto, vyPasto, 4, 5, 160, 2, 255);
-
-	if ((n/3)%2)
-		filledPolygonRGBA(renderer, vxBorde, vyBorde, 4, 255, 255,255, 255);
-	else
-		filledPolygonRGBA(renderer, vxBorde, vyBorde, 4, 0, 0, 0, 255);
+		filledPolygonRGBA(renderer, vxPasto, vyPasto, 4, 5, 130, 2, 255);
 	
 	if ((n / 3) % 2)
-		filledPolygonRGBA(renderer, vxTramo, vyTramo, 4, 115, 115,115, 255);
+		filledPolygonRGBA(renderer, vxBorde, vyBorde, 4, 210, 210, 210, 255);
 	else
-		filledPolygonRGBA(renderer, vxTramo, vyTramo, 4, 110, 110, 110, 255);
+		filledPolygonRGBA(renderer, vxBorde, vyBorde, 4, 50, 50, 50, 255);
+		if ((n / 3) % 2)
+		filledPolygonRGBA(renderer, vxTramo, vyTramo, 4, 165, 165, 165, 255);
+	else
+		filledPolygonRGBA(renderer, vxTramo, vyTramo, 4, 180, 180, 180, 255);
+
 }
 
-void ManejadorDeTexturas::proyectar(Coordenada & p, int& ancho, int anchoPantalla, int altoPantalla,float x) {
+void ManejadorDeTexturas::proyectar(Coordenada & p, int& ancho, int anchoPantalla, int altoPantalla, float x) {
 	float scalado = 0;
-	if ((p.z - camara->getPosicion()->getY() - 1) != 0)
-		scalado = abs(0.6 / (p.z - camara->getPosicion()->getY() - 1));
-	else
-		ancho = 0;
-	p.x -= camara->getPosicion()->getX() - x;
-	p.y -= 300;
-	
-	p.x = (1 + scalado * p.x) * anchoPantalla / 2;
-	p.y = (1 - scalado * p.y ) * altoPantalla / 2;
-	ancho = scalado * ancho * anchoPantalla / 2;
-	
-	if (ancho < MINIMO_ANCHO)
-		ancho = MINIMO_ANCHO;
+	int anchoOriginal = ancho; 
+	float offset = p.z - camara->getPosicion()->getY() + 1;
+	if (offset > 0) {
+		if (offset < 0.000001)
+			offset = 0;
+		if (offset != 0)
+			scalado = 0.84 / offset;
+		else
+			scalado = 0;
+
+		p.x -= camara->getPosicion()->getX() + x;
+		p.y -= 300;
+
+		p.x = (1 + scalado * p.x) * anchoPantalla / 2;
+		p.y = (1 - scalado * p.y) * altoPantalla / 2;
+		ancho = scalado * ancho * anchoPantalla / 2;
+
+		if (ancho < MINIMO_ANCHO)
+			ancho = MINIMO_ANCHO;
+	} else {
+		ancho = anchoOriginal;
+		p.x -= camara->getPosicion()->getX() - x;
+		p.y = altoPantalla;
+	}
+
+
 }
 
 float ManejadorDeTexturas::normZIndex(float zIndex) {

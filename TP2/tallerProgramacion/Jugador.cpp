@@ -39,9 +39,8 @@ void Jugador::update(Unidad delta) {
 
 	// los 340 q aparecen son la mitaddel alcho de la pantlla menos el ancho de la imagen
 	// agrande la imagen en 1/2 la veia muychica cualquir csa se puede cambiar
-	if ((posicion.getX() + velocidad.getX()) >= -340 & (posicion.getX() + velocidad.getX()) <= 340) {
+	//if ((posicion.getX() + velocidad.getX()) >= -340 & (posicion.getX() + velocidad.getX()) <= 340) {
 		posicion.setX(posicion.getX() + velocidad.getX());  //retocar un poco mas tal vez, multiplicar por delta la velocidad ? 
-	}
 
 	posicion.setY(posicion.getY() + velocidad.getY());
 }
@@ -51,6 +50,7 @@ void Jugador::recibirEntrada(int pos, bool estadoEntrada) {
 }
 
 void Jugador::acelerar(Unidad delta) {
+	acelerando = true;
 	this->estado = EstadoAuto::DERECHO;
 	if (velocidad.getY() < LIMITE_VELOCIDAD_AUTO_Y)
 		this->velocidad.setY(this->velocidad.getY() + ACELERACION_AUTO_Y * delta);
@@ -59,26 +59,32 @@ void Jugador::acelerar(Unidad delta) {
 }
 
 void Jugador::doblarDerecha(Unidad delta) {
-	this->estado = EstadoAuto::DOBLANDO_DER;
-	if (velocidad.getX() < LIMITE_VELOCIDAD_AUTO_X)
-		this->velocidad.setX(this->velocidad.getX() + ACELERACION_AUTO_X * delta);
-	else
-		velocidad.setX(LIMITE_VELOCIDAD_AUTO_X);
+	if (acelerando) {
+		this->estado = EstadoAuto::DOBLANDO_DER;
+		if (velocidad.getX() < LIMITE_VELOCIDAD_AUTO_X)
+			this->velocidad.setX(this->velocidad.getX() + ACELERACION_AUTO_X * delta);
+		else
+			velocidad.setX(LIMITE_VELOCIDAD_AUTO_X);
+	}
 }
 
 void Jugador::doblarIzquierda(Unidad delta) {
-	this->estado = EstadoAuto::DOBLANDO_IZQ;
-	if (velocidad.getX() > -LIMITE_VELOCIDAD_AUTO_X)
-		this->velocidad.setX(this->velocidad.getX() - ACELERACION_AUTO_X * delta);
-	else
-		velocidad.setX(-LIMITE_VELOCIDAD_AUTO_X);
+	if (acelerando) {
+		this->estado = EstadoAuto::DOBLANDO_IZQ;
+		if (velocidad.getX() > -LIMITE_VELOCIDAD_AUTO_X)
+			this->velocidad.setX(this->velocidad.getX() - ACELERACION_AUTO_X * delta);
+		else
+			velocidad.setX(-LIMITE_VELOCIDAD_AUTO_X);
+	}
 }
 
 void Jugador::desacelerar(Unidad delta) {
 	if (velocidad.getY() > 0)
 		this->velocidad.setY(this->velocidad.getY() - ACELERACION_AUTO_Y * delta * FACTOR_DESACELERACION_X);
-	else
+	else {
 		velocidad.setY(0);
+		acelerando = false;
+	}
 }
 
 void Jugador::dejarDoblarDerecha(Unidad delta) {
