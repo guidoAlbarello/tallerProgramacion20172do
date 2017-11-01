@@ -37,6 +37,7 @@ void MapaView::render(Renderer* renderer) {
 	for (int i = 0; i < DISTANCIA_DIBUJADO; i++) {
 		Segmento* unSegmento = tramos[base + i];			//agregar chequeo distancia dibujado > tamaño array
 		ManejadorDeTexturas::getInstance()->dibujarTramo(unSegmento, ANCHO_TRAMO, renderer->getAnchoVentana(), renderer->getAltoVentana(), renderer->getRendererJuego(),(base+i), x);
+		ManejadorDeTexturas::getInstance()->drawStaticSprite("8", -300, 200, 200, 200, renderer->getAnchoVentana(), renderer->getRendererJuego(), SDL_FLIP_NONE,x);
 		x += dx;
 		dx += unSegmento->curva;
 	}

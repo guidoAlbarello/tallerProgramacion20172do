@@ -20,7 +20,7 @@ public:
 	static ManejadorDeTexturas* getInstance();
 	void drawAnimatedSprite(std::string id, int x, int y, int ancho, int alto, int filaActual, int frameActual, int anchoPantalla, int altoPantalla,
 			SDL_Renderer *pRenderer, SDL_RendererFlip flip);
-	void drawStaticSprite(std::string id, int x, int y, int ancho, int alto, int anchoPantalla, SDL_Renderer* pRenderer, SDL_RendererFlip flip);
+	void drawStaticSprite(std::string id, int x, int y, int ancho, int alto, int anchoPantalla, SDL_Renderer* pRenderer, SDL_RendererFlip flip, float xx);
 	void dibujarSprite(std::string id, int x, int y, int ancho, int alto, int anchoPantalla, SDL_Renderer* pRenderer, SDL_RendererFlip flip);
 	bool load(std::string fileName, std::string	id, SDL_Renderer* pRenderer);
 	void setCamara(Camara* unaCamara) { this->camara = unaCamara; }

@@ -114,6 +114,7 @@ void EstadoJuegoActivo::inicializarObjetos(EstadoInicialJuego* unEstado) {
 		spritesVec.push_back(unSprite);
 		spritesMap[unEstado->id[i]] = unSprite;
 	}
+	ManejadorDeTexturas::getInstance()->load("imagenes/column.png", "8", this->renderer->getRendererJuego());
 }
 
 void EstadoJuegoActivo::limpiarMapa() {
