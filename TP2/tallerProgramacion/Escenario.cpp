@@ -17,7 +17,7 @@ void Escenario::iniciar() {
 	cielo->setPosicion(0, 0);
 	posicionCielo.setX(0);
 	posicionCielo.setY(0);
-	cielo->setAnchoYAlto(800, 400);
+	cielo->setAnchoYAlto(1600, 400);
 	cielo->load(skyFileName, this->renderer->getRendererJuego()); // Setear el id antes del load!
 
 	colinas = new Sprite();
@@ -40,15 +40,8 @@ Escenario::~Escenario() {
 }
 
 void Escenario::update(Unidad deltaTiempo) {
-	if(limiteImagenCielo())
-		posicionCielo.setX(posicionCielo.getX() + VELOCIDAD_CIELO * deltaTiempo);
-	else
-		posicionCielo.setX(0);
-
-	if (limiteImagenColinas())
-		posicionColinas.setX(posicionColinas.getX() + VELOCIDAD_COLINAS * deltaTiempo);
-	else
-		posicionColinas.setX(0);
+	posicionCielo.setX((int(posicionCielo.getX() + VELOCIDAD_CIELO * deltaTiempo)) % cielo->getAncho());
+	//posicionColinas.setX((int(posicionColinas.getX() + VELOCIDAD_COLINAS * deltaTiempo)) % colinas->getAncho());
 }
 
 void Escenario::render() {

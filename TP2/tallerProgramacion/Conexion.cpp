@@ -19,7 +19,8 @@ Conexion::~Conexion() {
 void Conexion::cerrarConexion() {
 	this->conexionActiva = false;
 	this->conexionViva = false;
-	this->getUsuario()->getJugador()->setEstadoConexion(false);
+	if(this->getUsuario()->getJugador() != NULL)
+		this->getUsuario()->getJugador()->setEstadoConexion(false);
 
 	try {
 		if (t_procesarDatosRecibidos.joinable()) {
@@ -228,12 +229,13 @@ void Conexion::procesarDatosRecibidos() {
 			std::string datosRecibidosString(datosRecibidos);
 			MensajeDeRed *mensajeDeRed = new MensajeDeRed(datosRecibidosString, Constantes::SERVIDOR);
 			Usuario* unUsuario = NULL;
+			bool enviarEstadoInicial = false;
 			bool entrada[Constantes::CANT_TECLAS];
 			switch (mensajeDeRed->getComandoServidor()) {
 			case ComandoServidor::LOG:
 				Logger::getInstance()->log(Debug, "Recibio un LOG");
 				// Envia respuesta con el resultado del login
-				unUsuario = this->servidor->validarLogin(mensajeDeRed, mensajeResultado);
+				unUsuario = this->servidor->validarLogin(mensajeDeRed, mensajeResultado, enviarEstadoInicial);
 				if (unUsuario != NULL) {
 					this->usuarioConectado = unUsuario;
 					Logger::getInstance()->log(Debug, "El login fue satisfactorio");
@@ -247,6 +249,12 @@ void Conexion::procesarDatosRecibidos() {
 					Logger::getInstance()->log(Debug, "Enviando mensaje");
 					Logger::getInstance()->log(Debug, mensaje);
 					this->conexionConCliente->getSocket().enviarDatos(mensaje.c_str(), tamanio);
+					if (enviarEstadoInicial) {
+						EstadoInicialJuego* estadoInicial = this->servidor->getJuego()->getEstadoJuegoInicial();
+						inicializarClienteJuego(estadoInicial);
+						delete estadoInicial;
+					}
+						
 				} else {
 					Logger::getInstance()->log(Debug, "Login invalido");
 					ComandoCliente comando = ComandoCliente::RESULTADO_LOGIN;
@@ -287,8 +295,6 @@ void Conexion::procesarDatosRecibidos() {
 			if (datosRecibidos != NULL) {
 				free(datosRecibidos);
 			}
-		}
-		else {
 			timeOut = std::chrono::high_resolution_clock::now();
 		}
 

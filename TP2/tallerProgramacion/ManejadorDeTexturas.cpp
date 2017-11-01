@@ -41,7 +41,7 @@ void ManejadorDeTexturas::drawAnimatedSprite(std::string id, int x, int y, int a
 	SDL_RenderCopyEx(pRenderer, texturas[id], &srcRect, &destRect, 0, 0, flip);
 }
 
-void ManejadorDeTexturas::drawStaticSprite(std::string id, int x, int y, int ancho, int alto, int anchoPantalla, SDL_Renderer* pRenderer, SDL_RendererFlip flip) {
+void ManejadorDeTexturas::drawStaticSprite(std::string id, int x, int y, int ancho, int alto, int anchoPantalla, SDL_Renderer* pRenderer, SDL_RendererFlip flip ) {
 	float zIndex = camara->getPosicion()->getY() - 1 - y - alto / 2;
 	SDL_Rect srcRect;
 	SDL_Rect destRect;
@@ -58,11 +58,16 @@ void ManejadorDeTexturas::drawStaticSprite(std::string id, int x, int y, int anc
 
 void ManejadorDeTexturas::dibujarSprite(std::string id, int x, int y, int ancho, int alto, int anchoPantalla, SDL_Renderer* pRenderer, SDL_RendererFlip flip) {
 	SDL_Rect destRect;
-	destRect.x = x;
+	SDL_Rect srcRect;
+	srcRect.x = x;
+	srcRect.y = y;
+	srcRect.h = alto;
+	srcRect.w = anchoPantalla/2;
+	destRect.x = 0;
 	destRect.y = y;
-	destRect.w = ancho;
+	destRect.w = anchoPantalla;
 	destRect.h = alto;
-	SDL_RenderCopyEx(pRenderer, texturas[id], NULL, &destRect, 0, 0, flip);
+	SDL_RenderCopyEx(pRenderer, texturas[id], &srcRect, &destRect, 0, 0, flip);
 }
 
 bool ManejadorDeTexturas::load(std::string fileName, std::string id, SDL_Renderer * pRenderer) {

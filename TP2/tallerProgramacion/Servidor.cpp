@@ -321,10 +321,10 @@ void Servidor::mostrarMenuUsuariosConectados() {
 	std::cout << "|----------------------------|" << std::endl;
 }
 
-Usuario* Servidor::validarLogin(MensajeDeRed* mensaje, string &mensajeResultado) {
+Usuario* Servidor::validarLogin(MensajeDeRed* mensaje, string &mensajeResultado, bool& enviarEstadoInicial) {
 	std::string usuario = mensaje->getParametro(0);
 	std::string contrasenia = mensaje->getParametro(1);
-
+	
 	Usuario* unUsuario = this->usuarioValido(usuario, contrasenia);
 	if (unUsuario == NULL) {
 		mensajeResultado = "Login Invalido. EL usuario o la password son incorrectos.";
@@ -335,15 +335,18 @@ Usuario* Servidor::validarLogin(MensajeDeRed* mensaje, string &mensajeResultado)
 		unUsuario = NULL;
 	} else {
 		mensajeResultado = "El login fue satisfactorio";
-		if(!unUsuario->tieneJugadorAsignado())
+		if (!unUsuario->tieneJugadorAsignado()) {
 			unUsuario->setJugador(this->elJuego->agregarJugador());  //cuando se logea por segunda vez, va a explotar
+		} else {
+			enviarEstadoInicial = true;
+		}
 		unUsuario->getJugador()->setEstadoConexion(true); //aca se setea q el jugador esta conectado cuando se logea. 
 	}
 	return unUsuario;
 }
 
 void Servidor::updateModel() {
-	bool yaEnvioEstado = false;
+	yaEnvioEstado = false;
 	while (servidorActivo) {
 		this->verificarConexiones();
 		if (elJuego->jugadoresCargados()) {

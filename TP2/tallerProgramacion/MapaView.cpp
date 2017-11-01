@@ -32,14 +32,17 @@ void MapaView::renderMiniMap() {
 }
 
 void MapaView::render(Renderer* renderer) {
+	//dibujar tramos
 	int base = getTramoActual();
 	float x = 0, dx = 0;
 	for (int i = 0; i < DISTANCIA_DIBUJADO; i++) {
 		Segmento* unSegmento = tramos[base + i];			//agregar chequeo distancia dibujado > tamaño array
 		ManejadorDeTexturas::getInstance()->dibujarTramo(unSegmento, ANCHO_TRAMO, renderer->getAnchoVentana(), renderer->getAltoVentana(), renderer->getRendererJuego(),(base+i), x);
+
 		x += dx;
 		dx += unSegmento->curva;
 	}
+
 }
 
 bool MapaView::loadMedia() {

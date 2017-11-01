@@ -22,14 +22,17 @@ public:
 	Usuario* buscarUsuario(std::string unUsuario);
 	void iniciarServidor();
 	void cerrarServidor();
-	Usuario* validarLogin(MensajeDeRed* mensaje, string &mensajeResultado);
+	Usuario* validarLogin(MensajeDeRed* mensaje, string &mensajeResultado, bool& enviarEstadoInicial);
 	std::vector<Conexion*> getConexionesActivas();
 	std::vector<Usuario*> getUsuarios() { return this->configuracion->getUsuarios(); }
 	void recibirMensajeGlobal(string unEmisor, string unMensaje);
 	void enviarMensajePrivado(string unDestinatario, string unMensaje);
 	std::vector<Conexion*> conexionesActivas;
 	bool estaElUsuarioConectado(Usuario* unUsuario);
+	Juego* getJuego() { return elJuego; }
+	bool juegoIniciado() { return this->yaEnvioEstado; }
 protected:
+	bool yaEnvioEstado = false;
 	Servidor();
 	~Servidor();
 	ServerConfig* configuracion;
@@ -51,7 +54,6 @@ protected:
 	void mostrarMenuModosLogueo();
 	void mostrarMenuUsuariosConectados();
 	Usuario* usuarioValido(std::string usuario, std::string contrasenia);
-	void enviarChatGlobal();
 	void verificarConexiones();
 	void updateModel();
 	Juego* elJuego;
