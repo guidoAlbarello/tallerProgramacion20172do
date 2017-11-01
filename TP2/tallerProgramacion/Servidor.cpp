@@ -67,7 +67,6 @@ void Servidor::iniciarServidor() {
 			this->conexionDelServidor->iniciarConexion(this->configuracion->getPuerto(), this->configuracion->getMaxClientes());
 
 			this->t_escucharClientes = std::thread(&Servidor::escucharClientes, this);
-			//this->t_enviarChatGlobal = std::thread(&Servidor::enviarChatGlobal, this);
 			this->t_updateModel = std::thread(&Servidor::updateModel, this);
 			this->correrCicloPrincipal();
 		}
@@ -88,10 +87,6 @@ void Servidor::cerrarServidor() {
 		if (t_escucharClientes.joinable()) {
 			t_escucharClientes.join();
 		}
-
-		//if (t_enviarChatGlobal.joinable()) {
-		//	t_enviarChatGlobal.join();
-		//}
 
 		if (t_updateModel.joinable()) {
 			t_updateModel.join();
@@ -347,30 +342,10 @@ Usuario* Servidor::validarLogin(MensajeDeRed* mensaje, string &mensajeResultado)
 	return unUsuario;
 }
 
-void Servidor::enviarChatGlobal() {
-	while (servidorActivo) {
-		this->verificarConexiones();
-		int tamanioBuzon = buzonDeChatGlobal->getTamanio();
-		if (tamanioBuzon != 0) {
-			int i = 0;
-			for (i = 0; i < tamanioBuzon; i++) {
-				Mensaje* unMensaje = this->buzonDeChatGlobal->verMensaje(i);
-				for (std::vector<Conexion*>::iterator it = conexionesActivas.begin(); it != conexionesActivas.end(); ++it) {
-					Conexion* unaConexion = (Conexion*)*it;
-					if (unaConexion->getUsuario() != NULL)
-						unaConexion->enviarChatGlobal(true, unMensaje->getEmisor(), unMensaje->getMensaje());
-				}
-
-			}
-			if (i > 0)
-				this->buzonDeChatGlobal->eliminarMensajes(i);
-		}
-	}
-}
-
 void Servidor::updateModel() {
 	bool yaEnvioEstado = false;
 	while (servidorActivo) {
+		this->verificarConexiones();
 		if (elJuego->jugadoresCargados()) {
 			if (yaEnvioEstado) {									//este if asqueroso cambiarlo. chequear q pase de estado esperar jugadores a init, de otra forma
 				EstadoModeloJuego* nuevoEstado = this->elJuego->getEstadoJuego();

@@ -18,9 +18,12 @@ Cliente * Cliente::getInstance() {
 
 void Cliente::render() {
 	while (clienteActivo) {
+
 		if (this->renderer != NULL) {
 			this->maquinaDeEstados->render();
 		}
+
+		std::this_thread::sleep_for(std::chrono::milliseconds(1000/Constantes::FPS));
 	}
 }
 
@@ -113,8 +116,7 @@ void Cliente::conectarseAlServidor() {
 			this->renderer = new Renderer();
 			this->renderer->iniciarRendererJuego();
 			this->maquinaDeEstados->setRenderer(this->renderer);
-		}
-		else {
+		} else {
 			this->conexionViva = false;
 			if (t_render.joinable()) {
 				t_render.join();
@@ -123,8 +125,7 @@ void Cliente::conectarseAlServidor() {
 			std::cout << "No se pudo conectar al sevidor" << std::endl;
 			m_print.unlock();
 		}
-	}
-	else {
+	} else {
 		m_print.lock();
 		std::cout << "Ya se encuentra conectado al servidor" << std::endl;
 		m_print.unlock();
@@ -160,7 +161,7 @@ void Cliente::desconectarseDelServidor() {
 		}
 	} catch (exception e) {
 		Logger::getInstance()->log(Debug, "Ocurrio un error al desconectarse del servidor");
-	}	
+	}
 }
 
 void Cliente::hacerTestDeEstres() {
@@ -222,15 +223,13 @@ void Cliente::leerTestXML(std::string stressFileName, int stressTimeMillis) {
 				m_print.lock();
 				std::cout << "El test de stress finalizo satisfactoriamente" << std::endl;
 				m_print.unlock();
-			}
-			else {
+			} else {
 				Logger::getInstance()->log(Actividad, "[Cliente.cpp] Finalizo el test de stress sin enviar todos los mensajes");
 				m_print.lock();
 				std::cout << "El test de stress finalizo sin enviar todos los mensajes" << std::endl;
 				m_print.unlock();
 			}
-		}
-		else {
+		} else {
 			Logger::getInstance()->log(LogMode::Error, "[Cliente.cpp] No se encontro el nodo 'StressTest' en el archivo de test XML. No se puede realizar el test de estres.");
 		}
 	} catch (std::exception& e) {
@@ -271,7 +270,7 @@ void Cliente::logearseAlServidor() {
 		cout << "Usted ya esta logueado." << endl;
 		return;
 	}
-		
+
 
 	LoggerView loggerView = LoggerView(this->renderer->getRendererJuego());
 
@@ -292,27 +291,27 @@ void Cliente::logearseAlServidor() {
 		Juego* juego = new Juego();
 		juego->iniciarJuego();
 	}
-		/*
-		std::string user;
-		std::string pass;
-		mostrarMenuLogin();
-		std::cout << "Ingrese su nombre de usuario" << std::endl;
-		std::getline(std::cin, user);
-		std::cout << "Ingrese su contrasenia" << std::endl;
-		std::getline(std::cin, pass);
+	/*
+	std::string user;
+	std::string pass;
+	mostrarMenuLogin();
+	std::cout << "Ingrese su nombre de usuario" << std::endl;
+	std::getline(std::cin, user);
+	std::cout << "Ingrese su contrasenia" << std::endl;
+	std::getline(std::cin, pass);
 
-		Logger::getInstance()->log(Debug, "Logueando al servidor con credenciales: ");
-		Logger::getInstance()->log(Debug, "Usuario: " + user);
-		Logger::getInstance()->log(Debug, "Contrasenia: " + pass);
+	Logger::getInstance()->log(Debug, "Logueando al servidor con credenciales: ");
+	Logger::getInstance()->log(Debug, "Usuario: " + user);
+	Logger::getInstance()->log(Debug, "Contrasenia: " + pass);
 
-		estaLogueado = this->conexionDelCliente->login(user, pass);
+	estaLogueado = this->conexionDelCliente->login(user, pass);
 
-		if (estaLogueado) {
-			renderer = new Renderer();
-			renderer->iniciarRenderer();
-		}
-		//mutex en el buffer de manejar conexion .- cuando haya q manejar input en el cliente, se le pasa el input desde le manejador de input al manejador de conexion. o se manda a cliente para q procese primerop si es necesario y d3sp el manejador de conexion
-		*/
+	if (estaLogueado) {
+		renderer = new Renderer();
+		renderer->iniciarRenderer();
+	}
+	//mutex en el buffer de manejar conexion .- cuando haya q manejar input en el cliente, se le pasa el input desde le manejador de input al manejador de conexion. o se manda a cliente para q procese primerop si es necesario y d3sp el manejador de conexion
+	*/
 
 	//}
 
@@ -431,7 +430,7 @@ void Cliente::procesarDatosRecibidos() {
 		if (datosRecibidos != NULL) {
 			timeOut = std::chrono::high_resolution_clock::now();
 			std::string datosRecibidosString(datosRecibidos);
-			MensajeDeRed* mensajeDeRed = new MensajeDeRed(datosRecibidosString, Constantes::CLIENTE); 
+			MensajeDeRed* mensajeDeRed = new MensajeDeRed(datosRecibidosString, Constantes::CLIENTE);
 			EstadoModeloJuego* estadoModeloJuego = NULL;
 			EstadoInicialJuego* estadoInicialJuego = NULL;
 
@@ -487,8 +486,7 @@ void Cliente::procesarDatosRecibidos() {
 				delete estadoInicialJuego;
 			if (estadoModeloJuego != NULL)
 				delete estadoModeloJuego;
-		}
-		else {
+		} else {
 			timeOut = std::chrono::high_resolution_clock::now();
 		}
 
@@ -499,7 +497,8 @@ void Cliente::procesarDatosRecibidos() {
 			Logger::getInstance()->log(Debug, "Se desconecto un cliente del servidor por falta de respuesta al ping");
 			std::cout << "Se ha desconectado del servidor" << std::endl;
 		}
-		mostrarMensajesGlobales();
+		std::this_thread::sleep_for(std::chrono::milliseconds(1000/(Constantes::FPS - 7)));
+		//mostrarMensajesGlobales();
 	}
 }
 

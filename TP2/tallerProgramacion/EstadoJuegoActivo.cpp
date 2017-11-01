@@ -40,8 +40,8 @@ void EstadoJuegoActivo::update(ManejadorDeConexionCliente* conexionCliente) {
 		}
 
 		m_estadoModelo.lock();
-		this->escenario->setPosicionCielo(estadoModeloJuego->estadoEscenario.cieloX, estadoModeloJuego->estadoEscenario.cieloY);
-		this->escenario->setPosicionColinas(estadoModeloJuego->estadoEscenario.colinasX, estadoModeloJuego->estadoEscenario.colinasY);
+		this->escenario->setPosicionCielo(estadoModeloJuego->estadoEscenario.cieloX, 0);
+		//this->escenario->setPosicionColinas(estadoModeloJuego->estadoEscenario.colinasX, 100);
 		m_estadoModelo.unlock();
 	}
 }
@@ -63,7 +63,7 @@ void EstadoJuegoActivo::render() {
 			spritesVec[i]->render(this->renderer);
 		}
 		SDL_RenderPresent(this->renderer->getRendererJuego());
-
+		
 		this->mapaView->renderMiniMap();
 	}
 }

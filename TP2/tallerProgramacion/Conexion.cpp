@@ -298,6 +298,8 @@ void Conexion::procesarDatosRecibidos() {
 			this->conexionViva = false; 
 			//this->cerrarConexion();
 		}
+
+		std::this_thread::sleep_for(std::chrono::milliseconds(Constantes::UPDATE_MODEL_DELAY));//esdto se podria cambiar x un while hasta q no pase el intervalo de tiempo, y mientras q no pase aprovechar el tiempo para hacer clean ups  
 	}
 }
 

@@ -17,16 +17,16 @@ void Escenario::iniciar() {
 	cielo->setPosicion(0, 0);
 	posicionCielo.setX(0);
 	posicionCielo.setY(0);
-	cielo->setAnchoYAlto(800, 200);
+	cielo->setAnchoYAlto(800, 400);
 	cielo->load(skyFileName, this->renderer->getRendererJuego()); // Setear el id antes del load!
 
 	colinas = new Sprite();
 	std::string hillsFileName = "fondo/hills.png";
 	colinas->setId("colinas");
-	colinas->setPosicion(0, 200);
-	posicionCielo.setX(0);
-	posicionCielo.setY(200);
-	colinas->setAnchoYAlto(800, 50);
+	colinas->setPosicion(0, 100);
+	posicionColinas.setX(0);
+	posicionColinas.setY(100);
+	colinas->setAnchoYAlto(800, 300);
 	colinas->load(hillsFileName, this->renderer->getRendererJuego()); // Setear el id antes del load!
 }
 
