@@ -79,17 +79,15 @@ void MapaView::renderMiniMap() {
 }
 
 void MapaView::render(Renderer* renderer) {
-	//dibujar tramos
 	int base = getTramoActual();
 	float x = 0, dx = 0;
 	for (int i = 0; i < DISTANCIA_DIBUJADO; i++) {
 		Segmento* unSegmento = tramos[base + i];			//agregar chequeo distancia dibujado > tamaño array
-		ManejadorDeTexturas::getInstance()->dibujarTramo(unSegmento, ANCHO_TRAMO, renderer->getAnchoVentana(), renderer->getAltoVentana(), renderer->getRendererJuego(),(base+i), x);
-
+		ManejadorDeTexturas::getInstance()->dibujarTramo(unSegmento, ANCHO_TRAMO, renderer->getAnchoVentana(), renderer->getAltoVentana(), renderer->getRendererJuego(), (base + i), x);
+		ManejadorDeTexturas::getInstance()->drawStaticSprite("8", -200, 1000, 200, 200, renderer->getAnchoVentana(), renderer->getRendererJuego(), SDL_FLIP_NONE, x);
 		x += dx;
 		dx += unSegmento->curva;
 	}
-
 }
 
 bool MapaView::loadMedia() {
@@ -109,6 +107,7 @@ void MapaView::update() {
 }
 
 void MapaView::dibujarBordes(SDL_Renderer* renderer) {
+	// Dibuja bordes del mapa
 	Line lineTop = { 10, 20, 790, 20 };
 	SDL_RenderDrawLine(renderer, lineTop.x1, lineTop.y1, lineTop.x2, lineTop.y2);
 	Line lineBottom = { 10, 580, 790, 580 };
@@ -281,7 +280,6 @@ void MapaView::dibujarObjetosTramo(std::vector<ObjetoFijo*> objetosDelMapa, Orie
 				objetoActual->setXMapa(rectObjeto->x);
 				objetoActual->setYMapa(rectObjeto->y);
 				this->objetosADibujar.push_back(rectObjeto);
-				cantidadDibujadas++;
 			}
 			objetosDelMapaConUbicacion.push_back(objetoActual);
 			SDL_RenderDrawRect(renderer, rectObjeto);
@@ -289,7 +287,6 @@ void MapaView::dibujarObjetosTramo(std::vector<ObjetoFijo*> objetosDelMapa, Orie
 		this->mapa->setObjetosDelMapa(objetosDelMapaConUbicacion);
 	}
 }
-
 
 Orientacion MapaView::unirTramoRotado(SentidoCurva sentidoRotacion, Orientacion orientacionAnterior, int ultimaX, int ultimaY, int longitud, Coordenada* coordenadaUltimoTramo, SDL_Renderer* renderer) {
 	if (!this->terminoDibujarMapa) {

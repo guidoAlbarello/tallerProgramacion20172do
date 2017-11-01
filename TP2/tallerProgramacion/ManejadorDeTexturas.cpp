@@ -41,18 +41,19 @@ void ManejadorDeTexturas::drawAnimatedSprite(std::string id, int x, int y, int a
 	SDL_RenderCopyEx(pRenderer, texturas[id], &srcRect, &destRect, 0, 0, flip);
 }
 
-void ManejadorDeTexturas::drawStaticSprite(std::string id, int x, int y, int ancho, int alto, int anchoPantalla, SDL_Renderer* pRenderer, SDL_RendererFlip flip ) {
-	float zIndex = camara->getPosicion()->getY() - 1 - y - alto / 2;
-	SDL_Rect srcRect;
+void ManejadorDeTexturas::drawStaticSprite(std::string id, int x, int y, int ancho, int alto, int anchoPantalla, SDL_Renderer* pRenderer, SDL_RendererFlip flip, float xx) {
+	Coordenada p1;
 	SDL_Rect destRect;
-	srcRect.x = 0;
-	srcRect.y = 0;
-	srcRect.w = destRect.w = ancho;
-	srcRect.h = destRect.h = alto;
-	destRect.x = (x - ancho / 2) - camara->getPosicion()->getX() + anchoPantalla / 2;
-	destRect.y = (y - alto / 2);
-
-	SDL_RenderCopyEx(pRenderer, texturas[id], &srcRect, &destRect, 0, 0, flip);
+	int anchoDest = ancho;
+	p1.x = x;
+	p1.y = 0;
+	p1.z = y;
+	proyectar(p1, anchoDest, anchoPantalla, 600, xx);
+	destRect.x = p1.x;
+	destRect.y = p1.y;
+	destRect.w = anchoDest;
+	destRect.h = anchoDest;
+	SDL_RenderCopyEx(pRenderer, texturas[id], NULL, &destRect, 0, 0, flip);
 }
 
 
@@ -62,13 +63,14 @@ void ManejadorDeTexturas::dibujarSprite(std::string id, int x, int y, int ancho,
 	srcRect.x = x;
 	srcRect.y = y;
 	srcRect.h = alto;
-	srcRect.w = anchoPantalla/2;
+	srcRect.w = anchoPantalla / 2;
 	destRect.x = 0;
 	destRect.y = y;
 	destRect.w = anchoPantalla;
 	destRect.h = alto;
 	SDL_RenderCopyEx(pRenderer, texturas[id], &srcRect, &destRect, 0, 0, flip);
 }
+
 
 bool ManejadorDeTexturas::load(std::string fileName, std::string id, SDL_Renderer * pRenderer) {
 	SDL_Surface* pTempSurface = IMG_Load(fileName.c_str());
