@@ -349,7 +349,7 @@ void Servidor::updateModel() {
 	yaEnvioEstado = false;
 	while (servidorActivo) {
 		this->verificarConexiones();
-		if (elJuego->jugadoresCargados()) {
+		if (elJuego->getJugadores().size() == this->configuracion->getMaxClientes()) {
 			if (yaEnvioEstado) {									//este if asqueroso cambiarlo. chequear q pase de estado esperar jugadores a init, de otra forma
 				EstadoModeloJuego* nuevoEstado = this->elJuego->getEstadoJuego();
 				for (std::vector<Conexion*>::iterator it = conexionesActivas.begin(); it != conexionesActivas.end(); ++it) {
@@ -361,6 +361,7 @@ void Servidor::updateModel() {
 				this->elJuego->liberarModeloEstado(nuevoEstado);
 			} else {
 				EstadoInicialJuego* estadoInicial = this->elJuego->getEstadoJuegoInicial();
+				estadoInicial->tamanio = this->configuracion->getMaxClientes();
 				for (std::vector<Conexion*>::iterator it = conexionesActivas.begin(); it != conexionesActivas.end(); ++it) {
 					Conexion* unaConexion = (Conexion*)*it;
 					if (unaConexion->getUsuario() != NULL && unaConexion->getConexionActiva()) {
