@@ -46,8 +46,8 @@ void ManejadorDeTexturas::drawAnimatedSprite(std::string id, int x, int y, int a
 	proyectar(p1, anchoDest, anchoPantalla, altoPantalla, -45);
 	destRect.x = p1.x;
 	destRect.y = p1.y;
-	destRect.w = ancho * 3 / 2;
-	destRect.h = alto * 3 / 2;
+	destRect.w = anchoDest * 3 / 2;
+	destRect.h = alto * anchoDest/ancho * 3 / 2;
 
 	SDL_RenderCopyEx(pRenderer, texturas[id], &srcRect, &destRect, 0, 0, flip);
 }
