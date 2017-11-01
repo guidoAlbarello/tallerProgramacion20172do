@@ -4,6 +4,6 @@ Posicion ObjetoFijo::getPosicion() {
 	return this->posicion;
 }
 
-int ObjetoFijo::getUbicacionKM() {
+int ObjetoFijo::getUbicacionM() {
 	return this->ubicacionMetros;
 }
