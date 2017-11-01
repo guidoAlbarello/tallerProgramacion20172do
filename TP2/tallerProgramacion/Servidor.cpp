@@ -63,7 +63,7 @@ void Servidor::iniciarServidor() {
 	try {
 		Logger::getInstance()->log(Debug, "Iniciando servidor...");
 		this->leerServerConfig();
-		if (this->elJuego->iniciarJuego()) {   //pasasrle por param la configuracion del xml
+		if (this->elJuego->iniciarJuego(configuracion->getMaxClientes())) {   //pasasrle por param la configuracion del xml
 			this->conexionDelServidor->iniciarConexion(this->configuracion->getPuerto(), this->configuracion->getMaxClientes());
 
 			this->t_escucharClientes = std::thread(&Servidor::escucharClientes, this);

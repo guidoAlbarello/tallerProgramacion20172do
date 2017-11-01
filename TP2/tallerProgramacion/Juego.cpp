@@ -2,8 +2,9 @@
 #include <iostream>
 #include "Carro.h"
 
-bool Juego::iniciarJuego() {
+bool Juego::iniciarJuego(int cantidadJugadoresMaxima) {
 	this->cantidadJugadores = 0;
+	this->cantidadJugadoresMaxima = cantidadJugadoresMaxima;
 	this->iniciarEscenario();
 	this->t_gameLoop = std::thread(&Juego::gameLoop, this);
 	return true;
@@ -28,10 +29,7 @@ void Juego::update(Unidad tiempoDelta) {
 
 void Juego::obtenerEntrada() {
 	//update entrada para todos los jugadores. 
-	for (int i = 0; i < this->jugadores.size(); i++) {
-		Jugador* unJugador = this->jugadores[i];
-		unJugador->leerEntrada();
-	}
+	
 }
 
 void Juego::agregarObjetoDeJuego(ObjetoDeJuego* objetoDeJuego) {
@@ -49,7 +47,7 @@ std::vector<Jugador*> Juego::getJugadores() {
 EstadoModeloJuego* Juego::getEstadoJuego() {
 	EstadoModeloJuego* nuevoEstado = new EstadoModeloJuego();
 
-	for (int i = 0; i < Constantes::CANT_JUGADORES_INICIAR; i++) { //solo envia  el estado de los jugadores, deberia mandar el de todas las entidades, cambiar esto cuando haya mas objetos.
+	for (int i = 0; i < jugadores.size(); i++) { //solo envia  el estado de los jugadores, deberia mandar el de todas las entidades, cambiar esto cuando haya mas objetos.
 		Jugador* unJugador = jugadores[i];
 		nuevoEstado->estadoJugadores[i].id = unJugador->getId();
 		nuevoEstado->estadoJugadores[i].conectado = unJugador->estaConectado();
@@ -60,7 +58,7 @@ EstadoModeloJuego* Juego::getEstadoJuego() {
 		nuevoEstado->estadoJugadores[i].posYCamara = unJugador->getCamara()->getPosicionTarget()->getY();
 	}
 	
-	nuevoEstado->tamanio = Constantes::CANT_JUGADORES_INICIAR;
+	nuevoEstado->tamanio = jugadores.size();
 
 	nuevoEstado->estadoEscenario.cieloX = escenario->getPosicionCielo()->getX();
 	nuevoEstado->estadoEscenario.cieloY = escenario->getPosicionCielo()->getY();
@@ -85,16 +83,14 @@ EstadoInicialJuego * Juego::getEstadoJuegoInicial() {
 	escenario->getPosicionCielo()->setY(0);
 	escenario->getPosicionColinas()->setX(0);
 	escenario->getPosicionColinas()->setY(200);
-
-	estado->tamanio = Constantes::CANT_JUGADORES_INICIAR; //cambiar cuando sea dinamico
-
+	
 	return estado;
 }
 
 Jugador* Juego::agregarJugador() {
 	Jugador* nuevoJugador = new Jugador();
 	nuevoJugador->setId(cantidadJugadores);
-	nuevoJugador->setPosicion(0,0);
+	nuevoJugador->setPosicion(this->cantidadJugadores * 100,0);
 	this->cantidadJugadores++;
 	this->jugadores.push_back(nuevoJugador);
 	return nuevoJugador;

@@ -18,7 +18,7 @@
 class Juego {
 public:
 	Juego();
-	bool iniciarJuego();
+	bool iniciarJuego(int cantidadJugadoresMaxima);
 	void update(Unidad tiempoDelta);
 	void obtenerEntrada();
 	void agregarObjetoDeJuego(ObjetoDeJuego* objetoDeJuego);
@@ -27,7 +27,7 @@ public:
 	EstadoModeloJuego* getEstadoJuego();
 	Jugador* agregarJugador();
 	void liberarModeloEstado(EstadoModeloJuego* unEstado);
-	bool jugadoresCargados() { return jugadores.size() == Constantes::CANT_JUGADORES_INICIAR; }
+	bool jugadoresCargados() { return jugadores.size() == cantidadJugadoresMaxima; }
 	EstadoInicialJuego* getEstadoJuegoInicial();
 private:
 	Renderer* renderer;
@@ -41,6 +41,7 @@ private:
 	mutex m_jugadores;
 	mutex m_objetos;
 	Escenario* escenario;
+	int cantidadJugadoresMaxima; 
 };
 
 #endif

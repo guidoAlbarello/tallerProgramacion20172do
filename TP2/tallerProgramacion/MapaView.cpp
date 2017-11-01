@@ -89,7 +89,7 @@ void MapaView::render(Renderer* renderer) {
 		dx += unSegmento->curva;
 	}
 
-	ManejadorDeTexturas::getInstance()->drawStaticSprite("8", -200, 1000, 200, 200, renderer->getAnchoVentana(), renderer->getRendererJuego(), SDL_FLIP_NONE,0);
+	ManejadorDeTexturas::getInstance()->drawStaticSprite("8", -700, 1000, 200, 200, renderer->getAnchoVentana(), renderer->getRendererJuego(), SDL_FLIP_NONE,0);
 }
 
 bool MapaView::loadMedia() {

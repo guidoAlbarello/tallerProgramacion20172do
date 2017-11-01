@@ -193,16 +193,15 @@ void Conexion::enviarUpdate(EstadoModeloJuego* estado) {
 
 void Conexion::inicializarClienteJuego(EstadoInicialJuego * estado) {
 	Logger::getInstance()->log(Debug, "Enviando init");
-	ComandoCliente comando = ComandoCliente::INIT;
-	string resultado;
+	/*string resultado;
 
 	MensajeDeRed* mensajeDeRed = new MensajeDeRed(comando);
 	mensajeDeRed->agregarParametro(std::to_string(estado->idJugador));
 	mensajeDeRed->agregarParametro(std::to_string(estado->tamanio));
 	std::string strArrayIds;
-	for (int i = 0; i < Constantes::CANT_JUGADORES_INICIAR; i++) {
+	for (int i = 0; i < estado->tamanio; i++) {
 		strArrayIds.append(std::to_string(estado->id[i]));
-		if (i != Constantes::CANT_JUGADORES_INICIAR - 1) {
+		if (i != estado->tamanio - 1) {
 			strArrayIds.append(&Constantes::separadorIds);
 		}
 	}
@@ -211,8 +210,19 @@ void Conexion::inicializarClienteJuego(EstadoInicialJuego * estado) {
 	int tamanio = mensaje.length() + 1;
 	Logger::getInstance()->log(Debug, "Enviando mensaje");
 	Logger::getInstance()->log(Debug, mensaje);
+	*/
+	estado->idJugador = this->usuarioConectado->getJugador()->getId();
+	int tamanio = sizeof(EstadoInicialJuego) + 4 + 1;  //+ tamaño "update_model" + caracter separador
+	char* data = new char[tamanio];
+	std::string strComando = "INIT";
+	strComando.append(&Constantes::separador);
+	const char* comando = strComando.c_str();
+	memcpy(data, comando, 5);
+	memcpy(data + 5, estado, sizeof(EstadoInicialJuego));
+	this->conexionConCliente->getSocket().enviarDatos(data, tamanio);
 
-	this->conexionConCliente->getSocket().enviarDatos(mensaje.c_str(), tamanio);
+	if (data != NULL)
+		free(data);
 }
 
 
@@ -302,7 +312,7 @@ void Conexion::procesarDatosRecibidos() {
 		if (tiempoTardado > (Constantes::PING_DELAY)) {
 			this->conexionActiva = false; 
 			this->conexionViva = false; 
-			//this->cerrarConexion();
+			this->cerrarConexion();
 		}
 
 		std::this_thread::sleep_for(std::chrono::milliseconds(Constantes::UPDATE_MODEL_DELAY));//esdto se podria cambiar x un while hasta q no pase el intervalo de tiempo, y mientras q no pase aprovechar el tiempo para hacer clean ups  
