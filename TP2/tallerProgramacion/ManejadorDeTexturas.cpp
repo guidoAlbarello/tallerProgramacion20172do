@@ -63,7 +63,7 @@ void ManejadorDeTexturas::drawStaticSprite(std::string id, int x, int y, int anc
 	destRect.x = p1.x;
 	destRect.y = p1.y;
 	destRect.w = anchoDest;
-	destRect.h = anchoDest;
+	destRect.h = alto * anchoDest / ancho;
 	SDL_RenderCopyEx(pRenderer, texturas[id], NULL, &destRect, 0, 0, flip);
 }
 

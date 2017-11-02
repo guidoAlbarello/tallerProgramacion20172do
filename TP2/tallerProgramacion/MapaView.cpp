@@ -85,8 +85,8 @@ void MapaView::render(Renderer* renderer) {
 		Segmento* unSegmento = tramos[base + i];			//agregar chequeo distancia dibujado > tamaño array
 		ManejadorDeTexturas::getInstance()->dibujarTramo(unSegmento, ANCHO_TRAMO, renderer->getAnchoVentana(), renderer->getAltoVentana(), renderer->getRendererJuego(), (base + i),x);
 		
-		x += dx;
-		dx += unSegmento->curva;
+		//x += dx;
+		//dx += unSegmento->curva;
 	}
 
 	ManejadorDeTexturas::getInstance()->drawStaticSprite("8", -700, 1000, 200, 200, renderer->getAnchoVentana(), renderer->getRendererJuego(), SDL_FLIP_NONE,0);
@@ -470,8 +470,11 @@ void MapaView::initTramos() {
 		unSegmento->p1.z = (i) * ALTO_TRAMO;
 		unSegmento->p2.z = (i+1) * ALTO_TRAMO;
 		unSegmento->curva = 0;
-		if ( i > 100 && i < 200)
-			unSegmento->curva =1;
+		if (i > 500 && i < 700) {
+			//unSegmento->curva = 1;
+			unSegmento->p1.x = i;
+			unSegmento->p2.x = i+10;
+		}
 		tramos.push_back(unSegmento);
 	}
 }

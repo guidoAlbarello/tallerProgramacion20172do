@@ -203,6 +203,7 @@ void Conexion::inicializarClienteJuego(EstadoInicialJuego * estado) {
 		strArrayIds.append(std::to_string(estado->id[i]));
 		if (i != estado->tamanio - 1) {
 			strArrayIds.append(&Constantes::separadorIds);
+
 		}
 	}
 	mensajeDeRed->agregarParametro(strArrayIds);
@@ -247,12 +248,12 @@ void Conexion::procesarDatosRecibidos() {
 				// Envia respuesta con el resultado del login
 				unUsuario = this->servidor->validarLogin(mensajeDeRed, mensajeResultado, enviarEstadoInicial);
 				if (unUsuario != NULL) {
-					this->usuarioConectado = unUsuario;
+					
 					Logger::getInstance()->log(Debug, "El login fue satisfactorio");
 					ComandoCliente comando = ComandoCliente::RESULTADO_LOGIN;
 					MensajeDeRed* mensajeDeRed = new MensajeDeRed(comando);
 					mensajeDeRed->agregarParametro("LOGIN_OK"); // ResultCode
-					mensajeDeRed->agregarParametro(to_string(usuarioConectado->getJugador()->getId()));
+					mensajeDeRed->agregarParametro(to_string(unUsuario->getJugador()->getId()));
 					mensajeDeRed->agregarParametro(mensajeResultado);
 					string mensaje = mensajeDeRed->getComandoClienteSerializado();
 					int tamanio = mensaje.length() + 1;
@@ -264,7 +265,7 @@ void Conexion::procesarDatosRecibidos() {
 						inicializarClienteJuego(estadoInicial);
 						delete estadoInicial;
 					}
-						
+					this->usuarioConectado = unUsuario;
 				} else {
 					Logger::getInstance()->log(Debug, "Login invalido");
 					ComandoCliente comando = ComandoCliente::RESULTADO_LOGIN;
@@ -312,7 +313,7 @@ void Conexion::procesarDatosRecibidos() {
 		if (tiempoTardado > (Constantes::PING_DELAY)) {
 			this->conexionActiva = false; 
 			this->conexionViva = false; 
-			this->cerrarConexion();
+			//this->cerrarConexion();
 		}
 
 		std::this_thread::sleep_for(std::chrono::milliseconds(Constantes::UPDATE_MODEL_DELAY));//esdto se podria cambiar x un while hasta q no pase el intervalo de tiempo, y mientras q no pase aprovechar el tiempo para hacer clean ups  

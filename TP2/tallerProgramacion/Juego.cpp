@@ -127,5 +127,7 @@ void Juego::gameLoop() {
 			tiempoAcumulado -= 1000.0 / Constantes::FPS;
 			nLoops++;
 		}
+
+
 	}
 }
