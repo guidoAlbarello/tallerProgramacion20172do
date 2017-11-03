@@ -107,7 +107,6 @@ void Servidor::verificarConexiones() {
 			}
 		}
 	}
-
 }
 
 void Servidor::leerServerConfig() {

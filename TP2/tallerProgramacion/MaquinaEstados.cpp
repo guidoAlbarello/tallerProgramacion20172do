@@ -34,7 +34,9 @@ void MaquinaEstados::popState() {
 }
 
 void MaquinaEstados::recieveInput(void * param) {
+	m_estado.lock();
 	estadosDeJuego.back()->recieveInput(param);
+	m_estado.unlock();
 }
 
 void MaquinaEstados::changeState(EstadoJuego *pState, void * param) {

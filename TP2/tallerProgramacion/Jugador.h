@@ -5,11 +5,11 @@
 #include "ObjetoDeJuego.h"
 #include "Camara.h"
 #define ACELERACION_AUTO_X 0.5
-#define ACELERACION_AUTO_Y 0.8
-#define FACTOR_DESACELERACION_X 0.2
+#define ACELERACION_AUTO_Y 2.0
+#define FACTOR_DESACELERACION_X 0.4
 #define FACTOR_DESACELERACION_Y 0.9
-#define LIMITE_VELOCIDAD_AUTO_X 8.0
-#define LIMITE_VELOCIDAD_AUTO_Y 20.0
+#define LIMITE_VELOCIDAD_AUTO_X 40.0
+#define LIMITE_VELOCIDAD_AUTO_Y 100.0
 class Jugador : public ObjetoDeJuego {  //tal vez diferenciar entre movil y estatico
 
 public:
