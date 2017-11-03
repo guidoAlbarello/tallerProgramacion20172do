@@ -33,6 +33,7 @@ void EstadoJuegoActivo::update(ManejadorDeConexionCliente* conexionCliente) {
 				}
 
 				unSprite->setPosicionInt(estado->posX, estado->posY);
+				unSprite->setGrisar(!estado->conectado);
 			}
 
 			if (estado->id == idJugador)
@@ -114,6 +115,7 @@ void EstadoJuegoActivo::inicializarObjetos(EstadoInicialJuego* unEstado) {
 		spritesMap[unEstado->id[i]] = unSprite;
 	}
 	ManejadorDeTexturas::getInstance()->load("imagenes/column.png", "8", this->renderer->getRendererJuego());
+	ManejadorDeTexturas::getInstance()->load("imagenes/playerGrisado.png", "autoGrisado", this->renderer->getRendererJuego());
 }
 
 void EstadoJuegoActivo::limpiarMapa() {

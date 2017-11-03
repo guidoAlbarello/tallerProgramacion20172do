@@ -16,7 +16,7 @@ ManejadorDeTexturas::ManejadorDeTexturas() {
 	this->camara = new Camara();
 }
 
-void ManejadorDeTexturas::drawAnimatedSprite(std::string id, int x, int y, int ancho, int alto, int filaActual, int frameActual, int anchoPantalla, int altoPantalla, SDL_Renderer * pRenderer, SDL_RendererFlip flip) {
+void ManejadorDeTexturas::drawAnimatedSprite(std::string id, int x, int y, int ancho, int alto, int filaActual, int frameActual, int anchoPantalla, int altoPantalla, SDL_Renderer * pRenderer, SDL_RendererFlip flip, bool grisar) {
 	/*float zIndex = abs(camara->getPosicion()->getY() - 1 - y);		//hacer y - h/2 en vez de - y!!!!!!!!!!
 	SDL_Rect srcRect;
 	SDL_Rect destRect;
@@ -48,8 +48,10 @@ void ManejadorDeTexturas::drawAnimatedSprite(std::string id, int x, int y, int a
 	destRect.y = p1.y;
 	destRect.w = anchoDest * 3 / 2;
 	destRect.h = alto * anchoDest/ancho * 3 / 2;
-
-	SDL_RenderCopyEx(pRenderer, texturas[id], &srcRect, &destRect, 0, 0, flip);
+	if(grisar)
+		SDL_RenderCopyEx(pRenderer, texturas["autoGrisado"], &srcRect, &destRect, 0, 0, flip);
+	else
+		SDL_RenderCopyEx(pRenderer, texturas[id], &srcRect, &destRect, 0, 0, flip);
 }
 
 void ManejadorDeTexturas::drawStaticSprite(std::string id, int x, int y, int ancho, int alto, int anchoPantalla, SDL_Renderer* pRenderer, SDL_RendererFlip flip, float xx) {
