@@ -39,6 +39,7 @@ namespace funcionesConversoras {
 using namespace funcionesConversoras;
 
 Mapa::Mapa() {
+	this->longitudTotal = 0;
 	this->cargarMapaDesdeXML();
 }
 
@@ -79,7 +80,9 @@ void Mapa::cargarMapaDesdeXML() {
 				Logger::getInstance()->log(LogMode::Debug, "[MAPA] Se encontro un tramo sin atributo 'tipo' o 'longitud'. Se procede a ignorar el tramo.");
 				continue;
 			}
-
+			if (attLongitud != NULL) {
+				this->longitudTotal = this->longitudTotal + stoi(attLongitud->value());
+			}
 			TipoTramo tipoTramo = obtenerTipoDeTramo(attTipoTramo->value());
 
 			if (tipoTramo == TipoTramo::Recta) {

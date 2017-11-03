@@ -57,6 +57,7 @@ private:
 	std::vector<SDL_Rect*> objetosADibujar;
 	void initTramos();
 	bool terminoDibujarMapa;
+	int metroActualAuto;
 };
 
 #endif

@@ -18,6 +18,7 @@ void MapaView::init() {
 	this->mapa = new Mapa();
 	initTramos();
 	this->renderInit();
+	this->metroActualAuto = 0;
 }
 
 void MapaView::renderInit() {
@@ -81,15 +82,19 @@ void MapaView::renderMiniMap() {
 void MapaView::render(Renderer* renderer) {
 	int base = getTramoActual();
 	float x = 0, dx = 0;
+	this->metroActualAuto += base;
+	// TODO: obtener el tramo actual posta
+
+
 	for (int i = 0; i < DISTANCIA_DIBUJADO; i++) {
 		Segmento* unSegmento = tramos[base + i];			//agregar chequeo distancia dibujado > tamaño array
-		ManejadorDeTexturas::getInstance()->dibujarTramo(unSegmento, ANCHO_TRAMO, renderer->getAnchoVentana(), renderer->getAltoVentana(), renderer->getRendererJuego(), (base + i),x);
-		
+		ManejadorDeTexturas::getInstance()->dibujarTramo(unSegmento, ANCHO_TRAMO, renderer->getAnchoVentana(), renderer->getAltoVentana(), renderer->getRendererJuego(), (base + i), x);
 		x += dx;
 		dx += unSegmento->curva;
 	}
 
-	ManejadorDeTexturas::getInstance()->drawStaticSprite("8", -700, 1000, 200, 200, renderer->getAnchoVentana(), renderer->getRendererJuego(), SDL_FLIP_NONE,0);
+	ManejadorDeTexturas::getInstance()->drawStaticSprite("8", -200, 1000, 200, 200, renderer->getAnchoVentana(), renderer->getRendererJuego(), SDL_FLIP_NONE, x);
+
 }
 
 bool MapaView::loadMedia() {
@@ -105,7 +110,7 @@ bool MapaView::close() {
 }
 
 void MapaView::update() {
-
+	// Recibir posicion en el mapa del auto, puntajes, etc
 }
 
 void MapaView::dibujarBordes(SDL_Renderer* renderer) {
@@ -461,17 +466,17 @@ int MapaView::getTramoActual() {
 }
 
 void MapaView::initTramos() {
-	for (int i = 0; i < CANTIDAD_SEGMENTOS; i++) {
+	for (int i = 0; i < this->mapa->getLongitudTotal(); i++) {
 		Segmento* unSegmento = new Segmento();
 		unSegmento->p1.x = 0;
 		unSegmento->p2.x = 0;
 		unSegmento->p1.y = 0;
 		unSegmento->p2.y = 0;
-		unSegmento->p1.z = (i) * ALTO_TRAMO;
+		unSegmento->p1.z = i * ALTO_TRAMO;
 		unSegmento->p2.z = (i+1) * ALTO_TRAMO;
 		unSegmento->curva = 0;
 		if ( i > 100 && i < 200)
-			unSegmento->curva =1;
+			unSegmento->curva = 2;
 		tramos.push_back(unSegmento);
 	}
 }
