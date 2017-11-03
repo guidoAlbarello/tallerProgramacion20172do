@@ -12,5 +12,5 @@ void Sprite::load(std::string fileName, SDL_Renderer * pRenderer) {
 
 void Sprite::render(Renderer* renderer) {
 	ManejadorDeTexturas::getInstance()->drawAnimatedSprite(id, x, y, ancho, alto, filaActual, frameActual,
-		renderer->getAnchoVentana(), renderer->getAltoVentana(), renderer->getRendererJuego(), SDL_FLIP_NONE);
+		renderer->getAnchoVentana(), renderer->getAltoVentana(), renderer->getRendererJuego(), SDL_FLIP_NONE, grisarSprite);
 }

@@ -18,9 +18,11 @@ public:
 	void setPosicionInt(int x, int y) { this->x = x; this->y = y; }
 	void setAnchoYAlto(int ancho, int alto) { this->ancho = ancho; this->alto = alto; }
 	void setId(std::string id) { this->id = id; };
+	void setGrisar(bool grisarSprite) { this->grisarSprite = grisarSprite; }
 	int getAncho() { return ancho; }
 private:
 	int ancho, alto, filaActual, frameActual, x,y;
+	bool grisarSprite = false;
 	std::string id;
 };
 

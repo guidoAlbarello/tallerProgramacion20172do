@@ -19,9 +19,12 @@ Conexion::~Conexion() {
 void Conexion::cerrarConexion() {
 	this->conexionActiva = false;
 	this->conexionViva = false;
-	if (this->getUsuario() != NULL) {
-		if (this->getUsuario()->getJugador() != NULL)
-			this->getUsuario()->getJugador()->setEstadoConexion(false);
+	if (this->getUsuario()->getJugador() != NULL) {
+		this->getUsuario()->getJugador()->setEstadoConexion(false);
+		this->getUsuario()->getJugador()->recibirEntrada(0, false);//ponemos todas las entradas en false para q frene. 
+		this->getUsuario()->getJugador()->recibirEntrada(1, false);
+		this->getUsuario()->getJugador()->recibirEntrada(2, false);
+	}
 
 		try {
 			if (t_procesarDatosRecibidos.joinable()) {
