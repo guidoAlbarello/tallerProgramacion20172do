@@ -338,16 +338,10 @@ void Conexion::procesarDatosRecibidos() {
 		}
 
 		double tiempoTardado = std::chrono::duration_cast<std::chrono::duration<double, std::ratio<1>>>(std::chrono::high_resolution_clock::now() - timeOut).count() * 1000;
-<<<<<<< HEAD
-		if (tiempoTardado > (Constantes::PING_DELAY)) {
-			this->conexionActiva = false;
-			this->conexionViva = false;
-			this->conexionInicializada = false;
-=======
 		if (tiempoTardado > (Constantes::PING_DELAY) + Constantes::TOLERANCIA_PING) {
 			this->conexionActiva = false; 
 			this->conexionViva = false; 
->>>>>>> 97685609ebb65112aec033e50bb37a2f5b4b576a
+			this->conexionInicializada = false;
 			//this->cerrarConexion();
 		}
 
