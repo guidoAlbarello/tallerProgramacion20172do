@@ -26,21 +26,21 @@ void Conexion::cerrarConexion() {
 		this->getUsuario()->getJugador()->recibirEntrada(2, false);
 	}
 
-		try {
-			if (t_procesarDatosRecibidos.joinable()) {
-				t_procesarDatosRecibidos.join();
-			}
-
-			if (this->conexionConCliente != NULL) {
-				this->conexionConCliente->cerrarConexion();
-				delete this->conexionConCliente;
-			}
+	try {
+		if (t_procesarDatosRecibidos.joinable()) {
+			t_procesarDatosRecibidos.join();
 		}
-		catch (exception e) {
-			Logger::getInstance()->log(Error, "Ocurrio un error al cerrar la conexion");
+
+		if (this->conexionConCliente != NULL) {
+			this->conexionConCliente->cerrarConexion();
+			delete this->conexionConCliente;
 		}
 	}
+	catch (exception e) {
+		Logger::getInstance()->log(Error, "Ocurrio un error al cerrar la conexion");
+	}
 }
+
 
 void Conexion::procesarSolicitudPing() {
 	// Envia un ping de vuelta hacia el cliente como respuesta
