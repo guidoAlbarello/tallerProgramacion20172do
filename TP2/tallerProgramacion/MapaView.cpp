@@ -84,7 +84,7 @@ void MapaView::render(Renderer* renderer) {
 	float x = 0, dx = 0;
 	//this->metroActualAuto += base;
 
-	for (int i = 0; i < base + DISTANCIA_DIBUJADO; i++) {
+	for (int i = 0; i < DISTANCIA_DIBUJADO; i++) {
 		if (segmentos.size() > base + i) {
 			Segmento* unSegmento = segmentos[base + i];			//agregar chequeo distancia dibujado > tamaño array
 			ManejadorDeTexturas::getInstance()->dibujarTramo(unSegmento, ANCHO_TRAMO, renderer->getAnchoVentana(), renderer->getAltoVentana(), renderer->getRendererJuego(), (base + i), x);

@@ -13,6 +13,7 @@
   	</tramo>
   	<!-- 700m -->
  	<tramo longitud="500" tipo="curva" sentido="izquierda">
+	</tramo>
  	<tramo longitud="500" tipo="recta">
   		<arbol posicion="izquierda" ubicacion="1000"></arbol>
   		<arbol posicion="derecha" ubicacion="1000"></arbol>
@@ -22,6 +23,7 @@
   	</tramo>
   	<!-- 1400m -->
  	<tramo longitud="200" tipo="curva" sentido="izquierda">
+	</tramo>
  	<tramo longitud="200" tipo="recta">
   		<arbol posicion="derecha" ubicacion="1500"></arbol>
   		<arbol posicion="derecha" ubicacion="1600"></arbol>
@@ -31,6 +33,7 @@
   	</tramo>
   	<!-- 1850m -->
  	<tramo longitud="500" tipo="curva" sentido="derecha">
+	</tramo>
  	<tramo longitud="500" tipo="recta">
   	</tramo>
   	<!-- 2350m -->
@@ -38,15 +41,17 @@
   	</tramo>
   	<!-- 2600m -->
  	<tramo longitud="1000" tipo="curva" sentido="derecha">
+	</tramo>
  	<tramo longitud="1000" tipo="recta">
   		<arbol posicion="derecha" ubicacion="3000"></arbol>
   		<arbol posicion="derecha" ubicacion="3010"></arbol>
   		<arbol posicion="derecha" ubicacion="3020"></arbol>
- 
+	</tramo>
   	<tramo longitud="200" tipo="curva" sentido="izquierda">
   	</tramo>
   	<!-- 3800m -->
  	<tramo longitud="500" tipo="curva" sentido="izquierda">
+	</tramo>
  	<tramo longitud="500" tipo="recta">
   		<arbol posicion="izquierda" ubicacion="4000"></arbol>
   		<cartel posicion="derecha" ubicacion="4100" valor="120"></cartel>
@@ -56,7 +61,8 @@
   	</tramo>
   	<!-- 4500m -->
  	<tramo longitud="500" tipo="curva" sentido="izquierda">
+	</tramo>
  	<tramo longitud="500" tipo="recta">
   	</tramo>
   	<!-- 5000m -->
-  </mapa>
+</mapa>
