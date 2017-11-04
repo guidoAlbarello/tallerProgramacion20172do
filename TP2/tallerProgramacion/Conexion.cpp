@@ -33,7 +33,7 @@ void Conexion::cerrarConexion() {
 		if (t_procesarDatosRecibidos.joinable()) {
 			t_procesarDatosRecibidos.join();
 		}
-
+	
 		if (this->conexionConCliente != NULL) {
 			this->conexionConCliente->cerrarConexion();
 			delete this->conexionConCliente;

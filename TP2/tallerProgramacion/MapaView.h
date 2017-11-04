@@ -58,6 +58,7 @@ private:
 	void initTramos();
 	bool terminoDibujarMapa;
 	int metroActualAuto;
+	
 };
 
 #endif
