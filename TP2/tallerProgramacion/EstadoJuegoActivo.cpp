@@ -69,7 +69,6 @@ void EstadoJuegoActivo::render() {
 }
 
 bool EstadoJuegoActivo::onEnter(Renderer* renderer) {
-	renderer->iniciarRendererMapa(); // Se inicia la ventana del minimapa
 	this->escenario = new Escenario(renderer);
 	this->escenario->iniciar();
 	this->mapaView = new MapaView(renderer);

@@ -81,6 +81,7 @@ void Cliente::correrCicloPrincipal() {
 	while (clienteActivo) {
 		this->maquinaDeEstados->update(this->conexionDelCliente);
 	}
+	this->cerrarCliente();
 }
 
 void Cliente::mostrarMenuPrincipal() {
@@ -115,6 +116,7 @@ void Cliente::conectarseAlServidor() {
 			this->t_procesarDatosRecibidos = std::thread(&Cliente::procesarDatosRecibidos, this);
 			this->renderer = new Renderer();
 			this->renderer->iniciarRendererJuego();
+			renderer->iniciarRendererMapa(); // Se inicia la ventana del minimapa
 			this->maquinaDeEstados->setRenderer(this->renderer);
 		} else {
 			this->conexionViva = false;
@@ -133,11 +135,11 @@ void Cliente::conectarseAlServidor() {
 }
 
 void Cliente::desconectarseDelServidor() {
-	if (!this->conexionViva) {
+	/*if (!this->conexionViva) {
 		cout << "Usted no esta conectado con el servidor." << endl;
 		return;
 	}
-
+	*/
 	Logger::getInstance()->log(Debug, "Desconectando del servidor...");
 	m_print.lock();
 	std::cout << "Desconectando del servidor..." << std::endl;
@@ -145,6 +147,7 @@ void Cliente::desconectarseDelServidor() {
 
 	this->estaLogueado = false;
 	this->conexionViva = false;
+	this->clienteActivo = false;
 	try {
 		if (this->t_procesarPing.joinable()) {
 			t_procesarPing.join();
@@ -153,7 +156,9 @@ void Cliente::desconectarseDelServidor() {
 		if (this->t_render.joinable()) {
 			t_render.join();
 		}
+		this->maquinaDeEstados->popState();
 		this->renderer->cerrarRenderer();
+		delete this->maquinaDeEstados;
 		delete this->renderer;
 		if (this->conexionDelCliente != NULL) {
 			this->conexionDelCliente->cerrarConexion();
@@ -495,7 +500,9 @@ void Cliente::procesarDatosRecibidos() {
 
 		double tiempoTardado = std::chrono::duration_cast<std::chrono::duration<double, std::ratio<1>>>(std::chrono::high_resolution_clock::now() - timeOut).count() * 1000;
 		if (tiempoTardado > (Constantes::PING_DELAY) + Constantes::TOLERANCIA_PING) {
-			this->desconectarseDelServidor();
+			this->estaLogueado = false;
+			this->conexionViva = false;
+			this->clienteActivo = false;
 			Logger::getInstance()->log(Debug, "Se desconecto un cliente del servidor por falta de respuesta al ping");
 			std::cout << "Se ha desconectado del servidor" << std::endl;
 		}

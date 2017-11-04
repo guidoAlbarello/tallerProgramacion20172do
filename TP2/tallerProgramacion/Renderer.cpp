@@ -103,10 +103,22 @@ void Renderer::cerrarRenderer() {
 	//Free global font
 	
 	//Destroy window	
-	SDL_DestroyRenderer(gRendererJuego);
-	SDL_DestroyWindow(gWindowJuego);
+	if(gRendererJuego != NULL)
+		SDL_DestroyRenderer(gRendererJuego);
+
+	if (gRendererMapa != NULL)
+		SDL_DestroyRenderer(gRendererMapa);
+
+	if (gWindowJuego != NULL)
+		SDL_DestroyWindow(gWindowJuego);
+		
+	if (gWindowMapa != NULL)
+		SDL_DestroyWindow(gWindowMapa);
+
 	gWindowJuego = NULL;
 	gRendererJuego = NULL;
+	gWindowMapa = NULL;
+	gRendererMapa = NULL;
 
 	//Quit SDL subsystems
 	TTF_Quit();
