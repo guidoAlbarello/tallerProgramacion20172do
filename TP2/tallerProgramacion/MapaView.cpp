@@ -16,8 +16,8 @@ MapaView::~MapaView()
 
 void MapaView::init() {
 	this->mapa = new Mapa();
-	initTramos();
 	this->renderInit();
+	this->initSegmentos();
 	this->metroActualAuto = 0;
 }
 
@@ -82,12 +82,11 @@ void MapaView::renderMiniMap() {
 void MapaView::render(Renderer* renderer) {
 	int base = getTramoActual();
 	float x = 0, dx = 0;
-	this->metroActualAuto += base;
-	// TODO: obtener el tramo actual posta
+	//this->metroActualAuto += base;
 
-	for (int i = 0; i < DISTANCIA_DIBUJADO; i++) {
-		if (tramos.size() > base + i) {
-			Segmento* unSegmento = tramos[base + i];			//agregar chequeo distancia dibujado > tamaño array
+	for (int i = 0; i < base + DISTANCIA_DIBUJADO; i++) {
+		if (segmentos.size() > base + i) {
+			Segmento* unSegmento = segmentos[base + i];			//agregar chequeo distancia dibujado > tamaño array
 			ManejadorDeTexturas::getInstance()->dibujarTramo(unSegmento, ANCHO_TRAMO, renderer->getAnchoVentana(), renderer->getAltoVentana(), renderer->getRendererJuego(), (base + i), x);
 			x += dx;
 			dx += unSegmento->curva;
@@ -484,19 +483,33 @@ int MapaView::getTramoActual() {
 	return pos;
 }
 
-void MapaView::initTramos() {
+void MapaView::initSegmentos() {
 	for (int i = 0; i < this->mapa->getLongitudTotal(); i++) {
-		Segmento* unSegmento = new Segmento();
-		unSegmento->p1.x = 0;
-		unSegmento->p2.x = 0;
-		unSegmento->p1.y = 0;
-		unSegmento->p2.y = 0;
-		unSegmento->p1.z = i * ALTO_TRAMO;
-		unSegmento->p2.z = (i + 1) * ALTO_TRAMO;
-		unSegmento->curva = 0;
-		if (i > 500 && i < 700) {
-			unSegmento->curva = 2;
-		}
-		tramos.push_back(unSegmento);
+		// i == metro actual
+		std::vector<Tramo*> tramos = this->mapa->getTramosDelMapa();
+		for (std::vector<Tramo*>::iterator it = tramos.begin(); it != tramos.end(); ++it) {
+			Tramo* tramoActual = *it;
+			if ((i > tramoActual->getMetroInicio()) && (i <= tramoActual->getMetroInicio() + tramoActual->getLongitud())) {
+				// Dibuja segmento curvo o recto en base al tramo al que pertenece
+				Segmento* unSegmento = new Segmento();
+				unSegmento->p1.x = 0;
+				unSegmento->p2.x = 0;
+				unSegmento->p1.y = 0;
+				unSegmento->p2.y = 0;
+				unSegmento->p1.z = i * ALTO_TRAMO;
+				unSegmento->p2.z = (i + 1) * ALTO_TRAMO;
+				if (tramoActual->getTipoTramo() == TipoTramo::Recta) {
+					unSegmento->curva = 0;
+				}
+				else {
+					if (tramoActual->getSentidoCurva() == SentidoCurva::SCDerecha)
+						unSegmento->curva = -INTENSIDAD_CURVAS; // - == curva derecha
+					else if (tramoActual->getSentidoCurva() == SentidoCurva::SCIzquierda)
+						unSegmento->curva = INTENSIDAD_CURVAS; // + == curva izquierda
+				}
+				this->segmentos.push_back(unSegmento);
+				break;
+			}
+		}	
 	}
 }

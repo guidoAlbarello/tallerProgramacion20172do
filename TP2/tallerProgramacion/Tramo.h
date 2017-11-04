@@ -5,6 +5,7 @@
 #include "ObjetoFijo.h"
 
 enum TipoTramo { Recta = 0, Curva = 1 };
+enum SentidoCurva { SCIzquierda = 0, SCDerecha = 1, NINGUNO = 2 };
 
 class Tramo {
 public:
@@ -17,11 +18,13 @@ public:
 	int getId() { return this->id; }
 	void setMetroInicio(int metroInicio) { this->metroInicio = metroInicio;	}
 	int getMetroInicio() { return this->metroInicio; }
-
+	SentidoCurva getSentidoCurva() { return this->sentido; }
+	void setSentidoCurva(SentidoCurva sentidoCurva) { this->sentido = sentidoCurva; }
 protected:
 	int longitud;
 	TipoTramo tipo;
 	int id;
 	int metroInicio;
+	SentidoCurva sentido;
 };
 #endif

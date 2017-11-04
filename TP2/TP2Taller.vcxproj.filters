@@ -1,0 +1,350 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="tallerprogramacion\BuzonDeMensajes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tallerprogramacion\ClientConfig.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tallerprogramacion\Cliente.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tallerprogramacion\Conexion.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tallerprogramacion\Config.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tallerprogramacion\Constantes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tallerprogramacion\Juego.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tallerprogramacion\Jugador.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tallerprogramacion\Logger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tallerprogramacion\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tallerprogramacion\ManejadorDeConexion.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tallerprogramacion\ManejadorDeConexionCliente.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tallerprogramacion\ManejadorDeConexionConexion.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tallerprogramacion\ManejadorDeConexionServidor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tallerprogramacion\MensajeDeRed.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tallerprogramacion\ObjetoDeJuego.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tallerprogramacion\ParserDeMensajes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tallerprogramacion\Renderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tallerprogramacion\ServerConfig.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tallerprogramacion\Servidor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tallerprogramacion\SocketSincronico.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tallerprogramacion\Usuario.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tallerProgramacion\LoggerView.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tallerProgramacion\Ltexture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tallerProgramacion\Camara.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tallerProgramacion\ManejadorDeTexturas.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tallerProgramacion\Sprite.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tallerProgramacion\Vector.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tallerProgramacion\Escenario.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tallerProgramacion\Arbol.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tallerProgramacion\Carro.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tallerProgramacion\Cartel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tallerProgramacion\EstadoJuego.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tallerProgramacion\EstadoJuegoActivo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tallerProgramacion\EstadoLogeo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tallerProgramacion\ManejadorInput.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tallerProgramacion\Mapa.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tallerProgramacion\MaquinaEstados.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tallerProgramacion\ObjetoFijo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tallerProgramacion\Tramo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tallerProgramacion\TramoCurvo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tallerProgramacion\TramoRecto.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tallerProgramacion\MapaView.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tallerProgramacion\EstadoEspera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tallerProgramacion\EsperaView.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tallerProgramacion\SpriteFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tallerProgramacion\SDL2_framerate.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tallerProgramacion\SDL2_gfxPrimitives.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tallerProgramacion\SDL2_imageFilter.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tallerProgramacion\SDL2_rotozoom.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="lib\rapidxml-1.13\rapidxml.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\rapidxml-1.13\rapidxml_iterators.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\rapidxml-1.13\rapidxml_print.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\rapidxml-1.13\rapidxml_utils.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tallerprogramacion\BuzonDeMensajes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tallerprogramacion\ClientConfig.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tallerprogramacion\Cliente.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tallerprogramacion\Conexion.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tallerprogramacion\Config.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tallerprogramacion\Constantes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tallerprogramacion\Juego.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tallerprogramacion\Jugador.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tallerprogramacion\Logger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tallerprogramacion\ManejadorDeConexion.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tallerprogramacion\ManejadorDeConexionCliente.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tallerprogramacion\ManejadorDeConexionConexion.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tallerprogramacion\ManejadorDeConexionServidor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tallerprogramacion\Mensaje.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tallerprogramacion\MensajeDeRed.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tallerprogramacion\ObjetoDeJuego.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tallerprogramacion\ParserDeMensajes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tallerprogramacion\Renderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tallerprogramacion\ServerConfig.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tallerprogramacion\Servidor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tallerprogramacion\SocketSincronico.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tallerprogramacion\Usuario.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tallerprogramacion\Vector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tallerProgramacion\LoggerView.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tallerProgramacion\Ltexture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tallerProgramacion\Camara.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tallerProgramacion\ManejadorDeTexturas.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tallerProgramacion\Sprite.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tallerProgramacion\Escenario.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tallerProgramacion\Arbol.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tallerProgramacion\Carro.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tallerProgramacion\Cartel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tallerProgramacion\EstadoJuego.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tallerProgramacion\EstadoJuegoActivo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tallerProgramacion\EstadoLogeo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tallerProgramacion\ManejadorInput.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tallerProgramacion\Mapa.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tallerProgramacion\ObjetoFijo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tallerProgramacion\Tramo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tallerProgramacion\TramoCurvo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tallerProgramacion\TramoRecto.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tallerProgramacion\MapaView.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tallerProgramacion\EstadoEspera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tallerProgramacion\MaquinaEstados.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tallerProgramacion\EsperaView.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tallerProgramacion\SpriteFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tallerProgramacion\SDL2_framerate.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tallerProgramacion\SDL2_gfxPrimitives.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tallerProgramacion\SDL2_gfxPrimitives_font.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tallerProgramacion\SDL2_imageFilter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tallerProgramacion\SDL2_rotozoom.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="lib\rapidxml-1.13\manual.html" />
+    <None Include="tallerProgramacion\tallerProgramacion.sln" />
+    <None Include="tallerProgramacion\tallerProgramacion.vcxproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="tallerProgramacion\lazy.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="tallerProgramacion\client-config.xml" />
+    <Xml Include="tallerProgramacion\mapa.xml" />
+    <Xml Include="tallerProgramacion\server-config.xml" />
+    <Xml Include="tallerProgramacion\stress-test.xml" />
+  </ItemGroup>
+</Project>

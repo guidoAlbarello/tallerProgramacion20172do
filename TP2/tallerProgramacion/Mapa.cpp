@@ -89,6 +89,7 @@ void Mapa::cargarMapaDesdeXML() {
 				TramoRecto* tramoRecto = new TramoRecto(stoi(attLongitud->value()));
 				tramoRecto->setId(contadorTramos);
 				tramoRecto->setMetroInicio(metrosAcumulados);
+				tramoRecto->setSentidoCurva(SentidoCurva::NINGUNO);
 				metrosAcumulados += stoi(attLongitud->value());
 				this->tramosDelMapa.push_back(tramoRecto);
 			}

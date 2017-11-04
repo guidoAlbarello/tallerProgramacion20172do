@@ -1,0 +1,144 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="tallerprogramacion\tallerprogramacion\BuzonDeMensajes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tallerprogramacion\tallerprogramacion\ClientConfig.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tallerprogramacion\tallerprogramacion\Cliente.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tallerprogramacion\tallerprogramacion\Conexion.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tallerprogramacion\tallerprogramacion\Config.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tallerprogramacion\tallerprogramacion\Constantes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tallerprogramacion\tallerprogramacion\Logger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tallerprogramacion\tallerprogramacion\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tallerprogramacion\tallerprogramacion\ManejadorDeConexion.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tallerprogramacion\tallerprogramacion\ManejadorDeConexionCliente.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tallerprogramacion\tallerprogramacion\ManejadorDeConexionConexion.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tallerprogramacion\tallerprogramacion\ManejadorDeConexionServidor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tallerprogramacion\tallerprogramacion\MensajeDeRed.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tallerprogramacion\tallerprogramacion\ParserDeMensajes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tallerprogramacion\tallerprogramacion\ServerConfig.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tallerprogramacion\tallerprogramacion\Servidor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tallerprogramacion\tallerprogramacion\SocketSincronico.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tallerprogramacion\tallerprogramacion\Usuario.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="tallerprogramacion\lib\rapidxml-1.13\rapidxml.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tallerprogramacion\lib\rapidxml-1.13\rapidxml_iterators.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tallerprogramacion\lib\rapidxml-1.13\rapidxml_print.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tallerprogramacion\lib\rapidxml-1.13\rapidxml_utils.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tallerprogramacion\tallerprogramacion\BuzonDeMensajes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tallerprogramacion\tallerprogramacion\ClientConfig.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tallerprogramacion\tallerprogramacion\Cliente.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tallerprogramacion\tallerprogramacion\Conexion.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tallerprogramacion\tallerprogramacion\Config.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tallerprogramacion\tallerprogramacion\Constantes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tallerprogramacion\tallerprogramacion\Logger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tallerprogramacion\tallerprogramacion\ManejadorDeConexion.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tallerprogramacion\tallerprogramacion\ManejadorDeConexionCliente.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tallerprogramacion\tallerprogramacion\ManejadorDeConexionConexion.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tallerprogramacion\tallerprogramacion\ManejadorDeConexionServidor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tallerprogramacion\tallerprogramacion\Mensaje.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tallerprogramacion\tallerprogramacion\MensajeDeRed.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tallerprogramacion\tallerprogramacion\ParserDeMensajes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tallerprogramacion\tallerprogramacion\ServerConfig.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tallerprogramacion\tallerprogramacion\Servidor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tallerprogramacion\tallerprogramacion\SocketSincronico.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tallerprogramacion\tallerprogramacion\Usuario.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="tallerprogramacion\lib\rapidxml-1.13\manual.html" />
+  </ItemGroup>
+</Project>

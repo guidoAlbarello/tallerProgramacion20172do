@@ -1,5 +1,5 @@
 <mapa>
-	<tramo longitud="200" tipo="recta">
+	<tramo longitud="500" tipo="recta">
 		<arbol posicion="izquierda" ubicacion="100"></arbol>
 		<arbol posicion="derecha" ubicacion="200"></arbol>
 		<arbol posicion="izquierda" ubicacion="300"></arbol>
@@ -7,18 +7,18 @@
 		<arbol posicion="izquierda" ubicacion="500"></arbol>
 	</tramo>
 	<!-- 500m -->
-	<tramo longitud="100" tipo="curva" sentido="izquierda">
+	<tramo longitud="200" tipo="curva" sentido="izquierda">
 		<cartel posicion="derecha" ubicacion="600" valor="80"></cartel>
 	</tramo>
 	<!-- 700m -->
-	<tramo longitud="200" tipo="recta">
+	<tramo longitud="500" tipo="recta">
 		<arbol posicion="izquierda" ubicacion="1000"></arbol>
 		<arbol posicion="derecha" ubicacion="1000"></arbol>
 		<arbol posicion="izquierda" ubicacion="1100"></arbol>
 		<arbol posicion="izquierda" ubicacion="1200"></arbol>
 	</tramo>
 	<!-- 1200m -->
-	<tramo longitud="100" tipo="curva" sentido="derecha">
+	<tramo longitud="200" tipo="curva" sentido="izquierda">
 		<arbol posicion="izquierda" ubicacion="1300"></arbol>
 		<arbol posicion="derecha" ubicacion="1400"></arbol>
 	</tramo>

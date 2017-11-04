@@ -114,12 +114,16 @@ void ManejadorDeTexturas::dibujarTramo(Segmento* unSegmento, int ancho, int anch
 	anchoSuperior = ancho2;
 	anchoInferior = ancho1;
 
+	// @tbotalla
+	anchoSuperior *= 0.5; // Para que no sea tan ancha la pista
+	anchoInferior *= 0.5;
+	float factorAnchoPianito = 1.2;
+
 	Sint16 vxPasto[4] = { -anchoPantalla, -anchoPantalla, anchoPantalla, anchoPantalla };
 	Sint16 vyPasto[4] = { p1.y, p2.y, p2.y, p1.y };
-	Sint16 vxBorde[4] = { p1.x - anchoInferior *1.2,p2.x - anchoSuperior*1.2,p2.x + anchoSuperior*1.2 ,p1.x + anchoInferior*1.2 };
+	Sint16 vxBorde[4] = { p1.x - anchoInferior * factorAnchoPianito, p2.x - anchoSuperior * factorAnchoPianito, p2.x + anchoSuperior * factorAnchoPianito, p1.x + anchoInferior * factorAnchoPianito };
 	Sint16 vyBorde[4] = { p1.y,p2.y,p2.y,p1.y };
-	
-	Sint16 vxTramo[4] = { p1.x - anchoInferior ,p2.x - anchoSuperior,p2.x + anchoSuperior ,p1.x + anchoInferior };
+	Sint16 vxTramo[4] = { p1.x - anchoInferior, p2.x - anchoSuperior, p2.x + anchoSuperior, p1.x + anchoInferior };
 	Sint16 vyTramo[4] = { p1.y,p2.y,p2.y,p1.y };
 
 	if ((n / 3) % 2)
