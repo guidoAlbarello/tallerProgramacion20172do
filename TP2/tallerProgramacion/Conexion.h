@@ -22,9 +22,10 @@ public:
 	ManejadorDeConexionConexion* getConexionConCliente() { return this->conexionConCliente; };
 	void enviarChatGlobal(bool tipoDeChat, string unEmisor, string unMensaje);
 	void enviarUpdate(EstadoModeloJuego* estado);
-	void inicializarClienteJuego(EstadoInicialJuego* estado);
+	void inicializarClienteJuego(EstadoInicialJuego* estado, Usuario* unUsuario);
 	void procesarSolicitudPing();
 	bool getConexionActiva() { 	return this->conexionActiva; };
+	bool getConexionInicializada() { return this->conexionInicializada; }
 private:
 	ManejadorDeConexionConexion* conexionConCliente;
 	void procesarInput(bool* entrada);
@@ -34,6 +35,7 @@ private:
 	Usuario* usuarioConectado;
 	std::thread t_procesarDatosRecibidos;
 	void procesarDatosRecibidos();
+	bool conexionInicializada;
 	bool conexionActiva;
 	bool conexionViva;
 	Servidor* servidor;

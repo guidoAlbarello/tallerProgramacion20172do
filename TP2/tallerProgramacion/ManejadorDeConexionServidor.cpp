@@ -17,10 +17,11 @@ void ManejadorDeConexionServidor::iniciarConexion(std::string puertoEscucha, int
 	}
 }
 
-SOCKET ManejadorDeConexionServidor::hayClienteIntentandoConectarse(size_t conexionesActivas, int maxClientes) {
+SOCKET ManejadorDeConexionServidor::hayClienteIntentandoConectarse(std::vector<Conexion*>& conexionesActivas, int maxClientes) {
 	SOCKET socketAceptado = this->socket->hayClienteIntentandoConectarse();
 	// Cuando se intenta conectar un cliente que excede el maximo el conexionesActivas no esta incrementado todavia
-	if (conexionesActivas + 1 > maxClientes) {
+
+	if (conexionesActivas.size() + 1 > maxClientes) {
 		Logger::getInstance()->log(Debug, "Un cliente intento conectarse pero se excedio el maximo de conexiones aceptadas");
 		return INVALID_SOCKET;
 	}

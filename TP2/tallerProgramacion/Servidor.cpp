@@ -190,7 +190,7 @@ void Servidor::correrCicloPrincipal() {
 
 void Servidor::escucharClientes() {
 	while (this->servidorActivo) {
-		SOCKET nuevoCliente = this->conexionDelServidor->hayClienteIntentandoConectarse(this->conexionesActivas.size(), this->configuracion->getMaxClientes());
+		SOCKET nuevoCliente = this->conexionDelServidor->hayClienteIntentandoConectarse(this->conexionesActivas, this->configuracion->getMaxClientes());
 		if (nuevoCliente != INVALID_SOCKET) {
 			agregarNuevaConexionEntrante(nuevoCliente);
 		}
@@ -332,14 +332,14 @@ Usuario* Servidor::validarLogin(MensajeDeRed* mensaje, string &mensajeResultado,
 	if (this->estaElUsuarioConectado(unUsuario)) {
 		mensajeResultado = "Login invalido. El usuario ya se encuentra conectado.";
 		unUsuario = NULL;
-	} else {
+	}  else {
 		mensajeResultado = "El login fue satisfactorio";
 		if (!unUsuario->tieneJugadorAsignado()) {
-			unUsuario->setJugador(this->elJuego->agregarJugador());  //cuando se logea por segunda vez, va a explotar
+			unUsuario->setJugador(this->elJuego->agregarJugador());  
 		} else {
 			enviarEstadoInicial = true;
 		}
-		unUsuario->getJugador()->setEstadoConexion(true); //aca se setea q el jugador esta conectado cuando se logea. 
+		unUsuario->getJugador()->setEstadoConexion(true);  
 	}
 	return unUsuario;
 }
@@ -353,7 +353,7 @@ void Servidor::updateModel() {
 				EstadoModeloJuego* nuevoEstado = this->elJuego->getEstadoJuego();
 				for (std::vector<Conexion*>::iterator it = conexionesActivas.begin(); it != conexionesActivas.end(); ++it) {
 					Conexion* unaConexion = (Conexion*)*it;
-					if (unaConexion->getUsuario() != NULL && unaConexion->getConexionActiva()) {
+					if (unaConexion->getUsuario() != NULL && unaConexion->getConexionActiva() && unaConexion->getConexionInicializada()) {
 						unaConexion->enviarUpdate(nuevoEstado); 
 					}
 				}
@@ -364,7 +364,7 @@ void Servidor::updateModel() {
 				for (std::vector<Conexion*>::iterator it = conexionesActivas.begin(); it != conexionesActivas.end(); ++it) {
 					Conexion* unaConexion = (Conexion*)*it;
 					if (unaConexion->getUsuario() != NULL && unaConexion->getConexionActiva()) {
-						unaConexion->inicializarClienteJuego(estadoInicial);  //    !!!!!!!!!!!!!!!!!!!!esto va a haber q mandarlo cuando se reconecte el cliente tmb. aca solo se va a mandar la primera vez !!!!!!!
+						unaConexion->inicializarClienteJuego(estadoInicial, NULL);  //    !!!!!!!!!!!!!!!!!!!!esto va a haber q mandarlo cuando se reconecte el cliente tmb. aca solo se va a mandar la primera vez !!!!!!!
 					}
 				}
 				if(estadoInicial != NULL)

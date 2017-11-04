@@ -31,3 +31,7 @@ bool EstadoLogeo::onExit() {
 	loggerView->close();
 	return true;
 }
+
+void EstadoLogeo::setParametro(void * param) {
+
+}

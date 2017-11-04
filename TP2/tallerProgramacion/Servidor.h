@@ -14,7 +14,7 @@
 const std::string SERVER_LOG_FILENAME_FORMAT = "LogSrv%Y%m%d%H%M%S.txt";
 
 class Conexion;  // Declaracion forward de la clase Conexion
-
+class ManejadorDeConexionServidor;
 
 class Servidor {
 public:
@@ -31,6 +31,7 @@ public:
 	bool estaElUsuarioConectado(Usuario* unUsuario);
 	Juego* getJuego() { return elJuego; }
 	bool juegoIniciado() { return this->yaEnvioEstado; }
+	ServerConfig* getConfiguracion() { return this->configuracion; }
 protected:
 	bool yaEnvioEstado = false;
 	Servidor();

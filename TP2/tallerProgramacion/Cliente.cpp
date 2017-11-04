@@ -436,7 +436,7 @@ void Cliente::procesarDatosRecibidos() {
 
 			switch (mensajeDeRed->getComandoCliente()) {
 			case ComandoCliente::RESULTADO_LOGIN:
-				procesarResultadoLogin(mensajeDeRed);
+				procesarResultadoLogin(mensajeDeRed, datosRecibidos);
 				break;
 			case ComandoCliente::RESULTADO_SEND_MESSAGE:
 				procesarResultadoSendMessage(mensajeDeRed);
@@ -551,18 +551,24 @@ void Cliente::procesarResultadoSendMessage(MensajeDeRed* mensajeDeRed) {
 	}
 }
 
-void Cliente::procesarResultadoLogin(MensajeDeRed* mensajeDeRed) {
+void Cliente::procesarResultadoLogin(MensajeDeRed* mensajeDeRed, char* datosRecibidos) {
 	if (mensajeDeRed->getParametro(0) == "LOGIN_OK") {
 		this->estaLogueado = true;
-		this->idJugador = stoi(mensajeDeRed->getParametro(1));
-		//this->maquinaDeEstados->changeState(new EstadoJuegoActivo());
-		this->maquinaDeEstados->changeState(new EstadoEspera());
-		m_print.lock();
-		cout << mensajeDeRed->getParametro(2) << endl;
-		m_print.unlock();
+		if (mensajeDeRed->getParametro(1).compare("0") == 0) {
+			this->idJugador = stoi(mensajeDeRed->getParametro(2));
+			//this->maquinaDeEstados->changeState(new EstadoJuegoActivo());
+			this->maquinaDeEstados->changeState(new EstadoEspera());
+			m_print.lock();
+			cout << mensajeDeRed->getParametro(2) << endl;
+			m_print.unlock();
+		} else {
+			EstadoInicialJuego* estadoInicial = new EstadoInicialJuego();
+			memcpy(estadoInicial, datosRecibidos + 27, sizeof(EstadoInicialJuego));
+			iniciarJuego(estadoInicial);
+		}
 	} else if (mensajeDeRed->getParametro(0) == "LOGIN_NOK") {
 		this->estaLogueado = false;
-		this->maquinaDeEstados->changeState(new EstadoLogeo());
+		this->maquinaDeEstados->changeState(new EstadoLogeo(), "Login Invalido.Reintentar:");
 		m_print.lock();
 		cout << mensajeDeRed->getParametro(1) << endl;
 		m_print.unlock();

@@ -32,7 +32,7 @@ protected:
 	void procesarMensajesGlobales(MensajeDeRed* unMensajeDeRed);
 	void procesarMensajesPrivados(MensajeDeRed* unMensajeDeRed);
 	void procesarResultadoSendMessage(MensajeDeRed* mensajeDeRed);
-	void procesarResultadoLogin(MensajeDeRed* mensajeDeRed);
+	void procesarResultadoLogin(MensajeDeRed* mensajeDeRed, char* datosRecibidos);
 	void procesarEstadoModelo(EstadoModeloJuego* estadoModeloJuego);
 	void iniciarJuego(EstadoInicialJuego* unEstadoInicial);
 	int idJugador = -1;

@@ -11,6 +11,7 @@ public:
 	bool onEnter(Renderer* renderer);
 	bool onExit();
 	std::string getStateID() const { return s_playID; }
+	void setParametro(void* param);
 private:
 	static const std::string s_playID;
 	LoggerView* loggerView;
