@@ -32,6 +32,7 @@ public:
 	~Constantes();
 	static Constantes* getInstance();
 	static constexpr const int PING_DELAY = 10000;
+	static constexpr const int TOLERANCIA_PING = 15000;
 	static constexpr const int RECV_TIMEOUT = 25000;
 	static constexpr const int FPS = 25;
 	static constexpr const int UPDATE_MODEL_DELAY = 1000/(Constantes::FPS-7);

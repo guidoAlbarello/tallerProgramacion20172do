@@ -20,11 +20,13 @@ void Conexion::cerrarConexion() {
 	this->conexionActiva = false;
 	this->conexionViva = false;
 	this->conexionInicializada = false;
-	if (this->getUsuario()->getJugador() != NULL) {
-		this->getUsuario()->getJugador()->setEstadoConexion(false);
-		this->getUsuario()->getJugador()->recibirEntrada(0, false);//ponemos todas las entradas en false para q frene. 
-		this->getUsuario()->getJugador()->recibirEntrada(1, false);
-		this->getUsuario()->getJugador()->recibirEntrada(2, false);
+	if (this->getUsuario() != NULL) {
+		if (this->getUsuario()->getJugador() != NULL) {
+			this->getUsuario()->getJugador()->setEstadoConexion(false);
+			this->getUsuario()->getJugador()->recibirEntrada(0, false);//ponemos todas las entradas en false para q frene. 
+			this->getUsuario()->getJugador()->recibirEntrada(1, false);
+			this->getUsuario()->getJugador()->recibirEntrada(2, false);
+		}
 	}
 
 	try {
@@ -36,10 +38,12 @@ void Conexion::cerrarConexion() {
 			this->conexionConCliente->cerrarConexion();
 			delete this->conexionConCliente;
 		}
-	} catch (exception e) {
+	}
+	catch (exception e) {
 		Logger::getInstance()->log(Error, "Ocurrio un error al cerrar la conexion");
 	}
 }
+
 
 void Conexion::procesarSolicitudPing() {
 	// Envia un ping de vuelta hacia el cliente como respuesta
@@ -334,10 +338,16 @@ void Conexion::procesarDatosRecibidos() {
 		}
 
 		double tiempoTardado = std::chrono::duration_cast<std::chrono::duration<double, std::ratio<1>>>(std::chrono::high_resolution_clock::now() - timeOut).count() * 1000;
+<<<<<<< HEAD
 		if (tiempoTardado > (Constantes::PING_DELAY)) {
 			this->conexionActiva = false;
 			this->conexionViva = false;
 			this->conexionInicializada = false;
+=======
+		if (tiempoTardado > (Constantes::PING_DELAY) + Constantes::TOLERANCIA_PING) {
+			this->conexionActiva = false; 
+			this->conexionViva = false; 
+>>>>>>> 97685609ebb65112aec033e50bb37a2f5b4b576a
 			//this->cerrarConexion();
 		}
 

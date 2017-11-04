@@ -21,7 +21,7 @@ void MapaView::init() {
 }
 
 void MapaView::renderInit() {
-	
+
 	SDL_Window* window = this->gRenderer->getWindowMapa();
 	SDL_Renderer* renderer = this->gRenderer->getRendererMapa();
 	SDL_SetRenderDrawColor(renderer, 242, 242, 242, 255);
@@ -83,13 +83,13 @@ void MapaView::render(Renderer* renderer) {
 	float x = 0, dx = 0;
 	for (int i = 0; i < DISTANCIA_DIBUJADO; i++) {
 		Segmento* unSegmento = tramos[base + i];			//agregar chequeo distancia dibujado > tamaño array
-		ManejadorDeTexturas::getInstance()->dibujarTramo(unSegmento, ANCHO_TRAMO, renderer->getAnchoVentana(), renderer->getAltoVentana(), renderer->getRendererJuego(), (base + i),x);
-		
+		ManejadorDeTexturas::getInstance()->dibujarTramo(unSegmento, ANCHO_TRAMO, renderer->getAnchoVentana(), renderer->getAltoVentana(), renderer->getRendererJuego(), (base + i), x);
+
 		//x += dx;
 		//dx += unSegmento->curva;
 	}
 
-	ManejadorDeTexturas::getInstance()->drawStaticSprite("8", -700, 1000, 200, 200, renderer->getAnchoVentana(), renderer->getRendererJuego(), SDL_FLIP_NONE,0);
+	ManejadorDeTexturas::getInstance()->drawStaticSprite("8", -700, 1000, 200, 200, renderer->getAnchoVentana(), renderer->getRendererJuego(), SDL_FLIP_NONE, 0);
 }
 
 bool MapaView::loadMedia() {
@@ -122,12 +122,15 @@ void MapaView::dibujarBordes(SDL_Renderer* renderer) {
 	SDL_RenderDrawLine(renderer, lineRight.x1, lineRight.y1, lineRight.x2, lineRight.y2);
 }
 
+/* Se pasa ahora el sentido de la ultima curva ya que si bien la curva se representa en 45°, cuando dpues de una curva viene
+una recta, se rotan otros 45° para que no quede como que todo son curvas. */
 void MapaView::dibujarMapa(SDL_Renderer* renderer) {
 	Coordenada coordenadaInicio = { 200, 100 };
 	Coordenada* coordenadaUltimoTramo = new Coordenada();
 	coordenadaUltimoTramo->x = 200;
 	coordenadaUltimoTramo->y = 300;
 	Orientacion ultimaOrientacion = Orientacion::SUR;
+	SentidoCurva sentidoUltimaCurva = SentidoCurva::NINGUNO;
 	int longitudTotal = 0;
 	std::vector<Tramo*> tramos = this->mapa->getTramosDelMapa();
 	for (std::vector<Tramo*>::iterator it = tramos.begin(); it != tramos.end(); ++it) {
@@ -138,11 +141,22 @@ void MapaView::dibujarMapa(SDL_Renderer* renderer) {
 		TramoCurvo* tramoCurvo;
 		std::vector<ObjetoFijo*> objetosDelMapaConUbicacion;
 		if (tipoTramo == Recta) {
-			this->dibujarObjetosTramo(this->mapa->getObjetosDelMapa(), ultimaOrientacion, coordenadaUltimoTramo->x, coordenadaUltimoTramo->y, tramoActual->getLongitud(), tramoActual->getMetroInicio(), coordenadaUltimoTramo, SentidoCurva::NINGUNO, renderer);
-			ultimaOrientacion = this->unirTramoRecto(ultimaOrientacion, coordenadaUltimoTramo->x, coordenadaUltimoTramo->y, tramoActual->getLongitud(), coordenadaUltimoTramo, renderer);		
-		} else if (tipoTramo == Curva) {
+			if (sentidoUltimaCurva != SentidoCurva::NINGUNO) {
+				// Si viene de una curva gira otros 45° para hacer la recta, de esta forma Recta-Curva-Recta implica un giro de 90°
+				// al dibujarObjetosTramo se le pasa el sentidoUltimaCurva como el sentidoRotacion
+				this->dibujarObjetosTramo(this->mapa->getObjetosDelMapa(), ultimaOrientacion, coordenadaUltimoTramo->x, coordenadaUltimoTramo->y, tramoActual->getLongitud(), tramoActual->getMetroInicio(), coordenadaUltimoTramo, sentidoUltimaCurva, renderer);
+				ultimaOrientacion = unirTramoRotado(sentidoUltimaCurva, ultimaOrientacion, coordenadaUltimoTramo->x, coordenadaUltimoTramo->y, tramoActual->getLongitud(), coordenadaUltimoTramo, renderer);
+			}
+			else {
+				this->dibujarObjetosTramo(this->mapa->getObjetosDelMapa(), ultimaOrientacion, coordenadaUltimoTramo->x, coordenadaUltimoTramo->y, tramoActual->getLongitud(), tramoActual->getMetroInicio(), coordenadaUltimoTramo, SentidoCurva::NINGUNO, renderer);
+				ultimaOrientacion = this->unirTramoRecto(ultimaOrientacion, coordenadaUltimoTramo->x, coordenadaUltimoTramo->y, tramoActual->getLongitud(), coordenadaUltimoTramo, renderer);
+			}
+			sentidoUltimaCurva = SentidoCurva::NINGUNO;
+		}
+		else if (tipoTramo == Curva) {
 			tramoCurvo = (TramoCurvo*)tramoActual;
 			this->dibujarObjetosTramo(this->mapa->getObjetosDelMapa(), ultimaOrientacion, coordenadaUltimoTramo->x, coordenadaUltimoTramo->y, tramoActual->getLongitud(), tramoActual->getMetroInicio(), coordenadaUltimoTramo, tramoCurvo->getSentido(), renderer);
+			sentidoUltimaCurva = tramoCurvo->getSentido();
 			ultimaOrientacion = unirTramoRotado(tramoCurvo->getSentido(), ultimaOrientacion, coordenadaUltimoTramo->x, coordenadaUltimoTramo->y, tramoActual->getLongitud(), coordenadaUltimoTramo, renderer);
 		}
 	}
@@ -151,10 +165,11 @@ void MapaView::dibujarMapa(SDL_Renderer* renderer) {
 
 void MapaView::dibujarObjetosTramo(std::vector<ObjetoFijo*> objetosDelMapa, Orientacion orientacionAnterior, int ultimaX, int ultimaY, int longitud, int metroInicio, Coordenada* coordenadaUltimoTramo, SentidoCurva sentidoRotacion, SDL_Renderer* renderer) {
 	if (!this->terminoDibujarMapa) {
-		SDL_Rect* rectObjeto = new SDL_Rect();
+		float anguloRotado = PI / 4;
 		std::vector<ObjetoFijo*> objetosDelMapaConUbicacion;
 		for (std::vector<ObjetoFijo*>::iterator it = objetosDelMapa.begin(); it != objetosDelMapa.end(); ++it) {
 			ObjetoFijo* objetoActual = *it;
+			SDL_Rect* rectObjeto = new SDL_Rect();
 			if (objetoActual->getUbicacionM() > metroInicio && objetoActual->getUbicacionM() <= metroInicio + longitud) {
 				// Objeto dentro de tramo actual
 				rectObjeto->w = TAMAÑO_INDICADOR_OBJETO;
@@ -162,15 +177,15 @@ void MapaView::dibujarObjetosTramo(std::vector<ObjetoFijo*> objetosDelMapa, Orie
 				int posicionRelativaATramo = (objetoActual->getUbicacionM() - metroInicio) * ESCALA_MAPA;
 
 				if (sentidoRotacion != SentidoCurva::NINGUNO) {
-					// Si es tramo curvo
+					// Si es tramo curvo o bien es una recta pero viene de una curva
 					if (orientacionAnterior == Orientacion::ESTE) {
 						if (sentidoRotacion == SCDerecha) {
-							rectObjeto->x = (int)(ultimaX + cos(PI / 4) * posicionRelativaATramo);
-							rectObjeto->y = (int)(ultimaY + sin(PI / 4) * posicionRelativaATramo);
+							rectObjeto->x = (int)(ultimaX + cos(anguloRotado) * posicionRelativaATramo);
+							rectObjeto->y = (int)(ultimaY + sin(anguloRotado) * posicionRelativaATramo);
 						}
 						if (sentidoRotacion == SCIzquierda) {
-							rectObjeto->x = (int)(ultimaX + cos(PI / 4) * posicionRelativaATramo);
-							rectObjeto->y = (int)(ultimaY - sin(PI / 4) * posicionRelativaATramo);
+							rectObjeto->x = (int)(ultimaX + cos(anguloRotado) * posicionRelativaATramo);
+							rectObjeto->y = (int)(ultimaY - sin(anguloRotado) * posicionRelativaATramo);
 						}
 					}
 					if (orientacionAnterior == Orientacion::NORESTE) {
@@ -185,12 +200,12 @@ void MapaView::dibujarObjetosTramo(std::vector<ObjetoFijo*> objetosDelMapa, Orie
 					}
 					if (orientacionAnterior == Orientacion::NORTE) {
 						if (sentidoRotacion == SCDerecha) {
-							rectObjeto->x = (int)(ultimaX + cos(PI / 4) * posicionRelativaATramo);
-							rectObjeto->y = (int)(ultimaY - sin(PI / 4) * posicionRelativaATramo);
+							rectObjeto->x = (int)(ultimaX + cos(anguloRotado) * posicionRelativaATramo);
+							rectObjeto->y = (int)(ultimaY - sin(anguloRotado) * posicionRelativaATramo);
 						}
 						if (sentidoRotacion == SCIzquierda) {
-							rectObjeto->x = (int)(ultimaX - cos(PI / 4) * posicionRelativaATramo);
-							rectObjeto->y = (int)(ultimaY - sin(PI / 4) * posicionRelativaATramo);
+							rectObjeto->x = (int)(ultimaX - cos(anguloRotado) * posicionRelativaATramo);
+							rectObjeto->y = (int)(ultimaY - sin(anguloRotado) * posicionRelativaATramo);
 						}
 					}
 					if (orientacionAnterior == Orientacion::NOROESTE) {
@@ -205,12 +220,12 @@ void MapaView::dibujarObjetosTramo(std::vector<ObjetoFijo*> objetosDelMapa, Orie
 					}
 					if (orientacionAnterior == Orientacion::OESTE) {
 						if (sentidoRotacion == SCDerecha) {
-							rectObjeto->x = (int)(ultimaX - cos(PI / 4) * posicionRelativaATramo);
-							rectObjeto->y = (int)(ultimaY - sin(PI / 4) * posicionRelativaATramo);
+							rectObjeto->x = (int)(ultimaX - cos(anguloRotado) * posicionRelativaATramo);
+							rectObjeto->y = (int)(ultimaY - sin(anguloRotado) * posicionRelativaATramo);
 						}
 						if (sentidoRotacion == SCIzquierda) {
-							rectObjeto->x = (int)(ultimaX - cos(PI / 4) * posicionRelativaATramo);
-							rectObjeto->y = (int)(ultimaY + sin(PI / 4) * posicionRelativaATramo);
+							rectObjeto->x = (int)(ultimaX - cos(anguloRotado) * posicionRelativaATramo);
+							rectObjeto->y = (int)(ultimaY + sin(anguloRotado) * posicionRelativaATramo);
 						}
 					}
 					if (orientacionAnterior == Orientacion::SUROESTE) {
@@ -225,12 +240,12 @@ void MapaView::dibujarObjetosTramo(std::vector<ObjetoFijo*> objetosDelMapa, Orie
 					}
 					if (orientacionAnterior == Orientacion::SUR) {
 						if (sentidoRotacion == SCDerecha) {
-							rectObjeto->x = (int)(ultimaX - cos(PI / 4) * posicionRelativaATramo);
-							rectObjeto->y = (int)(ultimaY + sin(PI / 4) * posicionRelativaATramo);
+							rectObjeto->x = (int)(ultimaX - cos(anguloRotado) * posicionRelativaATramo);
+							rectObjeto->y = (int)(ultimaY + sin(anguloRotado) * posicionRelativaATramo);
 						}
 						if (sentidoRotacion == SCIzquierda) {
-							rectObjeto->x = (int)(ultimaX + cos(PI / 4) * posicionRelativaATramo);
-							rectObjeto->y = (int)(ultimaY + sin(PI / 4) * posicionRelativaATramo);
+							rectObjeto->x = (int)(ultimaX + cos(anguloRotado) * posicionRelativaATramo);
+							rectObjeto->y = (int)(ultimaY + sin(anguloRotado) * posicionRelativaATramo);
 						}
 					}
 					if (orientacionAnterior == Orientacion::SURESTE) {
@@ -245,47 +260,47 @@ void MapaView::dibujarObjetosTramo(std::vector<ObjetoFijo*> objetosDelMapa, Orie
 					}
 				}
 				else {
-					// Si es tramo recto
 					if (orientacionAnterior == Orientacion::ESTE) {
 						rectObjeto->x = ultimaX + posicionRelativaATramo;
 						rectObjeto->y = ultimaY;
 					}
 					if (orientacionAnterior == Orientacion::NORESTE) {
-						rectObjeto->x = (int)(ultimaX + cos(PI / 4) * posicionRelativaATramo);
-						rectObjeto->y = (int)(ultimaY - sin(PI / 4) * posicionRelativaATramo);
+						rectObjeto->x = (int)(ultimaX + cos(anguloRotado) * posicionRelativaATramo);
+						rectObjeto->y = (int)(ultimaY - sin(anguloRotado) * posicionRelativaATramo);
 					}
 					if (orientacionAnterior == Orientacion::NORTE) {
 						rectObjeto->x = ultimaX;
 						rectObjeto->y = ultimaY - posicionRelativaATramo;
 					}
 					if (orientacionAnterior == Orientacion::NOROESTE) {
-						rectObjeto->x = (int)(ultimaX - cos(PI / 4) * posicionRelativaATramo);
-						rectObjeto->y = (int)(ultimaY - sin(PI / 4) * posicionRelativaATramo);
+						rectObjeto->x = (int)(ultimaX - cos(anguloRotado) * posicionRelativaATramo);
+						rectObjeto->y = (int)(ultimaY - sin(anguloRotado) * posicionRelativaATramo);
 					}
 					if (orientacionAnterior == Orientacion::OESTE) {
 						rectObjeto->x = ultimaX - posicionRelativaATramo;
 						rectObjeto->y = ultimaY;
 					}
 					if (orientacionAnterior == Orientacion::SUROESTE) {
-						rectObjeto->x = (int)(ultimaX - cos(PI / 4) * posicionRelativaATramo);
-						rectObjeto->y = (int)(ultimaY + sin(PI / 4) * posicionRelativaATramo);
+						rectObjeto->x = (int)(ultimaX - cos(anguloRotado) * posicionRelativaATramo);
+						rectObjeto->y = (int)(ultimaY + sin(anguloRotado) * posicionRelativaATramo);
 					}
 					if (orientacionAnterior == Orientacion::SUR) {
 						rectObjeto->x = ultimaX;
 						rectObjeto->y = ultimaY + posicionRelativaATramo;
 					}
 					if (orientacionAnterior == Orientacion::SURESTE) {
-						rectObjeto->x = (int)(ultimaX + cos(PI / 4) * posicionRelativaATramo);
-						rectObjeto->y = (int)(ultimaY + sin(PI / 4) * posicionRelativaATramo);
+						rectObjeto->x = (int)(ultimaX + cos(anguloRotado) * posicionRelativaATramo);
+						rectObjeto->y = (int)(ultimaY + sin(anguloRotado) * posicionRelativaATramo);
 					}
 				}
 				objetoActual->setXMapa(rectObjeto->x);
 				objetoActual->setYMapa(rectObjeto->y);
 				this->objetosADibujar.push_back(rectObjeto);
-			}
+			} // Fin de if si objeto esta en el tramo
+
 			objetosDelMapaConUbicacion.push_back(objetoActual);
 			SDL_RenderDrawRect(renderer, rectObjeto);
-		}
+		} // Fin for de todos los objetos
 		this->mapa->setObjetosDelMapa(objetosDelMapaConUbicacion);
 	}
 }
@@ -295,13 +310,15 @@ Orientacion MapaView::unirTramoRotado(SentidoCurva sentidoRotacion, Orientacion 
 		Line lineaADibujar = {};
 		Orientacion orientacionNueva;
 		longitud = longitud * ESCALA_MAPA;
+		float anguloRotado = PI / 4;
+
 		if (orientacionAnterior == Orientacion::ESTE) {
 			if (sentidoRotacion == SCDerecha) {
-				lineaADibujar = { ultimaX, ultimaY, (int)(ultimaX + cos(PI / 4) * longitud), (int)(ultimaY + sin(PI / 4) * longitud) };
+				lineaADibujar = { ultimaX, ultimaY, (int)(ultimaX + cos(anguloRotado) * longitud), (int)(ultimaY + sin(anguloRotado) * longitud) };
 				orientacionNueva = Orientacion::SURESTE;
 			}
 			if (sentidoRotacion == SCIzquierda) {
-				lineaADibujar = { ultimaX, ultimaY, (int)(ultimaX + cos(PI / 4) * longitud), (int)(ultimaY - sin(PI / 4) * longitud) };
+				lineaADibujar = { ultimaX, ultimaY, (int)(ultimaX + cos(anguloRotado) * longitud), (int)(ultimaY - sin(anguloRotado) * longitud) };
 				orientacionNueva = Orientacion::NORESTE;
 			}
 		}
@@ -317,11 +334,11 @@ Orientacion MapaView::unirTramoRotado(SentidoCurva sentidoRotacion, Orientacion 
 		}
 		if (orientacionAnterior == Orientacion::NORTE) {
 			if (sentidoRotacion == SCDerecha) {
-				lineaADibujar = { ultimaX, ultimaY, (int)(ultimaX + cos(PI / 4) * longitud), (int)(ultimaY - sin(PI / 4) * longitud) };
+				lineaADibujar = { ultimaX, ultimaY, (int)(ultimaX + cos(anguloRotado) * longitud), (int)(ultimaY - sin(anguloRotado) * longitud) };
 				orientacionNueva = Orientacion::NORESTE;
 			}
 			if (sentidoRotacion == SCIzquierda) {
-				lineaADibujar = { ultimaX, ultimaY, (int)(ultimaX - cos(PI / 4) * longitud), (int)(ultimaY - sin(PI / 4) * longitud) };
+				lineaADibujar = { ultimaX, ultimaY, (int)(ultimaX - cos(anguloRotado) * longitud), (int)(ultimaY - sin(anguloRotado) * longitud) };
 				orientacionNueva = Orientacion::NOROESTE;
 			}
 		}
@@ -337,11 +354,11 @@ Orientacion MapaView::unirTramoRotado(SentidoCurva sentidoRotacion, Orientacion 
 		}
 		if (orientacionAnterior == Orientacion::OESTE) {
 			if (sentidoRotacion == SCDerecha) {
-				lineaADibujar = { ultimaX, ultimaY, (int)(ultimaX - cos(PI / 4) * longitud), (int)(ultimaY - sin(PI / 4) * longitud) };
+				lineaADibujar = { ultimaX, ultimaY, (int)(ultimaX - cos(anguloRotado) * longitud), (int)(ultimaY - sin(anguloRotado) * longitud) };
 				orientacionNueva = Orientacion::NOROESTE;
 			}
 			if (sentidoRotacion == SCIzquierda) {
-				lineaADibujar = { ultimaX, ultimaY, (int)(ultimaX - cos(PI / 4) * longitud), (int)(ultimaY + sin(PI / 4) * longitud) };
+				lineaADibujar = { ultimaX, ultimaY, (int)(ultimaX - cos(anguloRotado) * longitud), (int)(ultimaY + sin(anguloRotado) * longitud) };
 				orientacionNueva = Orientacion::SUROESTE;
 			}
 		}
@@ -357,11 +374,11 @@ Orientacion MapaView::unirTramoRotado(SentidoCurva sentidoRotacion, Orientacion 
 		}
 		if (orientacionAnterior == Orientacion::SUR) {
 			if (sentidoRotacion == SCDerecha) {
-				lineaADibujar = { ultimaX, ultimaY, (int)(ultimaX - cos(PI / 4) * longitud), (int)(ultimaY + sin(PI / 4) * longitud) };
+				lineaADibujar = { ultimaX, ultimaY, (int)(ultimaX - cos(anguloRotado) * longitud), (int)(ultimaY + sin(anguloRotado) * longitud) };
 				orientacionNueva = Orientacion::SUROESTE;
 			}
 			if (sentidoRotacion == SCIzquierda) {
-				lineaADibujar = { ultimaX, ultimaY, (int)(ultimaX + cos(PI / 4) * longitud), (int)(ultimaY + sin(PI / 4) * longitud) };
+				lineaADibujar = { ultimaX, ultimaY, (int)(ultimaX + cos(anguloRotado) * longitud), (int)(ultimaY + sin(anguloRotado) * longitud) };
 				orientacionNueva = Orientacion::SURESTE;
 			}
 		}
@@ -394,13 +411,14 @@ Orientacion MapaView::unirTramoRecto(Orientacion orientacionAnterior, int ultima
 		Line lineaADibujar = {};
 		Orientacion orientacionNueva;
 		longitud = longitud * ESCALA_MAPA;
+		float anguloRotado = PI / 4;
 
 		if (orientacionAnterior == Orientacion::ESTE) {
 			lineaADibujar = { ultimaX, ultimaY, ultimaX + longitud, ultimaY };
 			orientacionNueva = Orientacion::ESTE;
 		}
 		if (orientacionAnterior == Orientacion::NORESTE) {
-			lineaADibujar = { ultimaX, ultimaY, (int)(ultimaX + cos(PI / 4) * longitud), (int)(ultimaY - sin(PI / 4) * longitud) };
+			lineaADibujar = { ultimaX, ultimaY, (int)(ultimaX + cos(anguloRotado) * longitud), (int)(ultimaY - sin(anguloRotado) * longitud) };
 			orientacionNueva = Orientacion::NORESTE;
 		}
 		if (orientacionAnterior == Orientacion::NORTE) {
@@ -408,7 +426,7 @@ Orientacion MapaView::unirTramoRecto(Orientacion orientacionAnterior, int ultima
 			orientacionNueva = Orientacion::NORTE;
 		}
 		if (orientacionAnterior == Orientacion::NOROESTE) {
-			lineaADibujar = { ultimaX, ultimaY, (int)(ultimaX - cos(PI / 4) * longitud), (int)(ultimaY - sin(PI / 4) * longitud) };
+			lineaADibujar = { ultimaX, ultimaY, (int)(ultimaX - cos(anguloRotado) * longitud), (int)(ultimaY - sin(anguloRotado) * longitud) };
 			orientacionNueva = Orientacion::NOROESTE;
 		}
 		if (orientacionAnterior == Orientacion::OESTE) {
@@ -416,7 +434,7 @@ Orientacion MapaView::unirTramoRecto(Orientacion orientacionAnterior, int ultima
 			orientacionNueva = Orientacion::OESTE;
 		}
 		if (orientacionAnterior == Orientacion::SUROESTE) {
-			lineaADibujar = { ultimaX, ultimaY, (int)(ultimaX - cos(PI / 4) * longitud), (int)(ultimaY + sin(PI / 4) * longitud) };
+			lineaADibujar = { ultimaX, ultimaY, (int)(ultimaX - cos(anguloRotado) * longitud), (int)(ultimaY + sin(anguloRotado) * longitud) };
 			orientacionNueva = Orientacion::SUROESTE;
 		}
 		if (orientacionAnterior == Orientacion::SUR) {
@@ -424,7 +442,7 @@ Orientacion MapaView::unirTramoRecto(Orientacion orientacionAnterior, int ultima
 			orientacionNueva = Orientacion::SUR;
 		}
 		if (orientacionAnterior == Orientacion::SURESTE) {
-			lineaADibujar = { ultimaX, ultimaY, (int)(ultimaX + cos(PI / 4) * longitud), (int)(ultimaY + sin(PI / 4) * longitud) };
+			lineaADibujar = { ultimaX, ultimaY, (int)(ultimaX + cos(anguloRotado) * longitud), (int)(ultimaY + sin(anguloRotado) * longitud) };
 			orientacionNueva = Orientacion::SURESTE;
 		}
 
@@ -442,15 +460,15 @@ Orientacion MapaView::unirTramoRecto(Orientacion orientacionAnterior, int ultima
 }
 
 bool MapaView::validarLineaDibujable(Line lineaADibujar) {
-	bool excede = lineaADibujar.x1 > SCREEN_WIDTH - MENU_OFFSET_RIGHT || lineaADibujar.x1 < 0 
-		|| lineaADibujar.x2 > SCREEN_WIDTH - MENU_OFFSET_RIGHT 	|| lineaADibujar.x2 < 0 
-		|| lineaADibujar.y1 > SCREEN_HEIGHT || lineaADibujar.y1 < 0 || lineaADibujar.y2 > SCREEN_HEIGHT 
+	bool excede = lineaADibujar.x1 > SCREEN_WIDTH - MENU_OFFSET_RIGHT || lineaADibujar.x1 < 0
+		|| lineaADibujar.x2 > SCREEN_WIDTH - MENU_OFFSET_RIGHT || lineaADibujar.x2 < 0
+		|| lineaADibujar.y1 > SCREEN_HEIGHT || lineaADibujar.y1 < 0 || lineaADibujar.y2 > SCREEN_HEIGHT
 		|| lineaADibujar.y2 < 0;
 	if (excede) {
 		ESCALA_MAPA = ESCALA_MAPA * FACTOR_DECREMENTO_ESCALA;
 		this->terminoDibujarMapa = false;
 		this->renderInit();
-		return false;	
+		return false;
 	}
 	return true;
 }
@@ -467,13 +485,13 @@ void MapaView::initTramos() {
 		unSegmento->p2.x = 0;
 		unSegmento->p1.y = 0;
 		unSegmento->p2.y = 0;
-		unSegmento->p1.z = (i) * ALTO_TRAMO;
-		unSegmento->p2.z = (i+1) * ALTO_TRAMO;
+		unSegmento->p1.z = (i)* ALTO_TRAMO;
+		unSegmento->p2.z = (i + 1) * ALTO_TRAMO;
 		unSegmento->curva = 0;
 		if (i > 500 && i < 700) {
 			//unSegmento->curva = 1;
 			unSegmento->p1.x = i;
-			unSegmento->p2.x = i+10;
+			unSegmento->p2.x = i + 10;
 		}
 		tramos.push_back(unSegmento);
 	}
