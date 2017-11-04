@@ -86,11 +86,13 @@ void MapaView::render(Renderer* renderer) {
 	// TODO: obtener el tramo actual posta
 
 	for (int i = 0; i < DISTANCIA_DIBUJADO; i++) {
-		Segmento* unSegmento = tramos[base + i];			//agregar chequeo distancia dibujado > tamaño array
-		ManejadorDeTexturas::getInstance()->dibujarTramo(unSegmento, ANCHO_TRAMO, renderer->getAnchoVentana(), renderer->getAltoVentana(), renderer->getRendererJuego(), (base + i), x);
-
-		//x += dx;
-		//dx += unSegmento->curva;
+		if (tramos.size() > base + i) {
+			Segmento* unSegmento = tramos[base + i];			//agregar chequeo distancia dibujado > tamaño array
+			ManejadorDeTexturas::getInstance()->dibujarTramo(unSegmento, ANCHO_TRAMO, renderer->getAnchoVentana(), renderer->getAltoVentana(), renderer->getRendererJuego(), (base + i), x);
+			x += dx;
+			dx += unSegmento->curva;
+		}
+		
 	}
 
 	ManejadorDeTexturas::getInstance()->drawStaticSprite("8", -200, 1000, 200, 200, renderer->getAnchoVentana(), renderer->getRendererJuego(), SDL_FLIP_NONE, x);
