@@ -8,6 +8,7 @@ class ManejadorInput {
 public:
 	static ManejadorInput* getInstance();
 	void update();
+	void setCerrar(bool quit) { cerrar = quit; }
 	bool estaTeclaPresionada(SDL_Scancode key);
 	bool cerrarCliente() { return this->cerrar; }
 private:

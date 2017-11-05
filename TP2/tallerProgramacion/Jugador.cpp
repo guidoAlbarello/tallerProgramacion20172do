@@ -28,14 +28,10 @@ void Jugador::update(Unidad delta) {
 
 		if (entrada[2])			//tecla izquierda
 			doblarIzquierda(delta);
-		else
-			//else
-				//dejarDoblarIzquierda(delta);
-			if (estado == EstadoAuto::DOBLANDO_DER)
-				dejarDoblarDerecha(delta);
-			else
-				if (estado == EstadoAuto::DOBLANDO_IZQ)
-					dejarDoblarIzquierda(delta);
+		else {
+			dejarDoblarDerecha(delta);
+			dejarDoblarIzquierda(delta);
+		}
 
 	// los 340 q aparecen son la mitaddel alcho de la pantlla menos el ancho de la imagen
 	// agrande la imagen en 1/2 la veia muychica cualquir csa se puede cambiar

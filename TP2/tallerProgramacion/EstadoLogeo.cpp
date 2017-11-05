@@ -21,7 +21,7 @@ bool EstadoLogeo::onEnter(Renderer* renderer) {
 	//iniciar logeo
 	this->renderer = renderer;
 	this->loggerView = new LoggerView(this->renderer->getRendererJuego());
-	loggerView->init();
+	loggerView->init(); 
 	inicializado = true;
 	return true;
 }

@@ -102,7 +102,7 @@ void LoggerView::update() {
 		//Special key input
 		if (e.type == SDL_KEYDOWN) {
 			if (e.key.keysym.sym == SDLK_ESCAPE) {
-				quit = true;
+				ManejadorInput::getInstance()->setCerrar(true);
 			}
 			if (e.key.keysym.sym == SDLK_RETURN) {
 				if (inputText != "") {
@@ -123,6 +123,14 @@ void LoggerView::update() {
 					}
 				}
 			}
+
+			if (e.type == SDL_WINDOWEVENT) {
+				if (e.window.event == SDL_WINDOWEVENT_CLOSE)
+					ManejadorInput::getInstance()->setCerrar(true);
+			}
+			if (e.type == SDL_QUIT) {
+				ManejadorInput::getInstance()->setCerrar(true);
+			}
 			//Handle backspace
 			if (e.key.keysym.sym == SDLK_BACKSPACE && inputText.length() > 0) {
 				//lop off character
@@ -136,13 +144,21 @@ void LoggerView::update() {
 			inputText += e.text.text;
 			renderText = true;
 		}
+
+		if (e.type == SDL_WINDOWEVENT) {
+			if (e.window.event == SDL_WINDOWEVENT_CLOSE)
+				ManejadorInput::getInstance()->setCerrar(true);
+		}
+		if (e.type == SDL_QUIT) {
+			ManejadorInput::getInstance()->setCerrar(true);
+		}
 	}
 
 	//Rerender text if needed
 	if (renderText) {
 		//Text is not empty
 		if (inputText != "") {
-			if (!isWrittingPassord) {
+			if (!isWrittingPassord) { 
 				//Render new text
 				gInputTextTexture->loadFromRenderedText(inputText.c_str(), textColor);
 			} else {
@@ -160,6 +176,7 @@ void LoggerView::update() {
 		}
 	}
 	SDL_StopTextInput();
+	
 }
 
 Usuario * LoggerView::getUsuario() {

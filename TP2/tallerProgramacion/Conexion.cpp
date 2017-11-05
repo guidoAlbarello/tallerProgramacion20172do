@@ -29,7 +29,7 @@ void Conexion::cerrarConexion() {
 		}
 	}
 
-	try {
+	//try {
 		if (t_procesarDatosRecibidos.joinable()) {
 			t_procesarDatosRecibidos.join();
 		}
@@ -38,10 +38,10 @@ void Conexion::cerrarConexion() {
 			this->conexionConCliente->cerrarConexion();
 			delete this->conexionConCliente;
 		}
-	}
+	/*}
 	catch (exception e) {
 		Logger::getInstance()->log(Error, "Ocurrio un error al cerrar la conexion");
-	}
+	}*/
 }
 
 
