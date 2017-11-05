@@ -23,7 +23,7 @@ void Cliente::render() {
 			this->maquinaDeEstados->render();
 		}
 
-		std::this_thread::sleep_for(std::chrono::milliseconds(1000/Constantes::FPS));
+		//std::this_thread::sleep_for(std::chrono::milliseconds(1000/Constantes::FPS)); // por ahora se comenta, esto mejora mucho la fluidez
 	}
 }
 

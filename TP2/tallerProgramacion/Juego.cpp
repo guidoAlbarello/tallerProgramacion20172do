@@ -54,7 +54,7 @@ EstadoModeloJuego* Juego::getEstadoJuego() {
 		nuevoEstado->estadoJugadores[i].estadoAuto = unJugador->getEstado();
 		nuevoEstado->estadoJugadores[i].posX = unJugador->getPosicionX();
 		nuevoEstado->estadoJugadores[i].posY = unJugador->getPosicionY();
-		nuevoEstado->estadoJugadores[i].posXCamara = unJugador->getCamara()->getPosicionTarget()->getX();
+		nuevoEstado->estadoJugadores[i].posXCamara = unJugador->getCamara()->getPosicionTarget()->getX() + 85; // hardcodeo furioso para que quede centrado el auto
 		nuevoEstado->estadoJugadores[i].posYCamara = unJugador->getCamara()->getPosicionTarget()->getY();
 	}
 	
@@ -90,7 +90,7 @@ EstadoInicialJuego * Juego::getEstadoJuegoInicial() {
 Jugador* Juego::agregarJugador() {
 	Jugador* nuevoJugador = new Jugador();
 	nuevoJugador->setId(cantidadJugadores);
-	nuevoJugador->setPosicion(this->cantidadJugadores * 100,0);
+	nuevoJugador->setPosicion(this->cantidadJugadores * 100, 0);
 	this->cantidadJugadores++;
 	this->jugadores.push_back(nuevoJugador);
 	return nuevoJugador;

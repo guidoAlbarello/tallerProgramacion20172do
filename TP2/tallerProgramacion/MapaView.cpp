@@ -72,8 +72,8 @@ void MapaView::renderMiniMap() {
 	//SDL_SetRenderDrawColor(renderer, 242, 242, 242, 255);
 	//SDL_RenderClear(renderer); // Clear screen
 	//SDL_SetRenderDrawColor(renderer, 128, 128, 128, 255);
-	this->renderStoredObjects();
 
+	this->renderStoredObjects();
 	// Aca se dibujaria solamente para la proxima entrega la posicion del auto en el minimapa y los scores
 
 	//SDL_RenderPresent(renderer);
@@ -91,10 +91,47 @@ void MapaView::render(Renderer* renderer) {
 			x += dx;
 			dx += unSegmento->curva;
 		}
-		
+	}
+	int yActual = ManejadorDeTexturas::getInstance()->getCamara()->getPosicion()->getY();
+	int xActual = ManejadorDeTexturas::getInstance()->getCamara()->getPosicion()->getX();
+	for (int i = 0; i < this->mapa->getObjetosDelMapa().size(); i++) {
+		ObjetoFijo* objetoActual = this->mapa->getObjetosDelMapa()[i];
+		int ubicacionObjetoFix = objetoActual->getUbicacionM() - 5;
+		if ((ubicacionObjetoFix > base) && (ubicacionObjetoFix <= base + DISTANCIA_DIBUJADO)) {
+			if (ubicacionObjetoFix * 100 > yActual) {
+				// Esta visible
+				if (objetoActual->getTipoObjeto() == TipoObjeto::ARBOL) {
+					if (objetoActual->getPosicion() == Posicion::PDerecha) {
+						ManejadorDeTexturas::getInstance()->drawStaticSprite("arbol", LIMITE_PISTA_X_DERECHA - xActual, yActual + (ubicacionObjetoFix * 100 - yActual), 200, 200, renderer->getAnchoVentana(), renderer->getRendererJuego(), SDL_FLIP_NONE, x);
+					}
+					else if (objetoActual->getPosicion() == Posicion::PIzquierda) {
+						ManejadorDeTexturas::getInstance()->drawStaticSprite("arbol", LIMITE_PISTA_X_IZQUIERDA - 250 + xActual, yActual + (ubicacionObjetoFix * 100 - yActual), 200, 200, renderer->getAnchoVentana(), renderer->getRendererJuego(), SDL_FLIP_NONE, x);
+					}
+				}
+				else if (objetoActual->getTipoObjeto() == TipoObjeto::CARTEL) {
+					if (objetoActual->getPosicion() == Posicion::PDerecha) {
+						ManejadorDeTexturas::getInstance()->drawStaticSprite("cartel", LIMITE_PISTA_X_DERECHA - xActual, yActual + (ubicacionObjetoFix * 100 - yActual), 200, 200, renderer->getAnchoVentana(), renderer->getRendererJuego(), SDL_FLIP_NONE, x);
+					}
+					else if (objetoActual->getPosicion() == Posicion::PIzquierda) {
+						ManejadorDeTexturas::getInstance()->drawStaticSprite("cartel", LIMITE_PISTA_X_IZQUIERDA - 250 + xActual, yActual + (ubicacionObjetoFix * 100 - yActual), 200, 200, renderer->getAnchoVentana(), renderer->getRendererJuego(), SDL_FLIP_NONE, x);
+					}
+				}
+			}
+		}
 	}
 
-	ManejadorDeTexturas::getInstance()->drawStaticSprite("8", -200, 1000, 200, 200, renderer->getAnchoVentana(), renderer->getRendererJuego(), SDL_FLIP_NONE, x);
+
+	ManejadorDeTexturas::getInstance()->drawStaticSprite("arbol", LIMITE_PISTA_X_IZQUIERDA - 250 + xActual, 1600, 200, 200, renderer->getAnchoVentana(), renderer->getRendererJuego(), SDL_FLIP_NONE, x);
+	ManejadorDeTexturas::getInstance()->drawStaticSprite("arbol", LIMITE_PISTA_X_IZQUIERDA - 250 + xActual, 1400, 200, 200, renderer->getAnchoVentana(), renderer->getRendererJuego(), SDL_FLIP_NONE, x);
+	ManejadorDeTexturas::getInstance()->drawStaticSprite("arbol", LIMITE_PISTA_X_IZQUIERDA - 250 + xActual, 1200, 200, 200, renderer->getAnchoVentana(), renderer->getRendererJuego(), SDL_FLIP_NONE, x);
+	ManejadorDeTexturas::getInstance()->drawStaticSprite("arbol", LIMITE_PISTA_X_IZQUIERDA - 250 + xActual, 1000, 200, 200, renderer->getAnchoVentana(), renderer->getRendererJuego(), SDL_FLIP_NONE, x);
+	
+	ManejadorDeTexturas::getInstance()->drawStaticSprite("arbol", LIMITE_PISTA_X_DERECHA - xActual, 1600, 200, 200, renderer->getAnchoVentana(), renderer->getRendererJuego(), SDL_FLIP_NONE, x);
+	ManejadorDeTexturas::getInstance()->drawStaticSprite("arbol", LIMITE_PISTA_X_DERECHA - xActual, 1400, 200, 200, renderer->getAnchoVentana(), renderer->getRendererJuego(), SDL_FLIP_NONE, x);
+	ManejadorDeTexturas::getInstance()->drawStaticSprite("arbol", LIMITE_PISTA_X_DERECHA - xActual, 1200, 200, 200, renderer->getAnchoVentana(), renderer->getRendererJuego(), SDL_FLIP_NONE, x);
+	ManejadorDeTexturas::getInstance()->drawStaticSprite("arbol", LIMITE_PISTA_X_DERECHA - xActual, 1000, 200, 200, renderer->getAnchoVentana(), renderer->getRendererJuego(), SDL_FLIP_NONE, x);
+
+	//ManejadorDeTexturas::getInstance()->drawStaticSprite("8", -200, 1000, 200, 200, renderer->getAnchoVentana(), renderer->getRendererJuego(), SDL_FLIP_NONE, x);
 }
 
 bool MapaView::loadMedia() {

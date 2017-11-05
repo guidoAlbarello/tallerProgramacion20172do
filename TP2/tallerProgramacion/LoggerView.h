@@ -41,6 +41,7 @@ private:
 	std::string mensajeLogin;
 	bool isWrittingPassord = false;
 	bool datosCargados = false;
+	bool terminoIniciar = false;
 };
 
 #endif
