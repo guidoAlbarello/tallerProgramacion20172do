@@ -40,7 +40,9 @@ void Jugador::update(Unidad delta) {
 	// los 340 q aparecen son la mitaddel alcho de la pantlla menos el ancho de la imagen
 	// agrande la imagen en 1/2 la veia muychica cualquir csa se puede cambiar
 	//if ((posicion.getX() + velocidad.getX()) >= -340 & (posicion.getX() + velocidad.getX()) <= 340) {
+	if (posicion.getX() + velocidad.getX() < LIMITE_PISTA_X_DERECHA && posicion.getX() + velocidad.getX() > LIMITE_PISTA_X_IZQUIERDA) {
 		posicion.setX(posicion.getX() + velocidad.getX());  //retocar un poco mas tal vez, multiplicar por delta la velocidad ? 
+	}
 
 	posicion.setY(posicion.getY() + velocidad.getY());
 }
@@ -60,21 +62,27 @@ void Jugador::acelerar(Unidad delta) {
 
 void Jugador::doblarDerecha(Unidad delta) {
 	if (acelerando) {
-		this->estado = EstadoAuto::DOBLANDO_DER;
-		if (velocidad.getX() < LIMITE_VELOCIDAD_AUTO_X)
-			this->velocidad.setX(this->velocidad.getX() + ACELERACION_AUTO_X * delta);
-		else
-			velocidad.setX(LIMITE_VELOCIDAD_AUTO_X);
+		if (posicion.getX() + this->velocidad.getX() + ACELERACION_AUTO_X * delta < LIMITE_PISTA_X_DERECHA 
+			&& posicion.getX() + this->velocidad.getX() + ACELERACION_AUTO_X * delta > LIMITE_PISTA_X_IZQUIERDA) {
+			this->estado = EstadoAuto::DOBLANDO_DER;
+			if (velocidad.getX() < LIMITE_VELOCIDAD_AUTO_X)
+				this->velocidad.setX(this->velocidad.getX() + ACELERACION_AUTO_X * delta);
+			else
+				velocidad.setX(LIMITE_VELOCIDAD_AUTO_X);
+		}
 	}
 }
 
 void Jugador::doblarIzquierda(Unidad delta) {
 	if (acelerando) {
-		this->estado = EstadoAuto::DOBLANDO_IZQ;
-		if (velocidad.getX() > -LIMITE_VELOCIDAD_AUTO_X)
-			this->velocidad.setX(this->velocidad.getX() - ACELERACION_AUTO_X * delta);
-		else
-			velocidad.setX(-LIMITE_VELOCIDAD_AUTO_X);
+		if (posicion.getX() - this->velocidad.getX() - ACELERACION_AUTO_X * delta < LIMITE_PISTA_X_DERECHA 
+			&& posicion.getX() - this->velocidad.getX() - ACELERACION_AUTO_X * delta > LIMITE_PISTA_X_IZQUIERDA) {
+			this->estado = EstadoAuto::DOBLANDO_IZQ;
+			if (velocidad.getX() > -LIMITE_VELOCIDAD_AUTO_X)
+				this->velocidad.setX(this->velocidad.getX() - ACELERACION_AUTO_X * delta);
+			else
+				velocidad.setX(-LIMITE_VELOCIDAD_AUTO_X);
+		}
 	}
 }
 

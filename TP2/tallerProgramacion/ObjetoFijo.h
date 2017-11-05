@@ -19,12 +19,15 @@ public:
 	void setXMapa(int xMapa) { this->xMapa = xMapa; }
 	int getYMapa() { return this->yMapa; };
 	void setYMapa(int yMapa) { this->yMapa = yMapa; }
+	TipoObjeto getTipoObjeto() { return this->tipoObjeto; }
+	void setTipoObjeto(TipoObjeto tipoObjeto) { this->tipoObjeto = tipoObjeto; }
 protected:
 	Posicion posicion;
 	int ubicacionMetros;
 	int tramo;
 	int xMapa;
 	int yMapa;
+	TipoObjeto tipoObjeto;
 };
 
 #endif

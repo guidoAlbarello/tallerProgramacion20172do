@@ -121,6 +121,7 @@ void Mapa::cargarMapaDesdeXML() {
 				if (nombreNodo == "arbol") {
 					ObjetoFijo* objeto = new Arbol(stoi(attUbicacion->value()), obtenerPosicion(attPosicion->value()));
 					objeto->setTramo(contadorTramos);
+					objeto->setTipoObjeto(TipoObjeto::ARBOL);
 					this->objetosDelMapa.push_back(objeto);
 				}
 				else if (nombreNodo == "cartel") {
@@ -131,6 +132,7 @@ void Mapa::cargarMapaDesdeXML() {
 					}
 					ObjetoFijo* objeto = new Cartel(stoi(attUbicacion->value()), obtenerPosicion(attPosicion->value()), obtenerMaximaVelocidad(attValor->value()));
 					objeto->setTramo(contadorTramos);
+					objeto->setTipoObjeto(TipoObjeto::CARTEL);
 					this->objetosDelMapa.push_back(objeto);
 				}
 			}
