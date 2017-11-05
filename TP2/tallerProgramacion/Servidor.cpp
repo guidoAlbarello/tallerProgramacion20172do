@@ -12,6 +12,21 @@ Servidor* Servidor::getInstance() {
 	return instance;
 }
 
+bool Servidor::usuarioDentroDeJuego(Usuario * unUsuario) {
+	bool resultado = false;
+
+	if (yaEnvioEstado) {
+		std::vector<Usuario*> listaDeUsuarios = this->configuracion->getUsuarios();
+
+		for (unsigned int i = 0; i < listaDeUsuarios.size() && resultado == false; i++) {
+			if (listaDeUsuarios[i]->getJugador() != NULL && listaDeUsuarios[i]->getNombre().compare(unUsuario->getNombre()) == 0)
+				resultado = true;
+		}
+	}
+
+	return resultado;
+}
+
 Servidor::Servidor() {
 	this->conexionDelServidor = new	ManejadorDeConexionServidor();
 	this->servidorActivo = true;
@@ -332,7 +347,10 @@ Usuario* Servidor::validarLogin(MensajeDeRed* mensaje, string &mensajeResultado,
 	if (this->estaElUsuarioConectado(unUsuario)) {
 		mensajeResultado = "Login invalido. El usuario ya se encuentra conectado.";
 		unUsuario = NULL;
-	}  else {
+	} else if (!this->usuarioDentroDeJuego(unUsuario)) {
+		mensajeResultado = "Login invalido. El jugador no se encuentra en el juego.";
+		unUsuario = NULL;
+	} else {
 		mensajeResultado = "El login fue satisfactorio";
 		if (!unUsuario->tieneJugadorAsignado()) {
 			unUsuario->setJugador(this->elJuego->agregarJugador());  

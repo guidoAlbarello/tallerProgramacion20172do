@@ -32,6 +32,7 @@ public:
 	Juego* getJuego() { return elJuego; }
 	bool juegoIniciado() { return this->yaEnvioEstado; }
 	ServerConfig* getConfiguracion() { return this->configuracion; }
+	bool usuarioDentroDeJuego(Usuario* unUsuario);
 protected:
 	bool yaEnvioEstado = false;
 	Servidor();
