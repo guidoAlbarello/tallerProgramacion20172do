@@ -7,6 +7,7 @@ LoggerView::LoggerView(SDL_Renderer* renderer) {
 	gPromptPasswordTextTexture = new Ltexture(gRenderer);
 	gInputPasswordTextTexture = new Ltexture(gRenderer);
 	gBackgroundImage = new Ltexture(gRenderer);
+	this->mensajeLogin = "Usuario:";
 }
 
 LoggerView::~LoggerView() {
@@ -30,13 +31,21 @@ LoggerView::~LoggerView() {
 	delete usuario;
 	gFont = NULL;
 }
+void LoggerView::setMensajeLogin(std::string mensaje) {
+	this->mensajeLogin = mensaje;
+
+	if (!gPromptTextTexture->loadFromRenderedText(this->mensajeLogin, textColor)) {
+		Logger::getInstance()->log(Error, "Ocurrio un error al iniciar la textura Usuario:");
+		//success = false;
+	}
+}
 
 bool LoggerView::init() {
 	textColor = { 0, 0, 0, 0xFF };
 	success = true;
 	usuario = new Usuario();
 	datosCargados = false;
-	if (!gPromptTextTexture->loadFromRenderedText("Usuario:", textColor)) {
+	if (!gPromptTextTexture->loadFromRenderedText(this->mensajeLogin, textColor)) {
 		Logger::getInstance()->log(Error, "Ocurrio un error al iniciar la textura Usuario:");
 		success = false;
 	}

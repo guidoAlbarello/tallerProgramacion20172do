@@ -574,11 +574,14 @@ void Cliente::procesarResultadoLogin(MensajeDeRed* mensajeDeRed, char* datosReci
 			iniciarJuego(estadoInicial);
 		}
 	} else if (mensajeDeRed->getParametro(0) == "LOGIN_NOK") {
+		//esconectarseDelServidor();
 		this->estaLogueado = false;
-		this->maquinaDeEstados->changeState(new EstadoLogeo(), "Login Invalido.Reintentar:");
+		string mensaje = "Error, reingrese usuario:";
+		this->maquinaDeEstados->changeState(new EstadoLogeo(),&mensaje);
 		m_print.lock();
 		cout << mensajeDeRed->getParametro(1) << endl;
 		m_print.unlock();
+		
 	}
 }
 

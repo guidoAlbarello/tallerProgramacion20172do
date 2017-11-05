@@ -23,6 +23,7 @@ public:
 	Usuario* showLogin();
 	void update();
 	Usuario* getUsuario();
+	void setMensajeLogin(std::string mensaje);
 private:
 	TTF_Font *gFont = NULL;
 	const int SCREEN_WIDTH = 800;
@@ -37,6 +38,7 @@ private:
 	Ltexture* gInputPasswordTextTexture;
 	Ltexture* gBackgroundImage;
 	std::string inputText;
+	std::string mensajeLogin;
 	bool isWrittingPassord = false;
 	bool datosCargados = false;
 };

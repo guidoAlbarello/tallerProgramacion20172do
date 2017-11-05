@@ -33,5 +33,17 @@ bool EstadoLogeo::onExit() {
 }
 
 void EstadoLogeo::setParametro(void * param) {
+	if (param != NULL) {
+		try {
+			string* stringp = (string*)param;
+			std::string strNew = stringp->c_str();
+			loggerView->setMensajeLogin(strNew);
+		} catch (exception e) {
+			Logger::getInstance()->log(Error, "Intentaron setear un parametro que no es un String, EstadoLogeo->setParametro");
+		}
+	}
+	//}
+	//catch (exception e) {
 
+	//}
 }

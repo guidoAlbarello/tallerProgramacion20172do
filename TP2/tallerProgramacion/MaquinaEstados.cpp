@@ -56,7 +56,9 @@ void MaquinaEstados::changeState(EstadoJuego *pState, void * param) {
 	// initialise it
 	pState->setRenderer(this->renderer);
 	estadosDeJuego.back()->onEnter(this->renderer);
-	estadosDeJuego.back()->setParametro(param);
+	if (param != NULL){
+		estadosDeJuego.back()->setParametro(param);
+	}
 	this->terminoIniciar = true;
 	m_estado.unlock();
 }
