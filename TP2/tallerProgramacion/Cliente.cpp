@@ -80,6 +80,8 @@ void Cliente::iniciarCliente() {
 void Cliente::correrCicloPrincipal() {
 	while (clienteActivo) {
 		this->maquinaDeEstados->update(this->conexionDelCliente);
+		if (ManejadorInput::getInstance()->cerrarCliente())
+			clienteActivo = false;
 	}
 	this->cerrarCliente();
 }
