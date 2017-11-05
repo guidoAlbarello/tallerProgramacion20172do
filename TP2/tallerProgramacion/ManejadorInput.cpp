@@ -11,7 +11,16 @@ ManejadorInput * ManejadorInput::getInstance() {
 }
 
 void ManejadorInput::update() {
-	SDL_PumpEvents();
+	SDL_Event e;
+	while (SDL_PollEvent(&e) != 0) {
+		if (e.type == SDL_WINDOWEVENT) {
+			if(e.window.event == SDL_WINDOWEVENT_CLOSE) 
+				cerrar = true;
+		}
+		if (e.type == SDL_QUIT) {
+			cerrar = true;
+		}
+	}
 	estadoTeclado = SDL_GetKeyboardState(NULL);
 }
 

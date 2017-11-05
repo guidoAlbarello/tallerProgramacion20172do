@@ -9,8 +9,10 @@ public:
 	static ManejadorInput* getInstance();
 	void update();
 	bool estaTeclaPresionada(SDL_Scancode key);
+	bool cerrarCliente() { return this->cerrar; }
 private:
 	const Uint8* estadoTeclado;
+	bool cerrar = false;
 	ManejadorInput();
 	~ManejadorInput();
 	static ManejadorInput* instance;
