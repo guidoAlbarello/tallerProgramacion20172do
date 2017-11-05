@@ -128,6 +128,7 @@ void Cliente::conectarseAlServidor() {
 			m_print.lock();
 			std::cout << "No se pudo conectar al sevidor" << std::endl;
 			m_print.unlock();
+			this->cerrarCliente();
 		}
 	} else {
 		m_print.lock();

@@ -40,14 +40,16 @@ void ManejadorDeTexturas::drawAnimatedSprite(std::string id, int x, int y, int a
 	srcRect.w = ancho;
 	srcRect.h = alto;
 	int anchoDest = ancho;
-	p1.x = x;
+	p1.x = x ;
 	p1.y = 0;
 	p1.z = y + 330;
-	proyectar(p1, anchoDest, anchoPantalla, altoPantalla, -45);
-	destRect.x = p1.x;
-	destRect.y = p1.y;
+	proyectar(p1, anchoDest, anchoPantalla, altoPantalla, 0);
+	
+	
 	destRect.w = anchoDest * 3 / 2;
 	destRect.h = alto * anchoDest/ancho * 3 / 2;
+	destRect.x = p1.x - destRect.w / 2;
+	destRect.y = p1.y - destRect.h / 2;
 	if(grisar)
 		SDL_RenderCopyEx(pRenderer, texturas["autoGrisado"], &srcRect, &destRect, 0, 0, flip);
 	else
@@ -62,10 +64,10 @@ void ManejadorDeTexturas::drawStaticSprite(std::string id, int x, int y, int anc
 	p1.y = 0;
 	p1.z = y;
 	proyectar(p1, anchoDest, anchoPantalla, 600, xx);
-	destRect.x = p1.x;
-	destRect.y = p1.y;
 	destRect.w = anchoDest;
 	destRect.h = alto * anchoDest / ancho;
+	destRect.x = p1.x - destRect.w /2;
+	destRect.y = p1.y - destRect.h /2;
 	SDL_RenderCopyEx(pRenderer, texturas[id], NULL, &destRect, 0, 0, flip);
 }
 
