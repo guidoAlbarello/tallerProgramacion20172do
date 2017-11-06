@@ -16,6 +16,9 @@ public:
 	ObjetoDeJuego(SDL_Renderer* renderer);
 	int getZIndex() { return this->zIndex; }
 	~ObjetoDeJuego();
+	Vector getVelocidad() {
+		return this->velocidad;
+	}
 protected:
 	Ltexture* texture;
 	Vector posicion;

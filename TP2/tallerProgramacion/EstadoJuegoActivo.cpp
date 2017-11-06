@@ -1,4 +1,5 @@
 #include "EstadoJuegoActivo.h"
+#include <iostream>
 
 const std::string EstadoJuegoActivo::s_playID = "JUEGO_ACTIVO";
 void EstadoJuegoActivo::update(ManejadorDeConexionCliente* conexionCliente) {
@@ -36,12 +37,20 @@ void EstadoJuegoActivo::update(ManejadorDeConexionCliente* conexionCliente) {
 				unSprite->setGrisar(!estado->conectado);
 			}
 
-			if (estado->id == idJugador)
+			if (estado->id == idJugador){
 				this->camara->setPosicion(estado->posXCamara, estado->posYCamara);
+
+				if (estado->velocidadY > 0) {
+					//this->escenario->actualizar //puedo ver el 1er tramo, y en base a eso mover las nubes
+					//std::cout << "esta avanzando" << endl;
+					//Esta avanzando, falta chequear si esta en una curva
+				}
+			}
 		}
 
 		m_estadoModelo.lock();
-		this->escenario->setPosicionCielo(estadoModeloJuego->estadoEscenario.cieloX, 0);
+		
+		//this->escenario->setPosicionCielo(estadoModeloJuego->estadoEscenario.cieloX, 0);
 		//this->escenario->setPosicionColinas(estadoModeloJuego->estadoEscenario.colinasX, 100);
 		m_estadoModelo.unlock();
 	}
@@ -51,9 +60,14 @@ void EstadoJuegoActivo::render() {
 	if (inicializado) {
 		SDL_SetRenderDrawColor(renderer->getRendererJuego(), 242, 242, 242, 255);
 		SDL_RenderClear(this->renderer->getRendererJuego());
+
+
 		this->escenario->render();
 		
 		this->mapaView->render(this->renderer);
+		//mapaview.getTramoActual me da un int, luego con eso pido el segmento actual y veo si esta doblando
+		//luego veo la velocidad Y del auto, si es >0... doblo el cielo
+
 
 		sort(spritesVec.begin(), spritesVec.end(), [](Sprite* a, Sprite* b)->bool {
 			return a->getZIndex() > b->getZIndex();
@@ -64,7 +78,7 @@ void EstadoJuegoActivo::render() {
 		}
 		SDL_RenderPresent(this->renderer->getRendererJuego());
 		
-		this->mapaView->renderMiniMap();
+		//this->mapaView->renderMiniMap();
 	}
 }
 

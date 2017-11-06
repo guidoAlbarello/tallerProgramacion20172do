@@ -56,6 +56,8 @@ struct EstadoJugador {
 	Unidad posY;
 	EstadoAuto estadoAuto;
 	bool conectado;
+	float velocidadX;
+	float velocidadY;
 };
 
 struct EstadoEscenario {
