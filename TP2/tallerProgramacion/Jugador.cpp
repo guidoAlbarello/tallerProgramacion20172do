@@ -84,7 +84,7 @@ void Jugador::doblarIzquierda(Unidad delta) {
 
 void Jugador::desacelerar(Unidad delta) {
 	if (velocidad.getY() > 0)
-		this->velocidad.setY(this->velocidad.getY() - ACELERACION_AUTO_Y * delta * FACTOR_DESACELERACION_X);
+		this->velocidad.setY(this->velocidad.getY() - ACELERACION_AUTO_Y * delta);
 	else {
 		velocidad.setY(0);
 		acelerando = false;

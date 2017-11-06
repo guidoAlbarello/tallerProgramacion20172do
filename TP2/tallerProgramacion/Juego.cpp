@@ -54,7 +54,7 @@ EstadoModeloJuego* Juego::getEstadoJuego() {
 		nuevoEstado->estadoJugadores[i].estadoAuto = unJugador->getEstado();
 		nuevoEstado->estadoJugadores[i].posX = unJugador->getPosicionX();
 		nuevoEstado->estadoJugadores[i].posY = unJugador->getPosicionY();
-		nuevoEstado->estadoJugadores[i].posXCamara = unJugador->getCamara()->getPosicionTarget()->getX() ; // hardcodeo furioso para que quede centrado el auto
+		nuevoEstado->estadoJugadores[i].posXCamara = unJugador->getCamara()->getPosicionTarget()->getX() ;
 		nuevoEstado->estadoJugadores[i].posYCamara = unJugador->getCamara()->getPosicionTarget()->getY();
 	}
 	
