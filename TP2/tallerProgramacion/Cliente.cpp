@@ -82,6 +82,8 @@ void Cliente::correrCicloPrincipal() {
 		this->maquinaDeEstados->update(this->conexionDelCliente);
 		if (ManejadorInput::getInstance()->cerrarCliente())
 			clienteActivo = false;
+		//std::this_thread::sleep_for(std::chrono::milliseconds(1000 / (Constantes::FPS)));
+		std::this_thread::sleep_for(std::chrono::milliseconds(20));
 	}
 	this->cerrarCliente();
 }
