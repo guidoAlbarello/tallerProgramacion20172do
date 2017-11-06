@@ -17,6 +17,7 @@ void MaquinaEstados::render() {
 
 void MaquinaEstados::pushState(EstadoJuego *pState) {
 	m_estado.lock();
+	this->terminoIniciar = false;
 	estadosDeJuego.push_back(pState);
 	estadosDeJuego.back()->onEnter(this->renderer);
 	m_estado.unlock();

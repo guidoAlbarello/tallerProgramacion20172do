@@ -23,6 +23,10 @@ bool Servidor::usuarioDentroDeJuego(Usuario * unUsuario) {
 				resultado = true;
 		}
 	}
+	else {
+		// Para el primer logueo
+		resultado = true;
+	}
 
 	return resultado;
 }
