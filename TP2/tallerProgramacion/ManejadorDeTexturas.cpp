@@ -160,7 +160,8 @@ void ManejadorDeTexturas::dibujarObjeto(Segmento* unSegmento, int ancho, int anc
 	// Dibuja objetos a los costados en caso de que haya
 	float factorDistanciaObjetoPistaIzquierda = 1.3;
 	float factorDistanciaObjetoPistaDerecha = 0.8;
-	float factorAltoObjeto = 1.5;
+	float factorAltoArbol = 1.5;
+	float factorTamañoCartel = 0.6;
 	int factorTamañoObjetos = 2700;
 	if (this->objetosPorSegmento[n].size() > 0) {
 		// El segmento tiene un objeto
@@ -171,7 +172,7 @@ void ManejadorDeTexturas::dibujarObjeto(Segmento* unSegmento, int ancho, int anc
 				if (objetoActual->getPosicion() == Posicion::PDerecha) {
 					SDL_Rect destRect;
 					destRect.w = 50 * scaleP1 * factorTamañoObjetos;
-					destRect.h = 50 * scaleP1 * factorTamañoObjetos * factorAltoObjeto;
+					destRect.h = 50 * scaleP1 * factorTamañoObjetos * factorAltoArbol;
 					destRect.x = p1.x + anchoInferior * factorDistanciaObjetoPistaDerecha + destRect.w;
 					destRect.y = p1.y - destRect.h;
 					SDL_RenderCopyEx(renderer, texturas["arbol"], NULL, &destRect, 0, 0, SDL_FLIP_NONE);
@@ -179,7 +180,7 @@ void ManejadorDeTexturas::dibujarObjeto(Segmento* unSegmento, int ancho, int anc
 				else if (objetoActual->getPosicion() == Posicion::PIzquierda) {
 					SDL_Rect destRect;
 					destRect.w = 50 * scaleP1 * factorTamañoObjetos;
-					destRect.h = 50 * scaleP1 * factorTamañoObjetos * factorAltoObjeto;
+					destRect.h = 50 * scaleP1 * factorTamañoObjetos * factorAltoArbol;
 					destRect.x = p1.x - anchoInferior * factorDistanciaObjetoPistaIzquierda - destRect.w;
 					destRect.y = p1.y - destRect.h;
 					SDL_RenderCopyEx(renderer, texturas["arbol"], NULL, &destRect, 0, 0, SDL_FLIP_HORIZONTAL);
@@ -188,19 +189,19 @@ void ManejadorDeTexturas::dibujarObjeto(Segmento* unSegmento, int ancho, int anc
 			else if (objetoActual->getTipoObjeto() == TipoObjeto::CARTEL) {
 				if (objetoActual->getPosicion() == Posicion::PDerecha) {
 					SDL_Rect destRect;
-					destRect.w = 50 * scaleP1 * factorTamañoObjetos;
-					destRect.h = 50 * scaleP1 * factorTamañoObjetos;
+					destRect.w = 50 * scaleP1 * factorTamañoObjetos * factorTamañoCartel;
+					destRect.h = 50 * scaleP1 * factorTamañoObjetos * factorTamañoCartel;
 					destRect.x = p1.x + anchoInferior * factorDistanciaObjetoPistaDerecha + destRect.w;
 					destRect.y = p1.y - destRect.h;
-					SDL_RenderCopyEx(renderer, texturas["cartel"], NULL, &destRect, 0, 0, SDL_FLIP_NONE);
+					SDL_RenderCopyEx(renderer, texturas["cartel_" + objetoActual->getValor()], NULL, &destRect, 0, 0, SDL_FLIP_NONE);
 				}
 				else if (objetoActual->getPosicion() == Posicion::PIzquierda) {
 					SDL_Rect destRect;
-					destRect.w = 50 * scaleP1 * factorTamañoObjetos;
-					destRect.h = 50 * scaleP1 * factorTamañoObjetos;
+					destRect.w = 50 * scaleP1 * factorTamañoObjetos * factorTamañoCartel;
+					destRect.h = 50 * scaleP1 * factorTamañoObjetos * factorTamañoCartel;
 					destRect.x = p1.x - anchoInferior * factorDistanciaObjetoPistaIzquierda - destRect.w;
 					destRect.y = p1.y - destRect.h;
-					SDL_RenderCopyEx(renderer, texturas["cartel"], NULL, &destRect, 0, 0, SDL_FLIP_HORIZONTAL);
+					SDL_RenderCopyEx(renderer, texturas["cartel_" + objetoActual->getValor()], NULL, &destRect, 0, 0, SDL_FLIP_NONE);
 				}
 			}
 		}

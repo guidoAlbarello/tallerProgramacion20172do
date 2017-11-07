@@ -140,7 +140,11 @@ void EstadoJuegoActivo::inicializarObjetos(EstadoInicialJuego* unEstado) {
 		spritesMap[unEstado->id[i]] = unSprite;
 	}
 	ManejadorDeTexturas::getInstance()->load("imagenes/tree1.png", "arbol", this->renderer->getRendererJuego());
-	ManejadorDeTexturas::getInstance()->load("imagenes/billboard01.png", "cartel", this->renderer->getRendererJuego()); // TODO: conseguir el sprite de un cartel de max speed
+	ManejadorDeTexturas::getInstance()->load("imagenes/billboard01.png", "cartel", this->renderer->getRendererJuego());
+	ManejadorDeTexturas::getInstance()->load("imagenes/cartel_60.png", "cartel_60", this->renderer->getRendererJuego());
+	ManejadorDeTexturas::getInstance()->load("imagenes/cartel_80.png", "cartel_80", this->renderer->getRendererJuego());
+	ManejadorDeTexturas::getInstance()->load("imagenes/cartel_100.png", "cartel_100", this->renderer->getRendererJuego());
+	ManejadorDeTexturas::getInstance()->load("imagenes/cartel_120.png", "cartel_120", this->renderer->getRendererJuego()); 
 	ManejadorDeTexturas::getInstance()->load("imagenes/column.png", "8", this->renderer->getRendererJuego());
 	ManejadorDeTexturas::getInstance()->load("imagenes/playerGrisado.png", "autoGrisado", this->renderer->getRendererJuego());
 }

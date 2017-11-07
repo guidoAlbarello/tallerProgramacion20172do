@@ -21,6 +21,8 @@ public:
 	void setYMapa(int yMapa) { this->yMapa = yMapa; }
 	TipoObjeto getTipoObjeto() { return this->tipoObjeto; }
 	void setTipoObjeto(TipoObjeto tipoObjeto) { this->tipoObjeto = tipoObjeto; }
+	string getValor() { return this->valor; }
+	void setValor(string valor) { this->valor = valor; }
 protected:
 	Posicion posicion;
 	int ubicacionMetros;
@@ -28,6 +30,7 @@ protected:
 	int xMapa;
 	int yMapa;
 	TipoObjeto tipoObjeto;
+	string valor;
 };
 
 #endif

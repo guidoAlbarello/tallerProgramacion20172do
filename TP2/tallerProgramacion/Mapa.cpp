@@ -133,6 +133,7 @@ void Mapa::cargarMapaDesdeXML() {
 					ObjetoFijo* objeto = new Cartel(stoi(attUbicacion->value()), obtenerPosicion(attPosicion->value()), obtenerMaximaVelocidad(attValor->value()));
 					objeto->setTramo(contadorTramos);
 					objeto->setTipoObjeto(TipoObjeto::CARTEL);
+					objeto->setValor(attValor->value());
 					this->objetosDelMapa.push_back(objeto);
 				}
 			}

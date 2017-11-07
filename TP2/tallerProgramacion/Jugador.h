@@ -5,7 +5,7 @@
 #include "ObjetoDeJuego.h"
 #include "Camara.h"
 #define ACELERACION_AUTO_X 1.0
-#define ACELERACION_AUTO_Y 3.0
+#define ACELERACION_AUTO_Y 1.5
 #define FACTOR_DESACELERACION_X 0
 #define FACTOR_DESACELERACION_Y 30.0
 #define LIMITE_VELOCIDAD_AUTO_X 60.0
