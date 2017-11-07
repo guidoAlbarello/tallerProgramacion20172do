@@ -48,6 +48,8 @@ void Escenario::update(Unidad deltaTiempo) {
 }
 
 void Escenario::render() {
+	//Falta la logica que hace funcionar la calesita
+	this->cielo->setPosicion(posicionCielo.getX(), posicionCielo.getY());
 	this->cielo->renderStatic(renderer);
 	this->colinas->renderStatic(renderer);
 }

@@ -42,15 +42,27 @@ void EstadoJuegoActivo::update(ManejadorDeConexionCliente* conexionCliente) {
 
 				if (estado->velocidadY > 0) {
 					//this->escenario->actualizar //puedo ver el 1er tramo, y en base a eso mover las nubes
-					//std::cout << "esta avanzando" << endl;
-					//Esta avanzando, falta chequear si esta en una curva
+					Segmento* segmentoActual = this->mapaView->getSegmentoActual();
+					if (segmentoActual != NULL) {
+						Vector* posicion = this->escenario->getPosicionCielo();
+						if (segmentoActual->curva > 0) {
+							m_estadoModelo.lock();
+							this->escenario->setPosicionCielo(posicion->getX() - 2, 0);
+							m_estadoModelo.unlock();
+						}
+						if (segmentoActual->curva < 0) {
+							m_estadoModelo.lock();
+							this->escenario->setPosicionCielo(posicion->getX() + 2, 0);
+							m_estadoModelo.unlock();
+						}
+					}
 				}
 			}
 		}
 
 		m_estadoModelo.lock();
 		
-		this->escenario->setPosicionCielo(estadoModeloJuego->estadoEscenario.cieloX, 0);
+		//this->escenario->setPosicionCielo(estadoModeloJuego->estadoEscenario.cieloX, 0);
 		//this->escenario->setPosicionColinas(estadoModeloJuego->estadoEscenario.colinasX, 100);
 		m_estadoModelo.unlock();
 	}

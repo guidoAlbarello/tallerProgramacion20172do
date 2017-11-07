@@ -36,6 +36,7 @@ public:
 	bool loadMedia();
 	bool close();
 	void update();
+	Segmento* getSegmentoActual();
 	void dibujarBordes(SDL_Renderer* renderer);
 	void dibujarMapa(SDL_Renderer* renderer);
 	Orientacion unirTramoRotado(SentidoCurva sentidoRotacion, Orientacion orientacionAnterior, int ultimaX, int ultimaY, int longitud, Coordenada* coordenadaUltimoTramo, SDL_Renderer* renderer);

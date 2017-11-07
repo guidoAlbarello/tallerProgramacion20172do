@@ -56,14 +56,17 @@ EstadoModeloJuego* Juego::getEstadoJuego() {
 		nuevoEstado->estadoJugadores[i].posY = unJugador->getPosicionY();
 		nuevoEstado->estadoJugadores[i].posXCamara = unJugador->getCamara()->getPosicionTarget()->getX() ;
 		nuevoEstado->estadoJugadores[i].posYCamara = unJugador->getCamara()->getPosicionTarget()->getY();
+		nuevoEstado->estadoJugadores[i].velocidadX = unJugador->getVelocidad().getX();
+		nuevoEstado->estadoJugadores[i].velocidadY = unJugador->getVelocidad().getY();
+
 	}
 	
 	nuevoEstado->tamanio = jugadores.size();
-
-	nuevoEstado->estadoEscenario.cieloX = escenario->getPosicionCielo()->getX();
-	nuevoEstado->estadoEscenario.cieloY = escenario->getPosicionCielo()->getY();
-	nuevoEstado->estadoEscenario.colinasX = escenario->getPosicionColinas()->getX();
-	nuevoEstado->estadoEscenario.colinasY = escenario->getPosicionColinas()->getY();
+	
+	//nuevoEstado->estadoEscenario.cieloX = escenario->getPosicionCielo()->getX();
+	//nuevoEstado->estadoEscenario.cieloY = escenario->getPosicionCielo()->getY();
+	//nuevoEstado->estadoEscenario.colinasX = escenario->getPosicionColinas()->getX();
+	//nuevoEstado->estadoEscenario.colinasY = escenario->getPosicionColinas()->getY();
 	return nuevoEstado;
 }
 
@@ -126,6 +129,7 @@ void Juego::gameLoop() {
 			this->update(1000.0 / Constantes::FPS);
 			tiempoAcumulado -= 1000.0 / Constantes::FPS;
 			nLoops++;
+				std::this_thread::sleep_for(std::chrono::milliseconds(1000 / Constantes::FPS)); // por ahora se comenta, esto mejora mucho la fluidez
 		}
 
 

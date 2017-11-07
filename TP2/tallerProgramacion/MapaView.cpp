@@ -79,7 +79,15 @@ void MapaView::renderMiniMap() {
 
 	//SDL_RenderPresent(renderer);
 }
-
+Segmento* MapaView::getSegmentoActual() {
+	int tramo = getTramoActual();
+	if (segmentos.size() > tramo) {
+		return segmentos[tramo];
+	}
+	else {
+		return NULL;
+	}
+}
 void MapaView::render(Renderer* renderer) {
 	int base = getTramoActual();
 	float x = 0, dx = 0;
