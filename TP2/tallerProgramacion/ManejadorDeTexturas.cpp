@@ -40,17 +40,17 @@ void ManejadorDeTexturas::drawAnimatedSprite(std::string id, int x, int y, int a
 	srcRect.w = ancho;
 	srcRect.h = alto;
 	int anchoDest = ancho;
-	p1.x = x ;
+	p1.x = x;
 	p1.y = 0;
 	p1.z = y + 330;
 	proyectar(p1, anchoDest, anchoPantalla, altoPantalla, 0);
-	
-	
+
+
 	destRect.w = anchoDest * 3 / 2;
-	destRect.h = alto * anchoDest/ancho * 3 / 2;
+	destRect.h = alto * anchoDest / ancho * 3 / 2;
 	destRect.x = p1.x - destRect.w / 2;
 	destRect.y = p1.y - destRect.h / 2;
-	if(grisar)
+	if (grisar)
 		SDL_RenderCopyEx(pRenderer, texturas["autoGrisado"], &srcRect, &destRect, 0, 0, flip);
 	else
 		SDL_RenderCopyEx(pRenderer, texturas[id], &srcRect, &destRect, 0, 0, flip);
@@ -66,11 +66,10 @@ void ManejadorDeTexturas::drawStaticSprite(std::string id, int x, int y, int anc
 	proyectar(p1, anchoDest, anchoPantalla, 600, xx);
 	destRect.w = anchoDest;
 	destRect.h = alto * anchoDest / ancho;
-	destRect.x = p1.x - destRect.w /2;
-	destRect.y = p1.y - destRect.h /2;
+	destRect.x = p1.x - destRect.w / 2;
+	destRect.y = p1.y - destRect.h / 2;
 	SDL_RenderCopyEx(pRenderer, texturas[id], NULL, &destRect, 0, 0, flip);
 }
-
 
 void ManejadorDeTexturas::dibujarSprite(std::string id, int x, int y, int ancho, int alto, int anchoPantalla, SDL_Renderer* pRenderer, SDL_RendererFlip flip) {
 	SDL_Rect destRect;
@@ -110,13 +109,12 @@ void ManejadorDeTexturas::dibujarTramo(Segmento* unSegmento, int ancho, int anch
 
 	int ancho1 = ancho;
 	int ancho2 = ancho;
+
 	proyectar(p1, ancho1, anchoPantalla, altoPantalla, x);
 	proyectar(p2, ancho2, anchoPantalla, altoPantalla, x);
-
 	anchoSuperior = ancho2;
 	anchoInferior = ancho1;
 
-	// @tbotalla
 	anchoSuperior *= 0.5; // Para que no sea tan ancha la pista
 	anchoInferior *= 0.5;
 	float factorAnchoPianito = 1.2;
@@ -132,21 +130,86 @@ void ManejadorDeTexturas::dibujarTramo(Segmento* unSegmento, int ancho, int anch
 		filledPolygonRGBA(renderer, vxPasto, vyPasto, 4, 20, 170, 20, 255);
 	else
 		filledPolygonRGBA(renderer, vxPasto, vyPasto, 4, 5, 130, 2, 255);
-	
+
 	if ((n / 3) % 2)
 		filledPolygonRGBA(renderer, vxBorde, vyBorde, 4, 210, 210, 210, 255);
 	else
 		filledPolygonRGBA(renderer, vxBorde, vyBorde, 4, 50, 50, 50, 255);
-		if ((n / 3) % 2)
+	if ((n / 3) % 2)
 		filledPolygonRGBA(renderer, vxTramo, vyTramo, 4, 165, 165, 165, 255);
 	else
 		filledPolygonRGBA(renderer, vxTramo, vyTramo, 4, 180, 180, 180, 255);
-
 }
 
-void ManejadorDeTexturas::proyectar(Coordenada & p, int& ancho, int anchoPantalla, int altoPantalla, float x) {
+
+/* 
+	Idem dibujarTramos pero solo usa un punto para proyectar.
+	Dibuja los objetos que tenga a los costados un segmento. Dado el punto proyectado, se le resta/suma el ancho del objeto
+	y se le resta/suma el alto del objeto para que no se pise con la pista.
+   */
+void ManejadorDeTexturas::dibujarObjeto(Segmento* unSegmento, int ancho, int anchoPantalla, int altoPantalla, SDL_Renderer* renderer, int n, float x) {
+	Coordenada p1 = unSegmento->p1;
+	int anchoInferior;
+	int ancho1 = ancho;
+	float scaleP1 = proyectar(p1, ancho1, anchoPantalla, altoPantalla, x);
+	anchoInferior = ancho1;
+
+	anchoInferior *= 0.5;
+	float factorAnchoPianito = 1.2;
+
+	// Dibuja objetos a los costados en caso de que haya
+	float factorDistanciaObjetoPistaIzquierda = 1.3;
+	float factorDistanciaObjetoPistaDerecha = 0.8;
+	float factorAltoObjeto = 1.5;
+	int factorTamañoObjetos = 2700;
+	if (this->objetosPorSegmento[n].size() > 0) {
+		// El segmento tiene un objeto
+		std::vector<ObjetoFijo*> objetos = this->objetosPorSegmento[n];
+		for (int i = 0; i < objetos.size(); i++) {
+			ObjetoFijo* objetoActual = objetos[i];
+			if (objetoActual->getTipoObjeto() == TipoObjeto::ARBOL) {
+				if (objetoActual->getPosicion() == Posicion::PDerecha) {
+					SDL_Rect destRect;
+					destRect.w = 50 * scaleP1 * factorTamañoObjetos;
+					destRect.h = 50 * scaleP1 * factorTamañoObjetos * factorAltoObjeto;
+					destRect.x = p1.x + anchoInferior * factorDistanciaObjetoPistaDerecha + destRect.w;
+					destRect.y = p1.y - destRect.h;
+					SDL_RenderCopyEx(renderer, texturas["arbol"], NULL, &destRect, 0, 0, SDL_FLIP_NONE);
+				}
+				else if (objetoActual->getPosicion() == Posicion::PIzquierda) {
+					SDL_Rect destRect;
+					destRect.w = 50 * scaleP1 * factorTamañoObjetos;
+					destRect.h = 50 * scaleP1 * factorTamañoObjetos * factorAltoObjeto;
+					destRect.x = p1.x - anchoInferior * factorDistanciaObjetoPistaIzquierda - destRect.w;
+					destRect.y = p1.y - destRect.h;
+					SDL_RenderCopyEx(renderer, texturas["arbol"], NULL, &destRect, 0, 0, SDL_FLIP_HORIZONTAL);
+				}
+			}
+			else if (objetoActual->getTipoObjeto() == TipoObjeto::CARTEL) {
+				if (objetoActual->getPosicion() == Posicion::PDerecha) {
+					SDL_Rect destRect;
+					destRect.w = 50 * scaleP1 * factorTamañoObjetos;
+					destRect.h = 50 * scaleP1 * factorTamañoObjetos;
+					destRect.x = p1.x + anchoInferior * factorDistanciaObjetoPistaDerecha + destRect.w;
+					destRect.y = p1.y - destRect.h;
+					SDL_RenderCopyEx(renderer, texturas["cartel"], NULL, &destRect, 0, 0, SDL_FLIP_NONE);
+				}
+				else if (objetoActual->getPosicion() == Posicion::PIzquierda) {
+					SDL_Rect destRect;
+					destRect.w = 50 * scaleP1 * factorTamañoObjetos;
+					destRect.h = 50 * scaleP1 * factorTamañoObjetos;
+					destRect.x = p1.x - anchoInferior * factorDistanciaObjetoPistaIzquierda - destRect.w;
+					destRect.y = p1.y - destRect.h;
+					SDL_RenderCopyEx(renderer, texturas["cartel"], NULL, &destRect, 0, 0, SDL_FLIP_HORIZONTAL);
+				}
+			}
+		}
+	}
+}
+
+float ManejadorDeTexturas::proyectar(Coordenada & p, int& ancho, int anchoPantalla, int altoPantalla, float x) {
 	float scalado = 0;
-	int anchoOriginal = ancho; 
+	int anchoOriginal = ancho;
 	float offset = p.z - camara->getPosicion()->getY() + 1;
 	if (offset > 0) {
 		if (offset < 0.000001)
@@ -165,25 +228,25 @@ void ManejadorDeTexturas::proyectar(Coordenada & p, int& ancho, int anchoPantall
 
 		if (ancho < MINIMO_ANCHO)
 			ancho = MINIMO_ANCHO;
-	} else {
+	}
+	else {
 		ancho = anchoOriginal;
 		p.x -= camara->getPosicion()->getX() - x;
 		p.y = altoPantalla;
 	}
-
-
+	return scalado;
 }
 
 float ManejadorDeTexturas::normZIndex(float zIndex) {
 	/*float normalizado;
 
 	if (zIndex > Z_FAR + camara->getPosicion()->getY())
-		normalizado = 0;
+	normalizado = 0;
 	else
-		if (zIndex < Z_NEAR + camara->getPosicion()->getY())
-			normalizado = (zIndex / camara->getPosicion()->getY()) / Z_FAR;
-		else
-			normalizado = (zIndex - Z_NEAR - camara->getPosicion()->getY()) / Z_FAR;
+	if (zIndex < Z_NEAR + camara->getPosicion()->getY())
+	normalizado = (zIndex / camara->getPosicion()->getY()) / Z_FAR;
+	else
+	normalizado = (zIndex - Z_NEAR - camara->getPosicion()->getY()) / Z_FAR;
 
 	return abs(normalizado);*/
 	return 0;

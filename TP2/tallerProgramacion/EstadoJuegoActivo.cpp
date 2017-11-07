@@ -50,7 +50,7 @@ void EstadoJuegoActivo::update(ManejadorDeConexionCliente* conexionCliente) {
 
 		m_estadoModelo.lock();
 		
-		//this->escenario->setPosicionCielo(estadoModeloJuego->estadoEscenario.cieloX, 0);
+		this->escenario->setPosicionCielo(estadoModeloJuego->estadoEscenario.cieloX, 0);
 		//this->escenario->setPosicionColinas(estadoModeloJuego->estadoEscenario.colinasX, 100);
 		m_estadoModelo.unlock();
 	}

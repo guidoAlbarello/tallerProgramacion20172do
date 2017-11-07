@@ -8,8 +8,8 @@
 #define TECLA_DERECHA SDL_SCANCODE_RIGHT
 #define TECLA_IZQUIERDA SDL_SCANCODE_LEFT
 #define TECLA_ACELERAR SDL_SCANCODE_UP
-#define LIMITE_PISTA_X_DERECHA 800
-#define LIMITE_PISTA_X_IZQUIERDA -800
+#define LIMITE_PISTA_X_DERECHA 600
+#define LIMITE_PISTA_X_IZQUIERDA -600
 
 using namespace std;
 
@@ -38,7 +38,7 @@ public:
 	static constexpr const int TOLERANCIA_PING = 15000;
 	static constexpr const int RECV_TIMEOUT = 25000;
 	static constexpr const int FPS = 25;
-	static constexpr const int UPDATE_MODEL_DELAY = 1000/(Constantes::FPS-7);
+	static constexpr const int UPDATE_MODEL_DELAY = 1000 / (Constantes::FPS - 7);
 	static constexpr const int MAX_CLIENTES = 8;
 	static constexpr const int CANT_JUGADORES_INICIAR = 1;
 	static constexpr const int CANT_TECLAS = 3;

@@ -15,7 +15,7 @@
 #define ANCHO_TRAMO 700
 #define ALTO_TRAMO 100
 #define CANTIDAD_SEGMENTOS 2000
-#define INTENSIDAD_CURVAS 0.25
+#define INTENSIDAD_CURVAS 0.8
 using namespace std;
 
 
@@ -59,6 +59,7 @@ private:
 	void initSegmentos();
 	bool terminoDibujarMapa;
 	int metroActualAuto;
+	std::vector<std::vector<ObjetoFijo*>> objetosPorSegmento;
 	
 };
 

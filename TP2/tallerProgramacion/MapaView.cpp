@@ -1,4 +1,5 @@
 #include "MapaView.h"
+#include <algorithm>
 
 
 MapaView::MapaView()
@@ -92,46 +93,18 @@ void MapaView::render(Renderer* renderer) {
 			dx += unSegmento->curva;
 		}
 	}
-	int yActual = ManejadorDeTexturas::getInstance()->getCamara()->getPosicion()->getY();
-	int xActual = ManejadorDeTexturas::getInstance()->getCamara()->getPosicion()->getX();
-	for (int i = 0; i < this->mapa->getObjetosDelMapa().size(); i++) {
-		ObjetoFijo* objetoActual = this->mapa->getObjetosDelMapa()[i];
-		int ubicacionObjetoFix = objetoActual->getUbicacionM() - 5;
-		if ((ubicacionObjetoFix > base) && (ubicacionObjetoFix <= base + DISTANCIA_DIBUJADO)) {
-			if (ubicacionObjetoFix * 100 > yActual) {
-				// Esta visible
-				if (objetoActual->getTipoObjeto() == TipoObjeto::ARBOL) {
-					if (objetoActual->getPosicion() == Posicion::PDerecha) {
-						ManejadorDeTexturas::getInstance()->drawStaticSprite("arbol", LIMITE_PISTA_X_DERECHA - xActual, yActual + (ubicacionObjetoFix * 100 - yActual), 200, 200, renderer->getAnchoVentana(), renderer->getRendererJuego(), SDL_FLIP_NONE, x);
-					}
-					else if (objetoActual->getPosicion() == Posicion::PIzquierda) {
-						ManejadorDeTexturas::getInstance()->drawStaticSprite("arbol", LIMITE_PISTA_X_IZQUIERDA - 250 + xActual, yActual + (ubicacionObjetoFix * 100 - yActual), 200, 200, renderer->getAnchoVentana(), renderer->getRendererJuego(), SDL_FLIP_NONE, x);
-					}
-				}
-				else if (objetoActual->getTipoObjeto() == TipoObjeto::CARTEL) {
-					if (objetoActual->getPosicion() == Posicion::PDerecha) {
-						ManejadorDeTexturas::getInstance()->drawStaticSprite("cartel", LIMITE_PISTA_X_DERECHA - xActual, yActual + (ubicacionObjetoFix * 100 - yActual), 200, 200, renderer->getAnchoVentana(), renderer->getRendererJuego(), SDL_FLIP_NONE, x);
-					}
-					else if (objetoActual->getPosicion() == Posicion::PIzquierda) {
-						ManejadorDeTexturas::getInstance()->drawStaticSprite("cartel", LIMITE_PISTA_X_IZQUIERDA - 250 + xActual, yActual + (ubicacionObjetoFix * 100 - yActual), 200, 200, renderer->getAnchoVentana(), renderer->getRendererJuego(), SDL_FLIP_NONE, x);
-					}
-				}
+
+	// Se dibujan sprites de los costados de atras para adelante para que no se pisen entre si
+	for (int i = DISTANCIA_DIBUJADO - 1; i > 0; i--) {
+		if (base + i < segmentos.size()) {
+			Segmento* unSegmento = segmentos[base + i];
+			if (ManejadorDeTexturas::getInstance()->getObjetosPorSegmento()[base + i].size() > 0) {
+				ManejadorDeTexturas::getInstance()->dibujarObjeto(unSegmento, ANCHO_TRAMO, renderer->getAnchoVentana(), renderer->getAltoVentana(), renderer->getRendererJuego(), (base + i), x);
 			}
+			x -= dx;
+			dx -= unSegmento->curva;
 		}
 	}
-
-
-	ManejadorDeTexturas::getInstance()->drawStaticSprite("arbol", LIMITE_PISTA_X_IZQUIERDA - 250 + xActual, 1600, 200, 200, renderer->getAnchoVentana(), renderer->getRendererJuego(), SDL_FLIP_NONE, x);
-	ManejadorDeTexturas::getInstance()->drawStaticSprite("arbol", LIMITE_PISTA_X_IZQUIERDA - 250 + xActual, 1400, 200, 200, renderer->getAnchoVentana(), renderer->getRendererJuego(), SDL_FLIP_NONE, x);
-	ManejadorDeTexturas::getInstance()->drawStaticSprite("arbol", LIMITE_PISTA_X_IZQUIERDA - 250 + xActual, 1200, 200, 200, renderer->getAnchoVentana(), renderer->getRendererJuego(), SDL_FLIP_NONE, x);
-	ManejadorDeTexturas::getInstance()->drawStaticSprite("arbol", LIMITE_PISTA_X_IZQUIERDA - 250 + xActual, 1000, 200, 200, renderer->getAnchoVentana(), renderer->getRendererJuego(), SDL_FLIP_NONE, x);
-	
-	ManejadorDeTexturas::getInstance()->drawStaticSprite("arbol", LIMITE_PISTA_X_DERECHA - xActual, 1600, 200, 200, renderer->getAnchoVentana(), renderer->getRendererJuego(), SDL_FLIP_NONE, x);
-	ManejadorDeTexturas::getInstance()->drawStaticSprite("arbol", LIMITE_PISTA_X_DERECHA - xActual, 1400, 200, 200, renderer->getAnchoVentana(), renderer->getRendererJuego(), SDL_FLIP_NONE, x);
-	ManejadorDeTexturas::getInstance()->drawStaticSprite("arbol", LIMITE_PISTA_X_DERECHA - xActual, 1200, 200, 200, renderer->getAnchoVentana(), renderer->getRendererJuego(), SDL_FLIP_NONE, x);
-	ManejadorDeTexturas::getInstance()->drawStaticSprite("arbol", LIMITE_PISTA_X_DERECHA - xActual, 1000, 200, 200, renderer->getAnchoVentana(), renderer->getRendererJuego(), SDL_FLIP_NONE, x);
-
-	//ManejadorDeTexturas::getInstance()->drawStaticSprite("8", -200, 1000, 200, 200, renderer->getAnchoVentana(), renderer->getRendererJuego(), SDL_FLIP_NONE, x);
 }
 
 bool MapaView::loadMedia() {
@@ -202,6 +175,15 @@ void MapaView::dibujarMapa(SDL_Renderer* renderer) {
 			ultimaOrientacion = unirTramoRotado(tramoCurvo->getSentido(), ultimaOrientacion, coordenadaUltimoTramo->x, coordenadaUltimoTramo->y, tramoActual->getLongitud(), coordenadaUltimoTramo, renderer);
 		}
 	}
+
+	// Se asocia cada segmento con su/s objetos para buscar en O(1)
+	std::vector<std::vector<ObjetoFijo*>> objetosPorSegmento(longitudTotal);
+	this->objetosPorSegmento = objetosPorSegmento;
+	for (int i = 0; i < this->mapa->getObjetosDelMapa().size(); i++) {
+		ObjetoFijo* objetoActual = this->mapa->getObjetosDelMapa()[i];
+		this->objetosPorSegmento[objetoActual->getUbicacionM()].push_back(objetoActual);
+	}
+	ManejadorDeTexturas::getInstance()->setObjetosPorSegmento(this->objetosPorSegmento);
 	this->terminoDibujarMapa = true;
 }
 

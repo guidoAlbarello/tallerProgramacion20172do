@@ -14,6 +14,8 @@
 #include <math.h>
 #include "SDL2_gfxPrimitives.h"
 #include "Constantes.h"
+#include <vector>
+#include "ObjetoFijo.h"
 
 class ManejadorDeTexturas {
 public:
@@ -25,15 +27,19 @@ public:
 	bool load(std::string fileName, std::string	id, SDL_Renderer* pRenderer);
 	void setCamara(Camara* unaCamara) { this->camara = unaCamara; }
 	void dibujarTramo(Segmento* unSegmento,int ancho, int anchoPantalla, int altoPantalla, SDL_Renderer* renderer, int n, float x);
+	void dibujarObjeto(Segmento* unSegmento, int ancho, int anchoPantalla, int altoPantalla, SDL_Renderer* renderer, int n, float x);
 	Camara* getCamara() { return camara; }
+	void setObjetosPorSegmento(std::vector<std::vector<ObjetoFijo*>> objetosPorSegmento) { this->objetosPorSegmento = objetosPorSegmento; }
+	std::vector<std::vector<ObjetoFijo*>> getObjetosPorSegmento() { return this->objetosPorSegmento; }
 private:
 	Camara* camara;
 	float normZIndex(float zIndex);
 	static ManejadorDeTexturas* instance;
 	ManejadorDeTexturas();
 	~ManejadorDeTexturas();
-	void proyectar(Coordenada& p, int& ancho, int anchoPantalla, int altoPantalla,float x);
+	float proyectar(Coordenada& p, int& ancho, int anchoPantalla, int altoPantalla,float x);
 	std::map<std::string, SDL_Texture*> texturas;
+	std::vector<std::vector<ObjetoFijo*>> objetosPorSegmento;
 };
 
 #endif
