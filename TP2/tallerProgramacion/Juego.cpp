@@ -139,8 +139,8 @@ EstadoInicialJuego * Juego::getEstadoJuegoInicial() {
 	escenario->getPosicionCielo()->setX(0);
 	escenario->getPosicionCielo()->setY(0);
 	escenario->getPosicionColinas()->setX(0);
-	escenario->getPosicionColinas()->setY(200);
-	
+	escenario->getPosicionColinas()->setY(POS_Y_COLINAS);
+
 	return estado;
 }
 

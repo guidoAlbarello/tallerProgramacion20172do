@@ -47,13 +47,13 @@ void EstadoJuegoActivo::update(ManejadorDeConexionCliente* conexionCliente) {
 						if (estado->velocidadX < 0) {
 							m_estadoModelo.lock();
 							this->escenario->setPosicionCielo(posicion->getX() + 2, POS_Y_CIELO);
-							this->escenario->setPosicionColinas(posicion->getX() + 2, POS_Y_COLINAS);
+							this->escenario->setPosicionColinas(posicion->getX() + 3, POS_Y_COLINAS);
 							m_estadoModelo.unlock();
 						}
 						else if (estado->velocidadX > 0) {
 							m_estadoModelo.lock();
 							this->escenario->setPosicionCielo(posicion->getX() - 2, POS_Y_CIELO);
-							this->escenario->setPosicionColinas(posicion->getX() - 2, POS_Y_COLINAS);
+							this->escenario->setPosicionColinas(posicion->getX() - 3, POS_Y_COLINAS);
 							m_estadoModelo.unlock();
 						}
 						//if (segmentoActual != NULL) {
