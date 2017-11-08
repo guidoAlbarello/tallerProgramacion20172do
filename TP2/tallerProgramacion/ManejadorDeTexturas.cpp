@@ -244,9 +244,10 @@ float ManejadorDeTexturas::proyectar(Coordenada & p, int& ancho, int anchoPantal
 			ancho = 0;
 	}
 	else {
-		ancho = anchoOriginal;
+		//ancho = anchoOriginal;
 		p.x -= camara->getPosicion()->getX() - x;
 		p.y = altoPantalla;
+		ancho = 0; // Para no dibujar cosas que queden atras del auto
 	}
 	return scalado;
 }
