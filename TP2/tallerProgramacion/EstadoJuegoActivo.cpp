@@ -47,12 +47,12 @@ void EstadoJuegoActivo::update(ManejadorDeConexionCliente* conexionCliente) {
 						Vector* posicion = this->escenario->getPosicionCielo();
 						if (segmentoActual->curva > 0) {
 							m_estadoModelo.lock();
-							this->escenario->setPosicionCielo(posicion->getX() - 2, 0);
+							this->escenario->setPosicionCielo(posicion->getX() + 2, 0);
 							m_estadoModelo.unlock();
 						}
 						if (segmentoActual->curva < 0) {
 							m_estadoModelo.lock();
-							this->escenario->setPosicionCielo(posicion->getX() + 2, 0);
+							this->escenario->setPosicionCielo(posicion->getX() - 2, 0);
 							m_estadoModelo.unlock();
 						}
 					}

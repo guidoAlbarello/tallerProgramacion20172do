@@ -11,6 +11,7 @@ class Renderer;
 class Sprite : public ObjetoDeJuego {
 public:
 	void renderStatic(Renderer* renderer);
+	void renderStaticEnCoord(Renderer* renderer, int xDest, int yDest);
 	void load(std::string fileName,SDL_Renderer* pRenderer);
 	void render(Renderer* renderer);
 	void setFilaActual(int fila) { filaActual = fila; };

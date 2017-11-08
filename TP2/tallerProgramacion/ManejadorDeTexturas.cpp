@@ -84,6 +84,19 @@ void ManejadorDeTexturas::dibujarSprite(std::string id, int x, int y, int ancho,
 	destRect.h = alto;
 	SDL_RenderCopyEx(pRenderer, texturas[id], &srcRect, &destRect, 0, 0, flip);
 }
+void ManejadorDeTexturas::dibujarSpriteEnCoord(std::string id, int x, int y, int ancho, int alto, int anchoPantalla, SDL_Renderer* pRenderer, SDL_RendererFlip flip, int xDest, int yDest) {
+	SDL_Rect destRect;
+	SDL_Rect srcRect;
+	srcRect.x = x;
+	srcRect.y = y;
+	srcRect.h = alto;
+	srcRect.w = ancho;
+	destRect.x = xDest;
+	destRect.y = yDest;
+	destRect.w = anchoPantalla;
+	destRect.h = alto;
+	SDL_RenderCopyEx(pRenderer, texturas[id], &srcRect, &destRect, 0, 0, flip);
+}
 
 
 bool ManejadorDeTexturas::load(std::string fileName, std::string id, SDL_Renderer * pRenderer) {

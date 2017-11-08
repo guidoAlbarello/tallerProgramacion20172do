@@ -19,7 +19,7 @@ public:
 	void render();
 	Vector* getPosicionCielo() { return &posicionCielo; }
 	Vector* getPosicionColinas() { return &posicionColinas; }
-	void setPosicionCielo(int x, int y) { cielo->getPosicion()->setX(x); cielo->getPosicion()->setY(y); }
+	void setPosicionCielo(int x, int y);
 	void setPosicionColinas(int x, int y) { colinas->getPosicion()->setX(x); colinas->getPosicion()->setY(y); }
 	bool limiteImagenCielo() { return posicionCielo.getX() < 800; }
 	bool limiteImagenColinas() { return posicionColinas.getX() < 800; }

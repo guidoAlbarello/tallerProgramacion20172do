@@ -24,6 +24,7 @@ public:
 			SDL_Renderer *pRenderer, SDL_RendererFlip flip, bool grisar);
 	void drawStaticSprite(std::string id, int x, int y, int ancho, int alto, int anchoPantalla, SDL_Renderer* pRenderer, SDL_RendererFlip flip, float xx);
 	void dibujarSprite(std::string id, int x, int y, int ancho, int alto, int anchoPantalla, SDL_Renderer* pRenderer, SDL_RendererFlip flip);
+	void dibujarSpriteEnCoord(std::string id, int x, int y, int ancho, int alto, int anchoPantalla, SDL_Renderer* pRenderer, SDL_RendererFlip flip, int xDest, int yDest);
 	bool load(std::string fileName, std::string	id, SDL_Renderer* pRenderer);
 	void setCamara(Camara* unaCamara) { this->camara = unaCamara; }
 	void dibujarTramo(Segmento* unSegmento,int ancho, int anchoPantalla, int altoPantalla, SDL_Renderer* renderer, int n, float x);
