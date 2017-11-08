@@ -43,31 +43,35 @@ void EstadoJuegoActivo::update(ManejadorDeConexionCliente* conexionCliente) {
 				if (estado->velocidadY > 0) {
 					Segmento* segmentoActual = this->mapaView->getSegmentoActual();
 					Vector* posicion = this->escenario->getPosicionCielo();
-					if (estado->velocidadX < 0) {
-						m_estadoModelo.lock();
-						this->escenario->setPosicionCielo(posicion->getX() + 2, 0);
-						m_estadoModelo.unlock();
+					if (estado->posX + estado->velocidadX < LIMITE_PISTA_X_DERECHA && estado->posX + estado->velocidadX > LIMITE_PISTA_X_IZQUIERDA) {
+						if (estado->velocidadX < 0) {
+							m_estadoModelo.lock();
+							this->escenario->setPosicionCielo(posicion->getX() + 2, POS_Y_CIELO);
+							this->escenario->setPosicionColinas(posicion->getX() + 2, POS_Y_COLINAS);
+							m_estadoModelo.unlock();
+						}
+						else if (estado->velocidadX > 0) {
+							m_estadoModelo.lock();
+							this->escenario->setPosicionCielo(posicion->getX() - 2, POS_Y_CIELO);
+							this->escenario->setPosicionColinas(posicion->getX() - 2, POS_Y_COLINAS);
+							m_estadoModelo.unlock();
+						}
+						//if (segmentoActual != NULL) {
+						//	Vector* posicion = this->escenario->getPosicionCielo();
+						//	if (segmentoActual->curva > 0) {
+						//		m_estadoModelo.lock();
+						//		this->escenario->setPosicionCielo(posicion->getX() + 2, 0);
+						//		//this->escenario->setPosicionColinas(posicion->getX() + 2, 0);
+						//		m_estadoModelo.unlock();
+						//	}
+						//	if (segmentoActual->curva < 0) {
+						//		m_estadoModelo.lock();
+						//		this->escenario->setPosicionCielo(posicion->getX() - 2, 0);
+						//		//this->escenario->setPosicionColinas(posicion->getX() - 2, 0);
+						//		m_estadoModelo.unlock();
+						//	}
+						//}
 					}
-					else if (estado->velocidadX > 0) {
-						m_estadoModelo.lock();
-						this->escenario->setPosicionCielo(posicion->getX() - 2, 0);
-						m_estadoModelo.unlock();
-					}
-					//if (segmentoActual != NULL) {
-					//	Vector* posicion = this->escenario->getPosicionCielo();
-					//	if (segmentoActual->curva > 0) {
-					//		m_estadoModelo.lock();
-					//		this->escenario->setPosicionCielo(posicion->getX() + 2, 0);
-					//		//this->escenario->setPosicionColinas(posicion->getX() + 2, 0);
-					//		m_estadoModelo.unlock();
-					//	}
-					//	if (segmentoActual->curva < 0) {
-					//		m_estadoModelo.lock();
-					//		this->escenario->setPosicionCielo(posicion->getX() - 2, 0);
-					//		//this->escenario->setPosicionColinas(posicion->getX() - 2, 0);
-					//		m_estadoModelo.unlock();
-					//	}
-					//}
 				}
 			}
 		}

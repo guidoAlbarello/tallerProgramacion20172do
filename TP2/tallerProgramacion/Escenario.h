@@ -4,6 +4,10 @@
 
 #define VELOCIDAD_CIELO 0.1
 #define VELOCIDAD_COLINAS 0.05
+#define POS_Y_CIELO 0
+#define ALTO_CIELO 150
+#define POS_Y_COLINAS 150
+#define ALTO_COLINAS 200
 
 #include "Sprite.h"
 #include "Vector.h"
@@ -23,6 +27,8 @@ public:
 	void setPosicionColinas(int x, int y);
 	bool limiteImagenCielo() { return posicionCielo.getX() < 800; }
 	bool limiteImagenColinas() { return posicionColinas.getX() < 800; }
+	//bool limiteImagenCielo() { return posicionCielo.getX() < 1600; }
+	//bool limiteImagenColinas() { return posicionColinas.getX() < 1600; }
 private:
 	Vector posicionCielo;
 	Vector posicionColinas;

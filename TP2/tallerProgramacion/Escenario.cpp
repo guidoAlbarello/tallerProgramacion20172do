@@ -14,19 +14,19 @@ void Escenario::iniciar() {
 	cielo = new Sprite();
 	std::string skyFileName = "fondo/sky.png";
 	cielo->setId("cielo");
-	cielo->setPosicion(0, 0);
+	cielo->setPosicion(0, POS_Y_CIELO);
 	posicionCielo.setX(0);
-	posicionCielo.setY(0);
-	cielo->setAnchoYAlto(1600, 400);
+	posicionCielo.setY(POS_Y_CIELO);
+	cielo->setAnchoYAlto(1600, ALTO_CIELO);
 	cielo->load(skyFileName, this->renderer->getRendererJuego()); // Setear el id antes del load!
 
 	colinas = new Sprite();
 	std::string hillsFileName = "fondo/hills.png";
 	colinas->setId("colinas");
-	colinas->setPosicion(0, 100);
+	colinas->setPosicion(0, POS_Y_COLINAS);
 	posicionColinas.setX(0);
-	posicionColinas.setY(100);
-	colinas->setAnchoYAlto(800, 300);
+	posicionColinas.setY(POS_Y_COLINAS);
+	colinas->setAnchoYAlto(1600, ALTO_COLINAS);
 	colinas->load(hillsFileName, this->renderer->getRendererJuego()); // Setear el id antes del load!
 }
 
@@ -44,6 +44,10 @@ void Escenario::update(Unidad deltaTiempo) {
 		posicionCielo.setX((int(posicionCielo.getX() + VELOCIDAD_CIELO * deltaTiempo)));
 	else
 		posicionCielo.setX(0);
+	if (limiteImagenColinas())
+		posicionColinas.setX((int(posicionColinas.getX() + VELOCIDAD_CIELO * deltaTiempo)));
+	else
+		posicionColinas.setX(0);
 	//posicionColinas.setX((int(posicionColinas.getX() + VELOCIDAD_COLINAS * deltaTiempo)) % colinas->getAncho());
 }
 void Escenario::setPosicionCielo(int x, int y){
@@ -58,20 +62,21 @@ void Escenario::setPosicionCielo(int x, int y){
 }
 
 void Escenario::setPosicionColinas(int x, int y) {
-	//while (x > 0) {
-	//	x = x - 800;
-	//}
-	//while (x < -800) {
-	//	x = x + 800;
-	//}
-	//this->posicionColinas.setX(x);
-	//this->posicionColinas.setY(y);
+	while (x > 0) {
+		x = x - 800;
+	}
+	while (x < -800) {
+		x = x + 800;
+	}
+	this->posicionColinas.setX(x);
+	this->posicionColinas.setY(y);
 }
 
 void Escenario::render() {
 	//Falta la logica que hace funcionar la calesita
 	//->cielo->setPosicion(posicionCielo.getX(), posicionCielo.getY());
 	this->cielo->renderStaticEnCoord(renderer, posicionCielo.getX(), posicionCielo.getY());
-	//this->colinas->renderStaticEnCoord(renderer, posicionColinas.getX(), posicionColinas.getY());
-	this->colinas->renderStatic(renderer);
+	this->colinas->renderStaticEnCoord(renderer, posicionColinas.getX(), posicionColinas.getY());
+
+	//this->colinas->renderStatic(renderer);
 }
