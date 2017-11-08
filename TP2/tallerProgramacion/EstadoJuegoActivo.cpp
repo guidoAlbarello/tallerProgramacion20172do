@@ -6,7 +6,8 @@ void EstadoJuegoActivo::update(ManejadorDeConexionCliente* conexionCliente) {
 
 	if (inicializado) {
 		ManejadorInput::getInstance()->update();
-		ManejadorInput::getInstance()->setCerrar(!conexionCliente->enviarEntrada());
+		conexionCliente->enviarEntrada();
+		//ManejadorInput::getInstance()->setCerrar(!conexionCliente->enviarEntrada());
 	}
 	//updatear posicion sprites y escenario (copiar del estado de jeugo a los objetos)
 	//hago el update de cada sprite enelmap
