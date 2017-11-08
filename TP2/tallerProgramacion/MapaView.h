@@ -11,7 +11,8 @@
 #include "ManejadorDeTexturas.h"
 
 #define PI 3.14159265
-#define DISTANCIA_DIBUJADO 45
+#define DISTANCIA_DIBUJADO 50
+#define DISTANCIA_DIBUJADO_OBJETOS 50
 #define ANCHO_TRAMO 700
 #define ALTO_TRAMO 100
 #define INTENSIDAD_CURVAS 0.8

@@ -99,5 +99,6 @@ struct Segmento {
 	Coordenada p1;
 	Coordenada p2;
 	float curva;
+	bool tieneObjeto = false;
 };
 #endif
