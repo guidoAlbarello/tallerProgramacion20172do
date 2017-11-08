@@ -41,21 +41,33 @@ void EstadoJuegoActivo::update(ManejadorDeConexionCliente* conexionCliente) {
 				this->camara->setPosicion(estado->posXCamara, estado->posYCamara);
 
 				if (estado->velocidadY > 0) {
-					//this->escenario->actualizar //puedo ver el 1er tramo, y en base a eso mover las nubes
 					Segmento* segmentoActual = this->mapaView->getSegmentoActual();
-					if (segmentoActual != NULL) {
-						Vector* posicion = this->escenario->getPosicionCielo();
-						if (segmentoActual->curva > 0) {
-							m_estadoModelo.lock();
-							this->escenario->setPosicionCielo(posicion->getX() + 2, 0);
-							m_estadoModelo.unlock();
-						}
-						if (segmentoActual->curva < 0) {
-							m_estadoModelo.lock();
-							this->escenario->setPosicionCielo(posicion->getX() - 2, 0);
-							m_estadoModelo.unlock();
-						}
+					Vector* posicion = this->escenario->getPosicionCielo();
+					if (estado->velocidadX < 0) {
+						m_estadoModelo.lock();
+						this->escenario->setPosicionCielo(posicion->getX() + 2, 0);
+						m_estadoModelo.unlock();
 					}
+					else if (estado->velocidadX > 0) {
+						m_estadoModelo.lock();
+						this->escenario->setPosicionCielo(posicion->getX() - 2, 0);
+						m_estadoModelo.unlock();
+					}
+					//if (segmentoActual != NULL) {
+					//	Vector* posicion = this->escenario->getPosicionCielo();
+					//	if (segmentoActual->curva > 0) {
+					//		m_estadoModelo.lock();
+					//		this->escenario->setPosicionCielo(posicion->getX() + 2, 0);
+					//		//this->escenario->setPosicionColinas(posicion->getX() + 2, 0);
+					//		m_estadoModelo.unlock();
+					//	}
+					//	if (segmentoActual->curva < 0) {
+					//		m_estadoModelo.lock();
+					//		this->escenario->setPosicionCielo(posicion->getX() - 2, 0);
+					//		//this->escenario->setPosicionColinas(posicion->getX() - 2, 0);
+					//		m_estadoModelo.unlock();
+					//	}
+					//}
 				}
 			}
 		}

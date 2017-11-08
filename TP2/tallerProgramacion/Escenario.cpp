@@ -47,7 +47,6 @@ void Escenario::update(Unidad deltaTiempo) {
 	//posicionColinas.setX((int(posicionColinas.getX() + VELOCIDAD_COLINAS * deltaTiempo)) % colinas->getAncho());
 }
 void Escenario::setPosicionCielo(int x, int y){
-	
 	while (x > 0) {
 		x = x - 800;
 	}
@@ -57,9 +56,22 @@ void Escenario::setPosicionCielo(int x, int y){
 	this->posicionCielo.setX(x);
 	this->posicionCielo.setY(y);
 }
+
+void Escenario::setPosicionColinas(int x, int y) {
+	//while (x > 0) {
+	//	x = x - 800;
+	//}
+	//while (x < -800) {
+	//	x = x + 800;
+	//}
+	//this->posicionColinas.setX(x);
+	//this->posicionColinas.setY(y);
+}
+
 void Escenario::render() {
 	//Falta la logica que hace funcionar la calesita
 	//->cielo->setPosicion(posicionCielo.getX(), posicionCielo.getY());
 	this->cielo->renderStaticEnCoord(renderer, posicionCielo.getX(), posicionCielo.getY());
+	//this->colinas->renderStaticEnCoord(renderer, posicionColinas.getX(), posicionColinas.getY());
 	this->colinas->renderStatic(renderer);
 }
