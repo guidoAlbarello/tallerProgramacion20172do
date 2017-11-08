@@ -6,7 +6,7 @@ void EstadoLogeo::update(ManejadorDeConexionCliente* conexionCliente) {
 		loggerView->update();
 		Usuario* usuario = loggerView->getUsuario();
 		if (usuario != NULL) {
-			conexionCliente->login(usuario->getNombre(), usuario->getPassword());
+			ManejadorInput::getInstance()->setCerrar(!conexionCliente->login(usuario->getNombre(), usuario->getPassword()));
 			inicializado = false;
 		}
 	}

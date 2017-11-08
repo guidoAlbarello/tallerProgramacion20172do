@@ -23,6 +23,14 @@ SOCKET ManejadorDeConexionServidor::hayClienteIntentandoConectarse(std::vector<C
 
 	if (conexionesActivas.size() + 1 > maxClientes) {
 		Logger::getInstance()->log(Debug, "Un cliente intento conectarse pero se excedio el maximo de conexiones aceptadas");
+		if (socketAceptado != INVALID_SOCKET) {
+			int iResult = shutdown(socketAceptado, SD_SEND);
+			if (iResult == SOCKET_ERROR) {
+				closesocket(socketAceptado);
+				return INVALID_SOCKET;
+			}
+			closesocket(socketAceptado);
+		}
 		return INVALID_SOCKET;
 	}
 	return socketAceptado;

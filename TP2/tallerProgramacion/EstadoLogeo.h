@@ -4,6 +4,8 @@
 #include "EstadoJuego.h"
 #include "LoggerView.h"
 #include "ManejadorDeConexionCliente.h"
+#include "ManejadorInput.h"
+
 class EstadoLogeo : public EstadoJuego {
 public:
 	void update(ManejadorDeConexionCliente* conexionCliente);
