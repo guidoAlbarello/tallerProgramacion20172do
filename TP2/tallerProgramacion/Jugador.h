@@ -5,7 +5,7 @@
 #include "ObjetoDeJuego.h"
 #include "Camara.h"
 #define ACELERACION_AUTO_X 1.0
-#define ACELERACION_AUTO_Y 1.5
+#define ACELERACION_AUTO_Y 1.8
 #define FACTOR_DESACELERACION_X 0
 #define FACTOR_DESACELERACION_Y 30.0
 #define LIMITE_VELOCIDAD_AUTO_X 60.0
@@ -28,10 +28,12 @@ public:
 	void dejarDoblarIzquierda(Unidad delta);
 	Unidad getPosicionX() { return posicion.getX(); }
 	Unidad getPosicionY() { return posicion.getY(); }
+	void setPosicionX(Unidad x) { this->posicion.setX(x); }
 	EstadoAuto getEstado() { return estado; }
 	bool estaConectado() { return conectado; }
 	void setEstadoConexion(bool estaConectado) { this->conectado = estaConectado; }
 	Camara* getCamara() { return this->camara; }
+	bool getAcelerando() { return this->acelerando; }
 protected:
 	bool entrada[Constantes::CANT_TECLAS];
 	int id;

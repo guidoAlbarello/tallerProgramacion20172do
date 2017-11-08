@@ -98,7 +98,8 @@ struct Coordenada {
 struct Segmento {
 	Coordenada p1;
 	Coordenada p2;
-	float curva;
+	float curva = 0;
+	int metro; // solo usado del lado del srv para asociar segmento con posicion y
 	bool tieneObjeto = false;
 };
 #endif

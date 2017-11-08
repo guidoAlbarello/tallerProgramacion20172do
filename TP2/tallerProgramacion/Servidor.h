@@ -10,6 +10,7 @@
 #include "Logger.h"
 #include "MensajeDeRed.h"
 #include "Juego.h"
+#include "Mapa.h"
 
 const std::string SERVER_LOG_FILENAME_FORMAT = "LogSrv%Y%m%d%H%M%S.txt";
 
@@ -59,6 +60,7 @@ protected:
 	void verificarConexiones();
 	void updateModel();
 	Juego* elJuego;
+	Mapa* mapa;
 };
 
 #endif

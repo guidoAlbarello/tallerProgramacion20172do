@@ -6,8 +6,34 @@ bool Juego::iniciarJuego(int cantidadJugadoresMaxima) {
 	this->cantidadJugadores = 0;
 	this->cantidadJugadoresMaxima = cantidadJugadoresMaxima;
 	this->iniciarEscenario();
+	this->procesarMapa();
 	this->t_gameLoop = std::thread(&Juego::gameLoop, this);
 	return true;
+}
+
+void Juego::procesarMapa() {
+	int longitudTotal = 0;
+	if (this->mapa != NULL) {
+		std::vector<Segmento*> segmentos(this->mapa->getLongitudTotal());
+		for (int i = 0; i < this->mapa->getTramosDelMapa().size(); i++) {
+			Tramo* unTramo = this->mapa->getTramosDelMapa()[i];
+			if (unTramo->getTipoTramo() != TipoTramo::Recta) {
+				int curva;
+				if (unTramo->getSentidoCurva() == SentidoCurva::SCDerecha) {
+					curva = -1;
+				}
+				else if (unTramo->getSentidoCurva() == SentidoCurva::SCIzquierda) {
+					curva = 1;
+				}
+				for (int j = unTramo->getMetroInicio(); j < unTramo->getMetroInicio() + unTramo->getLongitud(); j++) {
+					Segmento* unSegmento = new Segmento();
+					unSegmento->curva = curva;
+					segmentos[j] = unSegmento;
+				}
+			}
+		}
+		this->segmentos = segmentos;
+	}
 }
 
 void Juego::update(Unidad tiempoDelta) {
@@ -51,14 +77,40 @@ EstadoModeloJuego* Juego::getEstadoJuego() {
 		Jugador* unJugador = jugadores[i];
 		nuevoEstado->estadoJugadores[i].id = unJugador->getId();
 		nuevoEstado->estadoJugadores[i].conectado = unJugador->estaConectado();
+
+		// Se modifica la coordenada x si esta en una curva y esta acelerando
+		if (unJugador->getAcelerando()) {
+			Segmento* segmentoActual = this->segmentos[unJugador->getCamara()->getPosicionTarget()->getY() / 100];
+			if (segmentoActual != NULL) {
+				// Es una curva
+				int intensidadCentrifuga = 35;
+				int nuevaPosicionX;
+				if (segmentoActual->curva > 0) {
+					// Curva izquierda
+					nuevaPosicionX = unJugador->getPosicionX() + intensidadCentrifuga;
+					if (nuevaPosicionX < LIMITE_PISTA_X_DERECHA && nuevaPosicionX > LIMITE_PISTA_X_IZQUIERDA) {
+						unJugador->setPosicionX(nuevaPosicionX);
+					}
+					nuevoEstado->estadoJugadores[i].posX = nuevaPosicionX;
+				}
+				else if (segmentoActual->curva < 0) {
+					// Curva derecha
+					nuevaPosicionX = unJugador->getPosicionX() - intensidadCentrifuga;
+					if (nuevaPosicionX < LIMITE_PISTA_X_DERECHA && nuevaPosicionX > LIMITE_PISTA_X_IZQUIERDA) {
+						unJugador->setPosicionX(nuevaPosicionX);
+					}
+					nuevoEstado->estadoJugadores[i].posX = nuevaPosicionX;
+				}
+			}
+		}
+
 		nuevoEstado->estadoJugadores[i].estadoAuto = unJugador->getEstado();
 		nuevoEstado->estadoJugadores[i].posX = unJugador->getPosicionX();
 		nuevoEstado->estadoJugadores[i].posY = unJugador->getPosicionY();
-		nuevoEstado->estadoJugadores[i].posXCamara = unJugador->getCamara()->getPosicionTarget()->getX() ;
+		nuevoEstado->estadoJugadores[i].posXCamara = unJugador->getCamara()->getPosicionTarget()->getX();
 		nuevoEstado->estadoJugadores[i].posYCamara = unJugador->getCamara()->getPosicionTarget()->getY();
 		nuevoEstado->estadoJugadores[i].velocidadX = unJugador->getVelocidad().getX();
 		nuevoEstado->estadoJugadores[i].velocidadY = unJugador->getVelocidad().getY();
-
 	}
 	
 	nuevoEstado->tamanio = jugadores.size();
@@ -102,6 +154,7 @@ Jugador* Juego::agregarJugador() {
 Juego::Juego() {
 	this->juegoActivo = true;
 	this->escenario = new Escenario();
+	this->mapa = NULL;
 }
 
 void Juego::iniciarEscenario() {

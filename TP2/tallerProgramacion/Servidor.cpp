@@ -37,6 +37,8 @@ Servidor::Servidor() {
 	this->configuracion = new ServerConfig();
 	this->buzonDeChatGlobal = new BuzonDeMensajes();
 	this->elJuego = new Juego();
+	this->mapa = new Mapa();
+	this->elJuego->setMapa(this->mapa);
 
 	//Seteando el nombre del log
 	Logger::getInstance()->setLogFileName(SERVER_LOG_FILENAME_FORMAT);
@@ -392,7 +394,7 @@ void Servidor::updateModel() {
 				if(estadoInicial != NULL)
 					delete estadoInicial;
 			}
-			yaEnvioEstado = true;
+			yaEnvioEstado = true;	
 		} 
 		std::this_thread::sleep_for(std::chrono::milliseconds(Constantes::UPDATE_MODEL_DELAY));//esdto se podria cambiar x un while hasta q no pase el intervalo de tiempo, y mientras q no pase aprovechar el tiempo para hacer clean ups  
 	}

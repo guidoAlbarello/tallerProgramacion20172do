@@ -9,7 +9,7 @@
 #include "Jugador.h"
 #include "Escenario.h"
 #include "Renderer.h"
-
+#include "Mapa.h"
 #include <mutex>
 
 
@@ -29,6 +29,9 @@ public:
 	void liberarModeloEstado(EstadoModeloJuego* unEstado);
 	bool jugadoresCargados() { return jugadores.size() == cantidadJugadoresMaxima; }
 	EstadoInicialJuego* getEstadoJuegoInicial();
+	void setMapa(Mapa* mapa) { this->mapa = mapa; }
+	Mapa* getMapa() { return this->mapa; }
+	void procesarMapa();
 private:
 	Renderer* renderer;
 	int cantidadJugadores;
@@ -42,6 +45,8 @@ private:
 	mutex m_objetos;
 	Escenario* escenario;
 	int cantidadJugadoresMaxima; 
+	Mapa* mapa;
+	std::vector<Segmento*> segmentos;
 };
 
 #endif
