@@ -280,7 +280,7 @@ void Cliente::logearseAlServidor() {
 		cout << "Usted ya esta logueado." << endl;
 		return;
 	}
-
+	/*
 
 	LoggerView loggerView = LoggerView(this->renderer->getRendererJuego());
 
@@ -325,7 +325,7 @@ void Cliente::logearseAlServidor() {
 
 	//}
 
-	//correrCicloPrincipal();
+	//correrCicloPrincipal();*/
 }
 
 void Cliente::enviarMensajeAlChat() {
