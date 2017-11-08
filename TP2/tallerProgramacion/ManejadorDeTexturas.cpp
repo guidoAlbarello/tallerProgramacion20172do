@@ -241,8 +241,7 @@ float ManejadorDeTexturas::proyectar(Coordenada & p, int& ancho, int anchoPantal
 		ancho = scalado * ancho * anchoPantalla / 2;
 
 		if (ancho < MINIMO_ANCHO)
-			ancho = MINIMO_ANCHO;
-			//ancho = 0;
+			ancho = 0;
 	}
 	else {
 		ancho = anchoOriginal;

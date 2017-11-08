@@ -131,6 +131,8 @@ EstadoInicialJuego * Juego::getEstadoJuegoInicial() {
 
 	for (int i = 0; i < jugadores.size(); i++) {
 		Jugador* unJugador = jugadores[i];
+		unJugador->setPosicionY(0);
+		unJugador->getCamara()->setPosicion(unJugador->getCamara()->getPosicion()->getX(), 0);
 		estado->id[i] = unJugador->getId();
 	}
 

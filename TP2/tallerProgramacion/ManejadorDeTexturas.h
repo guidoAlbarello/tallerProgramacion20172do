@@ -2,7 +2,7 @@
 #ifndef MANEJADOR_DE_TEXTURAS_H
 #define MANEJADOR_DE_TEXTURAS_H
 
-#define MINIMO_ANCHO 30
+#define MINIMO_ANCHO 4
 
 
 #include <string>

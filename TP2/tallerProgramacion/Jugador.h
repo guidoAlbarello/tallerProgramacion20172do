@@ -28,6 +28,7 @@ public:
 	void dejarDoblarIzquierda(Unidad delta);
 	Unidad getPosicionX() { return posicion.getX(); }
 	Unidad getPosicionY() { return posicion.getY(); }
+	void setPosicionY(Unidad y) { this->posicion.setY(y); }
 	void setPosicionX(Unidad x) { this->posicion.setX(x); }
 	EstadoAuto getEstado() { return estado; }
 	bool estaConectado() { return conectado; }
