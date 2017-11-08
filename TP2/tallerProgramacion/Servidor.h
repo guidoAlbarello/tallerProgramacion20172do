@@ -60,6 +60,7 @@ protected:
 	void verificarConexiones();
 	void updateModel();
 	Juego* elJuego;
+	bool cerrandoConexiones = false;
 	Mapa* mapa;
 };
 

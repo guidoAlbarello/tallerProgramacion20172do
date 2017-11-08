@@ -115,7 +115,7 @@ EstadoModeloJuego* Juego::getEstadoJuego() {
 	
 	nuevoEstado->tamanio = jugadores.size();
 	
-	//nuevoEstado->estadoEscenario.cieloX = escenario->getPosicionCielo()->getX();
+	nuevoEstado->estadoEscenario.cieloX = escenario->getPosicionCielo()->getX();
 	//nuevoEstado->estadoEscenario.cieloY = escenario->getPosicionCielo()->getY();
 	//nuevoEstado->estadoEscenario.colinasX = escenario->getPosicionColinas()->getX();
 	//nuevoEstado->estadoEscenario.colinasY = escenario->getPosicionColinas()->getY();

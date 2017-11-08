@@ -41,20 +41,22 @@ void EstadoJuegoActivo::update(ManejadorDeConexionCliente* conexionCliente) {
 			if (estado->id == idJugador){
 				this->camara->setPosicion(estado->posXCamara, estado->posYCamara);
 
+				this->escenario->setPosicionCielo(estadoModeloJuego->estadoEscenario.cieloX, estadoModeloJuego->estadoEscenario.cieloY);
+
 				if (estado->velocidadY > 0) {
 					Segmento* segmentoActual = this->mapaView->getSegmentoActual();
 					Vector* posicion = this->escenario->getPosicionCielo();
 					if (estado->posX + estado->velocidadX < LIMITE_PISTA_X_DERECHA && estado->posX + estado->velocidadX > LIMITE_PISTA_X_IZQUIERDA) {
 						if (estado->velocidadX < 0) {
 							m_estadoModelo.lock();
-							this->escenario->setPosicionCielo(posicion->getX() + 2, POS_Y_CIELO);
-							this->escenario->setPosicionColinas(posicion->getX() + 3, POS_Y_COLINAS);
+							this->escenario->setPosicionCielo(this->escenario->getPosicionCielo()->getX() + 3, POS_Y_CIELO);
+							this->escenario->setPosicionColinas(this->escenario->getPosicionColinas()->getX() + 6, POS_Y_COLINAS);
 							m_estadoModelo.unlock();
 						}
 						else if (estado->velocidadX > 0) {
 							m_estadoModelo.lock();
-							this->escenario->setPosicionCielo(posicion->getX() - 2, POS_Y_CIELO);
-							this->escenario->setPosicionColinas(posicion->getX() - 3, POS_Y_COLINAS);
+							this->escenario->setPosicionCielo(this->escenario->getPosicionCielo()->getX() - 3, POS_Y_CIELO);
+							this->escenario->setPosicionColinas(this->escenario->getPosicionColinas()->getX() - 6, POS_Y_COLINAS);
 							m_estadoModelo.unlock();
 						}
 						//if (segmentoActual != NULL) {

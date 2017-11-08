@@ -17,31 +17,36 @@ Conexion::~Conexion() {
 }
 
 void Conexion::cerrarConexion() {
-	this->conexionActiva = false;
-	this->conexionViva = false;
-	this->conexionInicializada = false;
-	if (this->getUsuario() != NULL) {
-		if (this->getUsuario()->getJugador() != NULL) {
-			this->getUsuario()->getJugador()->setEstadoConexion(false);
-			this->getUsuario()->getJugador()->recibirEntrada(0, false);//ponemos todas las entradas en false para q frene. 
-			this->getUsuario()->getJugador()->recibirEntrada(1, false);
-			this->getUsuario()->getJugador()->recibirEntrada(2, false);
+	if (!cerrando) {
+		cerrando = true;
+		this->conexionActiva = false;
+		this->conexionViva = false;
+		this->conexionInicializada = false;
+		if (this->getUsuario() != NULL) {
+			if (this->getUsuario()->getJugador() != NULL) {
+				this->getUsuario()->getJugador()->setEstadoConexion(false);
+				this->getUsuario()->getJugador()->recibirEntrada(0, false);//ponemos todas las entradas en false para q frene. 
+				this->getUsuario()->getJugador()->recibirEntrada(1, false);
+				this->getUsuario()->getJugador()->recibirEntrada(2, false);
+			}
+		}
+
+		try {
+			if (t_procesarDatosRecibidos.joinable()) {
+				t_procesarDatosRecibidos.join();
+			}
+
+			if (this->conexionConCliente != NULL) {
+				this->conexionConCliente->cerrarConexion();
+				delete this->conexionConCliente;
+			}
+		}
+
+		catch (exception e) {
+			Logger::getInstance()->log(Error, "Ocurrio un error al cerrar la conexion");
 		}
 	}
 
-	//try {
-		if (t_procesarDatosRecibidos.joinable()) {
-			t_procesarDatosRecibidos.join();
-		}
-	
-		if (this->conexionConCliente != NULL) {
-			this->conexionConCliente->cerrarConexion();
-			delete this->conexionConCliente;
-		}
-	/*}
-	catch (exception e) {
-		Logger::getInstance()->log(Error, "Ocurrio un error al cerrar la conexion");
-	}*/
 }
 
 
@@ -53,7 +58,9 @@ void Conexion::procesarSolicitudPing() {
 	int tamanio = mensaje.length() + 1;
 	Logger::getInstance()->log(Debug, mensaje);
 	Logger::getInstance()->log(Debug, "Enviando respuesta de ping a cliente");
+
 	this->conexionConCliente->getSocket().enviarDatos(mensaje.c_str(), tamanio);
+
 }
 
 void Conexion::procesarInput(bool* entrada) {
@@ -194,6 +201,7 @@ void Conexion::enviarUpdate(EstadoModeloJuego* estado) {
 	const char* comando = strComando.c_str();
 	memcpy(data, comando, 13);
 	memcpy(data + 13, estado, sizeof(EstadoModeloJuego));
+
 	this->conexionConCliente->getSocket().enviarDatos(data, tamanio);
 
 	if (data != NULL)
@@ -202,25 +210,7 @@ void Conexion::enviarUpdate(EstadoModeloJuego* estado) {
 
 void Conexion::inicializarClienteJuego(EstadoInicialJuego * estado, Usuario* unUsuario) {
 	Logger::getInstance()->log(Debug, "Enviando init");
-	/*string resultado;
-
-	MensajeDeRed* mensajeDeRed = new MensajeDeRed(comando);
-	mensajeDeRed->agregarParametro(std::to_string(estado->idJugador));
-	mensajeDeRed->agregarParametro(std::to_string(estado->tamanio));
-	std::string strArrayIds;
-	for (int i = 0; i < estado->tamanio; i++) {
-		strArrayIds.append(std::to_string(estado->id[i]));
-		if (i != estado->tamanio - 1) {
-			strArrayIds.append(&Constantes::separadorIds);
-
-		}
-	}
-	mensajeDeRed->agregarParametro(strArrayIds);
-	string mensaje = mensajeDeRed->getComandoClienteSerializado();
-	int tamanio = mensaje.length() + 1;
-	Logger::getInstance()->log(Debug, "Enviando mensaje");
-	Logger::getInstance()->log(Debug, mensaje);
-	*/
+	
 	if (unUsuario == NULL)
 		unUsuario = this->usuarioConectado;
 
@@ -232,6 +222,7 @@ void Conexion::inicializarClienteJuego(EstadoInicialJuego * estado, Usuario* unU
 	const char* comando = strComando.c_str();
 	memcpy(data, comando, 5);
 	memcpy(data + 5, estado, sizeof(EstadoInicialJuego));
+	
 	this->conexionConCliente->getSocket().enviarDatos(data, tamanio);
 
 	if (data != NULL)
@@ -273,20 +264,24 @@ void Conexion::procesarDatosRecibidos() {
 						int tamanio = mensaje.length() + 1;
 						Logger::getInstance()->log(Debug, "Enviando mensaje");
 						Logger::getInstance()->log(Debug, mensaje);
+					
 						this->conexionConCliente->getSocket().enviarDatos(mensaje.c_str(), tamanio);
+					
 					} else {
 						EstadoInicialJuego* estadoInicial = this->servidor->getJuego()->getEstadoJuegoInicial();
 						estadoInicial->tamanio = this->servidor->getConfiguracion()->getMaxClientes();
-						
+
 						estadoInicial->idJugador = unUsuario->getJugador()->getId();
-						int tamanio = sizeof(EstadoInicialJuego) + 27;  
+						int tamanio = sizeof(EstadoInicialJuego) + 27;
 						char* data = new char[tamanio];
 						std::string strComando = "RESULTADO_LOGIN";
 						strComando.append(&Constantes::separador).append("LOGIN_OK").append(&Constantes::separador).append("1").append(&Constantes::separador);
 						const char* comando = strComando.c_str();
 						memcpy(data, comando, 27);
 						memcpy(data + 27, estadoInicial, sizeof(EstadoInicialJuego));
+						
 						this->conexionConCliente->getSocket().enviarDatos(data, tamanio);
+					
 
 						delete estadoInicial;
 						if (data != NULL)
@@ -303,7 +298,9 @@ void Conexion::procesarDatosRecibidos() {
 					int tamanio = mensaje.length() + 1;
 					Logger::getInstance()->log(Debug, "Login invalido");
 					Logger::getInstance()->log(Debug, mensaje);
+				
 					this->conexionConCliente->getSocket().enviarDatos(mensaje.c_str(), tamanio);
+				
 				}
 				break;
 			case ComandoServidor::PING:
@@ -339,8 +336,8 @@ void Conexion::procesarDatosRecibidos() {
 
 		double tiempoTardado = std::chrono::duration_cast<std::chrono::duration<double, std::ratio<1>>>(std::chrono::high_resolution_clock::now() - timeOut).count() * 1000;
 		if (tiempoTardado > (Constantes::PING_DELAY) + Constantes::TOLERANCIA_PING) {
-			this->conexionActiva = false; 
-			this->conexionViva = false; 
+			this->conexionActiva = false;
+			this->conexionViva = false;
 			this->conexionInicializada = false;
 			//this->cerrarConexion();
 		}

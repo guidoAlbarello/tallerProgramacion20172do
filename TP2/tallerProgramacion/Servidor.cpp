@@ -225,6 +225,7 @@ void Servidor::agregarNuevaConexionEntrante(SOCKET unCliente) {
 
 void Servidor::cerrarTodasLasConexiones() {
 	Logger::getInstance()->log(Debug, "Cerrando todas las conexiones del servidor...");
+	cerrandoConexiones = true;
 	for (unsigned int i = 0; i < conexionesActivas.size(); i++) {
 		Conexion* unaConexion = conexionesActivas[i];
 		unaConexion->cerrarConexion();
@@ -232,6 +233,7 @@ void Servidor::cerrarTodasLasConexiones() {
 	}
 
 	conexionesActivas.erase(conexionesActivas.begin(), conexionesActivas.end());
+	cerrandoConexiones = false;
 }
 
 void Servidor::cambiarNivelLogeo() {
@@ -371,7 +373,8 @@ Usuario* Servidor::validarLogin(MensajeDeRed* mensaje, string &mensajeResultado,
 void Servidor::updateModel() {
 	yaEnvioEstado = false;
 	while (servidorActivo) {
-		this->verificarConexiones();
+		if(!cerrandoConexiones)
+			this->verificarConexiones();
 		if (elJuego->getJugadores().size() == this->configuracion->getMaxClientes()) {
 			if (yaEnvioEstado) {									//este if asqueroso cambiarlo. chequear q pase de estado esperar jugadores a init, de otra forma
 				EstadoModeloJuego* nuevoEstado = this->elJuego->getEstadoJuego();

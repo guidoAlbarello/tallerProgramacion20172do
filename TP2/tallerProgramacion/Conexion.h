@@ -38,6 +38,7 @@ private:
 	bool conexionInicializada;
 	bool conexionActiva;
 	bool conexionViva;
+	bool cerrando = false;
 	Servidor* servidor;
 
 };

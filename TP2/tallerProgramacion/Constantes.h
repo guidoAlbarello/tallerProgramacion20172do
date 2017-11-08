@@ -34,9 +34,9 @@ public:
 	ComandoCliente getConstComandoCliente(string comando);
 	~Constantes();
 	static Constantes* getInstance();
-	static constexpr const int PING_DELAY = 10000;
-	static constexpr const int TOLERANCIA_PING = 15000;
-	static constexpr const int RECV_TIMEOUT = 25000;
+	static constexpr const int PING_DELAY = 2000;
+	static constexpr const int TOLERANCIA_PING = 2000;
+	static constexpr const int RECV_TIMEOUT = 5000;
 	static constexpr const int FPS = 25;
 	static constexpr const int UPDATE_MODEL_DELAY = 1000 / (Constantes::FPS - 7);
 	static constexpr const int MAX_CLIENTES = 8;
