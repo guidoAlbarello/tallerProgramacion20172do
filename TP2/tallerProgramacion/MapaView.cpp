@@ -17,8 +17,8 @@ MapaView::~MapaView()
 
 void MapaView::init() {
 	this->mapa = new Mapa();
-	this->renderInit();
 	this->initSegmentos();
+	this->renderInit();
 	this->metroActualAuto = 0;
 }
 
@@ -67,6 +67,7 @@ void MapaView::renderStoredObjects() {
 	SDL_RenderPresent(renderer);
 }
 
+// Para esta entrega no se esta llamando, directamente no se vuelve a renderear el minimapa
 void MapaView::renderMiniMap() {
 	//SDL_Window* window = this->gRenderer->getWindowMapa();
 	//SDL_Renderer* renderer = this->gRenderer->getRendererMapa();
@@ -91,8 +92,6 @@ Segmento* MapaView::getSegmentoActual() {
 void MapaView::render(Renderer* renderer) {
 	int base = getTramoActual();
 	float x = 0, dx = 0;
-	//this->metroActualAuto += base;
-
 	for (int i = 0; i < DISTANCIA_DIBUJADO; i++) {
 		if (segmentos.size() > base + i) {
 			Segmento* unSegmento = segmentos[base + i];			//agregar chequeo distancia dibujado > tamaño array
@@ -103,11 +102,13 @@ void MapaView::render(Renderer* renderer) {
 	}
 
 	// Se dibujan sprites de los costados de atras para adelante para que no se pisen entre si
-	for (int i = DISTANCIA_DIBUJADO - 1; i > 0; i--) {
+	for (int i = DISTANCIA_DIBUJADO_OBJETOS - 1; i > 0; i--) {
 		if (base + i < segmentos.size()) {
 			Segmento* unSegmento = segmentos[base + i];
-			if (ManejadorDeTexturas::getInstance()->getObjetosPorSegmento()[base + i].size() > 0) {
-				ManejadorDeTexturas::getInstance()->dibujarObjeto(unSegmento, ANCHO_TRAMO, renderer->getAnchoVentana(), renderer->getAltoVentana(), renderer->getRendererJuego(), (base + i), x);
+			if (unSegmento->tieneObjeto) {
+				if (ManejadorDeTexturas::getInstance()->getObjetosPorSegmento()[base + i].size() > 0) {
+					ManejadorDeTexturas::getInstance()->dibujarObjeto(unSegmento, ANCHO_TRAMO, renderer->getAnchoVentana(), renderer->getAltoVentana(), renderer->getRendererJuego(), (base + i), x);
+				}
 			}
 			x -= dx;
 			dx -= unSegmento->curva;
@@ -190,6 +191,7 @@ void MapaView::dibujarMapa(SDL_Renderer* renderer) {
 	for (int i = 0; i < this->mapa->getObjetosDelMapa().size(); i++) {
 		ObjetoFijo* objetoActual = this->mapa->getObjetosDelMapa()[i];
 		this->objetosPorSegmento[objetoActual->getUbicacionM()].push_back(objetoActual);
+		this->segmentos[objetoActual->getUbicacionM()]->tieneObjeto = true;
 	}
 	ManejadorDeTexturas::getInstance()->setObjetosPorSegmento(this->objetosPorSegmento);
 	this->terminoDibujarMapa = true;

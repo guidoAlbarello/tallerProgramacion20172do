@@ -242,6 +242,7 @@ float ManejadorDeTexturas::proyectar(Coordenada & p, int& ancho, int anchoPantal
 
 		if (ancho < MINIMO_ANCHO)
 			ancho = MINIMO_ANCHO;
+			//ancho = 0;
 	}
 	else {
 		ancho = anchoOriginal;
