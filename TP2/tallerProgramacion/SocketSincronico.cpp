@@ -214,8 +214,6 @@ int SocketSincronico::cerrarSocket() {
 
 int SocketSincronico::hayClienteIntentandoConectarse() {
 	SOCKET socketDelCliente = INVALID_SOCKET;
-
-	// Accept a client socket
 	socketDelCliente = accept(this->socketDeConexion, NULL, NULL);
 	return socketDelCliente;
 }

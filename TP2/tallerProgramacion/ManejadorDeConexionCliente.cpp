@@ -28,9 +28,8 @@ bool ManejadorDeConexionCliente::login(std::string user, std::string pass) {
 	string mensaje = mensajeDeRed->getComandoServidorSerializado();
 	int tamanio = mensaje.length() + 1;
 	Logger::getInstance()->log(Debug, mensaje);
-	this->socket->enviarDatos(mensaje.c_str(), tamanio);
-
-	return true;
+	
+	return this->socket->enviarDatos(mensaje.c_str(), tamanio);
 }
 
 
@@ -86,7 +85,7 @@ bool ManejadorDeConexionCliente::enviarSolicitudPing() {
 	return this->socket->enviarDatos(mensaje.c_str(), tamanio);;
 }
 
-void ManejadorDeConexionCliente::enviarEntrada() {
+bool ManejadorDeConexionCliente::enviarEntrada() {
 	
 	Logger::getInstance()->log(Debug, "Enviando entrada");
 
@@ -102,8 +101,10 @@ void ManejadorDeConexionCliente::enviarEntrada() {
 	const char* comando = strComando.c_str();
 	memcpy(data, comando, 6);
 	memcpy(data + 6, teclas, sizeof(bool) * 3);
-	this->socket->enviarDatos((char*)data, tamanio);;
+	bool resultado = this->socket->enviarDatos((char*)data, tamanio);;
 
 	if (data != NULL)
 		free(data);
+
+	return resultado;
 }

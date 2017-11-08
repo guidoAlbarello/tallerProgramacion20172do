@@ -154,10 +154,6 @@ void Cliente::desconectarseDelServidor() {
 	this->conexionViva = false;
 	this->clienteActivo = false;
 	try {
-		if (this->t_procesarPing.joinable()) {
-			t_procesarPing.join();
-		}
-
 		if (this->t_render.joinable()) {
 			t_render.join();
 		}
@@ -165,6 +161,9 @@ void Cliente::desconectarseDelServidor() {
 		this->renderer->cerrarRenderer();
 		delete this->maquinaDeEstados;
 		delete this->renderer;
+		if (this->t_procesarPing.joinable()) {
+			t_procesarPing.join();
+		}		
 		if (this->conexionDelCliente != NULL) {
 			this->conexionDelCliente->cerrarConexion();
 			delete this->conexionDelCliente;
@@ -595,7 +594,7 @@ void Cliente::procesarResultadoLogin(MensajeDeRed* mensajeDeRed, char* datosReci
 void Cliente::enviarPingAServidor() {
 	while (this->conexionViva) {
 		Logger::getInstance()->log(Debug, "Cliente enviando PING al servidor");
-		this->conexionDelCliente->enviarSolicitudPing();
+		ManejadorInput::getInstance()->setCerrar(!this->conexionDelCliente->enviarSolicitudPing());
 		std::this_thread::sleep_for(std::chrono::milliseconds(Constantes::PING_DELAY));
 	}
 }
