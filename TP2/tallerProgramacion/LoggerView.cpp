@@ -67,29 +67,29 @@ bool LoggerView::init() {
 }
 
 void LoggerView::render() {
-	if (this->terminoIniciar) {
-		//Clear screen
-		SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
-		SDL_RenderClear(gRenderer);
+	//if (this->terminoIniciar) {
+	//	//Clear screen
+	//	SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
+	//	SDL_RenderClear(gRenderer);
 
-		// Render imagen fondo
-		SDL_Rect* rectanguloFullscreen = new SDL_Rect();
-		rectanguloFullscreen->w = 800;
-		rectanguloFullscreen->h = 600;
-		gBackgroundImage->render(0, 0, rectanguloFullscreen);
+	//	// Render imagen fondo
+	//	SDL_Rect* rectanguloFullscreen = new SDL_Rect();
+	//	rectanguloFullscreen->w = 800;
+	//	rectanguloFullscreen->h = 600;
+	//	gBackgroundImage->render(0, 0, rectanguloFullscreen);
 
 
-		//Render text textures
-		int h1 = gPromptTextTexture->getHeight() + gInputTextTexture->getHeight();
-		int h2 = h1 + gPromptPasswordTextTexture->getHeight();
-		gPromptTextTexture->render(150 + (SCREEN_WIDTH - gPromptTextTexture->getWidth()) / 2, 280);
-		gInputTextTexture->render(150 + (SCREEN_WIDTH - gInputTextTexture->getWidth()) / 2, 310);
-		gPromptPasswordTextTexture->render(150 + (SCREEN_WIDTH - gPromptPasswordTextTexture->getWidth()) / 2, 360);
-		gInputPasswordTextTexture->render(150 + (SCREEN_WIDTH - gInputPasswordTextTexture->getWidth()) / 2, 390);
+	//	//Render text textures
+	//	int h1 = gPromptTextTexture->getHeight() + gInputTextTexture->getHeight();
+	//	int h2 = h1 + gPromptPasswordTextTexture->getHeight();
+	//	gPromptTextTexture->render(150 + (SCREEN_WIDTH - gPromptTextTexture->getWidth()) / 2, 280);
+	//	gInputTextTexture->render(150 + (SCREEN_WIDTH - gInputTextTexture->getWidth()) / 2, 310);
+	//	gPromptPasswordTextTexture->render(150 + (SCREEN_WIDTH - gPromptPasswordTextTexture->getWidth()) / 2, 360);
+	//	gInputPasswordTextTexture->render(150 + (SCREEN_WIDTH - gInputPasswordTextTexture->getWidth()) / 2, 390);
 
-		//Update screen
-		SDL_RenderPresent(gRenderer);
-	}
+	//	//Update screen
+	//	SDL_RenderPresent(gRenderer);
+	//}
 }
 
 void LoggerView::update() {
@@ -179,6 +179,29 @@ void LoggerView::update() {
 		}
 	}
 	SDL_StopTextInput();
+	if (this->terminoIniciar) {
+		//Clear screen
+		SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
+		SDL_RenderClear(gRenderer);
+
+		// Render imagen fondo
+		SDL_Rect* rectanguloFullscreen = new SDL_Rect();
+		rectanguloFullscreen->w = 800;
+		rectanguloFullscreen->h = 600;
+		gBackgroundImage->render(0, 0, rectanguloFullscreen);
+
+
+		//Render text textures
+		int h1 = gPromptTextTexture->getHeight() + gInputTextTexture->getHeight();
+		int h2 = h1 + gPromptPasswordTextTexture->getHeight();
+		gPromptTextTexture->render(150 + (SCREEN_WIDTH - gPromptTextTexture->getWidth()) / 2, 280);
+		gInputTextTexture->render(150 + (SCREEN_WIDTH - gInputTextTexture->getWidth()) / 2, 310);
+		gPromptPasswordTextTexture->render(150 + (SCREEN_WIDTH - gPromptPasswordTextTexture->getWidth()) / 2, 360);
+		gInputPasswordTextTexture->render(150 + (SCREEN_WIDTH - gInputPasswordTextTexture->getWidth()) / 2, 390);
+
+		//Update screen
+		SDL_RenderPresent(gRenderer);
+	}
 	
 }
 
