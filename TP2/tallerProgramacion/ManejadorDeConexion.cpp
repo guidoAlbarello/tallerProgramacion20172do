@@ -70,7 +70,13 @@ void ManejadorDeConexion::recibirDatos() {
 		if (datosRecibidos != NULL) {
 			if (USAR_COLA_MENSAJES) {
 				m_bufferDatosRecibidos.lock();
-				mensajesEntrantes.push_back(datosRecibidos);
+				if(mensajesEntrantes.size() <= LIMITE_COLA_MENSAJES)
+					mensajesEntrantes.push_back(datosRecibidos);
+				else
+					if (this->mensajesEntrantes.size() > 0) {
+						delete this->mensajesEntrantes.at(0);
+						this->mensajesEntrantes.erase(this->mensajesEntrantes.begin());
+					}
 				m_bufferDatosRecibidos.unlock();
 			} else {
 				m_bufferDatosRecibidos.lock();

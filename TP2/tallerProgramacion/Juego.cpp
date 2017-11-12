@@ -184,7 +184,7 @@ void Juego::gameLoop() {
 			this->update(1000.0 / Constantes::FPS);
 			tiempoAcumulado -= 1000.0 / Constantes::FPS;
 			nLoops++;
-				std::this_thread::sleep_for(std::chrono::milliseconds(1000 / Constantes::FPS)); // por ahora se comenta, esto mejora mucho la fluidez
+				//std::this_thread::sleep_for(std::chrono::milliseconds(1000 / Constantes::FPS)); // por ahora se comenta, esto mejora mucho la fluidez
 		}
 
 

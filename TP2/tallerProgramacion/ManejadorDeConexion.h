@@ -3,7 +3,8 @@
 #ifndef  MANEJADOR_DE_CONEXION_H
 #define MANEJADOR_DE_CONEXION_H
 
-#define USAR_COLA_MENSAJES false
+#define USAR_COLA_MENSAJES true
+#define LIMITE_COLA_MENSAJES 2
 #include "SocketSincronico.h"
 #include <thread>
 #include <mutex>
