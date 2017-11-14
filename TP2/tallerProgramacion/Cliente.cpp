@@ -512,7 +512,7 @@ void Cliente::procesarDatosRecibidos() {
 
 
 		double tiempoTardado = std::chrono::duration_cast<std::chrono::duration<double, std::ratio<1>>>(std::chrono::high_resolution_clock::now() - timeOut).count() * 1000;
-		if (tiempoTardado > (Constantes::PING_DELAY) + Constantes::TOLERANCIA_PING) {
+		if (this->juegoIniciado && tiempoTardado > (Constantes::PING_DELAY) + Constantes::TOLERANCIA_PING) {
 			this->estaLogueado = false;
 			this->conexionViva = false;
 			this->clienteActivo = false;
@@ -552,8 +552,9 @@ void Cliente::iniciarJuego(EstadoInicialJuego* unEstadoInicial) {
 			estadoInicial->id[i] = atoi(tmpParseString.substr(0, posSeparadorIds).c_str());
 			tmpParseString.erase(0, posSeparadorIds + 1);
 		}*/
-		this->juegoIniciado = true;
+		
 		this->maquinaDeEstados->changeState(new EstadoJuegoActivo(), unEstadoInicial);
+		this->juegoIniciado = true;
 	}
 }
 
@@ -601,11 +602,11 @@ void Cliente::procesarResultadoLogin(MensajeDeRed* mensajeDeRed, char* datosReci
 
 
 void Cliente::enviarPingAServidor() {
-	while (this->conexionViva) {
+	/*while (this->conexionViva && this->juegoIniciado) {
 		Logger::getInstance()->log(Debug, "Cliente enviando PING al servidor");
 		ManejadorInput::getInstance()->setCerrar(!this->conexionDelCliente->enviarSolicitudPing());
 		std::this_thread::sleep_for(std::chrono::milliseconds(Constantes::PING_DELAY));
-	}
+	}*/
 }
 
 void Cliente::mostrarMenuLogin() {
