@@ -197,9 +197,11 @@ void MapaView::dibujarMapa(SDL_Renderer* renderer) {
 	this->terminoDibujarMapa = true;
 }
 
+// vda
 void MapaView::dibujarObjetosTramo(std::vector<ObjetoFijo*> objetosDelMapa, Orientacion orientacionAnterior, int ultimaX, int ultimaY, int longitud, int metroInicio, Coordenada* coordenadaUltimoTramo, SentidoCurva sentidoRotacion, SDL_Renderer* renderer) {
 	if (!this->terminoDibujarMapa) {
 		float anguloRotado = PI / 4;
+		int offsetLadoObjeto = 30 * ESCALA_MAPA;
 		std::vector<ObjetoFijo*> objetosDelMapaConUbicacion;
 		for (std::vector<ObjetoFijo*>::iterator it = objetosDelMapa.begin(); it != objetosDelMapa.end(); ++it) {
 			ObjetoFijo* objetoActual = *it;
@@ -216,80 +218,204 @@ void MapaView::dibujarObjetosTramo(std::vector<ObjetoFijo*> objetosDelMapa, Orie
 						if (sentidoRotacion == SCDerecha) {
 							rectObjeto->x = (int)(ultimaX + cos(anguloRotado) * posicionRelativaATramo);
 							rectObjeto->y = (int)(ultimaY + sin(anguloRotado) * posicionRelativaATramo);
+
+							if (objetoActual->getPosicion() == PDerecha) {
+								rectObjeto->x -= offsetLadoObjeto;
+								rectObjeto->y += offsetLadoObjeto;
+							}
+							else {
+								rectObjeto->x += offsetLadoObjeto;
+								rectObjeto->y -= offsetLadoObjeto;
+							}
 						}
 						if (sentidoRotacion == SCIzquierda) {
 							rectObjeto->x = (int)(ultimaX + cos(anguloRotado) * posicionRelativaATramo);
 							rectObjeto->y = (int)(ultimaY - sin(anguloRotado) * posicionRelativaATramo);
+
+							if (objetoActual->getPosicion() == PDerecha) {
+								rectObjeto->x += offsetLadoObjeto;
+								rectObjeto->y += offsetLadoObjeto;
+							}
+							else {
+								rectObjeto->x -= offsetLadoObjeto;
+								rectObjeto->y -= offsetLadoObjeto;
+							}
 						}
 					}
 					if (orientacionAnterior == Orientacion::NORESTE) {
 						if (sentidoRotacion == SCDerecha) {
 							rectObjeto->x = ultimaX + posicionRelativaATramo;
 							rectObjeto->y = ultimaY;
+
+							if (objetoActual->getPosicion() == PDerecha)
+								rectObjeto->y += offsetLadoObjeto;
+							else
+								rectObjeto->y -= offsetLadoObjeto;
 						}
 						if (sentidoRotacion == SCIzquierda) {
 							rectObjeto->x = ultimaX;
 							rectObjeto->y = ultimaY - posicionRelativaATramo;
+
+							if (objetoActual->getPosicion() == PDerecha) {
+								rectObjeto->x += offsetLadoObjeto;
+							}
+							else {
+								rectObjeto->x -= offsetLadoObjeto;
+							}
 						}
 					}
 					if (orientacionAnterior == Orientacion::NORTE) {
 						if (sentidoRotacion == SCDerecha) {
 							rectObjeto->x = (int)(ultimaX + cos(anguloRotado) * posicionRelativaATramo);
 							rectObjeto->y = (int)(ultimaY - sin(anguloRotado) * posicionRelativaATramo);
+
+							if (objetoActual->getPosicion() == PDerecha) {
+								rectObjeto->x += offsetLadoObjeto;
+								rectObjeto->y += offsetLadoObjeto;
+							}
+							else {
+								rectObjeto->x -= offsetLadoObjeto;
+								rectObjeto->y -= offsetLadoObjeto;
+							}
 						}
 						if (sentidoRotacion == SCIzquierda) {
 							rectObjeto->x = (int)(ultimaX - cos(anguloRotado) * posicionRelativaATramo);
 							rectObjeto->y = (int)(ultimaY - sin(anguloRotado) * posicionRelativaATramo);
+
+							if (objetoActual->getPosicion() == PDerecha) {
+								rectObjeto->x += offsetLadoObjeto;
+								rectObjeto->y -= offsetLadoObjeto;
+							}
+							else {
+								rectObjeto->x -= offsetLadoObjeto;
+								rectObjeto->y += offsetLadoObjeto;
+							}
 						}
 					}
 					if (orientacionAnterior == Orientacion::NOROESTE) {
 						if (sentidoRotacion == SCDerecha) {
 							rectObjeto->x = ultimaX;
 							rectObjeto->y = ultimaY - posicionRelativaATramo;
+
+							if (objetoActual->getPosicion() == PDerecha) {
+								rectObjeto->x += offsetLadoObjeto;
+							}
+							else {
+								rectObjeto->x -= offsetLadoObjeto;
+							}
 						}
 						if (sentidoRotacion == SCIzquierda) {
 							rectObjeto->x = ultimaX - posicionRelativaATramo;
 							rectObjeto->y = ultimaY;
+
+							if (objetoActual->getPosicion() == PDerecha) {
+								rectObjeto->y -= offsetLadoObjeto;
+							}
+							else {
+								rectObjeto->y += offsetLadoObjeto;
+							}
 						}
 					}
 					if (orientacionAnterior == Orientacion::OESTE) {
 						if (sentidoRotacion == SCDerecha) {
 							rectObjeto->x = (int)(ultimaX - cos(anguloRotado) * posicionRelativaATramo);
 							rectObjeto->y = (int)(ultimaY - sin(anguloRotado) * posicionRelativaATramo);
+
+							if (objetoActual->getPosicion() == PDerecha) {
+								rectObjeto->x += offsetLadoObjeto;
+								rectObjeto->y -= offsetLadoObjeto;
+							}
+							else {
+								rectObjeto->x -= offsetLadoObjeto;
+								rectObjeto->y += offsetLadoObjeto;
+							}
 						}
 						if (sentidoRotacion == SCIzquierda) {
 							rectObjeto->x = (int)(ultimaX - cos(anguloRotado) * posicionRelativaATramo);
 							rectObjeto->y = (int)(ultimaY + sin(anguloRotado) * posicionRelativaATramo);
+
+							if (objetoActual->getPosicion() == PDerecha) {
+								rectObjeto->x -= offsetLadoObjeto;
+								rectObjeto->y -= offsetLadoObjeto;
+							}
+							else {
+								rectObjeto->x += offsetLadoObjeto;
+								rectObjeto->y += offsetLadoObjeto;
+							}
 						}
 					}
 					if (orientacionAnterior == Orientacion::SUROESTE) {
 						if (sentidoRotacion == SCDerecha) {
 							rectObjeto->x = ultimaX - posicionRelativaATramo;
 							rectObjeto->y = ultimaY;
+
+							if (objetoActual->getPosicion() == PDerecha) {
+								rectObjeto->y -= offsetLadoObjeto;
+							}
+							else {
+								rectObjeto->y += offsetLadoObjeto;
+							}
 						}
 						if (sentidoRotacion == SCIzquierda) {
 							rectObjeto->x = ultimaX;
 							rectObjeto->y = ultimaY + posicionRelativaATramo;
+
+							if (objetoActual->getPosicion() == PDerecha) {
+								rectObjeto->x -= offsetLadoObjeto;
+							}
+							else {
+								rectObjeto->x += offsetLadoObjeto;
+							}
 						}
 					}
 					if (orientacionAnterior == Orientacion::SUR) {
 						if (sentidoRotacion == SCDerecha) {
 							rectObjeto->x = (int)(ultimaX - cos(anguloRotado) * posicionRelativaATramo);
 							rectObjeto->y = (int)(ultimaY + sin(anguloRotado) * posicionRelativaATramo);
+
+							if (objetoActual->getPosicion() == PDerecha) {
+								rectObjeto->x -= offsetLadoObjeto;
+								rectObjeto->y -= offsetLadoObjeto;
+							}
+							else {
+								rectObjeto->x += offsetLadoObjeto;
+								rectObjeto->y += offsetLadoObjeto;
+							}
 						}
 						if (sentidoRotacion == SCIzquierda) {
 							rectObjeto->x = (int)(ultimaX + cos(anguloRotado) * posicionRelativaATramo);
 							rectObjeto->y = (int)(ultimaY + sin(anguloRotado) * posicionRelativaATramo);
+
+							if (objetoActual->getPosicion() == PDerecha) {
+								rectObjeto->x -= offsetLadoObjeto;
+								rectObjeto->y += offsetLadoObjeto;
+							}
+							else {
+								rectObjeto->x += offsetLadoObjeto;
+								rectObjeto->y -= offsetLadoObjeto;
+							}
 						}
 					}
 					if (orientacionAnterior == Orientacion::SURESTE) {
 						if (sentidoRotacion == SCDerecha) {
 							rectObjeto->x = ultimaX;
 							rectObjeto->y = ultimaY + posicionRelativaATramo;
+
+							if (objetoActual->getPosicion() == PDerecha) {
+								rectObjeto->x -= offsetLadoObjeto;
+							}
+							else {
+								rectObjeto->x += offsetLadoObjeto;
+							}
 						}
 						if (sentidoRotacion == SCIzquierda) {
 							rectObjeto->x = ultimaX + posicionRelativaATramo;
 							rectObjeto->y = ultimaY;
+
+							if (objetoActual->getPosicion() == PDerecha)
+								rectObjeto->y += offsetLadoObjeto;
+							else
+								rectObjeto->y -= offsetLadoObjeto;
 						}
 					}
 				}
@@ -297,34 +423,96 @@ void MapaView::dibujarObjetosTramo(std::vector<ObjetoFijo*> objetosDelMapa, Orie
 					if (orientacionAnterior == Orientacion::ESTE) {
 						rectObjeto->x = ultimaX + posicionRelativaATramo;
 						rectObjeto->y = ultimaY;
+
+						if (objetoActual->getPosicion() == PDerecha) 
+							rectObjeto->y += offsetLadoObjeto;
+						else 
+							rectObjeto->y -= offsetLadoObjeto;
 					}
 					if (orientacionAnterior == Orientacion::NORESTE) {
 						rectObjeto->x = (int)(ultimaX + cos(anguloRotado) * posicionRelativaATramo);
 						rectObjeto->y = (int)(ultimaY - sin(anguloRotado) * posicionRelativaATramo);
+
+						if (objetoActual->getPosicion() == PDerecha) {
+							rectObjeto->x += offsetLadoObjeto;
+							rectObjeto->y += offsetLadoObjeto;
+						}
+						else {
+							rectObjeto->x -= offsetLadoObjeto;
+							rectObjeto->y -= offsetLadoObjeto;
+						}
 					}
 					if (orientacionAnterior == Orientacion::NORTE) {
 						rectObjeto->x = ultimaX;
 						rectObjeto->y = ultimaY - posicionRelativaATramo;
+
+						if (objetoActual->getPosicion() == PDerecha) {
+							rectObjeto->x += offsetLadoObjeto;
+						}
+						else {
+							rectObjeto->x -= offsetLadoObjeto;
+						}
 					}
 					if (orientacionAnterior == Orientacion::NOROESTE) {
 						rectObjeto->x = (int)(ultimaX - cos(anguloRotado) * posicionRelativaATramo);
 						rectObjeto->y = (int)(ultimaY - sin(anguloRotado) * posicionRelativaATramo);
+
+						if (objetoActual->getPosicion() == PDerecha) {
+							rectObjeto->x += offsetLadoObjeto;
+							rectObjeto->y -= offsetLadoObjeto;
+						}
+						else {
+							rectObjeto->x -= offsetLadoObjeto;
+							rectObjeto->y += offsetLadoObjeto;
+						}
 					}
 					if (orientacionAnterior == Orientacion::OESTE) {
 						rectObjeto->x = ultimaX - posicionRelativaATramo;
 						rectObjeto->y = ultimaY;
+
+						if (objetoActual->getPosicion() == PDerecha) {
+							rectObjeto->y -= offsetLadoObjeto;
+						}
+						else {
+							rectObjeto->y += offsetLadoObjeto;
+						}
 					}
 					if (orientacionAnterior == Orientacion::SUROESTE) {
 						rectObjeto->x = (int)(ultimaX - cos(anguloRotado) * posicionRelativaATramo);
 						rectObjeto->y = (int)(ultimaY + sin(anguloRotado) * posicionRelativaATramo);
+
+						if (objetoActual->getPosicion() == PDerecha) {
+							rectObjeto->x -= offsetLadoObjeto;
+							rectObjeto->y -= offsetLadoObjeto;
+						}
+						else {
+							rectObjeto->x += offsetLadoObjeto;
+							rectObjeto->y += offsetLadoObjeto;
+						}
 					}
 					if (orientacionAnterior == Orientacion::SUR) {
 						rectObjeto->x = ultimaX;
 						rectObjeto->y = ultimaY + posicionRelativaATramo;
+
+						if (objetoActual->getPosicion() == PDerecha) {
+							rectObjeto->x -= offsetLadoObjeto;
+						}
+						else {
+							rectObjeto->x += offsetLadoObjeto;
+						}
 					}
 					if (orientacionAnterior == Orientacion::SURESTE) {
 						rectObjeto->x = (int)(ultimaX + cos(anguloRotado) * posicionRelativaATramo);
 						rectObjeto->y = (int)(ultimaY + sin(anguloRotado) * posicionRelativaATramo);
+
+						if (objetoActual->getPosicion() == PDerecha) {
+							rectObjeto->x -= offsetLadoObjeto;
+							rectObjeto->y += offsetLadoObjeto;
+						}
+						else {
+							rectObjeto->x += offsetLadoObjeto;
+							rectObjeto->y -= offsetLadoObjeto;
+						}
 					}
 				}
 				objetoActual->setXMapa(rectObjeto->x);
