@@ -174,6 +174,7 @@ void Juego::gameLoop() {
 	Uint32 fin = 0;
 	Uint32 intervalo = 0;
 	while (juegoActivo) {
+		inicio = SDL_GetTicks();
 		this->obtenerEntrada();
 		/*
 		auto finIntervalo = chrono::high_resolution_clock::now();
@@ -190,11 +191,14 @@ void Juego::gameLoop() {
 				//std::this_thread::sleep_for(std::chrono::milliseconds(1000 / Constantes::FPS)); // por ahora se comenta, esto mejora mucho la fluidez
 		}
 		*/
-		inicio = SDL_GetTicks();
+		
 		this->update(1000.0 / Constantes::FPS);
 		std::this_thread::sleep_for(std::chrono::milliseconds(1));
 		fin = SDL_GetTicks();
 		intervalo = fin - inicio;
+		if (intervalo > 1000 / Constantes::FPS) {
+			intervalo = (1000 / Constantes::FPS) - 1;
+		}
 		std::this_thread::sleep_for(std::chrono::milliseconds((1000 / Constantes::FPS) - intervalo));
 	}
 }

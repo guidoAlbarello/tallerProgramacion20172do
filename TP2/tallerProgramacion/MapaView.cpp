@@ -508,7 +508,7 @@ bool MapaView::validarLineaDibujable(Line lineaADibujar) {
 }
 
 int MapaView::getTramoActual() {
-	int pos = ManejadorDeTexturas::getInstance()->getCamara()->getPosicion()->getY() / 100; // si se toca aca, tambien tocar en Juego.cpp!! :/
+	int pos = ManejadorDeTexturas::getInstance()->getCamara()->getPosicion()->getY() / ALTO_TRAMO; // si se toca aca, tambien tocar en Juego.cpp!! :/
 	return pos;
 }
 

@@ -17,13 +17,22 @@ Cliente * Cliente::getInstance() {
 }
 
 void Cliente::render() {
-	while (clienteActivo) {
+	Uint32 inicio = 0;
+	Uint32 fin = 0;
+	Uint32 intervalo = 0;
 
+	while (clienteActivo) {
+		inicio = SDL_GetTicks();
 		if (this->renderer != NULL) {
 			this->maquinaDeEstados->render();
 		}
-
-		std::this_thread::sleep_for(std::chrono::milliseconds(1000/Constantes::FPS)); // por ahora se comenta, esto mejora mucho la fluidez
+		fin = SDL_GetTicks();
+		intervalo = fin - inicio;
+		if (intervalo > 1000 / Constantes::FPS) {
+			intervalo = (1000 / Constantes::FPS) - 1;
+		}
+		//cout << "itnervalo: " << intervalo << endl;
+		std::this_thread::sleep_for(std::chrono::milliseconds((1000/Constantes::FPS) - intervalo)); // por ahora se comenta, esto mejora mucho la fluidez
 	}
 }
 

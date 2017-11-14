@@ -139,16 +139,16 @@ void ManejadorDeTexturas::dibujarTramo(Segmento* unSegmento, int ancho, int anch
 	Sint16 vxTramo[4] = { p1.x - anchoInferior, p2.x - anchoSuperior, p2.x + anchoSuperior, p1.x + anchoInferior };
 	Sint16 vyTramo[4] = { p1.y,p2.y,p2.y,p1.y };
 
-	if ((n / 3) % 2)
+	if ((n ) % 2)
 		filledPolygonRGBA(renderer, vxPasto, vyPasto, 4, 20, 170, 20, 255);
 	else
 		filledPolygonRGBA(renderer, vxPasto, vyPasto, 4, 5, 130, 2, 255);
 
-	if ((n / 3) % 2)
+	if ((n ) % 2)
 		filledPolygonRGBA(renderer, vxBorde, vyBorde, 4, 210, 210, 210, 255);
 	else
 		filledPolygonRGBA(renderer, vxBorde, vyBorde, 4, 50, 50, 50, 255);
-	if ((n / 3) % 2)
+	if ((n ) % 2)
 		filledPolygonRGBA(renderer, vxTramo, vyTramo, 4, 165, 165, 165, 255);
 	else
 		filledPolygonRGBA(renderer, vxTramo, vyTramo, 4, 180, 180, 180, 255);
