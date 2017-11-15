@@ -80,7 +80,7 @@ bool Logger::canWrite(LogMode mode) {
 Logger *Logger::getInstance() {
 	if (!instance) {
 		instance = new Logger();
-		instance->setMode(LogMode::Debug);
+		instance->setMode(LogMode::Error); // lo iniciamos en error para que no logee tanto
 	}
 
 	return instance;
