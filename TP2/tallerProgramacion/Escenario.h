@@ -8,7 +8,7 @@
 #define POS_Y_CIELO 0
 #define ALTO_CIELO 150
 #define POS_Y_COLINAS 150
-#define ALTO_COLINAS 200
+#define ALTO_COLINAS 450
 
 #include "Sprite.h"
 #include "Vector.h"
