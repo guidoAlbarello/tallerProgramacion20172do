@@ -35,7 +35,7 @@ private:
 	Usuario* usuarioConectado;
 	std::thread t_procesarDatosRecibidos;
 	void procesarDatosRecibidos();
-	bool conexionInicializada;
+	bool conexionInicializada = false;
 	bool conexionActiva;
 	bool conexionViva;
 	bool cerrando = false;

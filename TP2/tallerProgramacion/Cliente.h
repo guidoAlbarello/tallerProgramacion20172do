@@ -49,6 +49,7 @@ protected:
 	std::thread t_procesarPing;
 	std::mutex m_procesarPing;
 	std::mutex m_print;
+	std::mutex m_init_juego;
 	std::thread t_render;
 	void render();
 	Cliente();

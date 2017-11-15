@@ -552,9 +552,10 @@ void Cliente::iniciarJuego(EstadoInicialJuego* unEstadoInicial) {
 			estadoInicial->id[i] = atoi(tmpParseString.substr(0, posSeparadorIds).c_str());
 			tmpParseString.erase(0, posSeparadorIds + 1);
 		}*/
-		
+		m_init_juego.lock();
 		this->maquinaDeEstados->changeState(new EstadoJuegoActivo(), unEstadoInicial);
 		this->juegoIniciado = true;
+		m_init_juego.unlock();
 	}
 }
 
