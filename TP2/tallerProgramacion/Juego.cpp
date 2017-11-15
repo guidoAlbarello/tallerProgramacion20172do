@@ -1,6 +1,7 @@
 #include "Juego.h"
 #include <iostream>
 #include "Carro.h"
+#include "MapaView.h"
 
 bool Juego::iniciarJuego(int cantidadJugadoresMaxima) {
 	this->cantidadJugadores = 0;
@@ -80,7 +81,7 @@ EstadoModeloJuego* Juego::getEstadoJuego() {
 
 		// Se modifica la coordenada x si esta en una curva y esta acelerando
 		if (unJugador->getAcelerando()) {
-			Segmento* segmentoActual = this->segmentos[unJugador->getCamara()->getPosicionTarget()->getY() / 100];
+			Segmento* segmentoActual = this->segmentos[unJugador->getCamara()->getPosicionTarget()->getY() / ALTO_TRAMO];
 			if (segmentoActual != NULL) {
 				// Es una curva
 				int intensidadCentrifuga = 35;
@@ -193,12 +194,12 @@ void Juego::gameLoop() {
 		*/
 		
 		this->update(1000.0 / Constantes::FPS);
-		std::this_thread::sleep_for(std::chrono::milliseconds(1));
 		fin = SDL_GetTicks();
 		intervalo = fin - inicio;
 		if (intervalo > 1000 / Constantes::FPS) {
 			intervalo = (1000 / Constantes::FPS) - 1;
 		}
+		cout << "itnervalo: " << intervalo << endl;
 		std::this_thread::sleep_for(std::chrono::milliseconds((1000 / Constantes::FPS) - intervalo));
 	}
 }

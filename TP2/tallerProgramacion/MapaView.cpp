@@ -190,8 +190,11 @@ void MapaView::dibujarMapa(SDL_Renderer* renderer) {
 	this->objetosPorSegmento = objetosPorSegmento;
 	for (int i = 0; i < this->mapa->getObjetosDelMapa().size(); i++) {
 		ObjetoFijo* objetoActual = this->mapa->getObjetosDelMapa()[i];
-		this->objetosPorSegmento[objetoActual->getUbicacionM()].push_back(objetoActual);
-		this->segmentos[objetoActual->getUbicacionM()]->tieneObjeto = true;
+		//if ((objetoActual->getUbicacionM() < this->objetosPorSegmento.size()) &&
+		//     (objetoActual->getUbicacionM() < this->segmentos.size())) {
+			this->objetosPorSegmento[objetoActual->getUbicacionM() - 1].push_back(objetoActual);
+			this->segmentos[objetoActual->getUbicacionM() - 1]->tieneObjeto = true;
+		//}
 	}
 	ManejadorDeTexturas::getInstance()->setObjetosPorSegmento(this->objetosPorSegmento);
 	this->terminoDibujarMapa = true;
