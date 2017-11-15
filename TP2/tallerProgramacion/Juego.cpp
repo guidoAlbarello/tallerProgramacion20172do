@@ -199,7 +199,7 @@ void Juego::gameLoop() {
 		if (intervalo > 1000 / Constantes::FPS) {
 			intervalo = (1000 / Constantes::FPS) - 1;
 		}
-		cout << "itnervalo: " << intervalo << endl;
+		//cout << "itnervalo: " << intervalo << endl;
 		std::this_thread::sleep_for(std::chrono::milliseconds((1000 / Constantes::FPS) - intervalo));
 	}
 }
