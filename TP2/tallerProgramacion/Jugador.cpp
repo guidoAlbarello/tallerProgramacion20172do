@@ -8,6 +8,7 @@ Jugador::Jugador() {
 	this->texture = NULL;
 	velocidad.setX(0);
 	velocidad.setY(0);
+	velocidadMaxima = LIMITE_VELOCIDAD_AUTO_Y_PISTA;
 }
 
 Jugador::Jugador(SDL_Renderer* renderer) : ObjetoDeJuego(renderer) {
@@ -40,6 +41,17 @@ void Jugador::update(Unidad delta) {
 		posicion.setX(posicion.getX() + velocidad.getX());  //retocar un poco mas tal vez, multiplicar por delta la velocidad ? 
 	}
 
+	int limitePastoXDerecha = ANCHO_TRAMO / 2;
+	int limitePastoXIzquierda = ANCHO_TRAMO / 2 * (-1);
+
+	if ((posicion.getX() > limitePastoXDerecha) ||
+		(posicion.getX() < limitePastoXIzquierda)) {
+		velocidadMaxima = LIMITE_VELOCIDAD_AUTO_Y_PASTO;
+	}
+	else {
+		velocidadMaxima = LIMITE_VELOCIDAD_AUTO_Y_PISTA;
+	}
+
 	posicion.setY(posicion.getY() + velocidad.getY());
 }
 
@@ -50,10 +62,10 @@ void Jugador::recibirEntrada(int pos, bool estadoEntrada) {
 void Jugador::acelerar(Unidad delta) {
 	acelerando = true;
 	this->estado = EstadoAuto::DERECHO;
-	if (velocidad.getY() < LIMITE_VELOCIDAD_AUTO_Y)
+	if (velocidad.getY() < velocidadMaxima)
 		this->velocidad.setY(this->velocidad.getY() + ACELERACION_AUTO_Y * delta);
 	else
-		velocidad.setY(LIMITE_VELOCIDAD_AUTO_Y);
+		velocidad.setY(velocidadMaxima);
 }
 
 void Jugador::doblarDerecha(Unidad delta) {

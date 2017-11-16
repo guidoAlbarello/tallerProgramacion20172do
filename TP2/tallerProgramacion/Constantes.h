@@ -10,6 +10,7 @@
 #define TECLA_ACELERAR SDL_SCANCODE_UP
 #define LIMITE_PISTA_X_DERECHA 600
 #define LIMITE_PISTA_X_IZQUIERDA -600
+#define ANCHO_TRAMO 700
 
 using namespace std;
 

@@ -9,7 +9,8 @@
 #define FACTOR_DESACELERACION_X 0
 #define FACTOR_DESACELERACION_Y 0.09
 #define LIMITE_VELOCIDAD_AUTO_X 60.0
-#define LIMITE_VELOCIDAD_AUTO_Y 120.0
+#define LIMITE_VELOCIDAD_AUTO_Y_PASTO 40.0
+#define LIMITE_VELOCIDAD_AUTO_Y_PISTA 120.0
 
 class Jugador : public ObjetoDeJuego {  //tal vez diferenciar entre movil y estatico
 
@@ -42,5 +43,6 @@ protected:
 	bool acelerando = false;
 	EstadoAuto estado = EstadoAuto::DERECHO;
 	Camara* camara;
+	float velocidadMaxima;
 };
 #endif
