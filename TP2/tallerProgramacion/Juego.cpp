@@ -49,7 +49,24 @@ void Juego::update(Unidad tiempoDelta) {
 
 	for (int i = 0; i < this->jugadores.size(); i++) {
 		Jugador* unJugador = this->jugadores[i];
+		int posicionAnterior = unJugador->getPosicionY();
 		unJugador->update(tiempoDelta);
+		int posicionActual = unJugador->getPosicionY();
+		//cout << "jugador z: " << unJugador->getZIndex() << ", jugador Y: " << unJugador->getPosicionY() << endl;
+		
+		for (int j = 0; j < this->objetosDeJuego.size(); j++) {
+			ObjetoDeJuego* objeto = this->objetosDeJuego[j];
+			if (hayColision(posicionAnterior, posicionActual, objeto)) {
+				//cout << "Hubo colision y, y: " << unJugador->getPosicion()->getY() << endl;
+			}
+		}
+
+		for (int j = 0; j < this->mapa->getObjetosDelMapa().size(); j++) {
+			ObjetoFijo* objeto = this->mapa->getObjetosDelMapa()[j];
+			if (hayColisionObjetoFijo(posicionAnterior, posicionActual, objeto) != 0) {
+				//cout << "COLISION, yAnterior: " << posicionAnterior << ", actual: " << posicionActual << ", objetoM: " << objeto->getUbicacionM() << endl;
+			}
+		}
 	}
 
 }
@@ -202,4 +219,31 @@ void Juego::gameLoop() {
 		//cout << "itnervalo: " << intervalo << endl;
 		std::this_thread::sleep_for(std::chrono::milliseconds((1000 / Constantes::FPS) - intervalo));
 	}
+
+}
+
+// 0 si no hay colision
+// != 0 si hay algun tipo de colision (delante, detras, costados)
+int Juego::hayColision(int yDesde, int yHasta, ObjetoDeJuego* objeto2) {
+	int result = 0;
+	if ((yDesde <= objeto2->getPosicion()->getY()) && 
+		(yHasta >= objeto2->getPosicion()->getY()) ){
+		result = 1;
+	}
+
+	return result;
+}
+
+// 0 si no hay colision
+// != 0 si hay algun tipo de colision (delante, detras, costados)
+int Juego::hayColisionObjetoFijo(int yDesde, int yHasta, ObjetoFijo* objeto2) {
+	int result = 0;
+	
+	if ((yDesde <= objeto2->getUbicacionM() * 100) &&
+		(yHasta >= objeto2->getUbicacionM() * 100)){
+		result = 1;
+	}
+
+	return result;
+
 }

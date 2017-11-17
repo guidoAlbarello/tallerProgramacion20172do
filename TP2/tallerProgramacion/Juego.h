@@ -32,6 +32,8 @@ public:
 	void setMapa(Mapa* mapa) { this->mapa = mapa; }
 	Mapa* getMapa() { return this->mapa; }
 	void procesarMapa();
+	int hayColision(int yDesde, int yHasta, ObjetoDeJuego* objeto2);
+	int hayColisionObjetoFijo(int yDesde, int yHasta, ObjetoFijo* objeto2);
 private:
 	Renderer* renderer;
 	int cantidadJugadores;
