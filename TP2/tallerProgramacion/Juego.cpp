@@ -49,22 +49,24 @@ void Juego::update(Unidad tiempoDelta) {
 
 	for (int i = 0; i < this->jugadores.size(); i++) {
 		Jugador* unJugador = this->jugadores[i];
-		int posicionAnterior = unJugador->getPosicionY();
+		int posicionAnteriorY = unJugador->getPosicionY();
+		int posicionAnteriorX = unJugador->getPosicionX();
 		unJugador->update(tiempoDelta);
-		int posicionActual = unJugador->getPosicionY();
+		int posicionActualY = unJugador->getPosicionY();
+		int posicionActualX = unJugador->getPosicionX();
 		//cout << "jugador z: " << unJugador->getZIndex() << ", jugador Y: " << unJugador->getPosicionY() << endl;
 		
 		for (int j = 0; j < this->objetosDeJuego.size(); j++) {
 			ObjetoDeJuego* objeto = this->objetosDeJuego[j];
-			if (hayColision(posicionAnterior, posicionActual, objeto)) {
+			if (hayColision(posicionAnteriorY, posicionActualY, posicionAnteriorX, posicionActualX, objeto)) {
 				//cout << "Hubo colision y, y: " << unJugador->getPosicion()->getY() << endl;
 			}
 		}
 
 		for (int j = 0; j < this->mapa->getObjetosDelMapa().size(); j++) {
 			ObjetoFijo* objeto = this->mapa->getObjetosDelMapa()[j];
-			if (hayColisionObjetoFijo(posicionAnterior, posicionActual, objeto) != 0) {
-				//cout << "COLISION, yAnterior: " << posicionAnterior << ", actual: " << posicionActual << ", objetoM: " << objeto->getUbicacionM() << endl;
+			if (hayColisionObjetoFijo(posicionAnteriorY, posicionActualY, posicionAnteriorX, posicionActualX, objeto) != 0) {
+				//cout << "COLISION, yAnterior: " << posicionAnteriorY << ", actual: " << posicionActualY << ", objetoM: " << objeto->getUbicacionM() << endl;
 			}
 		}
 	}
@@ -224,26 +226,47 @@ void Juego::gameLoop() {
 
 // 0 si no hay colision
 // != 0 si hay algun tipo de colision (delante, detras, costados)
-int Juego::hayColision(int yDesde, int yHasta, ObjetoDeJuego* objeto2) {
+int Juego::hayColision(int yDesde, int yHasta,int xDesde, int xHasta, ObjetoDeJuego* objeto2) {
 	int result = 0;
-	if ((yDesde <= objeto2->getPosicion()->getY()) && 
-		(yHasta >= objeto2->getPosicion()->getY()) ){
-		result = 1;
+
+	if (yDesde > objeto2->getPosicion()->getY()) {
+		return result;
 	}
+	if (yHasta < objeto2->getPosicion()->getY()) {
+		return result;
+	}
+	//El punto de aclaje es 10 (no se porque, pero lo debugie)
+	if (xDesde - 10 > objeto2->getPosicion()->getX() + 50) {
+		return result;
+	}
+	if (xHasta + 50 < objeto2->getPosicion()->getX() - 10) {
+		return result;
+	}
+	result = 1;
 
 	return result;
 }
 
 // 0 si no hay colision
 // != 0 si hay algun tipo de colision (delante, detras, costados)
-int Juego::hayColisionObjetoFijo(int yDesde, int yHasta, ObjetoFijo* objeto2) {
+int Juego::hayColisionObjetoFijo(int yDesde, int yHasta, int xDesde, int xHasta, ObjetoFijo* objeto2) {
 	int result = 0;
-	
-	if ((yDesde <= objeto2->getUbicacionM() * 100) &&
-		(yHasta >= objeto2->getUbicacionM() * 100)){
-		result = 1;
+	if (yDesde > objeto2->getUbicacionM() * 100) {
+		return result;
 	}
+	if (yHasta < objeto2->getUbicacionM() * 100) {
+		return result;
+	}
+	//punto de aclaje es 10, uso 30 de margen para la pista
+	if ((objeto2->getPosicion() == PDerecha) &&
+		((xHasta + 50) < (LIMITE_PISTA_X_DERECHA - 30))) {
+		return result;
+	}
+	if ((objeto2->getPosicion() == PIzquierda) &&
+		((xDesde - 10) > (LIMITE_PISTA_X_IZQUIERDA + 30))) {
+		return result;
+	}
+	result = 1;
 
 	return result;
-
 }
