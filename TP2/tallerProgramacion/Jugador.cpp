@@ -128,10 +128,11 @@ bool Jugador::estaChocado() {
 	return this->chocado;
 }
 
-void Jugador::chocar() {
+void Jugador::chocar(double posicionY) {
 	this->chocado = true;
 	velocidad.setX(0);
 	velocidad.setY(0);
+	this->setPosicionY(posicionY - 1);
 }
 
 

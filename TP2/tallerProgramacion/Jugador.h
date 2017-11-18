@@ -37,7 +37,7 @@ public:
 	Camara* getCamara() { return this->camara; }
 	bool getAcelerando() { return this->acelerando; }
 	bool estaChocado();
-	void chocar();
+	void chocar(double posicionY);
 protected:
 	bool entrada[Constantes::CANT_TECLAS];
 	int id;
