@@ -49,6 +49,7 @@ private:
 	int cantidadJugadoresMaxima; 
 	Mapa* mapa;
 	std::vector<Segmento*> segmentos;
+	bool Juego::vaPuntero(Jugador * unJugador);
 };
 
 #endif

@@ -10,6 +10,7 @@ Jugador::Jugador() {
 	velocidad.setY(0);
 	velocidadMaxima = LIMITE_VELOCIDAD_AUTO_Y_PISTA;
 	this->chocado = false;
+	this->puntos = 0;
 }
 
 Jugador::Jugador(SDL_Renderer* renderer) : ObjetoDeJuego(renderer) {
@@ -135,5 +136,12 @@ void Jugador::chocar(double posicionY) {
 	this->setPosicionY(posicionY - 1);
 }
 
+long Jugador::getPuntos() {
+	return this->puntos;
+}
+
+void Jugador::addPuntos(long agregar) {
+	this->puntos += agregar;
+}
 
 

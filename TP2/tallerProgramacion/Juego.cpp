@@ -56,6 +56,7 @@ void Juego::update(Unidad tiempoDelta) {
 		int posicionActualX = unJugador->getPosicionX();
 		//cout << "jugador z: " << unJugador->getZIndex() << ", jugador Y: " << unJugador->getPosicionY() << endl;
 		
+		//Si los demas jugadores estan SOLO en "jugadores", hay q hacer otro de estos for...
 		for (int j = 0; j < this->objetosDeJuego.size(); j++) {
 			ObjetoDeJuego* objeto = this->objetosDeJuego[j];
 			if (hayColision(posicionAnteriorY, posicionActualY, posicionAnteriorX, posicionActualX, objeto)) {
@@ -71,10 +72,28 @@ void Juego::update(Unidad tiempoDelta) {
 					//cout << "COLISION, yAnterior: " << posicionAnteriorY << ", actual: " << posicionActualY << ", objetoM: " << objeto->getUbicacionM() << ", velocidadY: "<< unJugador->getVelocidad().getY() <<endl;
 			}
 		}
+		//Ojo cuando choca, la velocidad queda en cero, entonces en ese frame no suma nada
+		int factorVapunterto = vaPuntero(unJugador) ? 2 : 1;
+		unJugador->addPuntos(((unJugador->getPosicionY() - posicionAnteriorY) / 100) * unJugador->getVelocidad().getY() * factorVapunterto);
+		//cout << "puntos: " << unJugador->getPuntos() << ", y: "<< unJugador->getPosicionY() / 100 << ", velocidad: " << unJugador->getVelocidad().getY() << ", puntero: " << vaPuntero(unJugador) <<endl;
 	}
 
 }
 
+bool Juego::vaPuntero(Jugador * unJugador) {
+	bool result = true;
+	for (int i = 1; i < this->jugadores.size(); i++) {
+		Jugador* otroJugador = this->jugadores[i];
+		if (otroJugador->getId() == unJugador->getId()) {
+			continue;
+		}
+		if (otroJugador->getPosicionY() >= unJugador->getPosicionY()) {
+			result = false;
+			break;
+		}
+	}
+	return result;
+}
 void Juego::obtenerEntrada() {
 	//update entrada para todos los jugadores. 
 	

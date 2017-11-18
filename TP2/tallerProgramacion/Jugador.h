@@ -38,6 +38,8 @@ public:
 	bool getAcelerando() { return this->acelerando; }
 	bool estaChocado();
 	void chocar(double posicionY);
+	long getPuntos();
+	void addPuntos(long agregar);
 protected:
 	bool entrada[Constantes::CANT_TECLAS];
 	int id;
@@ -47,5 +49,6 @@ protected:
 	Camara* camara;
 	float velocidadMaxima;
 	bool chocado;
+	long puntos;
 };
 #endif
