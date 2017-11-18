@@ -59,6 +59,7 @@ void Juego::update(Unidad tiempoDelta) {
 		for (int j = 0; j < this->objetosDeJuego.size(); j++) {
 			ObjetoDeJuego* objeto = this->objetosDeJuego[j];
 			if (hayColision(posicionAnteriorY, posicionActualY, posicionAnteriorX, posicionActualX, objeto)) {
+				unJugador->chocar();
 				//cout << "Hubo colision y, y: " << unJugador->getPosicion()->getY() << endl;
 			}
 		}
@@ -66,7 +67,8 @@ void Juego::update(Unidad tiempoDelta) {
 		for (int j = 0; j < this->mapa->getObjetosDelMapa().size(); j++) {
 			ObjetoFijo* objeto = this->mapa->getObjetosDelMapa()[j];
 			if (hayColisionObjetoFijo(posicionAnteriorY, posicionActualY, posicionAnteriorX, posicionActualX, objeto) != 0) {
-				//cout << "COLISION, yAnterior: " << posicionAnteriorY << ", actual: " << posicionActualY << ", objetoM: " << objeto->getUbicacionM() << endl;
+				unJugador->chocar();
+				//cout << "COLISION, yAnterior: " << posicionAnteriorY << ", actual: " << posicionActualY << ", objetoM: " << objeto->getUbicacionM() << ", velocidadY: "<< unJugador->getVelocidad().getY() <<endl;
 			}
 		}
 	}
@@ -97,7 +99,7 @@ EstadoModeloJuego* Juego::getEstadoJuego() {
 		Jugador* unJugador = jugadores[i];
 		nuevoEstado->estadoJugadores[i].id = unJugador->getId();
 		nuevoEstado->estadoJugadores[i].conectado = unJugador->estaConectado();
-
+		nuevoEstado->estadoJugadores[i].chocado = unJugador->estaChocado();
 		// Se modifica la coordenada x si esta en una curva y esta acelerando
 		if (unJugador->getAcelerando()) {
 			Segmento* segmentoActual = this->segmentos[unJugador->getCamara()->getPosicionTarget()->getY() / ALTO_TRAMO];
@@ -228,7 +230,7 @@ void Juego::gameLoop() {
 // != 0 si hay algun tipo de colision (delante, detras, costados)
 int Juego::hayColision(int yDesde, int yHasta,int xDesde, int xHasta, ObjetoDeJuego* objeto2) {
 	int result = 0;
-
+	//TODO, para "Y" le podria sumar la altura de el auto, para que la colision sea con la parte superior del auto
 	if (yDesde > objeto2->getPosicion()->getY()) {
 		return result;
 	}

@@ -20,7 +20,7 @@ void EstadoJuegoActivo::update(ManejadorDeConexionCliente* conexionCliente) {
 
 			Sprite* unSprite = spritesMap[estado->id];
 			if (unSprite != NULL) {
-				unSprite->setFilaActual(1);//por q tiene 1 sola fila
+				unSprite->setFilaActual(estado->chocado ? 2 : 1);//por q tiene 1 sola fila
 
 				switch (estado->estadoAuto) {
 				case EstadoAuto::DERECHO:
@@ -151,7 +151,7 @@ void EstadoJuegoActivo::inicializarObjetos(EstadoInicialJuego* unEstado) {
 	for (int i = 0; i < unEstado->tamanio; i++) {
 		Sprite* unSprite = new Sprite();
 		std::string fileName = "imagenes/player" + std::to_string(i + 1) + ".png";//el path de la imagen o el nombre deberia venir el struct
-		unSprite->setAnchoYAlto(80, 40); //cambiarlo a los alores q son 
+		unSprite->setAnchoYAlto(80, 42); //cambiarlo a los alores q son 
 		unSprite->setPosicionInt(0,0);
 		unSprite->setId(std::to_string(unEstado->id[i]));
 		unSprite->load(fileName, this->renderer->getRendererJuego());

@@ -9,6 +9,7 @@ Jugador::Jugador() {
 	velocidad.setX(0);
 	velocidad.setY(0);
 	velocidadMaxima = LIMITE_VELOCIDAD_AUTO_Y_PISTA;
+	this->chocado = false;
 }
 
 Jugador::Jugador(SDL_Renderer* renderer) : ObjetoDeJuego(renderer) {
@@ -121,6 +122,16 @@ void Jugador::dejarDoblarIzquierda(Unidad delta) {
 		if (!entrada[1])
 			this->estado = EstadoAuto::DERECHO;
 	//}
+}
+
+bool Jugador::estaChocado() {
+	return this->chocado;
+}
+
+void Jugador::chocar() {
+	this->chocado = true;
+	velocidad.setX(0);
+	velocidad.setY(0);
 }
 
 

@@ -36,6 +36,8 @@ public:
 	void setEstadoConexion(bool estaConectado) { this->conectado = estaConectado; }
 	Camara* getCamara() { return this->camara; }
 	bool getAcelerando() { return this->acelerando; }
+	bool estaChocado();
+	void chocar();
 protected:
 	bool entrada[Constantes::CANT_TECLAS];
 	int id;
@@ -44,5 +46,6 @@ protected:
 	EstadoAuto estado = EstadoAuto::DERECHO;
 	Camara* camara;
 	float velocidadMaxima;
+	bool chocado;
 };
 #endif
