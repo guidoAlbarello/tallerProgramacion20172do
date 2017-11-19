@@ -54,6 +54,12 @@ bool Renderer::iniciarRendererJuego() {
 					Logger::getInstance()->log(Error, "SDL_ttf could not initialize!");
 					success = false;
 				}
+
+				//Initialize SDL_mixer
+				if (Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096) == -1)
+				{
+					return false;
+				}
 			}
 		}
 	}
@@ -123,6 +129,7 @@ void Renderer::cerrarRenderer() {
 	//Quit SDL subsystems
 	TTF_Quit();
 	IMG_Quit();
+	Mix_CloseAudio();
 	SDL_Quit();
 }
 

@@ -11,6 +11,7 @@
 #include <map>
 #include "Escenario.h"
 #include "Camara.h"
+#include "ManejadorAudio.h"
 
 class EstadoJuegoActivo : public EstadoJuego {
 public:

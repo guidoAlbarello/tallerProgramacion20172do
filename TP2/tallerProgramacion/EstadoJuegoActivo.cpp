@@ -114,6 +114,7 @@ void EstadoJuegoActivo::render() {
 }
 
 bool EstadoJuegoActivo::onEnter(Renderer* renderer) {
+	ManejadorAudio::getInstance()->startOrPauseTrack("initTrack");
 	this->escenario = new Escenario(renderer);
 	this->escenario->iniciar();
 	this->mapaView = new MapaView(renderer);

@@ -8,6 +8,7 @@
 #include "Usuario.h"
 #include "ManejadorInput.h"
 #include "Logger.h"
+#include "ManejadorAudio.h"
 
 using namespace std;
 
@@ -24,6 +25,7 @@ public:
 	void update();
 	Usuario* getUsuario();
 	void setMensajeLogin(std::string mensaje);
+	void initSonido();
 private:
 	TTF_Font *gFont = NULL;
 	const int SCREEN_WIDTH = 800;

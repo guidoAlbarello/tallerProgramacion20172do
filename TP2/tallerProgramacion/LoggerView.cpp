@@ -28,6 +28,7 @@ LoggerView::~LoggerView() {
 	}
 	
 	TTF_CloseFont(gFont);
+	Mix_HaltMusic(); //Stop the music
 	delete usuario;
 	gFont = NULL;
 }
@@ -57,6 +58,9 @@ bool LoggerView::init() {
 		Logger::getInstance()->log(Error, "Ocurrio un error al iniciar la imagen de fondo de logueo");
 		success = false;
 	}
+
+	this->initSonido();
+	ManejadorAudio::getInstance()->startOrPauseTrack("initTrack");
 
 	inputText = "";
 	//aca estaba el error decia su suario y se sumaba al otro
@@ -227,4 +231,8 @@ Usuario* LoggerView::showLogin() {
 
 	return usuario;
 
+}
+
+void LoggerView::initSonido() {
+	ManejadorAudio::getInstance()->load("sound/init_track.wav", "initTrack");
 }
