@@ -11,6 +11,7 @@ public:
 	virtual void render() = 0;
 	virtual bool onEnter(Renderer* renderer) = 0;
 	virtual bool onExit() = 0;
+	virtual void cambiarNivel() {};
 	virtual std::string getStateID() const = 0;
 	void setRenderer(Renderer* renderer) { this->renderer = renderer; }
 	virtual void recieveInput(void* param) {}

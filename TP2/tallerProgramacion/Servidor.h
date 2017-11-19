@@ -61,7 +61,7 @@ protected:
 	void updateModel();
 	Juego* elJuego;
 	bool cerrandoConexiones = false;
-	Mapa* mapa;
+	Mapa* mapa[3];
 };
 
 #endif

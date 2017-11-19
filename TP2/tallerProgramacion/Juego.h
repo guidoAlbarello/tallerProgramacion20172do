@@ -11,6 +11,7 @@
 #include "Renderer.h"
 #include "Mapa.h"
 #include <mutex>
+#include "MaquinaEstados.h"
 
 
 #define MAX_SKIP_FRAMES 5
@@ -29,11 +30,15 @@ public:
 	void liberarModeloEstado(EstadoModeloJuego* unEstado);
 	bool jugadoresCargados() { return jugadores.size() == cantidadJugadoresMaxima; }
 	EstadoInicialJuego* getEstadoJuegoInicial();
-	void setMapa(Mapa* mapa) { this->mapa = mapa; }
-	Mapa* getMapa() { return this->mapa; }
+	void setMapa(int i,Mapa* mapa) { this->mapa[i] = mapa; }
+	Mapa* getMapa(int i) { return this->mapa[i]; }
 	void procesarMapa();
 	int hayColision(int yDesde, int yHasta, int xDesde, int xHasta, ObjetoDeJuego* objeto2);
 	int hayColisionObjetoFijo(int yDesde, int yHasta, int xDesde, int xHasta, ObjetoFijo* objeto2);
+	void inicializarNivel();
+	bool terminoNivel();
+	int getNivel() { return nivel; }
+
 private:
 	Renderer* renderer;
 	int cantidadJugadores;
@@ -47,9 +52,10 @@ private:
 	mutex m_objetos;
 	Escenario* escenario;
 	int cantidadJugadoresMaxima; 
-	Mapa* mapa;
+	Mapa* mapa[3];
 	std::vector<Segmento*> segmentos;
 	bool Juego::vaPuntero(Jugador * unJugador);
+	int nivel = 0;
 };
 
 #endif

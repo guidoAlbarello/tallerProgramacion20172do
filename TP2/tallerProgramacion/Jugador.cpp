@@ -18,43 +18,50 @@ Jugador::Jugador(SDL_Renderer* renderer) : ObjetoDeJuego(renderer) {
 	this->texture = NULL;
 }
 void Jugador::update(Unidad delta) {
-	if (entrada[0]) 		//tecla arriba
-		acelerar(delta);
-	else
-		desacelerar(delta);
 
-	if (entrada[1])			//tecla derecha
-		doblarDerecha(delta);
-	//else
-		//dejarDoblarDerecha(delta);
-	else
+	/*if (entrada[1])
+		movimientoDeshabilitado = true;*/
+	if (!movimientoDeshabilitado) {
+		if (entrada[0]) 		//tecla arriba
+			acelerar(delta);
+		else
+			desacelerar(delta);
 
-		if (entrada[2])			//tecla izquierda
-			doblarIzquierda(delta);
-		else {
-			dejarDoblarDerecha(delta);
-			dejarDoblarIzquierda(delta);
-		}
+		if (entrada[1])			//tecla derecha
+			doblarDerecha(delta);
+		//else
+			//dejarDoblarDerecha(delta);
+		else
 
-	// los 340 q aparecen son la mitaddel alcho de la pantlla menos el ancho de la imagen
-	// agrande la imagen en 1/2 la veia muychica cualquir csa se puede cambiar
-	//if ((posicion.getX() + velocidad.getX()) >= -340 & (posicion.getX() + velocidad.getX()) <= 340) {
-	if (posicion.getX() + velocidad.getX() < LIMITE_PISTA_X_DERECHA && posicion.getX() + velocidad.getX() > LIMITE_PISTA_X_IZQUIERDA) {
-		posicion.setX(posicion.getX() + velocidad.getX());  //retocar un poco mas tal vez, multiplicar por delta la velocidad ? 
+			if (entrada[2])			//tecla izquierda
+				doblarIzquierda(delta);
+			else {
+				dejarDoblarDerecha(delta);
+				dejarDoblarIzquierda(delta);
+			}
+
+			// los 340 q aparecen son la mitaddel alcho de la pantlla menos el ancho de la imagen
+			// agrande la imagen en 1/2 la veia muychica cualquir csa se puede cambiar
+			//if ((posicion.getX() + velocidad.getX()) >= -340 & (posicion.getX() + velocidad.getX()) <= 340) {
+			if (posicion.getX() + velocidad.getX() < LIMITE_PISTA_X_DERECHA && posicion.getX() + velocidad.getX() > LIMITE_PISTA_X_IZQUIERDA) {
+				posicion.setX(posicion.getX() + velocidad.getX());  //retocar un poco mas tal vez, multiplicar por delta la velocidad ? 
+			}
+
+			int limitePastoXDerecha = ANCHO_TRAMO / 2;
+			int limitePastoXIzquierda = ANCHO_TRAMO / 2 * (-1);
+
+			if ((posicion.getX() > limitePastoXDerecha) ||
+				(posicion.getX() < limitePastoXIzquierda)) {
+				velocidadMaxima = LIMITE_VELOCIDAD_AUTO_Y_PASTO;
+			} else {
+				velocidadMaxima = LIMITE_VELOCIDAD_AUTO_Y_PISTA;
+			}
+
+			posicion.setY(posicion.getY() + velocidad.getY());
+	} else {
+		velocidad.setY(0);
+		velocidad.setX(0);
 	}
-
-	int limitePastoXDerecha = ANCHO_TRAMO / 2;
-	int limitePastoXIzquierda = ANCHO_TRAMO / 2 * (-1);
-
-	if ((posicion.getX() > limitePastoXDerecha) ||
-		(posicion.getX() < limitePastoXIzquierda)) {
-		velocidadMaxima = LIMITE_VELOCIDAD_AUTO_Y_PASTO;
-	}
-	else {
-		velocidadMaxima = LIMITE_VELOCIDAD_AUTO_Y_PISTA;
-	}
-
-	posicion.setY(posicion.getY() + velocidad.getY());
 }
 
 void Jugador::recibirEntrada(int pos, bool estadoEntrada) {

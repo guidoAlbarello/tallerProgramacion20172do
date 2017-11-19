@@ -192,6 +192,9 @@
     <ClInclude Include="SDL2_rotozoom.h">
       <Filter>Archivos de recursos\GFX</Filter>
     </ClInclude>
+    <ClInclude Include="ManejadorAudio.h">
+      <Filter>Archivos de encabezado\Manejadores</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Constantes.cpp">
@@ -337,6 +340,15 @@
     </ClCompile>
     <ClCompile Include="SDL2_rotozoom.c">
       <Filter>Archivos de recursos\GFX</Filter>
+    </ClCompile>
+    <ClCompile Include="ManejadorAudio.cpp">
+      <Filter>Archivos de código fuente\Manejadores</Filter>
+    </ClCompile>
+    <ClCompile Include="EstadoPantallaNivel.cpp">
+      <Filter>Archivos de código fuente\EstadosJuego</Filter>
+    </ClCompile>
+    <ClCompile Include="EstadoNivel.cpp">
+      <Filter>Archivos de código fuente\EstadosJuego</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

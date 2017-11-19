@@ -21,12 +21,14 @@ public:
 	bool onExit();
 	std::string getStateID() const { return s_playID; }
 	void recieveInput(void* param);
+	void cambiarNivel();
 	void setParametro(void* param);
 	int getCantidadJugadores() { return this->cantJugadores; }
 	void setCantidadJugadores(int cantidadJugadores) { this->cantJugadores = cantidadJugadores; }
 private:
 	EstadoModeloJuego* estadoModeloJuego;
 	static const std::string s_playID;
+	bool estaEnPantallaTransicion = false;
 	std::map<int, Sprite*> spritesMap;
 	std::vector<Sprite*> spritesVec;
 	MapaView* mapaView;

@@ -91,6 +91,8 @@ string Constantes::getComandoCliente(ComandoCliente comando)
 		return "RESULTADO_USUARIOS";
 	case ComandoCliente::INIT:
 		return "INIT";
+	case ComandoCliente::TRANSITION_SCREEN:
+		return "TRANSITION_SCREEN";
 	default:
 		return "Not recognized..";
 	}
@@ -128,6 +130,7 @@ ComandoCliente Constantes::getConstComandoCliente(string comando) {
 	if (comando.compare("RESULTADO_PING") == 0) {
 		return ComandoCliente::RESULTADO_PING;
 	}
+
 	if (comando.compare("RESULTADO_USUARIOS") == 0) {
 		return ComandoCliente::RESULTADO_USUARIOS;
 	}
@@ -136,6 +139,10 @@ ComandoCliente Constantes::getConstComandoCliente(string comando) {
 		return ComandoCliente::INIT;
 	}
 
+	if (comando.compare("TRANSITION_SCREEN") == 0) {
+		return ComandoCliente::TRANSITION_SCREEN;
+	}
+	
 	return ComandoCliente::UPDATE_MODEL;
 }
 

@@ -63,6 +63,22 @@ void Conexion::procesarSolicitudPing() {
 
 }
 
+void Conexion::enviarPantallaTransicion() {
+	Logger::getInstance()->log(Debug, "Enviando pantalla transicion");
+
+	int tamanio =17 + 1; 
+	char* data = new char[tamanio];
+	std::string strComando = "TRANSITION_SCREEN";
+	strComando.append(&Constantes::separador);
+	const char* comando = strComando.c_str();
+	memcpy(data, comando, 18);
+	
+	this->conexionConCliente->getSocket().enviarDatos(data, tamanio);
+
+	if (data != NULL)
+		free(data);
+}
+
 void Conexion::procesarInput(bool* entrada) {
 	if (this->usuarioConectado != NULL) {
 		if (this->usuarioConectado->getJugador() != NULL) {
