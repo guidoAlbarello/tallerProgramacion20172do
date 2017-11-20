@@ -38,9 +38,9 @@ namespace funcionesConversoras {
 
 using namespace funcionesConversoras;
 
-Mapa::Mapa() {
+Mapa::Mapa(int nivel) {
 	this->longitudTotal = 0;
-	this->cargarMapaDesdeXML();
+	this->cargarMapaDesdeXML(nivel);
 }
 
 std::vector<ObjetoFijo*> Mapa::getObjetosDelMapa() {
@@ -51,12 +51,12 @@ std::vector<Tramo*> Mapa::getTramosDelMapa() {
 	return this->tramosDelMapa;
 }
 
-void Mapa::cargarMapaDesdeXML() {
+void Mapa::cargarMapaDesdeXML(int nivel) {
 	try {
-		Logger::getInstance()->log(LogMode::Debug, "[MAPA] Parseando el mapa desde el archivo: " + ARCHIVO_XML_MAPA);
+		Logger::getInstance()->log(LogMode::Debug, "[MAPA] Parseando el mapa desde el archivo: " + ARCHIVO_MAPA + to_string(nivel) + EXTENSION_MAPA);
 
 		rapidxml::xml_document<> documento;
-		ifstream archivo(ARCHIVO_XML_MAPA);
+		ifstream archivo(ARCHIVO_MAPA + to_string(nivel) + EXTENSION_MAPA);
 		vector<char> buffer((istreambuf_iterator<char>(archivo)), istreambuf_iterator<char>());
 		buffer.push_back('\0');
 		documento.parse<0>(&buffer[0]); // <0> == sin flags de parseo
@@ -65,7 +65,7 @@ void Mapa::cargarMapaDesdeXML() {
 
 		if (nodoMapa == NULL) {
 			//Si no hay nodo mapa (root) no se puede seguir leyendo
-			Logger::getInstance()->log(LogMode::Error, "[MAPA] No se encontro el nodo de 'mapa' en " + ARCHIVO_XML_MAPA + ". No se cargara el mapa.");
+			Logger::getInstance()->log(LogMode::Error, "[MAPA] No se encontro el nodo de 'mapa' en " + ARCHIVO_MAPA + to_string(nivel) + EXTENSION_MAPA + ". No se cargara el mapa.");
 			return;
 		}
 

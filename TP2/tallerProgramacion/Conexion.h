@@ -26,6 +26,7 @@ public:
 	void procesarSolicitudPing();
 	bool getConexionActiva() { 	return this->conexionActiva; };
 	bool getConexionInicializada() { return this->conexionInicializada; }
+	void enviarPantallaTransicion();
 private:
 	ManejadorDeConexionConexion* conexionConCliente;
 	void procesarInput(bool* entrada);

@@ -40,6 +40,14 @@ void MaquinaEstados::recieveInput(void * param) {
 	m_estado.unlock();
 }
 
+void MaquinaEstados::cambiarNivel() {
+	m_estado.lock();
+	if (!estadosDeJuego.empty()) {
+		estadosDeJuego.back()->cambiarNivel();
+	}
+	m_estado.unlock();
+}
+
 void MaquinaEstados::changeState(EstadoJuego *pState, void * param) {
 	m_estado.lock();
 	this->terminoIniciar = false;

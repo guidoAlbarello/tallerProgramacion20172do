@@ -89,27 +89,36 @@ void EstadoJuegoActivo::update(ManejadorDeConexionCliente* conexionCliente) {
 
 void EstadoJuegoActivo::render() {
 	if (inicializado) {
-		SDL_SetRenderDrawColor(renderer->getRendererJuego(), 242, 242, 242, 255);
-		SDL_RenderClear(this->renderer->getRendererJuego());
+		if (!estaEnPantallaTransicion) {
+			SDL_SetRenderDrawColor(renderer->getRendererJuego(), 242, 242, 242, 255);
+			SDL_RenderClear(this->renderer->getRendererJuego());
 
 
-		this->escenario->render();
-		
-		this->mapaView->render(this->renderer);
-		//mapaview.getTramoActual me da un int, luego con eso pido el segmento actual y veo si esta doblando
-		//luego veo la velocidad Y del auto, si es >0... doblo el cielo
+			this->escenario->render();
+
+			this->mapaView->render(this->renderer);
+			//mapaview.getTramoActual me da un int, luego con eso pido el segmento actual y veo si esta doblando
+			//luego veo la velocidad Y del auto, si es >0... doblo el cielo
 
 
-		sort(spritesVec.begin(), spritesVec.end(), [](Sprite* a, Sprite* b)->bool {
-			return a->getZIndex() > b->getZIndex();
-		});
+			sort(spritesVec.begin(), spritesVec.end(), [](Sprite* a, Sprite* b)->bool {
+				return a->getZIndex() > b->getZIndex();
+			});
 
-		for (int i = 0; i < spritesVec.size(); i++) {
-			spritesVec[i]->render(this->renderer);
+			for (int i = 0; i < spritesVec.size(); i++) {
+				spritesVec[i]->render(this->renderer);
+			}
+			SDL_RenderPresent(this->renderer->getRendererJuego());
+
+			//this->mapaView->renderMiniMap();
+		} else {
+			//dibujar pantalla transicion
+			ManejadorDeTexturas::getInstance()->dibujarSpriteEnCoord("autoGrisado", 0, 0, 800, 640,
+				800, renderer->getRendererJuego(), SDL_FLIP_NONE, 0,0);
+			SDL_RenderPresent(this->renderer->getRendererJuego());
+			std::this_thread::sleep_for(std::chrono::milliseconds(1000 * Constantes::TIEMPO_PANTALLA_TRANSICION));
+			estaEnPantallaTransicion = false;
 		}
-		SDL_RenderPresent(this->renderer->getRendererJuego());
-		
-		//this->mapaView->renderMiniMap();
 	}
 }
 
@@ -137,6 +146,13 @@ void EstadoJuegoActivo::recieveInput(void * param) {
 	estadoModeloJuego = new EstadoModeloJuego();
 	memcpy(estadoModeloJuego, param, sizeof(EstadoModeloJuego));
 	m_estadoModelo.unlock();
+}
+
+void EstadoJuegoActivo::cambiarNivel() {
+	if (!estaEnPantallaTransicion) {
+		estaEnPantallaTransicion = true;
+		this->mapaView->cambiarNivel();
+	}
 }
 
 void EstadoJuegoActivo::setParametro(void * param) {

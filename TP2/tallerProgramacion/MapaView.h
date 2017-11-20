@@ -24,10 +24,11 @@ enum class Orientacion { ESTE = '0', NORESTE = '1', NORTE = '2', NOROESTE = '3',
 class MapaView
 {
 public:
-	MapaView();
+	MapaView(int nivel);
 	MapaView(Renderer* renderer);
 	~MapaView();
 	void init();
+	void cambiarNivel();
 	void renderMiniMap();
 	void render(Renderer* renderer);
 	void renderInit();
@@ -51,13 +52,14 @@ public:
 	
 private:
 	int getTramoActual();
-	Mapa* mapa;
+	Mapa* mapa[3];
 	Renderer* gRenderer = NULL;
 	std::vector<Segmento*> segmentos;
 	std::vector<Line> lineasADibujarMapa;
 	std::vector<SDL_Rect*> objetosADibujar;
 	void initSegmentos();
 	bool terminoDibujarMapa;
+	int nivel = 0;
 	int metroActualAuto;
 	std::vector<std::vector<ObjetoFijo*>> objetosPorSegmento;
 	

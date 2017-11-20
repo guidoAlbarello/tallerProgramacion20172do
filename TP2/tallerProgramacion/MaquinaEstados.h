@@ -16,6 +16,7 @@ public:
 	void popState();
 	void setRenderer(Renderer* renderer) { this->renderer = renderer; }
 	void recieveInput(void* param);
+	void cambiarNivel();
 private:
 	std::vector<EstadoJuego*> estadosDeJuego;
 	Renderer* renderer;

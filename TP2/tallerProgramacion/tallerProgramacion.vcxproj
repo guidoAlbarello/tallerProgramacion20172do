@@ -71,8 +71,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir)SDL_gfx-2.0.25;$(SolutionDir)SDL2image\include;$(SolutionDir)SDL2_ttf-2.0.14\include;$(SolutionDir)SDL2_mixer-2.0.1\include;$(SolutionDir)SDL2-2.0.6\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\SouLsCronoS\Desktop\SDL2-2.0.6\lib\x64;$(SolutionDir)SDL2_ttf-2.0.14\lib\x64;$(SolutionDir)SDL2image\lib\x64;$(SolutionDir)SDL2_mixer-2.0.1\lib\x64;$(SolutionDir)SDL2-2.0.6\lib\x64;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)SDL2_mixer-2.0.1\include;$(SolutionDir)SDL_gfx-2.0.25;$(SolutionDir)SDL2image\include;$(SolutionDir)SDL2_ttf-2.0.14\include;$(SolutionDir)SDL2-2.0.6\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)SDL2_mixer-2.0.1\lib\x64;C:\Users\SouLsCronoS\Desktop\SDL2-2.0.6\lib\x64;$(SolutionDir)SDL2_ttf-2.0.14\lib\x64;$(SolutionDir)SDL2image\lib\x64;$(SolutionDir)SDL2_mixer-2.0.1\lib\x64;$(SolutionDir)SDL2-2.0.6\lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)SDL_gfx-2.0.25;$(SolutionDir)SDL2image\include;$(SolutionDir)SDL2_ttf-2.0.14\include;$(SolutionDir)SDL2_mixer-2.0.1\include;$(SolutionDir)SDL2-2.0.6\include;$(IncludePath)</IncludePath>
@@ -93,8 +93,8 @@
       <AdditionalIncludeDirectories>$(SolutionDir)SDL2-2.0.6\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(SolutionDir)SDL2-2.0.6\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_ttf.lib;SDL2_image.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>M:\Users\Krion\Source\Repos\tallerProgramacion20172do\TP2\SDL2_mixer-2.0.1\lib\x64;$(SolutionDir)SDL2-2.0.6\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2.lib;SDL2_mixer.lib;SDL2main.lib;SDL2_ttf.lib;SDL2_image.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
     </Link>
   </ItemDefinitionGroup>
@@ -147,6 +147,7 @@
     <ClInclude Include="Logger.h" />
     <ClInclude Include="LoggerView.h" />
     <ClInclude Include="Ltexture.h" />
+    <ClInclude Include="ManejadorAudio.h" />
     <ClInclude Include="ManejadorDeConexionCliente.h" />
     <ClInclude Include="ManejadorDeConexionConexion.h" />
     <ClInclude Include="ManejadorDeConexionServidor.h" />
@@ -194,12 +195,15 @@
     <ClCompile Include="EstadoJuegoActivo.cpp" />
     <ClCompile Include="EstadoLogeo.cpp" />
     <ClCompile Include="EstadoEspera.cpp" />
+    <ClCompile Include="EstadoNivel.cpp" />
+    <ClCompile Include="EstadoPantallaNivel.cpp" />
     <ClCompile Include="Juego.cpp" />
     <ClCompile Include="Jugador.cpp" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="LoggerView.cpp" />
     <ClCompile Include="Ltexture.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="ManejadorAudio.cpp" />
     <ClCompile Include="ManejadorDeConexion.cpp" />
     <ClCompile Include="ManejadorDeConexionCliente.cpp" />
     <ClCompile Include="ManejadorDeConexionConexion.cpp" />

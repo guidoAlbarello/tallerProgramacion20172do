@@ -1,0 +1,16 @@
+<mapa>
+	<tramo longitud="500" tipo="recta">
+		<arbol posicion="derecha" ubicacion="100"></arbol>
+		<cartel posicion="derecha" ubicacion="200" valor="80"></cartel>
+		<arbol posicion="izquierda" ubicacion="300"></arbol>
+		<cartel posicion="izquierda" ubicacion="400" valor="80"></cartel>
+<!-- 		<arbol posicion="izquierda" ubicacion="300"></arbol>
+ -->		
+<!--  <arbol posicion="izquierda" ubicacion="400"></arbol>
+ -->		<arbol posicion="izquierda" ubicacion="500"></arbol>
+	</tramo>
+	<!-- 500m -->
+	<tramo longitud="200" tipo="curva" sentido="izquierda">
+		<cartel posicion="derecha" ubicacion="600" valor="80"></cartel>
+	</tramo>
+</mapa>

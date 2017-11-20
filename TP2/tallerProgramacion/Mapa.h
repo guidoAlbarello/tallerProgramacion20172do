@@ -6,17 +6,18 @@
 #include "Tramo.h"
 #include <vector>
 
-const std::string ARCHIVO_XML_MAPA = "mapa.xml";
+const std::string ARCHIVO_MAPA = "mapa";
+const std::string EXTENSION_MAPA = ".xml";
 
 class Mapa {
 public:
-	Mapa();
+	Mapa(int nivel);
 	std::vector<Tramo*> getTramosDelMapa();
 	std::vector<ObjetoFijo*> getObjetosDelMapa();
 	void setObjetosDelMapa(std::vector<ObjetoFijo*> objetosDelMapa) { this->objetosDelMapa = objetosDelMapa; }
 	int getLongitudTotal() { return this->longitudTotal; }
 private:
-	void cargarMapaDesdeXML();
+	void cargarMapaDesdeXML(int nivel);
 	std::vector<Tramo*> tramosDelMapa;
 	std::vector<ObjetoFijo*> objetosDelMapa;
 	int longitudTotal;

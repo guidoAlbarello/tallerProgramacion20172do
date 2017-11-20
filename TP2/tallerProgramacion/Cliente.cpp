@@ -488,6 +488,10 @@ void Cliente::procesarDatosRecibidos() {
 				memcpy(estadoModeloJuego, datosRecibidos + 12 + 1, sizeof(EstadoModeloJuego));
 				procesarEstadoModelo(estadoModeloJuego);
 				break;
+			case ComandoCliente::TRANSITION_SCREEN:
+				Logger::getInstance()->log(Debug, "Recibio un TRANSITION_SCREEN");
+				this->maquinaDeEstados->cambiarNivel();
+				break;
 			case ComandoCliente::RESULTADO_PING:
 				Logger::getInstance()->log(Debug, "Recibio un RESULTADO_PING");
 				break;

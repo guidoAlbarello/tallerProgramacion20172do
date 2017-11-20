@@ -38,6 +38,8 @@ public:
 	bool getAcelerando() { return this->acelerando; }
 	bool estaChocado();
 	void chocar(double posicionY);
+	void setDeshabilitarMovimiento(bool estado) { movimientoDeshabilitado = estado; }
+	bool getDeshabilitarMovimiento() { return movimientoDeshabilitado; }
 	long getPuntos();
 	void addPuntos(long agregar);
 protected:
@@ -49,6 +51,7 @@ protected:
 	Camara* camara;
 	float velocidadMaxima;
 	bool chocado;
+	bool movimientoDeshabilitado = false;
 	long puntos;
 };
 #endif

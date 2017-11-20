@@ -15,9 +15,9 @@ bool Juego::iniciarJuego(int cantidadJugadoresMaxima) {
 void Juego::procesarMapa() {
 	int longitudTotal = 0;
 	if (this->mapa != NULL) {
-		std::vector<Segmento*> segmentos(this->mapa->getLongitudTotal());
-		for (int i = 0; i < this->mapa->getTramosDelMapa().size(); i++) {
-			Tramo* unTramo = this->mapa->getTramosDelMapa()[i];
+		std::vector<Segmento*> segmentos(this->mapa[nivel]->getLongitudTotal());
+		for (int i = 0; i < this->mapa[nivel]->getTramosDelMapa().size(); i++) {
+			Tramo* unTramo = this->mapa[nivel]->getTramosDelMapa()[i];
 			if (unTramo->getTipoTramo() != TipoTramo::Recta) {
 				int curva;
 				if (unTramo->getSentidoCurva() == SentidoCurva::SCDerecha) {
@@ -65,8 +65,8 @@ void Juego::update(Unidad tiempoDelta) {
 			}
 		}
 
-		for (int j = 0; j < this->mapa->getObjetosDelMapa().size(); j++) {
-			ObjetoFijo* objeto = this->mapa->getObjetosDelMapa()[j];
+		for (int j = 0; j < this->mapa[nivel]->getObjetosDelMapa().size(); j++) {
+			ObjetoFijo* objeto = this->mapa[nivel]->getObjetosDelMapa()[j];
 			if (hayColisionObjetoFijo(posicionAnteriorY, posicionActualY, posicionAnteriorX, posicionActualX, objeto) != 0) {
 				unJugador->chocar(objeto->getUbicacionM() * 100 - (ALTO_TRAMO * 2));
 					//cout << "COLISION, yAnterior: " << posicionAnteriorY << ", actual: " << posicionActualY << ", objetoM: " << objeto->getUbicacionM() << ", velocidadY: "<< unJugador->getVelocidad().getY() <<endl;
@@ -197,7 +197,9 @@ Jugador* Juego::agregarJugador() {
 Juego::Juego() {
 	this->juegoActivo = true;
 	this->escenario = new Escenario();
-	this->mapa = NULL;
+	this->mapa[0] = NULL;
+	this->mapa[1] = NULL;
+	this->mapa[2] = NULL;
 }
 
 void Juego::iniciarEscenario() {
@@ -290,4 +292,29 @@ int Juego::hayColisionObjetoFijo(int yDesde, int yHasta, int xDesde, int xHasta,
 	result = 1;
 
 	return result;
+}
+
+void Juego::inicializarNivel() {
+	//reiniciar posiciones jugadores 
+	for (int i = 0; i < jugadores.size(); i++) {
+		Jugador* unJugador = jugadores[i];
+		unJugador->setPosicion(unJugador->getId() * 100,0);
+		unJugador->setDeshabilitarMovimiento(false);
+	}
+	
+	//aumentar nivel
+	nivel++;
+	this->iniciarEscenario();
+	this->procesarMapa();
+}
+
+bool Juego::terminoNivel() {
+	int jugadoresEnLaMeta = 0;
+	for (int i = 0; i < jugadores.size(); i++) {
+		Jugador* unJugador = jugadores[i];
+		if (unJugador->getDeshabilitarMovimiento())
+			jugadoresEnLaMeta++;
+	}
+
+	return jugadoresEnLaMeta == cantidadJugadoresMaxima;
 }

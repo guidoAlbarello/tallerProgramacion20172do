@@ -37,8 +37,12 @@ Servidor::Servidor() {
 	this->configuracion = new ServerConfig();
 	this->buzonDeChatGlobal = new BuzonDeMensajes();
 	this->elJuego = new Juego();
-	this->mapa = new Mapa();
-	this->elJuego->setMapa(this->mapa);
+	this->mapa[0] = new Mapa(1);
+	this->mapa[1] = new Mapa(2);
+	this->mapa[2] = new Mapa(3);
+	this->elJuego->setMapa(0, this->mapa[0]);
+	this->elJuego->setMapa(1, this->mapa[1]);
+	this->elJuego->setMapa(2, this->mapa[2]);
 
 	//Seteando el nombre del log
 	Logger::getInstance()->setLogFileName(SERVER_LOG_FILENAME_FORMAT);
@@ -84,7 +88,7 @@ void Servidor::iniciarServidor() {
 	try {
 		Logger::getInstance()->log(Debug, "Iniciando servidor...");
 		this->leerServerConfig();
-		if (this->elJuego->iniciarJuego(configuracion->getMaxClientes())) {   //pasasrle por param la configuracion del xml
+		if (this->elJuego->iniciarJuego(configuracion->getMaxClientes())) {  
 			this->conexionDelServidor->iniciarConexion(this->configuracion->getPuerto(), this->configuracion->getMaxClientes());
 
 			this->t_escucharClientes = std::thread(&Servidor::escucharClientes, this);
@@ -376,15 +380,28 @@ void Servidor::updateModel() {
 		if(!cerrandoConexiones)
 			this->verificarConexiones();
 		if (elJuego->getJugadores().size() == this->configuracion->getMaxClientes()) {
-			if (yaEnvioEstado) {									//este if asqueroso cambiarlo. chequear q pase de estado esperar jugadores a init, de otra forma
-				EstadoModeloJuego* nuevoEstado = this->elJuego->getEstadoJuego();
-				for (std::vector<Conexion*>::iterator it = conexionesActivas.begin(); it != conexionesActivas.end(); ++it) {
-					Conexion* unaConexion = (Conexion*)*it;
-					if (unaConexion->getUsuario() != NULL && unaConexion->getConexionActiva() && unaConexion->getConexionInicializada()) {
-						unaConexion->enviarUpdate(nuevoEstado); 
+			if (yaEnvioEstado) {									
+				if (!this->elJuego->terminoNivel()) {
+					EstadoModeloJuego* nuevoEstado = this->elJuego->getEstadoJuego();
+					for (std::vector<Conexion*>::iterator it = conexionesActivas.begin(); it != conexionesActivas.end(); ++it) {
+						Conexion* unaConexion = (Conexion*)*it;
+						if (unaConexion->getUsuario() != NULL && unaConexion->getConexionActiva() && unaConexion->getConexionInicializada()) {
+							unaConexion->enviarUpdate(nuevoEstado);
+						}
 					}
+					this->elJuego->liberarModeloEstado(nuevoEstado);
+				} else {
+					//mandar resumen de puntos para la pantalla?
+					for (std::vector<Conexion*>::iterator it = conexionesActivas.begin(); it != conexionesActivas.end(); ++it) {
+						Conexion* unaConexion = (Conexion*)*it;
+						if (unaConexion->getUsuario() != NULL && unaConexion->getConexionActiva() && unaConexion->getConexionInicializada()) {
+							unaConexion->enviarPantallaTransicion();
+						}
+					}
+
+					std::this_thread::sleep_for(std::chrono::milliseconds(1000 * Constantes::TIEMPO_PANTALLA_TRANSICION));
+					this->elJuego->inicializarNivel();
 				}
-				this->elJuego->liberarModeloEstado(nuevoEstado);
 			} else {
 				EstadoInicialJuego* estadoInicial = this->elJuego->getEstadoJuegoInicial();
 				estadoInicial->tamanio = this->configuracion->getMaxClientes();
