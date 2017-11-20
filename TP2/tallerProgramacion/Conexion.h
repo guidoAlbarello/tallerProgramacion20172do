@@ -27,6 +27,7 @@ public:
 	bool getConexionActiva() { 	return this->conexionActiva; };
 	bool getConexionInicializada() { return this->conexionInicializada; }
 	void enviarPantallaTransicion();
+	void enviarGameOver();
 private:
 	ManejadorDeConexionConexion* conexionConCliente;
 	void procesarInput(bool* entrada);

@@ -38,7 +38,7 @@ public:
 	void inicializarNivel();
 	bool terminoNivel();
 	int getNivel() { return nivel; }
-
+	bool gameOver() { return juegoTerminado; }
 private:
 	Renderer* renderer;
 	int cantidadJugadores;
@@ -56,6 +56,7 @@ private:
 	std::vector<Segmento*> segmentos;
 	bool Juego::vaPuntero(Jugador * unJugador);
 	int nivel = 0;
+	bool juegoTerminado = false;
 };
 
 #endif

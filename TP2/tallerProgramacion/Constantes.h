@@ -18,7 +18,7 @@ typedef float Unidad;
 // Actualizar a medida que necesitemos
 enum class ComandoServidor { LOG = '0', PING = '1', SEND_MESSAGE = '2', RETRIEVE_MESSAGES = '3', UPDATE_MODEL = '4', USUARIOS = '5', INPUT = '6'};
 enum class ComandoCliente { LOG = '0', PRINT = '1', UPDATE_MODEL = '2', RESULTADO_LOGIN = '3', RESULTADO_SEND_MESSAGE = '4', RESULTADO_RETRIEVE_MESSAGES = '5', RECIEVE_GLOBAL_MESSAGES = '6', RECIEVE_PRIVATE_MESSAGES = '7', RESULTADO_USUARIOS = '8', RESULTADO_PING = '9', INIT = '10', TRANSITION_SCREEN
- = '11'};
+ = '11', GAME_OVER = '12'};
 enum class EstadoAuto { DERECHO = '0', DOBLANDO_IZQ = '1', DOBLANDO_DER = '2' };
 enum class TipoObjeto { ARBOL = '0', CARTEL = '1' };
 
@@ -37,13 +37,13 @@ public:
 	~Constantes();
 	static Constantes* getInstance();
 	static constexpr const int PING_DELAY = 2000;
-	static constexpr const int TOLERANCIA_PING = 2000;
+	static constexpr const int TOLERANCIA_PING = 4000;
 	static constexpr const int RECV_TIMEOUT = 5000;
 	static constexpr const int FPS = 20;
 	static constexpr const int UPDATE_MODEL_DELAY = 1000 / (Constantes::FPS - 7);
 	static constexpr const int MAX_CLIENTES = 8;
 	static constexpr const int CANT_JUGADORES_INICIAR = 1;
-	static constexpr const int CANT_TECLAS = 3;
+	static constexpr const int CANT_TECLAS = 4;
 	static constexpr const int TIEMPO_PANTALLA_TRANSICION = 10;
 
 private:

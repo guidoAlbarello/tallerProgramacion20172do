@@ -303,9 +303,12 @@ void Juego::inicializarNivel() {
 	}
 	
 	//aumentar nivel
-	nivel++;
-	this->iniciarEscenario();
-	this->procesarMapa();
+	if (nivel < 2) {
+		nivel++;
+		this->iniciarEscenario();
+		this->procesarMapa();
+	} else
+		juegoTerminado = true;
 }
 
 bool Juego::terminoNivel() {

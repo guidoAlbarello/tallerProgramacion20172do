@@ -381,26 +381,36 @@ void Servidor::updateModel() {
 			this->verificarConexiones();
 		if (elJuego->getJugadores().size() == this->configuracion->getMaxClientes()) {
 			if (yaEnvioEstado) {									
-				if (!this->elJuego->terminoNivel()) {
-					EstadoModeloJuego* nuevoEstado = this->elJuego->getEstadoJuego();
-					for (std::vector<Conexion*>::iterator it = conexionesActivas.begin(); it != conexionesActivas.end(); ++it) {
-						Conexion* unaConexion = (Conexion*)*it;
-						if (unaConexion->getUsuario() != NULL && unaConexion->getConexionActiva() && unaConexion->getConexionInicializada()) {
-							unaConexion->enviarUpdate(nuevoEstado);
+				if (!elJuego->gameOver()) {
+					if (!this->elJuego->terminoNivel()) {
+						EstadoModeloJuego* nuevoEstado = this->elJuego->getEstadoJuego();
+						for (std::vector<Conexion*>::iterator it = conexionesActivas.begin(); it != conexionesActivas.end(); ++it) {
+							Conexion* unaConexion = (Conexion*)*it;
+							if (unaConexion->getUsuario() != NULL && unaConexion->getConexionActiva() && unaConexion->getConexionInicializada()) {
+								unaConexion->enviarUpdate(nuevoEstado);
+							}
 						}
-					}
-					this->elJuego->liberarModeloEstado(nuevoEstado);
-				} else {
-					//mandar resumen de puntos para la pantalla?
-					for (std::vector<Conexion*>::iterator it = conexionesActivas.begin(); it != conexionesActivas.end(); ++it) {
-						Conexion* unaConexion = (Conexion*)*it;
-						if (unaConexion->getUsuario() != NULL && unaConexion->getConexionActiva() && unaConexion->getConexionInicializada()) {
-							unaConexion->enviarPantallaTransicion();
+						this->elJuego->liberarModeloEstado(nuevoEstado);
+					} else {
+						//mandar resumen de puntos para la pantalla?
+						for (std::vector<Conexion*>::iterator it = conexionesActivas.begin(); it != conexionesActivas.end(); ++it) {
+							Conexion* unaConexion = (Conexion*)*it;
+							if (unaConexion->getUsuario() != NULL && unaConexion->getConexionActiva() && unaConexion->getConexionInicializada()) {
+								unaConexion->enviarPantallaTransicion();
+							}
 						}
-					}
 
-					std::this_thread::sleep_for(std::chrono::milliseconds(1000 * Constantes::TIEMPO_PANTALLA_TRANSICION));
-					this->elJuego->inicializarNivel();
+						std::this_thread::sleep_for(std::chrono::milliseconds(1000 * Constantes::TIEMPO_PANTALLA_TRANSICION));
+						this->elJuego->inicializarNivel();
+					}
+				} else {
+					for (std::vector<Conexion*>::iterator it = conexionesActivas.begin(); it != conexionesActivas.end(); ++it) {
+						Conexion* unaConexion = (Conexion*)*it;
+						if (unaConexion->getUsuario() != NULL && unaConexion->getConexionActiva() && unaConexion->getConexionInicializada()) {
+							unaConexion->enviarGameOver();
+						}
+					}
+					this->servidorActivo = false;
 				}
 			} else {
 				EstadoInicialJuego* estadoInicial = this->elJuego->getEstadoJuegoInicial();

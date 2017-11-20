@@ -4,6 +4,8 @@
 
 #include "ObjetoDeJuego.h"
 #include "Camara.h"
+#include <chrono>
+
 #define ACELERACION_AUTO_X 1.0
 #define ACELERACION_AUTO_Y 0.5
 #define FACTOR_DESACELERACION_X 0
@@ -11,6 +13,7 @@
 #define LIMITE_VELOCIDAD_AUTO_X 60.0
 #define LIMITE_VELOCIDAD_AUTO_Y_PASTO 40.0
 #define LIMITE_VELOCIDAD_AUTO_Y_PISTA 120.0
+#define ACELERACION_NITRO 3.0
 
 class Jugador : public ObjetoDeJuego {  //tal vez diferenciar entre movil y estatico
 
@@ -53,5 +56,8 @@ protected:
 	bool chocado;
 	bool movimientoDeshabilitado = false;
 	long puntos;
+	bool usarNitro = false;
+	double tiempoNitro = 0;
+	std::chrono::time_point<std::chrono::steady_clock> inicioIntervalo;
 };
 #endif

@@ -22,16 +22,23 @@ void Cliente::render() {
 	Uint32 intervalo = 0;
 
 	while (clienteActivo) {
-		inicio = SDL_GetTicks();
-		if (this->renderer != NULL) {
-			this->maquinaDeEstados->render();
+		if (!dibujarGameOver) {
+			inicio = SDL_GetTicks();
+			if (this->renderer != NULL) {
+				this->maquinaDeEstados->render();
+			}
+			fin = SDL_GetTicks();
+			intervalo = fin - inicio;
+			if (intervalo > 1000 / Constantes::FPS) {
+				intervalo = (1000 / Constantes::FPS) - 1;
+			}
+		} else {
+			//cargar imagen game over
+			SDL_SetRenderDrawColor(renderer->getRendererJuego(), 242, 242, 242, 255);
+			SDL_RenderClear(this->renderer->getRendererJuego());
+			std::this_thread::sleep_for(std::chrono::milliseconds(1000 * 5)); 
+			clienteActivo = false;
 		}
-		fin = SDL_GetTicks();
-		intervalo = fin - inicio;
-		if (intervalo > 1000 / Constantes::FPS) {
-			intervalo = (1000 / Constantes::FPS) - 1;
-		}
-		//cout << "itnervalo: " << intervalo << endl;
 		std::this_thread::sleep_for(std::chrono::milliseconds((1000/Constantes::FPS) - intervalo)); // por ahora se comenta, esto mejora mucho la fluidez
 	}
 }
@@ -492,6 +499,10 @@ void Cliente::procesarDatosRecibidos() {
 				Logger::getInstance()->log(Debug, "Recibio un TRANSITION_SCREEN");
 				this->maquinaDeEstados->cambiarNivel();
 				break;
+				case ComandoCliente::GAME_OVER:
+				Logger::getInstance()->log(Debug, "Recibio un GAME_OVER");
+				dibujarGameOver = true;
+				break;
 			case ComandoCliente::RESULTADO_PING:
 				Logger::getInstance()->log(Debug, "Recibio un RESULTADO_PING");
 				break;
@@ -607,11 +618,13 @@ void Cliente::procesarResultadoLogin(MensajeDeRed* mensajeDeRed, char* datosReci
 
 
 void Cliente::enviarPingAServidor() {
-	/*while (this->conexionViva && this->juegoIniciado) {
-		Logger::getInstance()->log(Debug, "Cliente enviando PING al servidor");
-		ManejadorInput::getInstance()->setCerrar(!this->conexionDelCliente->enviarSolicitudPing());
-		std::this_thread::sleep_for(std::chrono::milliseconds(Constantes::PING_DELAY));
-	}*/
+	while (this->conexionViva) {
+		if (this->juegoIniciado) {
+			Logger::getInstance()->log(Debug, "Cliente enviando PING al servidor");
+			ManejadorInput::getInstance()->setCerrar(!this->conexionDelCliente->enviarSolicitudPing());
+		}
+		std::this_thread::sleep_for(std::chrono::milliseconds(500));
+	}
 }
 
 void Cliente::mostrarMenuLogin() {

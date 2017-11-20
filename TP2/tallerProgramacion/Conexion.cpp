@@ -28,6 +28,7 @@ void Conexion::cerrarConexion() {
 				this->getUsuario()->getJugador()->recibirEntrada(0, false);//ponemos todas las entradas en false para q frene. 
 				this->getUsuario()->getJugador()->recibirEntrada(1, false);
 				this->getUsuario()->getJugador()->recibirEntrada(2, false);
+				this->getUsuario()->getJugador()->recibirEntrada(3, false);
 			}
 		}
 
@@ -71,8 +72,24 @@ void Conexion::enviarPantallaTransicion() {
 	std::string strComando = "TRANSITION_SCREEN";
 	strComando.append(&Constantes::separador);
 	const char* comando = strComando.c_str();
-	memcpy(data, comando, 18);
+	memcpy(data, comando, tamanio);
 	
+	this->conexionConCliente->getSocket().enviarDatos(data, tamanio);
+
+	if (data != NULL)
+		free(data);
+}
+
+void Conexion::enviarGameOver() {
+	Logger::getInstance()->log(Debug, "Enviando game over");
+
+	int tamanio = 9 + 1;
+	char* data = new char[tamanio];
+	std::string strComando = "GAME_OVER";
+	strComando.append(&Constantes::separador);
+	const char* comando = strComando.c_str();
+	memcpy(data, comando, tamanio);
+
 	this->conexionConCliente->getSocket().enviarDatos(data, tamanio);
 
 	if (data != NULL)
@@ -251,7 +268,6 @@ void Conexion::procesarDatosRecibidos() {
 	auto timeOut = std::chrono::high_resolution_clock::now();
 	while (conexionActiva) {
 		char* datosRecibidos = this->conexionConCliente->getMensaje();
-
 		if (datosRecibidos != NULL) {
 			string mensajeResultado;
 			timeOut = std::chrono::high_resolution_clock::now();

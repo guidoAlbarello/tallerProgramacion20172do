@@ -75,6 +75,7 @@ protected:
 	void enviarPingAServidor();
 	void leerTestXML(std::string stressFileName, int stressTestTime);
 	bool esUnUpdateModel(char* datosRecibidos);
+	bool dibujarGameOver = false;
 	Renderer* renderer;
 };
 
