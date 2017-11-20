@@ -93,6 +93,8 @@ string Constantes::getComandoCliente(ComandoCliente comando)
 		return "INIT";
 	case ComandoCliente::TRANSITION_SCREEN:
 		return "TRANSITION_SCREEN";
+	case ComandoCliente::GAME_OVER:
+		return "GAME_OVER";
 	default:
 		return "Not recognized..";
 	}
@@ -141,6 +143,10 @@ ComandoCliente Constantes::getConstComandoCliente(string comando) {
 
 	if (comando.compare("TRANSITION_SCREEN") == 0) {
 		return ComandoCliente::TRANSITION_SCREEN;
+	}
+
+	if (comando.compare("GAME_OVER") == 0) {
+		return ComandoCliente::GAME_OVER;
 	}
 	
 	return ComandoCliente::UPDATE_MODEL;

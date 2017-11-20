@@ -18,6 +18,22 @@ Jugador::Jugador(SDL_Renderer* renderer) : ObjetoDeJuego(renderer) {
 	this->texture = NULL;
 }
 void Jugador::update(Unidad delta) {
+	if (entrada[3])
+		if (!usarNitro) {
+			usarNitro = true;
+			tiempoNitro = 0;
+			inicioIntervalo = chrono::high_resolution_clock::now();
+		}
+	if (usarNitro) {
+		auto finIntervalo = chrono::high_resolution_clock::now();
+		auto dur = finIntervalo - inicioIntervalo;
+		auto ms = std::chrono::duration_cast<std::chrono::nanoseconds>(dur).count();
+		inicioIntervalo = chrono::high_resolution_clock::now();
+		tiempoNitro += ms / 1000000.0;
+	}
+
+	if (usarNitro && tiempoNitro >= 10 * 1000)
+		usarNitro = false;
 
 	/*if (entrada[1])
 		movimientoDeshabilitado = true;*/
@@ -71,10 +87,17 @@ void Jugador::recibirEntrada(int pos, bool estadoEntrada) {
 void Jugador::acelerar(Unidad delta) {
 	acelerando = true;
 	this->estado = EstadoAuto::DERECHO;
-	if (velocidad.getY() < velocidadMaxima)
-		this->velocidad.setY(this->velocidad.getY() + ACELERACION_AUTO_Y * delta);
-	else
-		velocidad.setY(velocidadMaxima);
+	if (!usarNitro) {
+		if (velocidad.getY() < velocidadMaxima)
+			this->velocidad.setY(this->velocidad.getY() + ACELERACION_AUTO_Y * delta);
+		else
+			velocidad.setY(velocidadMaxima);
+	} else {
+		if (velocidad.getY() < velocidadMaxima * ACELERACION_NITRO)
+			this->velocidad.setY(this->velocidad.getY() + ACELERACION_NITRO * delta);
+		else
+			velocidad.setY(velocidadMaxima);
+	}
 }
 
 void Jugador::doblarDerecha(Unidad delta) {
