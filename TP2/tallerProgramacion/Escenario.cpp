@@ -3,6 +3,9 @@
 
 Escenario::Escenario(Renderer* renderer) {
 	this->renderer = renderer;
+	this->puntos = puntos;
+	this->tablero = new TableroPuntosEnJuego(renderer->getRendererJuego());
+	this->tablero->init();
 }
 
 Escenario::Escenario() {
@@ -40,6 +43,7 @@ Escenario::~Escenario() {
 }
 
 void Escenario::update(Unidad deltaTiempo) {
+	/*
 	if (limiteImagenCielo())
 		posicionCielo.setX((int(posicionCielo.getX() + VELOCIDAD_CIELO * deltaTiempo)));
 	else
@@ -48,6 +52,7 @@ void Escenario::update(Unidad deltaTiempo) {
 		posicionColinas.setX((int(posicionColinas.getX() + VELOCIDAD_COLINAS * deltaTiempo)));
 	else
 		posicionColinas.setX(0);
+		*/
 	//posicionColinas.setX((int(posicionColinas.getX() + VELOCIDAD_COLINAS * deltaTiempo)) % colinas->getAncho());
 }
 void Escenario::setPosicionCielo(int x, int y){
@@ -77,6 +82,14 @@ void Escenario::render() {
 	//->cielo->setPosicion(posicionCielo.getX(), posicionCielo.getY());
 	this->cielo->renderStaticEnCoord(renderer, posicionCielo.getX(), posicionCielo.getY());
 	this->colinas->renderStaticEnCoord(renderer, posicionColinas.getX(), posicionColinas.getY());
-
+	std::stringstream ss;
+	ss << puntos;
+	this->tablero->setMensaje("Puntos: " + ss.str());
+	this->tablero->update();
 	//this->colinas->renderStatic(renderer);
+	//Renderear puntos
+}
+
+void Escenario::setPuntos(long puntos) {
+	this->puntos = puntos;
 }

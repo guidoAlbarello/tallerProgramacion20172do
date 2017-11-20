@@ -122,6 +122,7 @@ EstadoModeloJuego* Juego::getEstadoJuego() {
 		nuevoEstado->estadoJugadores[i].id = unJugador->getId();
 		nuevoEstado->estadoJugadores[i].conectado = unJugador->estaConectado();
 		nuevoEstado->estadoJugadores[i].chocado = unJugador->estaChocado();
+		nuevoEstado->estadoJugadores[i].puntos = unJugador->getPuntos();
 		// Se modifica la coordenada x si esta en una curva y esta acelerando
 		if (unJugador->getAcelerando()) {
 			if (unJugador->getCamara()->getPosicionTarget()->getY() / ALTO_TRAMO < this->segmentos.size()) {

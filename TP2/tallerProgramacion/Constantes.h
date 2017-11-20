@@ -64,6 +64,7 @@ struct EstadoJugador {
 	bool conectado;
 	float velocidadX;
 	float velocidadY;
+	long puntos;
 };
 
 struct EstadoEscenario {

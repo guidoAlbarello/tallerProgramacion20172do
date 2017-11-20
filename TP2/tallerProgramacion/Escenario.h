@@ -13,6 +13,8 @@
 #include "Sprite.h"
 #include "Vector.h"
 #include "Constantes.h"
+#include "TableroPuntosEnJuego.h"
+#include <sstream>
 
 class Escenario {
 public:
@@ -25,6 +27,7 @@ public:
 	Vector* getPosicionCielo() { return &posicionCielo; }
 	Vector* getPosicionColinas() { return &posicionColinas; }
 	void setPosicionCielo(int x, int y);
+	void setPuntos(long puntos);
 	void setPosicionColinas(int x, int y);
 	bool limiteImagenCielo() { return posicionCielo.getX() < 800; }
 	bool limiteImagenColinas() { return posicionColinas.getX() < 800; }
@@ -36,5 +39,7 @@ private:
 	Sprite* cielo;
 	Sprite* colinas;
 	Renderer* renderer;
+	long puntos;
+	TableroPuntosEnJuego* tablero;
 };
 #endif
