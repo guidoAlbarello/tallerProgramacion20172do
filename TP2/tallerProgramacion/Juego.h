@@ -33,7 +33,7 @@ public:
 	void setMapa(int i,Mapa* mapa) { this->mapa[i] = mapa; }
 	Mapa* getMapa(int i) { return this->mapa[i]; }
 	void procesarMapa();
-	int hayColision(int yDesde, int yHasta, int xDesde, int xHasta, ObjetoDeJuego* objeto2);
+	int hayColision(int yDesde, int yHasta, int xDesde, int xHasta, Jugador* objeto2);
 	int hayColisionObjetoFijo(int yDesde, int yHasta, int xDesde, int xHasta, ObjetoFijo* objeto2);
 	void inicializarNivel();
 	bool terminoNivel();

@@ -57,10 +57,13 @@ void Juego::update(Unidad tiempoDelta) {
 		//cout << "jugador z: " << unJugador->getZIndex() << ", jugador Y: " << unJugador->getPosicionY() << endl;
 		
 		//Si los demas jugadores estan SOLO en "jugadores", hay q hacer otro de estos for...
-		for (int j = 0; j < this->objetosDeJuego.size(); j++) {
-			ObjetoDeJuego* objeto = this->objetosDeJuego[j];
-			if (hayColision(posicionAnteriorY, posicionActualY, posicionAnteriorX, posicionActualX, objeto)) {
-				unJugador->chocar(objeto->getPosicion()->getY());
+		for (int j = 0; j < this->jugadores.size(); j++) {
+			Jugador* jugador = this->jugadores[j];
+			if (jugador->getId() == unJugador->getId()) {
+				break;
+			}
+			if (hayColision(posicionAnteriorY, posicionActualY, posicionAnteriorX, posicionActualX, jugador)) {
+				unJugador->chocar(jugador->getPosicion()->getY());
 				//cout << "Hubo colision y, y: " << unJugador->getPosicion()->getY() << endl;
 			}
 		}
@@ -249,15 +252,13 @@ void Juego::gameLoop() {
 
 }
 
-// 0 si no hay colision
-// != 0 si hay algun tipo de colision (delante, detras, costados)
-int Juego::hayColision(int yDesde, int yHasta,int xDesde, int xHasta, ObjetoDeJuego* objeto2) {
+int Juego::hayColision(int yDesde, int yHasta, int xDesde, int xHasta, Jugador* objeto2) {
 	int result = 0;
 	//TODO, para "Y" le podria sumar la altura de el auto, para que la colision sea con la parte superior del auto
-	if (yDesde > objeto2->getPosicion()->getY()) {
+	if (yDesde  > objeto2->getPosicion()->getY() - 30) {
 		return result;
 	}
-	if (yHasta < objeto2->getPosicion()->getY()) {
+	if (yHasta < objeto2->getPosicion()->getY() - 30) {
 		return result;
 	}
 	//El punto de aclaje es 10 (no se porque, pero lo debugie)
@@ -272,14 +273,15 @@ int Juego::hayColision(int yDesde, int yHasta,int xDesde, int xHasta, ObjetoDeJu
 	return result;
 }
 
+
 // 0 si no hay colision
 // != 0 si hay algun tipo de colision (delante, detras, costados)
 int Juego::hayColisionObjetoFijo(int yDesde, int yHasta, int xDesde, int xHasta, ObjetoFijo* objeto2) {
 	int result = 0;
-	if (yDesde > objeto2->getUbicacionM() * 100 - (ALTO_TRAMO * 2)) {
+	if (yDesde > (objeto2->getUbicacionM() * 100) - (ALTO_TRAMO * 2)) {
 		return result;
 	}
-	if (yHasta < objeto2->getUbicacionM() * 100 - (ALTO_TRAMO * 2)) {
+	if (yHasta < (objeto2->getUbicacionM() * 100) - (ALTO_TRAMO * 2)) {
 		return result;
 	}
 	//punto de aclaje es 10, uso 30 de margen para la pista
