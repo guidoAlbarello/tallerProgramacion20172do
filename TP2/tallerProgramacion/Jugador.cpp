@@ -35,8 +35,8 @@ void Jugador::update(Unidad delta) {
 	if (usarNitro && tiempoNitro >= 10 * 1000)
 		usarNitro = false;
 
-	if (entrada[1])
-		movimientoDeshabilitado = true;
+	/*if (entrada[1])
+		movimientoDeshabilitado = true;*/
 	if (!movimientoDeshabilitado) {
 		if (entrada[0]) 		//tecla arriba
 			acelerar(delta);
