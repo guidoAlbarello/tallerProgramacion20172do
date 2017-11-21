@@ -9,6 +9,7 @@
 #include "Mapa.h"
 #include "TramoCurvo.h"
 #include "ManejadorDeTexturas.h"
+#include <SDL_ttf.h>
 
 #define PI 3.14159265
 #define DISTANCIA_DIBUJADO 50
@@ -43,6 +44,7 @@ public:
 	Orientacion unirTramoRecto(Orientacion orientacionAnterior, int ultimaX, int ultimaY, int longitud, Coordenada* coordenadaUltimoTramo, SDL_Renderer* renderer);
 	void dibujarObjetosTramo(std::vector<ObjetoFijo*> objetosDelMapa, Orientacion orientacionAnterior, int ultimaX, int ultimaY, int longitud, int metroInicio, Coordenada* coordenadaUltimoTramo, SentidoCurva sentidoRotacion, SDL_Renderer* renderer);
 	bool validarLineaDibujable(Line lineaADibujar);
+	void dibujarPantallaTransicion(); // TODO: esto moverlo, solo para probar aca
 	static constexpr const int SCREEN_WIDTH = 800;
 	static constexpr const int SCREEN_HEIGHT = 600;
 	static constexpr const int MENU_OFFSET_RIGHT = 100;

@@ -50,7 +50,7 @@ bool LoggerView::init() {
 		Logger::getInstance()->log(Error, "Ocurrio un error al iniciar la textura Usuario:");
 		success = false;
 	}
-	if (!gPromptPasswordTextTexture->loadFromRenderedText("Contraseña:", textColor)) {
+	if (!gPromptPasswordTextTexture->loadFromRenderedText("Contrasenia:", textColor)) {
 		Logger::getInstance()->log(Error, "Ocurrio un error al iniciar la textura Contraseña:");
 		success = false;
 	}

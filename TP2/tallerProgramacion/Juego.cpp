@@ -123,29 +123,36 @@ EstadoModeloJuego* Juego::getEstadoJuego() {
 		nuevoEstado->estadoJugadores[i].conectado = unJugador->estaConectado();
 		nuevoEstado->estadoJugadores[i].chocado = unJugador->estaChocado();
 		nuevoEstado->estadoJugadores[i].puntos = unJugador->getPuntos();
-		// Se modifica la coordenada x si esta en una curva y esta acelerando
-		if (unJugador->getAcelerando()) {
-			if (unJugador->getCamara()->getPosicionTarget()->getY() / ALTO_TRAMO < this->segmentos.size()) {
-				Segmento* segmentoActual = this->segmentos[unJugador->getCamara()->getPosicionTarget()->getY() / ALTO_TRAMO];
-				if (segmentoActual != NULL) {
-					// Es una curva
-					int intensidadCentrifuga = 35;
-					int nuevaPosicionX;
-					if (segmentoActual->curva > 0) {
-						// Curva izquierda
-						nuevaPosicionX = unJugador->getPosicionX() + intensidadCentrifuga;
-						if (nuevaPosicionX < LIMITE_PISTA_X_DERECHA && nuevaPosicionX > LIMITE_PISTA_X_IZQUIERDA) {
-							unJugador->setPosicionX(nuevaPosicionX);
+
+		if (unJugador->getCamara()->getPosicionTarget()->getY() / ALTO_TRAMO >= mapa[nivel]->getLongitudTotal()) {
+			// LLego a la meta
+			unJugador->setDeshabilitarMovimiento(true);
+		}
+		else {
+			// Se modifica la coordenada x si esta en una curva y esta acelerando
+			if (unJugador->getAcelerando()) {
+				if (unJugador->getCamara()->getPosicionTarget()->getY() / ALTO_TRAMO < this->segmentos.size()) {
+					Segmento* segmentoActual = this->segmentos[unJugador->getCamara()->getPosicionTarget()->getY() / ALTO_TRAMO];
+					if (segmentoActual != NULL) {
+						// Es una curva
+						int intensidadCentrifuga = 35;
+						int nuevaPosicionX;
+						if (segmentoActual->curva > 0) {
+							// Curva izquierda
+							nuevaPosicionX = unJugador->getPosicionX() + intensidadCentrifuga;
+							if (nuevaPosicionX < LIMITE_PISTA_X_DERECHA && nuevaPosicionX > LIMITE_PISTA_X_IZQUIERDA) {
+								unJugador->setPosicionX(nuevaPosicionX);
+							}
+							nuevoEstado->estadoJugadores[i].posX = nuevaPosicionX;
 						}
-						nuevoEstado->estadoJugadores[i].posX = nuevaPosicionX;
-					}
-					else if (segmentoActual->curva < 0) {
-						// Curva derecha
-						nuevaPosicionX = unJugador->getPosicionX() - intensidadCentrifuga;
-						if (nuevaPosicionX < LIMITE_PISTA_X_DERECHA && nuevaPosicionX > LIMITE_PISTA_X_IZQUIERDA) {
-							unJugador->setPosicionX(nuevaPosicionX);
+						else if (segmentoActual->curva < 0) {
+							// Curva derecha
+							nuevaPosicionX = unJugador->getPosicionX() - intensidadCentrifuga;
+							if (nuevaPosicionX < LIMITE_PISTA_X_DERECHA && nuevaPosicionX > LIMITE_PISTA_X_IZQUIERDA) {
+								unJugador->setPosicionX(nuevaPosicionX);
+							}
+							nuevoEstado->estadoJugadores[i].posX = nuevaPosicionX;
 						}
-						nuevoEstado->estadoJugadores[i].posX = nuevaPosicionX;
 					}
 				}
 			}
