@@ -40,12 +40,14 @@ public:
 	Camara* getCamara() { return this->camara; }
 	bool getAcelerando() { return this->acelerando; }
 	bool estaChocado();
+	int getVida() { return vida; }
 	void chocar(double posicionY);
 	void setDeshabilitarMovimiento(bool estado) { movimientoDeshabilitado = estado; }
 	bool getDeshabilitarMovimiento() { return movimientoDeshabilitado; }
 	long getPuntos();
 	void addPuntos(long agregar);
 protected:
+	void dañarAuto();
 	bool entrada[Constantes::CANT_TECLAS];
 	int id;
 	bool conectado = false;
@@ -57,6 +59,7 @@ protected:
 	bool movimientoDeshabilitado = false;
 	long puntos;
 	bool usarNitro = false;
+	int vida = 3;
 	double tiempoNitro = 0;
 	std::chrono::time_point<std::chrono::steady_clock> inicioIntervalo;
 };

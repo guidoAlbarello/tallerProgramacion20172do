@@ -173,6 +173,7 @@
     <ClInclude Include="Servidor.h" />
     <ClInclude Include="SocketSincronico.h" />
     <ClInclude Include="Sprite.h" />
+    <ClInclude Include="TableroPuntosEnJuego.h" />
     <ClInclude Include="Tramo.h" />
     <ClInclude Include="TramoCurvo.h" />
     <ClInclude Include="TramoRecto.h" />
@@ -226,6 +227,7 @@
     <ClCompile Include="Servidor.cpp" />
     <ClCompile Include="SocketSincronico.cpp" />
     <ClCompile Include="Sprite.cpp" />
+    <ClCompile Include="TableroPuntosEnJuego.cpp" />
     <ClCompile Include="Tramo.cpp" />
     <ClCompile Include="TramoCurvo.cpp" />
     <ClCompile Include="TramoRecto.cpp" />

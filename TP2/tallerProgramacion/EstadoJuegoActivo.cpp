@@ -20,8 +20,14 @@ void EstadoJuegoActivo::update(ManejadorDeConexionCliente* conexionCliente) {
 
 			Sprite* unSprite = spritesMap[estado->id];
 			if (unSprite != NULL) {
-				unSprite->setFilaActual(estado->chocado ? 2 : 1);//por q tiene 1 sola fila
-
+				if(estado->vida == 3)
+					unSprite->setFilaActual(1);
+				if(estado->vida == 2)
+					unSprite->setFilaActual(2);
+				if (estado->vida == 1)
+					unSprite->setFilaActual(2);
+				if (estado->vida == 0)
+					unSprite->setFilaActual(2);
 				switch (estado->estadoAuto) {
 				case EstadoAuto::DERECHO:
 					unSprite->setFrameActual(0);
