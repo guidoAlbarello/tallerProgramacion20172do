@@ -75,6 +75,17 @@ void Juego::update(Unidad tiempoDelta) {
 					//cout << "COLISION, yAnterior: " << posicionAnteriorY << ", actual: " << posicionActualY << ", objetoM: " << objeto->getUbicacionM() << ", velocidadY: "<< unJugador->getVelocidad().getY() <<endl;
 			}
 		}
+
+		//DETECCION FIN DE RECORRIDO
+		/*
+		int segmentoActual = posicionActualY / 100;
+		if (segmentoActual >= segmentos.size()) {
+		//FIN....
+		//hABRIA QUE IMPEDIR QUE LA POSICION_Y llegue mas alla del limite... x los puntos, o dejarlo, y
+		//suma mas puntos quien vaya mas rapido
+		}
+		*/
+
 		//Ojo cuando choca, la velocidad queda en cero, entonces en ese frame no suma nada
 		int factorVapunterto = vaPuntero(unJugador) ? 2 : 1;
 		unJugador->addPuntos(((unJugador->getPosicionY() - posicionAnteriorY) / 100) * unJugador->getVelocidad().getY() * factorVapunterto);
