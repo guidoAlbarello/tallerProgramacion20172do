@@ -40,6 +40,7 @@ public:
 	Camara* getCamara() { return this->camara; }
 	bool getAcelerando() { return this->acelerando; }
 	bool estaChocado();
+	bool getNitroActivo() { return usarNitro; }
 	int getVida() { return vida; }
 	void chocar(double posicionY);
 	void setDeshabilitarMovimiento(bool estado) { movimientoDeshabilitado = estado; }

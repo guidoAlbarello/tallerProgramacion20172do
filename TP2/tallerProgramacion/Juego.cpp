@@ -135,6 +135,7 @@ EstadoModeloJuego* Juego::getEstadoJuego() {
 		nuevoEstado->estadoJugadores[i].id = unJugador->getId();
 		nuevoEstado->estadoJugadores[i].conectado = unJugador->estaConectado();
 		nuevoEstado->estadoJugadores[i].vida = unJugador->getVida();
+		nuevoEstado->estadoJugadores[i].nitroActivo = unJugador->getNitroActivo();
 		nuevoEstado->estadoJugadores[i].puntos = unJugador->getPuntos();
 		nuevoEstado->estadoJugadores[i].tiempo = unJugador->getTiempo();
 

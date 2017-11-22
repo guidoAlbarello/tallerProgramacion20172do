@@ -28,6 +28,8 @@ void EstadoJuegoActivo::update(ManejadorDeConexionCliente* conexionCliente) {
 					unSprite->setFilaActual(2);
 				if (estado->vida == 0)
 					unSprite->setFilaActual(2);
+				if(estado->nitroActivo)
+					unSprite->setFilaActual(2);
 				switch (estado->estadoAuto) {
 				case EstadoAuto::DERECHO:
 					unSprite->setFrameActual(0);
@@ -120,9 +122,6 @@ void EstadoJuegoActivo::render() {
 			//this->mapaView->renderMiniMap();
 		} else {
 			dibujarPantallaTransicion();
-
-			ManejadorDeTexturas::getInstance()->dibujarSpriteEnCoord("autoGrisado", 0, 0, 800, 640,
-				800, renderer->getRendererJuego(), SDL_FLIP_NONE, 0,0);
 			SDL_RenderPresent(this->renderer->getRendererJuego());
 			std::this_thread::sleep_for(std::chrono::milliseconds(1000 * Constantes::TIEMPO_PANTALLA_TRANSICION));
 			estaEnPantallaTransicion = false;

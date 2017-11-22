@@ -61,6 +61,7 @@ struct EstadoJugador {
 	Unidad posY;
 	EstadoAuto estadoAuto;
 	int vida;
+	bool nitroActivo;
 	bool conectado;
 	float velocidadX;
 	float velocidadY;
