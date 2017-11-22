@@ -173,7 +173,7 @@ void Conexion::procesarRetrieve_Messages(MensajeDeRed* unMensajeDeRed) {
 	}
 }
 
-void Conexion::procesarPeticionListaDeUsuarios() {
+void Conexion::procesarPeticionListaDeUsuarios(std::vector<Jugador*> jugadores) {
 	ComandoCliente comando = ComandoCliente::RESULTADO_USUARIOS;
 	MensajeDeRed* mensajeDeRed = new MensajeDeRed(comando);
 
@@ -181,16 +181,22 @@ void Conexion::procesarPeticionListaDeUsuarios() {
 
 	if (conexionesActivas.size() == 0) {
 
-		mensajeDeRed->agregarParametro("no hay ususarios conectados en este momento");
+		mensajeDeRed->agregarParametro("no hay usuarios conectados en este momento");
 		Logger::getInstance()->log(Debug, "no habian ususarios conectados apra mostrar");
 	} else {
-		for (unsigned int i = 0; i < conexionesActivas.size(); i++) {
-			if (conexionesActivas[i]->getUsuario() != NULL) {
-				string unUsuario = "Usuario: " + conexionesActivas[i]->getUsuario()->getNombre();
-				mensajeDeRed->agregarParametro(unUsuario);
-			} else {
-				Logger::getInstance()->log(Debug, "Usuario conectado sin loguear no se puede mostrar en usuarios conectados");
-			}
+		//for (unsigned int i = 0; i < conexionesActivas.size(); i++) {
+		//	if (conexionesActivas[i]->getUsuario() != NULL) {
+		//		string unUsuario = "Usuario: " + conexionesActivas[i]->getUsuario()->getNombre();
+		//		mensajeDeRed->agregarParametro(unUsuario);
+		//	} else {
+		//		Logger::getInstance()->log(Debug, "Usuario conectado sin loguear no se puede mostrar en usuarios conectados");
+		//	}
+		//}
+
+		// Nueva implementacion que envia el id y el nombre del user
+		for (unsigned int i = 0; i < jugadores.size(); i++) {
+			string unUsuario = std::to_string(jugadores.at(i)->getId()) + Constantes::separador + jugadores.at(i)->getNombre();
+			mensajeDeRed->agregarParametro(unUsuario);
 		}
 	}
 

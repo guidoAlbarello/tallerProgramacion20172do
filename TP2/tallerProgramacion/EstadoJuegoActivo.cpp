@@ -112,7 +112,8 @@ void EstadoJuegoActivo::render() {
 
 			//this->mapaView->renderMiniMap();
 		} else {
-			//dibujar pantalla transicion
+			dibujarPantallaTransicion();
+
 			ManejadorDeTexturas::getInstance()->dibujarSpriteEnCoord("autoGrisado", 0, 0, 800, 640,
 				800, renderer->getRendererJuego(), SDL_FLIP_NONE, 0,0);
 			SDL_RenderPresent(this->renderer->getRendererJuego());
@@ -122,15 +123,156 @@ void EstadoJuegoActivo::render() {
 	}
 }
 
+void EstadoJuegoActivo::dibujarPantallaTransicion() {
+	int OFFSET_LEFT = 30;
+	int OFFSET_TOP = 80;
+	int OFFSET_BOTTOM = 120;
+	int OFFSET_RIGHT = 10;
+	int COLS_SEPARATION = 160;
+	int OFFSET_BORDE = 10;
+	int OFFSET_X_JUGADOR = OFFSET_LEFT * 6 - OFFSET_BORDE;
+	int OFFSET_X_ETAPA1 = OFFSET_LEFT * 11;
+	int OFFSET_X_ETAPA2 = OFFSET_LEFT * 17 - OFFSET_BORDE;
+	int OFFSET_X_ETAPA3 = OFFSET_LEFT * 22 - OFFSET_BORDE;
+	int SCREEN_WIDTH = 800;
+	int SCREEN_HEIGHT = 600;
+
+	SDL_Color textColor = { 0, 0, 0, 0xFF };
+	SDL_SetRenderDrawColor(this->renderer->getRendererJuego(), 128, 128, 128, 255);
+
+	Ltexture* gJugador = new Ltexture(this->renderer->getRendererJuego());
+	if (!gJugador->loadFromRenderedText("Jugador", textColor)) {
+		Logger::getInstance()->log(Error, "Ocurrio un error al iniciar la textura Jugador");
+	}
+
+	Ltexture* gEtapa1 = new Ltexture(this->renderer->getRendererJuego());
+	if (!gEtapa1->loadFromRenderedText("Etapa 1", textColor)) {
+		Logger::getInstance()->log(Error, "Ocurrio un error al iniciar la textura Etapa1");
+	}
+
+	Ltexture* gEtapa2 = new Ltexture(this->renderer->getRendererJuego());
+	if (!gEtapa2->loadFromRenderedText("Etapa 2", textColor)) {
+		Logger::getInstance()->log(Error, "Ocurrio un error al iniciar la textura Etapa2");
+	}
+
+	Ltexture* gEtapa3 = new Ltexture(this->renderer->getRendererJuego());
+	if (!gEtapa3->loadFromRenderedText("Etapa 3", textColor)) {
+		Logger::getInstance()->log(Error, "Ocurrio un error al iniciar la textura Etapa3");
+	}
+
+	Ltexture* gTotal = new Ltexture(this->renderer->getRendererJuego());
+	if (!gTotal->loadFromRenderedText("Total", textColor)) {
+		Logger::getInstance()->log(Error, "Ocurrio un error al iniciar la textura Total");
+	}
+
+	gJugador->render(OFFSET_LEFT, OFFSET_TOP);
+	gEtapa1->render(OFFSET_LEFT + COLS_SEPARATION, OFFSET_TOP);
+	gEtapa2->render(OFFSET_LEFT + 2 * COLS_SEPARATION, OFFSET_TOP);
+	gEtapa3->render(OFFSET_LEFT + 3 * COLS_SEPARATION, OFFSET_TOP);
+	gTotal->render(OFFSET_LEFT + 4 * COLS_SEPARATION, OFFSET_TOP);
+
+	// Bordes
+	Line lineTop = { OFFSET_LEFT - OFFSET_BORDE, OFFSET_TOP - OFFSET_BORDE, SCREEN_WIDTH - OFFSET_RIGHT, OFFSET_TOP - OFFSET_BORDE };
+	SDL_RenderDrawLine(this->renderer->getRendererJuego(), lineTop.x1, lineTop.y1, lineTop.x2, lineTop.y2);
+
+	Line lineBottom = { OFFSET_LEFT - OFFSET_BORDE, SCREEN_HEIGHT - OFFSET_BOTTOM, SCREEN_WIDTH - OFFSET_RIGHT, SCREEN_HEIGHT - OFFSET_BOTTOM };
+	SDL_RenderDrawLine(this->renderer->getRendererJuego(), lineBottom.x1, lineBottom.y1, lineBottom.x2, lineBottom.y2);
+
+	Line lineLeft = { OFFSET_LEFT - OFFSET_BORDE, OFFSET_TOP - OFFSET_BORDE, OFFSET_LEFT - OFFSET_BORDE, SCREEN_HEIGHT - OFFSET_BOTTOM };
+	SDL_RenderDrawLine(this->renderer->getRendererJuego(), lineLeft.x1, lineLeft.y1, lineLeft.x2, lineLeft.y2);
+
+	Line lineRight = { SCREEN_WIDTH - OFFSET_RIGHT, OFFSET_TOP - OFFSET_BORDE, SCREEN_WIDTH - OFFSET_RIGHT, SCREEN_HEIGHT - OFFSET_BOTTOM };
+	SDL_RenderDrawLine(this->renderer->getRendererJuego(), lineRight.x1, lineRight.y1, lineRight.x2, lineRight.y2);
+
+	Line lineJugador = { OFFSET_X_JUGADOR, OFFSET_TOP - OFFSET_BORDE, OFFSET_X_JUGADOR, SCREEN_HEIGHT - OFFSET_BOTTOM };
+	SDL_RenderDrawLine(this->renderer->getRendererJuego(), lineJugador.x1, lineJugador.y1, lineJugador.x2, lineJugador.y2);
+
+	Line lineEtapa1 = { OFFSET_X_ETAPA1, OFFSET_TOP - OFFSET_BORDE, OFFSET_X_ETAPA1, SCREEN_HEIGHT - OFFSET_BOTTOM };
+	SDL_RenderDrawLine(this->renderer->getRendererJuego(), lineEtapa1.x1, lineEtapa1.y1, lineEtapa1.x2, lineEtapa1.y2);
+
+	Line lineEtapa2 = { OFFSET_X_ETAPA2, OFFSET_TOP - OFFSET_BORDE, OFFSET_X_ETAPA2, SCREEN_HEIGHT - OFFSET_BOTTOM };
+	SDL_RenderDrawLine(this->renderer->getRendererJuego(), lineEtapa2.x1, lineEtapa2.y1, lineEtapa2.x2, lineEtapa2.y2);
+
+	Line lineEtapa3 = { OFFSET_X_ETAPA3, OFFSET_TOP - OFFSET_BORDE, OFFSET_X_ETAPA3, SCREEN_HEIGHT - OFFSET_BOTTOM };
+	SDL_RenderDrawLine(this->renderer->getRendererJuego(), lineEtapa3.x1, lineEtapa3.y1, lineEtapa3.x2, lineEtapa3.y2);
+
+	for (unsigned int i = 1; i <= this->cantJugadores; i++) {
+		int puntos = estadoModeloJuego->estadoJugadores[i - 1].puntos;
+		string nombreUsuario = obtenerNombreUsuarioPorId(estadoModeloJuego->estadoJugadores[i - 1].id, nombresJugadores);
+		float tiempo = 0; // TODO: obtener el tiempo real
+
+		switch (this->mapaView->getNivel()) {
+		case 0:
+			this->puntajesEtapa1[estadoModeloJuego->estadoJugadores[i - 1].id] = puntos;
+			this->puntajesTotal[estadoModeloJuego->estadoJugadores[i - 1].id] += puntos;
+			break;
+		case 1:
+			this->puntajesEtapa2[estadoModeloJuego->estadoJugadores[i - 1].id] = puntos;
+			this->puntajesTotal[estadoModeloJuego->estadoJugadores[i - 1].id] += puntos;
+			break;
+		case 2:
+			this->puntajesEtapa3[estadoModeloJuego->estadoJugadores[i - 1].id] = puntos;
+			this->puntajesTotal[estadoModeloJuego->estadoJugadores[i - 1].id] += puntos;
+			break;
+		}
+
+		Ltexture* gNombreUsuario = new Ltexture(this->renderer->getRendererJuego());
+		if (!gNombreUsuario->loadFromRenderedText(nombreUsuario, textColor)) {
+			Logger::getInstance()->log(Error, "Ocurrio un error al iniciar la textura nombreUsuario");
+		}
+
+		Ltexture* gPuntajeEtapa1 = new Ltexture(this->renderer->getRendererJuego());
+		if (!gPuntajeEtapa1->loadFromRenderedText(to_string(puntajesEtapa1[estadoModeloJuego->estadoJugadores[i - 1].id]), textColor)) {
+			Logger::getInstance()->log(Error, "Ocurrio un error al iniciar la textura PuntajeEtapa1");
+		}
+
+		Ltexture* gPuntajeEtapa2 = new Ltexture(this->renderer->getRendererJuego());
+		if (!gPuntajeEtapa2->loadFromRenderedText(to_string(puntajesEtapa2[estadoModeloJuego->estadoJugadores[i - 1].id]), textColor)) {
+			Logger::getInstance()->log(Error, "Ocurrio un error al iniciar la textura PuntajeEtapa2");
+		}
+
+		Ltexture* gPuntajeEtapa3 = new Ltexture(this->renderer->getRendererJuego());
+		if (!gPuntajeEtapa3->loadFromRenderedText(to_string(puntajesEtapa3[estadoModeloJuego->estadoJugadores[i - 1].id]), textColor)) {
+			Logger::getInstance()->log(Error, "Ocurrio un error al iniciar la textura PuntajeEtapa3");
+		}
+		
+		Ltexture* gPuntajeTotal = new Ltexture(this->renderer->getRendererJuego());
+		if (!gPuntajeTotal->loadFromRenderedText(to_string(puntajesTotal[estadoModeloJuego->estadoJugadores[i - 1].id]), textColor)) {
+			Logger::getInstance()->log(Error, "Ocurrio un error al iniciar la textura PuntajeTotal");
+		}
+
+		gNombreUsuario->render(OFFSET_LEFT, OFFSET_TOP * i + OFFSET_TOP);
+		gPuntajeEtapa1->render(OFFSET_LEFT + COLS_SEPARATION, OFFSET_TOP * i + OFFSET_TOP);
+		gPuntajeEtapa2->render(OFFSET_LEFT + 2 * COLS_SEPARATION, OFFSET_TOP * i + OFFSET_TOP);
+		gPuntajeEtapa3->render(OFFSET_LEFT + 3 * COLS_SEPARATION, OFFSET_TOP * i + OFFSET_TOP);
+		gPuntajeTotal->render(OFFSET_LEFT + 4 * COLS_SEPARATION, OFFSET_TOP * i + OFFSET_TOP);
+	}
+}
+
+string EstadoJuegoActivo::obtenerNombreUsuarioPorId(int id, map<int, string> nombresJugadores) {
+	return nombresJugadores[id];
+}
+
 bool EstadoJuegoActivo::onEnter(Renderer* renderer) {
-	ManejadorAudio::getInstance()->startOrPauseTrack("initTrack");
+	ManejadorAudio::getInstance()->startOrPauseTrack("initTrack"); // Se pausa musica login
 	this->escenario = new Escenario(renderer);
 	this->escenario->iniciar();
 	this->mapaView = new MapaView(renderer);
 	this->mapaView->init();
 	this->camara = new Camara();
 	ManejadorDeTexturas::getInstance()->setCamara(camara);
+	this->initPuntajes();
+	
 	return true;
+}
+
+void EstadoJuegoActivo::initPuntajes() {
+	for (int i = 0; i < 4; i++) { // FEOO
+		this->puntajesEtapa1[i] = 0;
+		this->puntajesEtapa2[i] = 0;
+		this->puntajesEtapa3[i] = 0;
+		this->puntajesTotal[i] = 0;
+	}
 }
 
 bool EstadoJuegoActivo::onExit() {

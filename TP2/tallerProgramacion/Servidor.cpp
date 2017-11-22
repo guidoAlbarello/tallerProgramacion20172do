@@ -365,7 +365,7 @@ Usuario* Servidor::validarLogin(MensajeDeRed* mensaje, string &mensajeResultado,
 	} else {
 		mensajeResultado = "El login fue satisfactorio";
 		if (!unUsuario->tieneJugadorAsignado()) {
-			unUsuario->setJugador(this->elJuego->agregarJugador());  
+			unUsuario->setJugador(this->elJuego->agregarJugador(unUsuario->getNombre()));
 		} else {
 			enviarEstadoInicial = true;
 		}
@@ -418,6 +418,7 @@ void Servidor::updateModel() {
 				for (std::vector<Conexion*>::iterator it = conexionesActivas.begin(); it != conexionesActivas.end(); ++it) {
 					Conexion* unaConexion = (Conexion*)*it;
 					if (unaConexion->getUsuario() != NULL && unaConexion->getConexionActiva()) {
+						unaConexion->procesarPeticionListaDeUsuarios(this->elJuego->getJugadores());
 						unaConexion->inicializarClienteJuego(estadoInicial, NULL);  //    !!!!!!!!!!!!!!!!!!!!esto va a haber q mandarlo cuando se reconecte el cliente tmb. aca solo se va a mandar la primera vez !!!!!!!
 					}
 				}

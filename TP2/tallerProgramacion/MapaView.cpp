@@ -37,92 +37,16 @@ void MapaView::renderInit() {
 	SDL_RenderClear(renderer); // Clear screen
 	SDL_SetRenderDrawColor(renderer, 128, 128, 128, 255);
 
-	//// Se limpian los objetos a dibujar en memoria
-	//this->lineasADibujarMapa.clear();
-	//this->objetosADibujar.clear();
-	//this->terminoDibujarMapa = false;
+	// Se limpian los objetos a dibujar en memoria
+	this->lineasADibujarMapa.clear();
+	this->objetosADibujar.clear();
+	this->terminoDibujarMapa = false;
 
-	//// Se dibujan los bordes y la pista una sola vez
-	//this->dibujarBordes(renderer);
-	//this->dibujarMapa(renderer);
-
-	// TODO: por ahora se renderiza aca la pantalla de transicion, moverla!
-	this->dibujarPantallaTransicion();
-
+	// Se dibujan los bordes y la pista una sola vez
+	this->dibujarBordes(renderer);
+	this->dibujarMapa(renderer);
 
 	SDL_RenderPresent(renderer);
-}
-
-void MapaView::dibujarPantallaTransicion() {
-	int OFFSET_LEFT = 30;
-	int OFFSET_TOP = 80;
-	int OFFSET_BOTTOM = 120;
-	int OFFSET_RIGHT = 20;
-	int COLS_SEPARATION = 160;
-	int OFFSET_BORDE = 10;
-	int OFFSET_X_JUGADOR = OFFSET_LEFT * 6 - OFFSET_BORDE;
-	int OFFSET_X_ETAPA1 = OFFSET_LEFT * 11;
-	int OFFSET_X_ETAPA2 = OFFSET_LEFT * 17 - OFFSET_BORDE;
-	int OFFSET_X_ETAPA3 = OFFSET_LEFT * 22 - OFFSET_BORDE;
-
-	SDL_Color textColor = { 0, 0, 0, 0xFF };
-	SDL_SetRenderDrawColor(gRenderer->getRendererMapa(), 128, 128, 128, 255);
-
-	Ltexture* gJugador = new Ltexture(gRenderer->getRendererMapa());
-	if (!gJugador->loadFromRenderedText("Jugador", textColor)) {
-		Logger::getInstance()->log(Error, "Ocurrio un error al iniciar la textura Jugador");
-	}
-
-	Ltexture* gEtapa1 = new Ltexture(gRenderer->getRendererMapa());
-	if (!gEtapa1->loadFromRenderedText("Etapa 1", textColor)) {
-		Logger::getInstance()->log(Error, "Ocurrio un error al iniciar la textura Etapa1");
-	}
-
-	Ltexture* gEtapa2 = new Ltexture(gRenderer->getRendererMapa());
-	if (!gEtapa2->loadFromRenderedText("Etapa 2", textColor)) {
-		Logger::getInstance()->log(Error, "Ocurrio un error al iniciar la textura Etapa2");
-	}
-
-	Ltexture* gEtapa3 = new Ltexture(gRenderer->getRendererMapa());
-	if (!gEtapa3->loadFromRenderedText("Etapa 3", textColor)) {
-		Logger::getInstance()->log(Error, "Ocurrio un error al iniciar la textura Etapa3");
-	}
-
-	Ltexture* gTotal = new Ltexture(gRenderer->getRendererMapa());
-	if (!gTotal->loadFromRenderedText("Total", textColor)) {
-		Logger::getInstance()->log(Error, "Ocurrio un error al iniciar la textura Total");
-	}
-
-	gJugador->render(OFFSET_LEFT, OFFSET_TOP);
-	gEtapa1->render(OFFSET_LEFT + COLS_SEPARATION, OFFSET_TOP);
-	gEtapa2->render(OFFSET_LEFT + 2 * COLS_SEPARATION, OFFSET_TOP);
-	gEtapa3->render(OFFSET_LEFT + 3 * COLS_SEPARATION, OFFSET_TOP);
-	gTotal->render(OFFSET_LEFT + 4 * COLS_SEPARATION, OFFSET_TOP);
-
-	// Bordes
-	Line lineTop = { OFFSET_LEFT - OFFSET_BORDE, OFFSET_TOP - OFFSET_BORDE, SCREEN_WIDTH - OFFSET_RIGHT, OFFSET_TOP - OFFSET_BORDE };
-	SDL_RenderDrawLine(gRenderer->getRendererMapa(), lineTop.x1, lineTop.y1, lineTop.x2, lineTop.y2);
-
-	Line lineBottom = { OFFSET_LEFT - OFFSET_BORDE, SCREEN_HEIGHT - OFFSET_BOTTOM, SCREEN_WIDTH - OFFSET_RIGHT, SCREEN_HEIGHT - OFFSET_BOTTOM };
-	SDL_RenderDrawLine(gRenderer->getRendererMapa(), lineBottom.x1, lineBottom.y1, lineBottom.x2, lineBottom.y2);
-
-	Line lineLeft = { OFFSET_LEFT - OFFSET_BORDE, OFFSET_TOP - OFFSET_BORDE, OFFSET_LEFT - OFFSET_BORDE, SCREEN_HEIGHT - OFFSET_BOTTOM };
-	SDL_RenderDrawLine(gRenderer->getRendererMapa(), lineLeft.x1, lineLeft.y1, lineLeft.x2, lineLeft.y2);
-
-	Line lineRight = { SCREEN_WIDTH - OFFSET_RIGHT, OFFSET_TOP - OFFSET_BORDE, SCREEN_WIDTH - OFFSET_RIGHT, SCREEN_HEIGHT - OFFSET_BOTTOM };
-	SDL_RenderDrawLine(gRenderer->getRendererMapa(), lineRight.x1, lineRight.y1, lineRight.x2, lineRight.y2);
-
-	Line lineJugador = { OFFSET_X_JUGADOR, OFFSET_TOP - OFFSET_BORDE, OFFSET_X_JUGADOR, SCREEN_HEIGHT - OFFSET_BOTTOM };
-	SDL_RenderDrawLine(gRenderer->getRendererMapa(), lineJugador.x1, lineJugador.y1, lineJugador.x2, lineJugador.y2);
-
-	Line lineEtapa1 = { OFFSET_X_ETAPA1, OFFSET_TOP - OFFSET_BORDE, OFFSET_X_ETAPA1, SCREEN_HEIGHT - OFFSET_BOTTOM };
-	SDL_RenderDrawLine(gRenderer->getRendererMapa(), lineEtapa1.x1, lineEtapa1.y1, lineEtapa1.x2, lineEtapa1.y2);
-
-	Line lineEtapa2 = { OFFSET_X_ETAPA2, OFFSET_TOP - OFFSET_BORDE, OFFSET_X_ETAPA2, SCREEN_HEIGHT - OFFSET_BOTTOM };
-	SDL_RenderDrawLine(gRenderer->getRendererMapa(), lineEtapa2.x1, lineEtapa2.y1, lineEtapa2.x2, lineEtapa2.y2);
-
-	Line lineEtapa3 = { OFFSET_X_ETAPA3, OFFSET_TOP - OFFSET_BORDE, OFFSET_X_ETAPA3, SCREEN_HEIGHT - OFFSET_BOTTOM };
-	SDL_RenderDrawLine(gRenderer->getRendererMapa(), lineEtapa3.x1, lineEtapa3.y1, lineEtapa3.x2, lineEtapa3.y2);
 }
 
 void MapaView::renderStoredObjects() {

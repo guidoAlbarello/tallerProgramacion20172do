@@ -28,12 +28,12 @@ public:
 	bool getConexionInicializada() { return this->conexionInicializada; }
 	void enviarPantallaTransicion();
 	void enviarGameOver();
+	void procesarPeticionListaDeUsuarios(std::vector<Jugador*> jugadores);
 private:
 	ManejadorDeConexionConexion* conexionConCliente;
 	void procesarInput(bool* entrada);
 	void procesarSend_Message(MensajeDeRed* unMensajeDeRed);
 	void procesarRetrieve_Messages(MensajeDeRed* unMensajeDeRed);
-	void procesarPeticionListaDeUsuarios();
 	Usuario* usuarioConectado;
 	std::thread t_procesarDatosRecibidos;
 	void procesarDatosRecibidos();

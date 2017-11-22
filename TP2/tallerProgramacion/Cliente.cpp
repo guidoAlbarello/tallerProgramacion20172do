@@ -508,7 +508,8 @@ void Cliente::procesarDatosRecibidos() {
 				break;
 			case ComandoCliente::RESULTADO_USUARIOS:
 				Logger::getInstance()->log(Debug, "se recibio una lista de usuarios");
-				mostrarUsuariosConectados(mensajeDeRed);
+				//mostrarUsuariosConectados(mensajeDeRed);
+				procesarNombresUsuario(mensajeDeRed);
 				break;
 			default:
 				Logger::getInstance()->log(Debug, datosRecibidos);
@@ -537,6 +538,16 @@ void Cliente::procesarDatosRecibidos() {
 		std::this_thread::sleep_for(std::chrono::milliseconds(1000/(Constantes::FPS - 7)));
 		//mostrarMensajesGlobales();
 	}
+}
+
+void Cliente::procesarNombresUsuario(MensajeDeRed* unMensajeDeRed) {
+	// Asocia los ids de los usuarios con los nombres, recibe de a pares de parametros primero el id y luego el nombre
+	m_init_juego.lock();
+	for (unsigned int i = 0; i < unMensajeDeRed->getCantidadDeParametros(); i++) {
+		this->nombreJugadores[atoi(unMensajeDeRed->getParametro(i).c_str())] = unMensajeDeRed->getParametro(i + 1);
+		i++;
+	}
+	m_init_juego.unlock();
 }
 
 void Cliente::mostrarMensajesGlobales() {
@@ -568,7 +579,9 @@ void Cliente::iniciarJuego(EstadoInicialJuego* unEstadoInicial) {
 			tmpParseString.erase(0, posSeparadorIds + 1);
 		}*/
 		m_init_juego.lock();
-		this->maquinaDeEstados->changeState(new EstadoJuegoActivo(), unEstadoInicial);
+		EstadoJuegoActivo* estadoJuegoActivo = new EstadoJuegoActivo();
+		estadoJuegoActivo->setNombresJugadores(this->nombreJugadores);
+		this->maquinaDeEstados->changeState(estadoJuegoActivo, unEstadoInicial);
 		this->juegoIniciado = true;
 		m_init_juego.unlock();
 	}

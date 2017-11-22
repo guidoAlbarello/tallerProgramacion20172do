@@ -18,7 +18,7 @@
 class Jugador : public ObjetoDeJuego {  //tal vez diferenciar entre movil y estatico
 
 public:
-	Jugador();
+	Jugador(string nombre);
 	Jugador(SDL_Renderer* renderer);
 	void update(Unidad delta);
 	void recibirEntrada(int pos, bool estadoEntrada);
@@ -45,6 +45,7 @@ public:
 	bool getDeshabilitarMovimiento() { return movimientoDeshabilitado; }
 	long getPuntos();
 	void addPuntos(long agregar);
+	string getNombre() { return this->nombre; }
 protected:
 	bool entrada[Constantes::CANT_TECLAS];
 	int id;
@@ -58,6 +59,7 @@ protected:
 	long puntos;
 	bool usarNitro = false;
 	double tiempoNitro = 0;
+	string nombre;
 	std::chrono::time_point<std::chrono::steady_clock> inicioIntervalo;
 };
 #endif

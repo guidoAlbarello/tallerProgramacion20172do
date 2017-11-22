@@ -26,7 +26,7 @@ public:
 	std::vector<ObjetoDeJuego*> getObjetosDeJuego();
 	std::vector<Jugador*> getJugadores();
 	EstadoModeloJuego* getEstadoJuego();
-	Jugador* agregarJugador();
+	Jugador* agregarJugador(string nombre);
 	void liberarModeloEstado(EstadoModeloJuego* unEstado);
 	bool jugadoresCargados() { return jugadores.size() == cantidadJugadoresMaxima; }
 	EstadoInicialJuego* getEstadoJuegoInicial();

@@ -1,7 +1,7 @@
 #include "Jugador.h"
 
 #include <iostream>
-Jugador::Jugador() {
+Jugador::Jugador(string nombre) {
 	ObjetoDeJuego();
 	camara = new Camara();
 	camara->setTarget(this);
@@ -11,6 +11,7 @@ Jugador::Jugador() {
 	velocidadMaxima = LIMITE_VELOCIDAD_AUTO_Y_PISTA;
 	this->chocado = false;
 	this->puntos = 0;
+	this->nombre = nombre;
 }
 
 Jugador::Jugador(SDL_Renderer* renderer) : ObjetoDeJuego(renderer) {

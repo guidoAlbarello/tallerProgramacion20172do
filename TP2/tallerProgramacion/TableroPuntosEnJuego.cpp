@@ -34,8 +34,5 @@ void TableroPuntosEnJuego::init() {
 
 void  TableroPuntosEnJuego::update() {
 	gPromptTextTexture->loadFromRenderedText(this->mensaje, textColor);
-
 	gPromptTextTexture->render(SCREEN_WIDTH - WIDTH, 0);
-
-
 }

@@ -20,7 +20,7 @@ public:
 	void update();
 	void setMensaje(string mensaje);
 private:
-	const int WIDTH = 200;
+	const int WIDTH = 300;
 	const int HEIGHT = 150;
 	const int SCREEN_WIDTH = 800;
 	SDL_Color textColor;
