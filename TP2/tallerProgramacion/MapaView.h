@@ -51,15 +51,18 @@ public:
 	static constexpr const int TAMAÑO_INDICADOR_OBJETO = 3;
 	float ESCALA_MAPA = 0.75;
 	float FACTOR_DECREMENTO_ESCALA = 0.66;
-	
+	void initSegmentos();
+	void borrarSegmentos();
+	void borrarObjetos();
 private:
+	
 	int getTramoActual();
 	Mapa* mapa[3];
 	Renderer* gRenderer = NULL;
 	std::vector<Segmento*> segmentos;
 	std::vector<Line> lineasADibujarMapa;
 	std::vector<SDL_Rect*> objetosADibujar;
-	void initSegmentos();
+	
 	bool terminoDibujarMapa;
 	int nivel = 0;
 	int metroActualAuto;

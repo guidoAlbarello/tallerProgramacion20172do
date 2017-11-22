@@ -707,6 +707,7 @@ bool MapaView::validarLineaDibujable(Line lineaADibujar) {
 	return true;
 }
 
+
 int MapaView::getTramoActual() {
 	int pos = ManejadorDeTexturas::getInstance()->getCamara()->getPosicion()->getY() / ALTO_TRAMO; // si se toca aca, tambien tocar en Juego.cpp!! :/
 	return pos;
@@ -741,4 +742,25 @@ void MapaView::initSegmentos() {
 			}
 		}	
 	}
+}
+
+void MapaView::borrarSegmentos() {
+
+	for (unsigned int i = 0; i < segmentos.size(); i++) {
+		Segmento* unSegmento = segmentos[i];
+		delete unSegmento;
+	}
+
+	segmentos.erase(segmentos.begin(), segmentos.end());
+}
+
+void MapaView::borrarObjetos() {
+	lineasADibujarMapa.erase(lineasADibujarMapa.begin(), lineasADibujarMapa.end());
+
+	for (unsigned int i = 0; i < objetosADibujar.size(); i++) {
+		SDL_Rect* unObjeto = objetosADibujar[i];
+		delete unObjeto;
+	}
+
+	objetosADibujar.erase(objetosADibujar.begin(), objetosADibujar.end());
 }

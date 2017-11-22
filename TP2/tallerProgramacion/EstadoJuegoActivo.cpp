@@ -142,6 +142,10 @@ void EstadoJuegoActivo::render() {
 			dibujarPantallaTransicion();
 			SDL_RenderPresent(this->renderer->getRendererJuego());
 			std::this_thread::sleep_for(std::chrono::milliseconds(1000 * Constantes::TIEMPO_PANTALLA_TRANSICION));
+			mapaView->borrarSegmentos();
+			mapaView->borrarObjetos();
+			mapaView->initSegmentos();
+			mapaView->renderInit();
 			estaEnPantallaTransicion = false;
 		}
 	}
