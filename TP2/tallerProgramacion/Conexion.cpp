@@ -355,7 +355,7 @@ void Conexion::procesarDatosRecibidos() {
 				break;
 			case ComandoServidor::USUARIOS:
 				Logger::getInstance()->log(Debug, "Recibio peticion de Usuarios");
-				procesarPeticionListaDeUsuarios();
+				//procesarPeticionListaDeUsuarios();
 				break;
 			case ComandoServidor::INPUT:
 				Logger::getInstance()->log(Debug, "Recibio Input");
