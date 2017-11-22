@@ -9,6 +9,7 @@ bool Juego::iniciarJuego(int cantidadJugadoresMaxima) {
 	this->iniciarEscenario();
 	this->procesarMapa();
 	this->t_gameLoop = std::thread(&Juego::gameLoop, this);
+	this->tiempo = 0;
 	return true;
 }
 
@@ -39,7 +40,7 @@ void Juego::procesarMapa() {
 
 void Juego::update(Unidad tiempoDelta) {
 	//update de todos los elementos del juego
-
+	tiempo += tiempoDelta;
 	this->escenario->update(tiempoDelta);
 
 	for (int i = 0; i < this->objetosDeJuego.size(); i++) {
@@ -90,6 +91,7 @@ void Juego::update(Unidad tiempoDelta) {
 		int factorVapunterto = vaPuntero(unJugador) ? 2 : 1;
 		unJugador->addPuntos(((unJugador->getPosicionY() - posicionAnteriorY) / 100) * unJugador->getVelocidad().getY() * factorVapunterto);
 		//cout << "puntos: " << unJugador->getPuntos() << ", y: "<< unJugador->getPosicionY() / 100 << ", velocidad: " << unJugador->getVelocidad().getY() << ", puntero: " << vaPuntero(unJugador) <<endl;
+		unJugador->setTiempo(tiempo / 1000);
 	}
 
 }
@@ -134,6 +136,7 @@ EstadoModeloJuego* Juego::getEstadoJuego() {
 		nuevoEstado->estadoJugadores[i].conectado = unJugador->estaConectado();
 		nuevoEstado->estadoJugadores[i].vida = unJugador->getVida();
 		nuevoEstado->estadoJugadores[i].puntos = unJugador->getPuntos();
+		nuevoEstado->estadoJugadores[i].tiempo = unJugador->getTiempo();
 
 		if (unJugador->getCamara()->getPosicionTarget()->getY() / ALTO_TRAMO >= mapa[nivel]->getLongitudTotal()) {
 			// LLego a la meta

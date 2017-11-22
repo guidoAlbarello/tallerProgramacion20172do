@@ -65,6 +65,7 @@ struct EstadoJugador {
 	float velocidadX;
 	float velocidadY;
 	long puntos;
+	long tiempo;
 };
 
 struct EstadoEscenario {

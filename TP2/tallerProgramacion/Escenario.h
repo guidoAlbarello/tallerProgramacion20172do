@@ -33,6 +33,7 @@ public:
 	bool limiteImagenColinas() { return posicionColinas.getX() < 800; }
 	//bool limiteImagenCielo() { return posicionCielo.getX() < 1600; }
 	//bool limiteImagenColinas() { return posicionColinas.getX() < 1600; }
+	void setTiempo(long tiempo);
 private:
 	Vector posicionCielo;
 	Vector posicionColinas;
@@ -41,5 +42,6 @@ private:
 	Renderer* renderer;
 	long puntos;
 	TableroPuntosEnJuego* tablero;
+	long tiempo;
 };
 #endif

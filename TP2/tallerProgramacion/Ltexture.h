@@ -46,6 +46,9 @@ public:
 	int getWidth();
 	int getHeight();
 
+	//Sets image dimensions
+	void setWidth(int w) { this->mWidth = w; }
+	void setHeight(int h) { this->mHeight = h; }
 private:
 	//The actual hardware texture
 	SDL_Texture* mTexture;

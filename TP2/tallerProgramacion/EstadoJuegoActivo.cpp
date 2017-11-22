@@ -49,6 +49,7 @@ void EstadoJuegoActivo::update(ManejadorDeConexionCliente* conexionCliente) {
 
 				this->escenario->setPosicionCielo(estadoModeloJuego->estadoEscenario.cieloX, estadoModeloJuego->estadoEscenario.cieloY);
 				this->escenario->setPuntos(estado->puntos);
+				this->escenario->setTiempo(estado->tiempo);
 				if (estado->velocidadY > 0) {
 					Segmento* segmentoActual = this->mapaView->getSegmentoActual();
 					Vector* posicion = this->escenario->getPosicionCielo();

@@ -47,6 +47,8 @@ public:
 	long getPuntos();
 	void addPuntos(long agregar);
 	string getNombre() { return this->nombre; }
+	long getTiempo();
+	void setTiempo(long t);
 protected:
 	void dañarAuto();
 	bool entrada[Constantes::CANT_TECLAS];
@@ -64,5 +66,6 @@ protected:
 	double tiempoNitro = 0;
 	string nombre;
 	std::chrono::time_point<std::chrono::steady_clock> inicioIntervalo;
+	long tiempo;
 };
 #endif

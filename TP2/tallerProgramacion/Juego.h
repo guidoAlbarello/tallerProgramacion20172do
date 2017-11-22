@@ -57,6 +57,7 @@ private:
 	bool Juego::vaPuntero(Jugador * unJugador);
 	int nivel = 0;
 	bool juegoTerminado = false;
+	unsigned long tiempo;
 };
 
 #endif

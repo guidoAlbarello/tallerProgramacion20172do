@@ -12,6 +12,7 @@ Jugador::Jugador(string nombre) {
 	this->chocado = false;
 	this->puntos = 0;
 	this->nombre = nombre;
+	this->tiempo = 0;
 }
 
 Jugador::Jugador(SDL_Renderer* renderer) : ObjetoDeJuego(renderer) {
@@ -182,5 +183,10 @@ void Jugador::dañarAuto() {
 	else
 		vida = 0;
 }
-
+long Jugador::getTiempo() {
+	return this->tiempo;
+}
+void Jugador::setTiempo(long t) {
+	this->tiempo = t;
+}
 

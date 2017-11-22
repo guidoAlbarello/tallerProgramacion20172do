@@ -83,6 +83,9 @@ void Escenario::render() {
 	std::stringstream ss;
 	ss << puntos;
 	this->tablero->setMensaje("Puntos: " + ss.str());
+	std::stringstream sTiempo;
+	sTiempo << tiempo;
+	this->tablero->setTiempo(sTiempo.str());
 	this->tablero->update();
 	//this->colinas->renderStatic(renderer);
 	//Renderear puntos
@@ -90,4 +93,8 @@ void Escenario::render() {
 
 void Escenario::setPuntos(long puntos) {
 	this->puntos = puntos;
+}
+
+void Escenario::setTiempo(long tiempo) {
+	this->tiempo = tiempo;
 }
