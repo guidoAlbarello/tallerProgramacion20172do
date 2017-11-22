@@ -27,6 +27,8 @@ void MapaView::init() {
 
 void MapaView::cambiarNivel() {
 	nivel++;
+	// TODO: rearmar los segmentos y procesar la pista actual
+	renderInit();
 }
 
 void MapaView::renderInit() {
