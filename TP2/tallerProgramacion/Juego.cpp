@@ -132,7 +132,7 @@ EstadoModeloJuego* Juego::getEstadoJuego() {
 		Jugador* unJugador = jugadores[i];
 		nuevoEstado->estadoJugadores[i].id = unJugador->getId();
 		nuevoEstado->estadoJugadores[i].conectado = unJugador->estaConectado();
-		nuevoEstado->estadoJugadores[i].chocado = unJugador->estaChocado();
+		nuevoEstado->estadoJugadores[i].vida = unJugador->getVida();
 		nuevoEstado->estadoJugadores[i].puntos = unJugador->getPuntos();
 
 		if (unJugador->getCamara()->getPosicionTarget()->getY() / ALTO_TRAMO >= mapa[nivel]->getLongitudTotal()) {

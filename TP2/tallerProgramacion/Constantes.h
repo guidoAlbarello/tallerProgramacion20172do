@@ -60,7 +60,7 @@ struct EstadoJugador {
 	Unidad posX;
 	Unidad posY;
 	EstadoAuto estadoAuto;
-	bool chocado;
+	int vida;
 	bool conectado;
 	float velocidadX;
 	float velocidadY;

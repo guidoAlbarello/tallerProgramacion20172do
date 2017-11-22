@@ -162,6 +162,7 @@ bool Jugador::estaChocado() {
 
 void Jugador::chocar(double posicionY) {
 	this->chocado = true;
+	dañarAuto();
 	velocidad.setX(0);
 	velocidad.setY(0);
 	this->setPosicionY(posicionY - 1);
@@ -173,6 +174,13 @@ long Jugador::getPuntos() {
 
 void Jugador::addPuntos(long agregar) {
 	this->puntos += agregar;
+}
+
+void Jugador::dañarAuto() {
+	if (vida > 0)
+		vida--;
+	else
+		vida = 0;
 }
 
 

@@ -195,6 +195,9 @@
     <ClInclude Include="ManejadorAudio.h">
       <Filter>Archivos de encabezado\Manejadores</Filter>
     </ClInclude>
+    <ClInclude Include="TableroPuntosEnJuego.h">
+      <Filter>Archivos de encabezado\Juego</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Constantes.cpp">
@@ -349,6 +352,9 @@
     </ClCompile>
     <ClCompile Include="EstadoNivel.cpp">
       <Filter>Archivos de código fuente\EstadosJuego</Filter>
+    </ClCompile>
+    <ClCompile Include="TableroPuntosEnJuego.cpp">
+      <Filter>Archivos de código fuente\Juego</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
