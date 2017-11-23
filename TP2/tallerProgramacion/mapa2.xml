@@ -1,29 +1,62 @@
+<!-- Pista etapa2 pedida -->
 <mapa>
-	<!-- 700m -->
-	<tramo longitud="500" tipo="recta">
-		<arbol posicion="izquierda" ubicacion="300"></arbol>
-		<arbol posicion="derecha" ubicacion="300"></arbol>
-		<arbol posicion="izquierda" ubicacion="400"></arbol>
-		<arbol posicion="izquierda" ubicacion="500"></arbol>
+	<tramo longitud="1000" tipo="recta">
+		<cartel posicion="derecha" ubicacion="300" valor="80"></cartel>
+		<cartel posicion="derecha" ubicacion="700" valor="80"></cartel>
 	</tramo>
-	<!-- 1200m -->
+	<!-- 1000 -->
+	<tramo longitud="200" tipo="curva" sentido="derecha">
+	</tramo>
+	<!-- 1200 -->
+	<tramo longitud="500" tipo="recta">
+		<cartel posicion="izquierda" ubicacion="1300" valor="80"></cartel>
+		<arbol posicion="derecha" ubicacion="1400"></arbol>
+		<arbol posicion="derecha" ubicacion="1500"></arbol>
+		<cartel posicion="derecha" ubicacion="1600" valor="80"></cartel>
+	</tramo>
+	<!-- 1700 -->
+	<tramo longitud="200" tipo="curva" sentido="derecha">
+	</tramo>
+	<!-- 1900 -->
+	<tramo longitud="500" tipo="recta">
+		<arbol posicion="izquierda" ubicacion="2000"></arbol>
+		<arbol posicion="izquierda" ubicacion="2100"></arbol>
+		<arbol posicion="izquierda" ubicacion="2200"></arbol>
+		<arbol posicion="izquierda" ubicacion="2300"></arbol>
+	</tramo>
+	<!-- 2400 -->
 	<tramo longitud="200" tipo="curva" sentido="izquierda">
-		<arbol posicion="izquierda" ubicacion="600"></arbol>
-		<arbol posicion="derecha" ubicacion="700"></arbol>
 	</tramo>
-	<!-- 1400m -->
-	<tramo longitud="200" tipo="recta">
-		<arbol posicion="derecha" ubicacion="800"></arbol>
-		<arbol posicion="derecha" ubicacion="900"></arbol>
-	</tramo>
-	<!-- 1600m -->
-	<tramo longitud="250" tipo="curva" sentido="derecha">
-	</tramo>
-	<!-- 1850m -->
+	<!-- 2600 -->
 	<tramo longitud="500" tipo="recta">
+		<cartel posicion="derecha" ubicacion="2700" valor="80"></cartel>
+		<cartel posicion="derecha" ubicacion="2800" valor="80"></cartel>
+		<cartel posicion="derecha" ubicacion="2900" valor="80"></cartel>
+		<cartel posicion="derecha" ubicacion="3000" valor="80"></cartel>
 	</tramo>
-	<!-- 2350m -->
-	<tramo longitud="250" tipo="curva" sentido="derecha">
+	<!-- 3100 -->
+	<tramo longitud="200" tipo="curva" sentido="izquierda">
 	</tramo>
-	<!-- 2600m -->
+	<!-- 3300 -->
+	<tramo longitud="1000" tipo="recta">
+		<arbol posicion="derecha" ubicacion="3600"></arbol>
+		<arbol posicion="derecha" ubicacion="3610"></arbol>
+		<arbol posicion="derecha" ubicacion="3620"></arbol>
+		<arbol posicion="derecha" ubicacion="3630"></arbol>
+		<arbol posicion="derecha" ubicacion="3640"></arbol>
+		<arbol posicion="derecha" ubicacion="3650"></arbol>
+		<arbol posicion="izquierda" ubicacion="3660"></arbol>
+		<arbol posicion="izquierda" ubicacion="3670"></arbol>
+		<arbol posicion="izquierda" ubicacion="3680"></arbol>
+		<arbol posicion="izquierda" ubicacion="3690"></arbol>
+	</tramo>
+	<!-- 4300 -->
+	<tramo longitud="200" tipo="curva" sentido="izquierda">
+	</tramo>
+	<!-- 4500 -->
+	<tramo longitud="500" tipo="recta">
+		<arbol posicion="izquierda" ubicacion="4600"></arbol>
+		<cartel posicion="izquierda" ubicacion="4900" valor="80"></cartel>
+	</tramo>
+	<!-- 5000 -->
 </mapa>
