@@ -68,7 +68,8 @@ void EstadoJuegoActivo::update(ManejadorDeConexionCliente* conexionCliente) {
 				this->camara->setPosicion(estado->posXCamara, estado->posYCamara);
 
 				this->escenario->setPosicionCielo(estadoModeloJuego->estadoEscenario.cieloX, estadoModeloJuego->estadoEscenario.cieloY);
-				this->escenario->setPuntos(estado->puntos);
+				this->escenario->setVelocidad(estado->velocidadY);
+				this->escenario->setDistancia(estado->posY / 100);
 				this->escenario->setTiempo(estado->tiempo);
 				if (estado->velocidadY > 0) {
 					Segmento* segmentoActual = this->mapaView->getSegmentoActual();

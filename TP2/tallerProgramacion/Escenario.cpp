@@ -3,7 +3,6 @@
 
 Escenario::Escenario(Renderer* renderer) {
 	this->renderer = renderer;
-	this->puntos = puntos;
 	this->tablero = new TableroPuntosEnJuego(renderer->getRendererJuego());
 	this->tablero->init();
 }
@@ -43,6 +42,8 @@ Escenario::~Escenario() {
 }
 
 void Escenario::update(Unidad deltaTiempo) {
+	/*	gPromptTextTexture->loadFromRenderedText(this->mensaje, textColor);
+	gPromptTextTexture->render(SCREEN_WIDTH - WIDTH, 0);
 	if (limiteImagenCielo())
 		posicionCielo.setX((int(posicionCielo.getX() + VELOCIDAD_CIELO * deltaTiempo)));
 	else
@@ -52,6 +53,7 @@ void Escenario::update(Unidad deltaTiempo) {
 	else
 		posicionColinas.setX(0);
 	//posicionColinas.setX((int(posicionColinas.getX() + VELOCIDAD_COLINAS * deltaTiempo)) % colinas->getAncho());
+	*/
 }
 void Escenario::setPosicionCielo(int x, int y){
 	while (x > 0) {
@@ -80,19 +82,26 @@ void Escenario::render() {
 	//->cielo->setPosicion(posicionCielo.getX(), posicionCielo.getY());
 	this->cielo->renderStaticEnCoord(renderer, posicionCielo.getX(), posicionCielo.getY());
 	this->colinas->renderStaticEnCoord(renderer, posicionColinas.getX(), posicionColinas.getY());
-	std::stringstream ss;
-	ss << puntos;
-	this->tablero->setMensaje("Puntos: " + ss.str());
+	std::stringstream sVelocidad;
+	sVelocidad << velocidad;
+	this->tablero->setVelocidad("Velocidad: " + sVelocidad.str());
 	std::stringstream sTiempo;
 	sTiempo << tiempo;
 	this->tablero->setTiempo(sTiempo.str());
+	std::stringstream sDistancia;
+	sDistancia << distancia;
+	this->tablero->setDistancia("Distancia: " + sDistancia.str());
 	this->tablero->update();
 	//this->colinas->renderStatic(renderer);
 	//Renderear puntos
 }
 
-void Escenario::setPuntos(long puntos) {
-	this->puntos = puntos;
+void Escenario::setDistancia(long distancia) {
+	this->distancia = distancia;
+}
+
+void Escenario::setVelocidad(long velocidad) {
+	this->velocidad = velocidad;
 }
 
 void Escenario::setTiempo(long tiempo) {

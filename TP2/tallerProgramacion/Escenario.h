@@ -27,7 +27,8 @@ public:
 	Vector* getPosicionCielo() { return &posicionCielo; }
 	Vector* getPosicionColinas() { return &posicionColinas; }
 	void setPosicionCielo(int x, int y);
-	void setPuntos(long puntos);
+	void setDistancia(long distancia);
+	void setVelocidad(long velocidad);
 	void setPosicionColinas(int x, int y);
 	bool limiteImagenCielo() { return posicionCielo.getX() < 800; }
 	bool limiteImagenColinas() { return posicionColinas.getX() < 800; }
@@ -40,7 +41,8 @@ private:
 	Sprite* cielo;
 	Sprite* colinas;
 	Renderer* renderer;
-	long puntos;
+	long distancia;
+	long velocidad;
 	TableroPuntosEnJuego* tablero;
 	long tiempo;
 };

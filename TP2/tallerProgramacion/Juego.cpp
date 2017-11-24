@@ -64,7 +64,7 @@ void Juego::update(Unidad tiempoDelta) {
 				break;
 			}
 			if (hayColision(posicionAnteriorY, posicionActualY, posicionAnteriorX, posicionActualX, jugador)) {
-				unJugador->chocar(jugador->getPosicion()->getY());
+				unJugador->chocar(jugador->getPosicion()->getY(), jugador->getVelocidad().getY());
 				//cout << "Hubo colision y, y: " << unJugador->getPosicion()->getY() << endl;
 			}
 		}
@@ -72,7 +72,7 @@ void Juego::update(Unidad tiempoDelta) {
 		for (int j = 0; j < this->mapa[nivel]->getObjetosDelMapa().size(); j++) {
 			ObjetoFijo* objeto = this->mapa[nivel]->getObjetosDelMapa()[j];
 			if (hayColisionObjetoFijo(posicionAnteriorY, posicionActualY, posicionAnteriorX, posicionActualX, objeto) != 0) {
-				unJugador->chocar(objeto->getUbicacionM() * 100 - (ALTO_TRAMO * 2));
+				unJugador->chocar(objeto->getUbicacionM() * 100 - (ALTO_TRAMO * 2), 0);
 					//cout << "COLISION, yAnterior: " << posicionAnteriorY << ", actual: " << posicionActualY << ", objetoM: " << objeto->getUbicacionM() << ", velocidadY: "<< unJugador->getVelocidad().getY() <<endl;
 			}
 		}
@@ -92,6 +92,7 @@ void Juego::update(Unidad tiempoDelta) {
 		unJugador->addPuntos(((unJugador->getPosicionY() - posicionAnteriorY) / 100) * unJugador->getVelocidad().getY() * factorVapunterto);
 		//cout << "puntos: " << unJugador->getPuntos() << ", y: "<< unJugador->getPosicionY() / 100 << ", velocidad: " << unJugador->getVelocidad().getY() << ", puntero: " << vaPuntero(unJugador) <<endl;
 		unJugador->setTiempo(tiempo / 1000);
+		
 	}
 
 }

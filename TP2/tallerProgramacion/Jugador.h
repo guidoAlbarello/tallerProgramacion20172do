@@ -42,7 +42,7 @@ public:
 	bool estaChocado();
 	bool getNitroActivo() { return usarNitro; }
 	int getVida() { return vida; }
-	void chocar(double posicionY);
+	void chocar(double posicionY, int velocidad);
 	void setDeshabilitarMovimiento(bool estado) { movimientoDeshabilitado = estado; }
 	bool getDeshabilitarMovimiento() { return movimientoDeshabilitado; }
 	long getPuntos();
@@ -68,5 +68,6 @@ protected:
 	string nombre;
 	std::chrono::time_point<std::chrono::steady_clock> inicioIntervalo;
 	long tiempo;
+
 };
 #endif
