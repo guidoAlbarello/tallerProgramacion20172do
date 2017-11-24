@@ -329,7 +329,7 @@ void Juego::inicializarNivel() {
 		unJugador->setPosicion(unJugador->getId() * 100,0);
 		unJugador->setDeshabilitarMovimiento(false);
 	}
-	
+	tiempo = 0;
 	//aumentar nivel
 	if (nivel < 2) {
 		nivel++;
