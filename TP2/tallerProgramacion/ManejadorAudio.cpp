@@ -1,6 +1,5 @@
 #include "ManejadorAudio.h"
 
-
 ManejadorAudio* ManejadorAudio::instance = 0;
 
 ManejadorAudio::ManejadorAudio()
@@ -29,7 +28,6 @@ bool ManejadorAudio::load(std::string fileName, std::string	id) {
 
 	//Load the music
 	music = Mix_LoadMUS(fileName.c_str()); // Ya debe venir con extension .wav
-
 	//If there was a problem loading the music
 	if (music == NULL)
 	{
@@ -84,6 +82,50 @@ bool ManejadorAudio::startOrPauseTrack(std::string id) {
 		}
 		return false;
 	} catch (exception e) {
+		Logger::getInstance()->log(Error, "Ocurrio un error al reproducir el sonido " + id);
+		return false;
+	}
+}
+bool ManejadorAudio::pauseTrack(std::string id) {
+	try {
+		Mix_Music* music = sonidos[id];
+		if (Mix_PlayingMusic() > 0) {
+			Mix_PauseMusic();
+		}
+	}
+	catch (exception e) {
+		Logger::getInstance()->log(Error, "Ocurrio un error al reproducir el sonido " + id);
+		return false;
+	}
+}
+
+bool ManejadorAudio::startTrack(std::string id) {
+	try {
+		Mix_Music* music = sonidos[id];
+
+		//If there is no music playing
+		if (Mix_PlayingMusic() == 0) {
+			//Play the music
+			Mix_PlayMusic(music, -1);
+			return true;
+		}
+		else {
+ 		    //If the music is paused
+			if (Mix_PausedMusic() == 1) {
+				Mix_PlayMusic(music, -1);
+				return true;
+			}
+			else {
+				//Pause the music
+				Mix_PauseMusic();
+				Mix_PlayMusic(music, -1);
+				return true;
+			}
+			return true;
+		}
+		return false;
+	}
+	catch (exception e) {
 		Logger::getInstance()->log(Error, "Ocurrio un error al reproducir el sonido " + id);
 		return false;
 	}

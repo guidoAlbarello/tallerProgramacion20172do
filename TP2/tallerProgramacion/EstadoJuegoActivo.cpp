@@ -283,7 +283,7 @@ string EstadoJuegoActivo::obtenerNombreUsuarioPorId(int id, map<int, string> nom
 }
 
 bool EstadoJuegoActivo::onEnter(Renderer* renderer) {
-	ManejadorAudio::getInstance()->startOrPauseTrack("initTrack"); // Se pausa musica login
+	ManejadorAudio::getInstance()->pauseTrack("initTrack"); // Se pausa musica login
 	this->escenario = new Escenario(renderer);
 	this->escenario->iniciar();
 	this->mapaView = new MapaView(renderer);
@@ -291,7 +291,8 @@ bool EstadoJuegoActivo::onEnter(Renderer* renderer) {
 	this->camara = new Camara();
 	ManejadorDeTexturas::getInstance()->setCamara(camara);
 	this->initPuntajes();
-	
+	ManejadorAudio::getInstance()->startTrack("motor2"); // Se pausa musica login
+
 	return true;
 }
 

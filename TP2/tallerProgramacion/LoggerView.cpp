@@ -235,4 +235,6 @@ Usuario* LoggerView::showLogin() {
 
 void LoggerView::initSonido() {
 	ManejadorAudio::getInstance()->load("sound/init_track.wav", "initTrack");
+	ManejadorAudio::getInstance()->load("sound/motor1.wav", "motor");
+	ManejadorAudio::getInstance()->load("sound/motor2.wav", "motor2");
 }
