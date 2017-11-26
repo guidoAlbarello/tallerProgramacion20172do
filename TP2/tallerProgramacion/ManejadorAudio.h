@@ -15,7 +15,8 @@ public:
 	static ManejadorAudio* getInstance();
 	bool load(std::string fileName, std::string	id);
 	bool startOrPauseTrack(std::string id);
-
+	bool pauseTrack(std::string id);
+	bool startTrack(std::string id);
 private:
 	static ManejadorAudio* instance;
 	std::map<std::string, Mix_Music*> sonidos;	
