@@ -51,6 +51,7 @@ void MapaView::renderInit() {
 	SDL_RenderPresent(renderer);
 }
 
+// Este metodo no se llama, era si se updateaba la ventana del minimapa pero solo se renderiza una vez
 void MapaView::renderStoredObjects() {
 	SDL_Window* window = this->gRenderer->getWindowMapa();
 	SDL_Renderer* renderer = this->gRenderer->getRendererMapa();
@@ -103,7 +104,7 @@ void MapaView::render(Renderer* renderer) {
 		float x = 0, dx = 0;
 		for (int i = 0; i < DISTANCIA_DIBUJADO; i++) {
 			if (segmentos.size() > base + i) {
-				Segmento* unSegmento = segmentos[base + i];			//agregar chequeo distancia dibujado > tamaño array
+				Segmento* unSegmento = segmentos[base + i];
 				ManejadorDeTexturas::getInstance()->dibujarTramo(unSegmento, ANCHO_TRAMO, renderer->getAnchoVentana(), renderer->getAltoVentana(), renderer->getRendererJuego(), (base + i), x);
 				x += dx;
 				dx += unSegmento->curva;

@@ -35,6 +35,10 @@ public:
 	//bool limiteImagenCielo() { return posicionCielo.getX() < 1600; }
 	//bool limiteImagenColinas() { return posicionColinas.getX() < 1600; }
 	void setTiempo(long tiempo);
+	void setNivel(int nivel) { this->nivel = nivel; }
+	int getNivel() { return this->nivel; }
+	void cambiarNivel();
+	void cambiarCieloYColinas();
 private:
 	Vector posicionCielo;
 	Vector posicionColinas;
@@ -45,5 +49,6 @@ private:
 	long velocidad;
 	TableroPuntosEnJuego* tablero;
 	long tiempo;
+	int nivel;
 };
 #endif

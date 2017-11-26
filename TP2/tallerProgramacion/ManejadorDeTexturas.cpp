@@ -140,10 +140,9 @@ void ManejadorDeTexturas::dibujarTramo(Segmento* unSegmento, int ancho, int anch
 	Sint16 vyTramo[4] = { p1.y,p2.y,p2.y,p1.y };
 
 	if ((n) % 2)
-		filledPolygonRGBA(renderer, vxPasto, vyPasto, 4, 20, 170, 20, 255);
+		filledPolygonRGBA(renderer, vxPasto, vyPasto, 4, rPasto1, gPasto1, bPasto1, 255);
 	else
-		filledPolygonRGBA(renderer, vxPasto, vyPasto, 4, 5, 130, 2, 255);
-
+		filledPolygonRGBA(renderer, vxPasto, vyPasto, 4, rPasto2, gPasto2, bPasto2, 255);
 	if ((n) % 2)
 		filledPolygonRGBA(renderer, vxBorde, vyBorde, 4, 210, 210, 210, 255);
 	else
@@ -270,3 +269,35 @@ float ManejadorDeTexturas::normZIndex(float zIndex) {
 ManejadorDeTexturas::~ManejadorDeTexturas() {
 }
 
+void ManejadorDeTexturas::cambiarNivel() {
+	this->nivel++;
+	switch (nivel) {
+	case 0:
+		// dia
+		rPasto1 = 20;
+		gPasto1 = 170;
+		bPasto1 = 20;
+		rPasto2 = 5;
+		gPasto2 = 130;
+		bPasto2 = 2;
+		break;
+	case 1:
+		// tarde
+		rPasto1 = 206;
+		gPasto1 = 143;
+		bPasto1 = 47;
+		rPasto2 = 240;
+		gPasto2 = 176;
+		bPasto2 = 65;
+		break;
+	case 2:
+		// noche
+		rPasto1 = 55;
+		gPasto1 = 6;
+		bPasto1 = 92;
+		rPasto2 = 39;
+		gPasto2 = 4;
+		bPasto2 = 65;
+		break;
+	}
+}

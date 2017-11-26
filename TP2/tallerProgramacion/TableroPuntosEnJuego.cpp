@@ -47,10 +47,9 @@ void TableroPuntosEnJuego::init() {
 
 void  TableroPuntosEnJuego::update() {
 	gPromptVelocidad->loadFromRenderedText(this->velocidad, textColor);
-	gPromptVelocidad->render(400, 0);
-	gPromptDistancia->loadFromRenderedText(this->distancia, textColor);
-	gPromptDistancia->render(400, 40);
+	gPromptVelocidad->render(10, 10);
 	gPromptTiempo->loadFromRenderedText(this->tiempo, textColor);
-	gPromptTiempo->render(400, 80);
-
+	gPromptTiempo->render(280, 10);
+	gPromptDistancia->loadFromRenderedText(this->distancia, textColor);
+	gPromptDistancia->render(510, 10);
 }

@@ -10,7 +10,7 @@ Ltexture::Ltexture(SDL_Renderer* renderer)
 	mWidth = 0;
 	mHeight = 0;
 	//gFont = TTF_OpenFont("lazy.ttf", 28);
-	gFont = TTF_OpenFont("fonts/NES-Chimera/NES-Chimera.ttf", 20);
+	gFont = TTF_OpenFont("fonts/NES-Chimera/NES-Chimera.ttf", Constantes::GLOBAL_FONT_SIZE);
 	if (gFont == NULL)
 	{
 		printf("Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError());
@@ -25,7 +25,7 @@ Ltexture::Ltexture()
 	mTexture = NULL;
 	mWidth = 0;
 	mHeight = 0;
-	gFont = TTF_OpenFont("lazy.ttf", 28);
+	gFont = TTF_OpenFont("lazy.ttf", Constantes::GLOBAL_FONT_SIZE);
 	if (gFont == NULL)
 	{
 		printf("Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError());

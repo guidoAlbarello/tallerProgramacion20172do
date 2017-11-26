@@ -3,6 +3,7 @@
 
 Escenario::Escenario(Renderer* renderer) {
 	this->renderer = renderer;
+	this->nivel = 0;
 	this->tablero = new TableroPuntosEnJuego(renderer->getRendererJuego());
 	this->tablero->init();
 }
@@ -87,7 +88,7 @@ void Escenario::render() {
 	this->tablero->setVelocidad("Velocidad: " + sVelocidad.str());
 	std::stringstream sTiempo;
 	sTiempo << tiempo;
-	this->tablero->setTiempo(sTiempo.str());
+	this->tablero->setTiempo("Tiempo: " + sTiempo.str() + "s");
 	std::stringstream sDistancia;
 	sDistancia << distancia;
 	this->tablero->setDistancia("Distancia: " + sDistancia.str());
@@ -106,4 +107,77 @@ void Escenario::setVelocidad(long velocidad) {
 
 void Escenario::setTiempo(long tiempo) {
 	this->tiempo = tiempo;
+}
+
+void Escenario::cambiarNivel() {
+	this->nivel++;
+	cambiarCieloYColinas();
+}
+
+void Escenario::cambiarCieloYColinas() {
+	std::string skyFileName;
+	std::string hillsFileName;
+	switch (this->nivel) {
+	case 0:
+		// dia
+		cielo = new Sprite();
+		skyFileName = "fondo/sky.png";
+		cielo->setId("cielo");
+		cielo->setPosicion(0, POS_Y_CIELO);
+		posicionCielo.setX(0);
+		posicionCielo.setY(POS_Y_CIELO);
+		cielo->setAnchoYAlto(1600, ALTO_CIELO);
+		cielo->load(skyFileName, this->renderer->getRendererJuego()); // Setear el id antes del load!
+
+		colinas = new Sprite();
+		hillsFileName = "fondo/hills.png";
+		colinas->setId("colinas");
+		colinas->setPosicion(0, POS_Y_COLINAS);
+		posicionColinas.setX(0);
+		posicionColinas.setY(POS_Y_COLINAS);
+		colinas->setAnchoYAlto(1600, ALTO_COLINAS);
+		colinas->load(hillsFileName, this->renderer->getRendererJuego()); // Setear el id antes del load!
+		break;
+	case 1:
+		// tarde
+		cielo = new Sprite();
+		skyFileName = "fondo/sky_tarde.png";
+		cielo->setId("cielo");
+		cielo->setPosicion(0, POS_Y_CIELO);
+		posicionCielo.setX(0);
+		posicionCielo.setY(POS_Y_CIELO);
+		cielo->setAnchoYAlto(1600, ALTO_CIELO);
+		cielo->load(skyFileName, this->renderer->getRendererJuego()); // Setear el id antes del load!
+
+		colinas = new Sprite();
+		hillsFileName = "fondo/hills_tarde.png";
+		colinas->setId("colinas");
+		colinas->setPosicion(0, POS_Y_COLINAS);
+		posicionColinas.setX(0);
+		posicionColinas.setY(POS_Y_COLINAS);
+		colinas->setAnchoYAlto(1600, ALTO_COLINAS);
+		colinas->load(hillsFileName, this->renderer->getRendererJuego()); // Setear el id antes del load!
+		break;
+	case 2:
+		// noche
+		cielo = new Sprite();
+		skyFileName = "fondo/sky_noche.png";
+		cielo->setId("cielo");
+		cielo->setPosicion(0, POS_Y_CIELO);
+		posicionCielo.setX(0);
+		posicionCielo.setY(POS_Y_CIELO);
+		cielo->setAnchoYAlto(1600, ALTO_CIELO);
+		cielo->load(skyFileName, this->renderer->getRendererJuego()); // Setear el id antes del load!
+
+		colinas = new Sprite();
+		hillsFileName = "fondo/hills_noche.png";
+		colinas->setId("colinas");
+		colinas->setPosicion(0, POS_Y_COLINAS);
+		posicionColinas.setX(0);
+		posicionColinas.setY(POS_Y_COLINAS);
+		colinas->setAnchoYAlto(1600, ALTO_COLINAS);
+		colinas->load(hillsFileName, this->renderer->getRendererJuego()); // Setear el id antes del load!
+		break;
+	}
+
 }

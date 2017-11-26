@@ -8,7 +8,7 @@
 #define TECLA_DERECHA SDL_SCANCODE_RIGHT
 #define TECLA_IZQUIERDA SDL_SCANCODE_LEFT
 #define TECLA_ACELERAR SDL_SCANCODE_UP
-#define LIMITE_PISTA_X_DERECHA 700
+#define LIMITE_PISTA_X_DERECHA 800
 #define LIMITE_PISTA_X_IZQUIERDA -700
 #define ANCHO_TRAMO 700
 
@@ -47,6 +47,7 @@ public:
 	static constexpr const int CANT_JUGADORES_INICIAR = 1;
 	static constexpr const int CANT_TECLAS = 4;
 	static constexpr const int TIEMPO_PANTALLA_TRANSICION = 10;
+	static constexpr const int GLOBAL_FONT_SIZE = 16;
 
 private:
 	Constantes();

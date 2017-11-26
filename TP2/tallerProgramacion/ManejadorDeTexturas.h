@@ -32,6 +32,7 @@ public:
 	Camara* getCamara() { return camara; }
 	void setObjetosPorSegmento(std::vector<std::vector<ObjetoFijo*>> objetosPorSegmento) { this->objetosPorSegmento = objetosPorSegmento; }
 	std::vector<std::vector<ObjetoFijo*>> getObjetosPorSegmento() { return this->objetosPorSegmento; }
+	void cambiarNivel();
 private:
 	Camara* camara;
 	float normZIndex(float zIndex);
@@ -41,6 +42,14 @@ private:
 	float proyectar(Coordenada& p, int& ancho, int anchoPantalla, int altoPantalla,float x);
 	std::map<std::string, SDL_Texture*> texturas;
 	std::vector<std::vector<ObjetoFijo*>> objetosPorSegmento;
+	int nivel = 0;
+	// Colores iniciales pasto verde
+	int rPasto1 = 20;
+	int gPasto1 = 170;
+	int bPasto1 = 20;
+	int rPasto2 = 5;
+	int gPasto2 = 130;
+	int bPasto2 = 2;
 };
 
 #endif

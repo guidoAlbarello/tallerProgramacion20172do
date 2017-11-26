@@ -228,7 +228,7 @@ void EstadoJuegoActivo::dibujarPantallaTransicion() {
 	for (unsigned int i = 1; i <= this->cantJugadores; i++) {
 		int puntos = estadoModeloJuego->estadoJugadores[i - 1].puntos;
 		string nombreUsuario = obtenerNombreUsuarioPorId(estadoModeloJuego->estadoJugadores[i - 1].id, nombresJugadores);
-		float tiempo = 0; // TODO: obtener el tiempo real
+		float tiempo = estadoModeloJuego->estadoJugadores[i - 1].tiempo;
 
 		switch (this->mapaView->getNivel()) {
 		case 0:
@@ -323,6 +323,8 @@ void EstadoJuegoActivo::cambiarNivel() {
 	if (!estaEnPantallaTransicion) {
 		estaEnPantallaTransicion = true;
 		this->mapaView->cambiarNivel();
+		this->escenario->cambiarNivel();
+		ManejadorDeTexturas::getInstance()->cambiarNivel();
 	}
 }
 
