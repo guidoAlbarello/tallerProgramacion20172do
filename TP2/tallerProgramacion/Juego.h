@@ -15,7 +15,8 @@
 
 
 #define MAX_SKIP_FRAMES 5
-
+#define FACTOR_CHOQUE 1
+// ESTO ES... ALTO 200 / ALTO_TRAMO
 class Juego {
 public:
 	Juego();
