@@ -15,7 +15,7 @@
 #define DISTANCIA_DIBUJADO 50
 #define DISTANCIA_DIBUJADO_OBJETOS 50
 #define ALTO_TRAMO 200
-#define INTENSIDAD_CURVAS 0.8
+#define INTENSIDAD_CURVAS 1.1
 using namespace std;
 
 
