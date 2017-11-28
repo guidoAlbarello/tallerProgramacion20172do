@@ -110,6 +110,31 @@ void EstadoJuegoActivo::update(ManejadorDeConexionCliente* conexionCliente) {
 						//ManejadorAudio::getInstance()->pauseTrack("carCrash");
 					}
 				}
+				//SONIDO DEL MOTOR
+				if ((estado->velocidadY >= LIMITE_SONIDO_MOTOR) &&
+					(velocidadAnterior < LIMITE_SONIDO_MOTOR ) &&
+					(estado->velocidadY > 0)) {
+					//CAMBIAR
+					ManejadorAudio::getInstance()->pauseTrack("motor"); // Se pausa musica login
+					ManejadorAudio::getInstance()->startTrack("motor2");
+					idSonidoMotor = "motor2";
+				}
+				if ((estado->velocidadY < LIMITE_SONIDO_MOTOR) &&
+					(velocidadAnterior >= LIMITE_SONIDO_MOTOR) &&
+					(estado->velocidadY > 0)) {
+					//CAMBIAR
+					ManejadorAudio::getInstance()->pauseTrack("motor2"); // Se pausa musica login
+					ManejadorAudio::getInstance()->startTrack("motor"); 
+					idSonidoMotor = "motor";
+				}
+				if ((estado->velocidadY <= 0) && (velocidadAnterior > 0)) {
+					ManejadorAudio::getInstance()->pauseTrack(idSonidoMotor);
+				}
+				if ((velocidadAnterior <= 0) && (estado->velocidadY > 0)) {
+					ManejadorAudio::getInstance()->startTrack("motor");
+					idSonidoMotor = "motor";
+				}
+				velocidadAnterior = estado->velocidadY;
 			}
 		}
 
@@ -297,8 +322,8 @@ bool EstadoJuegoActivo::onEnter(Renderer* renderer) {
 	this->camara = new Camara();
 	ManejadorDeTexturas::getInstance()->setCamara(camara);
 	this->initPuntajes();
-	ManejadorAudio::getInstance()->startTrack("motor2"); // Se pausa musica login
-
+	//ManejadorAudio::getInstance()->startTrack("motor2"); // Se pausa musica login
+	idSonidoMotor = "motor";
 	return true;
 }
 
@@ -339,6 +364,8 @@ void EstadoJuegoActivo::setParametro(void * param) {
 	inicializarObjetos((EstadoInicialJuego*) param);//pasar tambien pos inicial de camara ?? 
 	this->renderer = renderer;
 	this->inicializado = true;
+	velocidadAnterior = 0;
+	idSonidoMotor = "motor";
 }
 
 void EstadoJuegoActivo::inicializarObjetos(EstadoInicialJuego* unEstado) {

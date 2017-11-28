@@ -11,6 +11,7 @@
 #define LIMITE_PISTA_X_DERECHA 800
 #define LIMITE_PISTA_X_IZQUIERDA -700
 #define ANCHO_TRAMO 700
+#define LIMITE_SONIDO_MOTOR 100
 
 using namespace std;
 

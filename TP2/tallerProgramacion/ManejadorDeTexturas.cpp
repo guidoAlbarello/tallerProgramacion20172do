@@ -131,7 +131,6 @@ void ManejadorDeTexturas::dibujarTramo(Segmento* unSegmento, int ancho, int anch
 	anchoSuperior *= 0.5; // Para que no sea tan ancha la pista
 	anchoInferior *= 0.5;
 	float factorAnchoPianito = 1.2;
-
 	Sint16 vxPasto[4] = { -anchoPantalla, -anchoPantalla, anchoPantalla, anchoPantalla };
 	Sint16 vyPasto[4] = { p1.y, p2.y, p2.y, p1.y };
 	Sint16 vxBorde[4] = { p1.x - anchoInferior * factorAnchoPianito, p2.x - anchoSuperior * factorAnchoPianito, p2.x + anchoSuperior * factorAnchoPianito, p1.x + anchoInferior * factorAnchoPianito };
@@ -139,18 +138,23 @@ void ManejadorDeTexturas::dibujarTramo(Segmento* unSegmento, int ancho, int anch
 	Sint16 vxTramo[4] = { p1.x - anchoInferior, p2.x - anchoSuperior, p2.x + anchoSuperior, p1.x + anchoInferior };
 	Sint16 vyTramo[4] = { p1.y,p2.y,p2.y,p1.y };
 
-	if ((n) % 2)
-		filledPolygonRGBA(renderer, vxPasto, vyPasto, 4, rPasto1, gPasto1, bPasto1, 255);
-	else
-		filledPolygonRGBA(renderer, vxPasto, vyPasto, 4, rPasto2, gPasto2, bPasto2, 255);
-	if ((n) % 2)
-		filledPolygonRGBA(renderer, vxBorde, vyBorde, 4, 210, 210, 210, 255);
-	else
-		filledPolygonRGBA(renderer, vxBorde, vyBorde, 4, 50, 50, 50, 255);
-	if ((n) % 2)
-		filledPolygonRGBA(renderer, vxTramo, vyTramo, 4, 165, 165, 165, 255);
-	else
-		filledPolygonRGBA(renderer, vxTramo, vyTramo, 4, 180, 180, 180, 255);
+	if ((vyTramo[0] - vyTramo[1]) > 0) {
+		
+		if ((n) % 2)
+			filledPolygonRGBA(renderer, vxPasto, vyPasto, 4, rPasto1, gPasto1, bPasto1, 255);
+		else
+			filledPolygonRGBA(renderer, vxPasto, vyPasto, 4, rPasto2, gPasto2, bPasto2, 255);
+
+		if ((n) % 2)
+			filledPolygonRGBA(renderer, vxBorde, vyBorde, 4, 210, 210, 210, 255);
+		else
+			filledPolygonRGBA(renderer, vxBorde, vyBorde, 4, 50, 50, 50, 255);
+			
+		if ((n) % 2)
+			filledPolygonRGBA(renderer, vxTramo, vyTramo, 4, 165, 165, 165, 255);
+		else
+			filledPolygonRGBA(renderer, vxTramo, vyTramo, 4, 180, 180, 180, 255);
+	}
 }
 
 
