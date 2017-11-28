@@ -50,6 +50,8 @@ public:
 	string getNombre() { return this->nombre; }
 	long getTiempo();
 	void setTiempo(long t);
+	bool getSonidoChoque() { return this->sonidoChoque; }
+	void setSonidoChoque(bool sonidoChoque) { this->sonidoChoque = false; }
 protected:
 	void dañarAuto();
 	bool entrada[Constantes::CANT_TECLAS];
@@ -68,6 +70,8 @@ protected:
 	string nombre;
 	std::chrono::time_point<std::chrono::steady_clock> inicioIntervalo;
 	long tiempo;
-
+	bool sonidoChoque = false;
+	std::chrono::time_point<std::chrono::steady_clock> inicioIntervaloSonidoChoque;
+	double tiempoSilencioChoque = 0;
 };
 #endif

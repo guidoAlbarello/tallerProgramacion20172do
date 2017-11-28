@@ -234,7 +234,9 @@ Usuario* LoggerView::showLogin() {
 }
 
 void LoggerView::initSonido() {
-	ManejadorAudio::getInstance()->load("sound/init_track.wav", "initTrack");
-	ManejadorAudio::getInstance()->load("sound/motor1.wav", "motor");
-	ManejadorAudio::getInstance()->load("sound/motor2.wav", "motor2");
+	// Movido al constructor del ManejadorAudio
+	//ManejadorAudio::getInstance()->load("sound/init_track.wav", "initTrack");
+	//ManejadorAudio::getInstance()->load("sound/motor1.wav", "motor");
+	//ManejadorAudio::getInstance()->load("sound/motor2.wav", "motor2");
+	//ManejadorAudio::getInstance()->load("sound/car_crash.wav", "carCrash");
 }

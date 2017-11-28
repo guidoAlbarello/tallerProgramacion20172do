@@ -4,6 +4,10 @@ ManejadorAudio* ManejadorAudio::instance = 0;
 
 ManejadorAudio::ManejadorAudio()
 {
+	this->load("sound/init_track.wav", "initTrack");
+	this->load("sound/motor1.wav", "motor");
+	this->load("sound/motor2.wav", "motor2");
+	this->load("sound/car_crash.wav", "carCrash");
 }
 
 
@@ -110,7 +114,7 @@ bool ManejadorAudio::startTrack(std::string id) {
 			return true;
 		}
 		else {
- 		    //If the music is paused
+			//If the music is paused
 			if (Mix_PausedMusic() == 1) {
 				Mix_PlayMusic(music, -1);
 				return true;
@@ -124,6 +128,24 @@ bool ManejadorAudio::startTrack(std::string id) {
 			return true;
 		}
 		return false;
+	}
+	catch (exception e) {
+		Logger::getInstance()->log(Error, "Ocurrio un error al reproducir el sonido " + id);
+		return false;
+	}
+}
+
+bool ManejadorAudio::playTrackOnce(std::string id) {
+	try {
+		Mix_Music* music = sonidos[id];
+
+		Mix_PlayMusic(music, 1);
+		////If there is no music playing
+		//if (Mix_PlayingMusic() == 0) {
+		//	//Play the music
+		//	Mix_PlayMusic(music, 1);
+		//	return true;
+		//}
 	}
 	catch (exception e) {
 		Logger::getInstance()->log(Error, "Ocurrio un error al reproducir el sonido " + id);

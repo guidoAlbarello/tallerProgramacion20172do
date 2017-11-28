@@ -62,12 +62,13 @@ struct EstadoJugador {
 	Unidad posY;
 	EstadoAuto estadoAuto;
 	int vida;
-	bool nitroActivo;
+	bool nitroActivo = false;
 	bool conectado;
 	float velocidadX;
 	float velocidadY;
 	long puntos;
 	long tiempo;
+	bool sonidoChoque;
 };
 
 struct EstadoEscenario {

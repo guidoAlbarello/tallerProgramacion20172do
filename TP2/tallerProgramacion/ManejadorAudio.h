@@ -17,6 +17,7 @@ public:
 	bool startOrPauseTrack(std::string id);
 	bool pauseTrack(std::string id);
 	bool startTrack(std::string id);
+	bool playTrackOnce(std::string id);
 private:
 	static ManejadorAudio* instance;
 	std::map<std::string, Mix_Music*> sonidos;	

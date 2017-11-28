@@ -59,12 +59,14 @@ void Juego::update(Unidad tiempoDelta) {
 		
 		//Si los demas jugadores estan SOLO en "jugadores", hay q hacer otro de estos for...
 		for (int j = 0; j < this->jugadores.size(); j++) {
-			Jugador* jugador = this->jugadores[j];
-			if (jugador->getId() == unJugador->getId()) {
-				break;
+			Jugador* otroJugador = this->jugadores[j];
+			if (otroJugador->getId() == unJugador->getId()) {
+				continue;
 			}
-			if (hayColision(posicionAnteriorY, posicionActualY, posicionAnteriorX, posicionActualX, jugador)) {
-				unJugador->chocar(jugador->getPosicion()->getY(), jugador->getVelocidad().getY());
+			if (unJugador->getSonidoChoque()) unJugador->setSonidoChoque(false); // reset el sonido de la colision
+
+			if (hayColision(posicionAnteriorY, posicionActualY, posicionAnteriorX, posicionActualX, otroJugador)) {
+				unJugador->chocar(otroJugador->getPosicion()->getY(), otroJugador->getVelocidad().getY());
 				//cout << "Hubo colision y, y: " << unJugador->getPosicion()->getY() << endl;
 			}
 		}
@@ -142,6 +144,7 @@ EstadoModeloJuego* Juego::getEstadoJuego() {
 		nuevoEstado->estadoJugadores[i].nitroActivo = unJugador->getNitroActivo();
 		nuevoEstado->estadoJugadores[i].puntos = unJugador->getPuntos();
 		nuevoEstado->estadoJugadores[i].tiempo = unJugador->getTiempo();
+		nuevoEstado->estadoJugadores[i].sonidoChoque = unJugador->getSonidoChoque();
 
 		if (unJugador->getCamara()->getPosicionTarget()->getY() / ALTO_TRAMO >= mapa[nivel]->getLongitudTotal()) {
 			// LLego a la meta
@@ -279,24 +282,23 @@ void Juego::gameLoop() {
 
 }
 
-int Juego::hayColision(int yDesde, int yHasta, int xDesde, int xHasta, Jugador* objeto2) {
+int Juego::hayColision(int yDesde, int yHasta, int xDesde, int xHasta, Jugador* otroJugador) {
 	int result = 0;
 	//TODO, para "Y" le podria sumar la altura de el auto, para que la colision sea con la parte superior del auto
-	if (yDesde  > objeto2->getPosicion()->getY() - 30) {
+	if (yDesde > otroJugador->getPosicion()->getY() - 30) {
 		return result;
 	}
-	if (yHasta < objeto2->getPosicion()->getY() - 30) {
+	if (yHasta < otroJugador->getPosicion()->getY() - 30) {
 		return result;
 	}
 	//El punto de aclaje es 10 (no se porque, pero lo debugie)
-	if (xDesde - 10 > objeto2->getPosicion()->getX() + 50) {
+	if (xDesde - 10 > otroJugador->getPosicion()->getX() + 50) {
 		return result;
 	}
-	if (xHasta + 50 < objeto2->getPosicion()->getX() - 10) {
+	if (xHasta + 50 < otroJugador->getPosicion()->getX() - 10) {
 		return result;
 	}
 	result = 1;
-
 	return result;
 }
 

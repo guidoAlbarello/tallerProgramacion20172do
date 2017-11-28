@@ -103,15 +103,21 @@ void EstadoJuegoActivo::update(ManejadorDeConexionCliente* conexionCliente) {
 						//	}
 						//}
 					}
+					if (estado->sonidoChoque) {
+						//ManejadorAudio::getInstance()->playTrackOnce("carCrash");
+					}
+					else {
+						//ManejadorAudio::getInstance()->pauseTrack("carCrash");
+					}
 				}
 			}
 		}
 
-		m_estadoModelo.lock();
+		//m_estadoModelo.lock();
 		
 		//this->escenario->setPosicionCielo(estadoModeloJuego->estadoEscenario.cieloX, 0);
 		//this->escenario->setPosicionColinas(estadoModeloJuego->estadoEscenario.colinasX, 100);
-		m_estadoModelo.unlock();
+		//m_estadoModelo.unlock();
 	}
 }
 
@@ -230,7 +236,7 @@ void EstadoJuegoActivo::dibujarPantallaTransicion() {
 		string nombreUsuario = obtenerNombreUsuarioPorId(estadoModeloJuego->estadoJugadores[i - 1].id, nombresJugadores);
 		float tiempo = estadoModeloJuego->estadoJugadores[i - 1].tiempo;
 
-		switch (this->mapaView->getNivel()) {
+		switch (this->mapaView->getNivel() - 1) {
 		case 0:
 			this->puntajesEtapa1[estadoModeloJuego->estadoJugadores[i - 1].id] = puntos;
 			this->puntajesTotal[estadoModeloJuego->estadoJugadores[i - 1].id] += puntos;
