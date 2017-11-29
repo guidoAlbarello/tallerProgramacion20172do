@@ -581,6 +581,7 @@ void Cliente::iniciarJuego(EstadoInicialJuego* unEstadoInicial) {
 		m_init_juego.lock();
 		EstadoJuegoActivo* estadoJuegoActivo = new EstadoJuegoActivo();
 		estadoJuegoActivo->setNombresJugadores(this->nombreJugadores);
+		estadoJuegoActivo->setNivel(unEstadoInicial->nivel);
 		this->maquinaDeEstados->changeState(estadoJuegoActivo, unEstadoInicial);
 		this->juegoIniciado = true;
 		m_init_juego.unlock();

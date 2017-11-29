@@ -98,7 +98,7 @@ void Jugador::acelerar(Unidad delta) {
 		if (velocidad.getY() < velocidadMaxima * ACELERACION_NITRO)
 			this->velocidad.setY(this->velocidad.getY() + ACELERACION_NITRO * delta);
 		else
-			velocidad.setY(velocidadMaxima);
+			velocidad.setY(velocidadMaxima * ACELERACION_NITRO);
 	}
 }
 

@@ -8,6 +8,8 @@ ManejadorAudio::ManejadorAudio()
 	this->load("sound/motor1.wav", "motor");
 	this->load("sound/motor2.wav", "motor2");
 	this->load("sound/car_crash.wav", "carCrash");
+	this->load("sound/turbo1.wav", "turbo1");
+	this->load("sound/turbo2.wav", "turbo2");
 }
 
 
@@ -93,15 +95,15 @@ bool ManejadorAudio::startOrPauseTrack(std::string id) {
 		return false;
 	}
 }
-bool ManejadorAudio::pauseTrack(std::string id) {
+bool ManejadorAudio::pauseTrack() {
+
 	try {
-		Mix_Music* music = sonidos[id];
 		if (Mix_PlayingMusic() > 0) {
 			Mix_PauseMusic();
 		}
 	}
 	catch (exception e) {
-		Logger::getInstance()->log(Error, "Ocurrio un error al reproducir el sonido " + id);
+		Logger::getInstance()->log(Error, "Ocurrio un error al pausar el sonido ");
 		return false;
 	}
 }

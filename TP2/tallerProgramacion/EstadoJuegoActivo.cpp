@@ -20,7 +20,7 @@ void EstadoJuegoActivo::update(ManejadorDeConexionCliente* conexionCliente) {
 
 			Sprite* unSprite = spritesMap[estado->id];
 			if (unSprite != NULL) {
-				if (estado->vida == 3) {
+				if (estado->vida == 3) {  
 					if (estado->nitroActivo)
 						unSprite->setFilaActual(2);
 					else
@@ -29,37 +29,46 @@ void EstadoJuegoActivo::update(ManejadorDeConexionCliente* conexionCliente) {
 				
 				if (estado->vida == 2) {
 					if (estado->nitroActivo)
-						unSprite->setFilaActual(2);
+						unSprite->setFilaActual(6);
 					else
-						unSprite->setFilaActual(2);
+						unSprite->setFilaActual(3);
 				}
 				
 				if (estado->vida == 1) {
 					if (estado->nitroActivo)
-						unSprite->setFilaActual(2);
+						unSprite->setFilaActual(7);
 					else
-						unSprite->setFilaActual(2);
+						unSprite->setFilaActual(4);
 				}
 				
 				if (estado->vida == 0) {
 					if (estado->nitroActivo)
-						unSprite->setFilaActual(2);
+						unSprite->setFilaActual(8);
 					else
-						unSprite->setFilaActual(2);
+						unSprite->setFilaActual(5);
 				}
 				
 				switch (estado->estadoAuto) {
 				case EstadoAuto::DERECHO:
-					unSprite->setFrameActual(0);
+					if (animacion > 0)
+						unSprite->setFrameActual(0);
+					else
+						unSprite->setFrameActual(3);
 					break;
 				case EstadoAuto::DOBLANDO_IZQ:
-					unSprite->setFrameActual(1);
+					if (animacion > 0)
+						unSprite->setFrameActual(1);
+					else
+						unSprite->setFrameActual(4);
 					break;
 				case EstadoAuto::DOBLANDO_DER:
-					unSprite->setFrameActual(2);
+					if (animacion > 0)
+						unSprite->setFrameActual(2);
+					else
+						unSprite->setFrameActual(5);
 					break;
 				}
-
+				animacion = animacion*-1;
 				unSprite->setPosicionInt(estado->posX, estado->posY);
 				unSprite->setGrisar(!estado->conectado);
 			}
@@ -111,30 +120,36 @@ void EstadoJuegoActivo::update(ManejadorDeConexionCliente* conexionCliente) {
 					//ManejadorAudio::getInstance()->pauseTrack("c");
 				}
 				//SONIDO DEL MOTOR
-				if ((estado->velocidadY >= LIMITE_SONIDO_MOTOR) &&
-					(velocidadAnterior < LIMITE_SONIDO_MOTOR ) &&
-					(estado->velocidadY > 0)) {
-					//CAMBIAR
-					ManejadorAudio::getInstance()->pauseTrack("motor"); // Se pausa musica login
-					ManejadorAudio::getInstance()->startTrack("motor2");
-					idSonidoMotor = "motor2";
+				if ((estado->nitroActivo)&& (estado->velocidadY > 0)) {
+					if (idSonidoMotor != "turbo1") {
+						ManejadorAudio::getInstance()->pauseTrack();
+						idSonidoMotor = "turbo1";
+						ManejadorAudio::getInstance()->startTrack(idSonidoMotor);
+					}
+				}
+
+				if ((estado->velocidadY >= LIMITE_SONIDO_MOTOR)&&!(estado->nitroActivo)) {
+					if (idSonidoMotor != "motor2") {
+						ManejadorAudio::getInstance()->pauseTrack();
+						idSonidoMotor = "motor2";
+						ManejadorAudio::getInstance()->startTrack(idSonidoMotor);
+					}
 				}
 				if ((estado->velocidadY < LIMITE_SONIDO_MOTOR) &&
-					(velocidadAnterior >= LIMITE_SONIDO_MOTOR) &&
-					(estado->velocidadY > 0)) {
-					//CAMBIAR
-					ManejadorAudio::getInstance()->pauseTrack("motor2"); // Se pausa musica login
-					ManejadorAudio::getInstance()->startTrack("motor"); 
-					idSonidoMotor = "motor";
+					(estado->velocidadY > 0) && !(estado->nitroActivo) ){
+					if (idSonidoMotor != "motor") {
+						ManejadorAudio::getInstance()->pauseTrack();
+						idSonidoMotor = "motor";
+						ManejadorAudio::getInstance()->startTrack(idSonidoMotor);
+					}
 				}
-				if ((estado->velocidadY <= 0) && (velocidadAnterior > 0)) {
-					ManejadorAudio::getInstance()->pauseTrack(idSonidoMotor);
+				if (estado->velocidadY <= 0){
+					if (idSonidoMotor != "") {
+						ManejadorAudio::getInstance()->pauseTrack();
+						idSonidoMotor = "";
+					}
 				}
-				if ((velocidadAnterior <= 0) && (estado->velocidadY > 0)) {
-					ManejadorAudio::getInstance()->startTrack("motor");
-					idSonidoMotor = "motor";
-				}
-				velocidadAnterior = estado->velocidadY;
+				
 			}
 		}
 
@@ -171,6 +186,7 @@ void EstadoJuegoActivo::render() {
 
 			//this->mapaView->renderMiniMap();
 		} else {
+			ManejadorAudio::getInstance()->pauseTrack();
 			dibujarPantallaTransicion();
 			SDL_RenderPresent(this->renderer->getRendererJuego());
 			std::this_thread::sleep_for(std::chrono::milliseconds(1000 * Constantes::TIEMPO_PANTALLA_TRANSICION));
@@ -314,10 +330,12 @@ string EstadoJuegoActivo::obtenerNombreUsuarioPorId(int id, map<int, string> nom
 }
 
 bool EstadoJuegoActivo::onEnter(Renderer* renderer) {
-	ManejadorAudio::getInstance()->pauseTrack("initTrack"); // Se pausa musica login
+	ManejadorAudio::getInstance()->pauseTrack(); // Se pausa musica login
 	this->escenario = new Escenario(renderer);
+	escenario->setNivel(nivel);
 	this->escenario->iniciar();
 	this->mapaView = new MapaView(renderer);
+	mapaView->setNivel(nivel);
 	this->mapaView->init();
 	this->camara = new Camara();
 	ManejadorDeTexturas::getInstance()->setCamara(camara);
@@ -356,6 +374,7 @@ void EstadoJuegoActivo::cambiarNivel() {
 		estaEnPantallaTransicion = true;
 		this->mapaView->cambiarNivel();
 		this->escenario->cambiarNivel();
+		this->nivel++;
 		ManejadorDeTexturas::getInstance()->cambiarNivel();
 	}
 }
@@ -364,18 +383,18 @@ void EstadoJuegoActivo::setParametro(void * param) {
 	inicializarObjetos((EstadoInicialJuego*) param);//pasar tambien pos inicial de camara ?? 
 	this->renderer = renderer;
 	this->inicializado = true;
-	velocidadAnterior = 0;
 	idSonidoMotor = "motor";
 }
 
 void EstadoJuegoActivo::inicializarObjetos(EstadoInicialJuego* unEstado) {
+	animacion = -1;
 	idJugador = unEstado->idJugador;
 	this->cantJugadores = unEstado->tamanio;
 	// creo los sprites del map
 	for (int i = 0; i < unEstado->tamanio; i++) {
 		Sprite* unSprite = new Sprite();
 		std::string fileName = "imagenes/player" + std::to_string(i + 1) + ".png";//el path de la imagen o el nombre deberia venir el struct
-		unSprite->setAnchoYAlto(80, 42); //cambiarlo a los alores q son 
+		unSprite->setAnchoYAlto(82, 43); //cambiarlo a los alores q son 
 		unSprite->setPosicionInt(0,0);
 		unSprite->setId(std::to_string(unEstado->id[i]));
 		unSprite->load(fileName, this->renderer->getRendererJuego());

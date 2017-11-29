@@ -71,8 +71,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir)SDL2_mixer-2.0.1\include;$(SolutionDir)SDL_gfx-2.0.25;$(SolutionDir)SDL2image\include;$(SolutionDir)SDL2_ttf-2.0.14\include;$(SolutionDir)SDL2-2.0.6\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)SDL2_mixer-2.0.1\lib\x64;C:\Users\SouLsCronoS\Desktop\SDL2-2.0.6\lib\x64;$(SolutionDir)SDL2_ttf-2.0.14\lib\x64;$(SolutionDir)SDL2image\lib\x64;$(SolutionDir)SDL2_mixer-2.0.1\lib\x64;$(SolutionDir)SDL2-2.0.6\lib\x64;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\SouLsCronoS\Source\Repos\tallerProgramacion20172do\TP2\SDL2_mixer-2.0.1\include;$(SolutionDir)SDL2_mixer-2.0.1\include;$(SolutionDir)SDL_gfx-2.0.25;$(SolutionDir)SDL2image\include;$(SolutionDir)SDL2_ttf-2.0.14\include;$(SolutionDir)SDL2-2.0.6\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\SouLsCronoS\Source\Repos\tallerProgramacion20172do\TP2\SDL2_mixer-2.0.1\lib\x64;$(SolutionDir)SDL2_mixer-2.0.1\lib\x64;C:\Users\SouLsCronoS\Desktop\SDL2-2.0.6\lib\x64;$(SolutionDir)SDL2_ttf-2.0.14\lib\x64;$(SolutionDir)SDL2image\lib\x64;$(SolutionDir)SDL2-2.0.6\lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)SDL_gfx-2.0.25;$(SolutionDir)SDL2image\include;$(SolutionDir)SDL2_ttf-2.0.14\include;$(SolutionDir)SDL2_mixer-2.0.1\include;$(SolutionDir)SDL2-2.0.6\include;$(IncludePath)</IncludePath>

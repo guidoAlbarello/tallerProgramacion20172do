@@ -54,6 +54,7 @@ public:
 	void initSegmentos();
 	void borrarSegmentos();
 	void borrarObjetos();
+	void setNivel(int nivel) { this->nivel = nivel; }
 private:
 	
 	int getTramoActual();
