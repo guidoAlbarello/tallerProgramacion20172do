@@ -29,7 +29,7 @@ public:
 	void setNombresJugadores(map<int, string> nombresJugadores) { this->nombresJugadores = nombresJugadores; }
 	map<int, string> getNombresJugadores() { return this->nombresJugadores; }
 	string obtenerNombreUsuarioPorId(int id, map<int, string> nombresJugadores);
-	void setNivel(int nivel) { this->nivel = 0; }
+	void setNivel(int nivel) { this->nivel = nivel; }
 private:
 	EstadoModeloJuego* estadoModeloJuego;
 	static const std::string s_playID;
