@@ -15,7 +15,7 @@ public:
 	static ManejadorAudio* getInstance();
 	bool load(std::string fileName, std::string	id);
 	bool startOrPauseTrack(std::string id);
-	bool pauseTrack(std::string id);
+	bool pauseTrack();
 	bool startTrack(std::string id);
 	bool playTrackOnce(std::string id);
 private:

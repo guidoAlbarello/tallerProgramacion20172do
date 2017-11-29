@@ -111,30 +111,28 @@ void EstadoJuegoActivo::update(ManejadorDeConexionCliente* conexionCliente) {
 					}
 				}
 				//SONIDO DEL MOTOR
-				if ((estado->velocidadY >= LIMITE_SONIDO_MOTOR) &&
-					(velocidadAnterior < LIMITE_SONIDO_MOTOR ) &&
-					(estado->velocidadY > 0)) {
-					//CAMBIAR
-					ManejadorAudio::getInstance()->pauseTrack("motor"); // Se pausa musica login
-					ManejadorAudio::getInstance()->startTrack("motor2");
-					idSonidoMotor = "motor2";
+				if (estado->velocidadY >= LIMITE_SONIDO_MOTOR) {
+					if (idSonidoMotor != "motor2") {
+						ManejadorAudio::getInstance()->pauseTrack();
+						idSonidoMotor = "motor2";
+						ManejadorAudio::getInstance()->startTrack(idSonidoMotor);
+					}
 				}
 				if ((estado->velocidadY < LIMITE_SONIDO_MOTOR) &&
-					(velocidadAnterior >= LIMITE_SONIDO_MOTOR) &&
-					(estado->velocidadY > 0)) {
-					//CAMBIAR
-					ManejadorAudio::getInstance()->pauseTrack("motor2"); // Se pausa musica login
-					ManejadorAudio::getInstance()->startTrack("motor"); 
-					idSonidoMotor = "motor";
+					(estado->velocidadY > 0) ){
+					if (idSonidoMotor != "motor") {
+						ManejadorAudio::getInstance()->pauseTrack();
+						idSonidoMotor = "motor";
+						ManejadorAudio::getInstance()->startTrack(idSonidoMotor);
+					}
 				}
-				if ((estado->velocidadY <= 0) && (velocidadAnterior > 0)) {
-					ManejadorAudio::getInstance()->pauseTrack(idSonidoMotor);
+				if (estado->velocidadY <= 0){
+					if (idSonidoMotor != "") {
+						ManejadorAudio::getInstance()->pauseTrack();
+						idSonidoMotor = "";
+					}
 				}
-				if ((velocidadAnterior <= 0) && (estado->velocidadY > 0)) {
-					ManejadorAudio::getInstance()->startTrack("motor");
-					idSonidoMotor = "motor";
-				}
-				velocidadAnterior = estado->velocidadY;
+				
 			}
 		}
 
@@ -314,7 +312,7 @@ string EstadoJuegoActivo::obtenerNombreUsuarioPorId(int id, map<int, string> nom
 }
 
 bool EstadoJuegoActivo::onEnter(Renderer* renderer) {
-	ManejadorAudio::getInstance()->pauseTrack("initTrack"); // Se pausa musica login
+	ManejadorAudio::getInstance()->pauseTrack(); // Se pausa musica login
 	this->escenario = new Escenario(renderer);
 	this->escenario->iniciar();
 	this->mapaView = new MapaView(renderer);
@@ -364,7 +362,6 @@ void EstadoJuegoActivo::setParametro(void * param) {
 	inicializarObjetos((EstadoInicialJuego*) param);//pasar tambien pos inicial de camara ?? 
 	this->renderer = renderer;
 	this->inicializado = true;
-	velocidadAnterior = 0;
 	idSonidoMotor = "motor";
 }
 
