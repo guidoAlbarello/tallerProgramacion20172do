@@ -20,7 +20,7 @@ void EstadoJuegoActivo::update(ManejadorDeConexionCliente* conexionCliente) {
 
 			Sprite* unSprite = spritesMap[estado->id];
 			if (unSprite != NULL) {
-				if (estado->vida == 3) {
+				if (estado->vida == 3) {  
 					if (estado->nitroActivo)
 						unSprite->setFilaActual(2);
 					else
@@ -29,37 +29,46 @@ void EstadoJuegoActivo::update(ManejadorDeConexionCliente* conexionCliente) {
 				
 				if (estado->vida == 2) {
 					if (estado->nitroActivo)
-						unSprite->setFilaActual(2);
+						unSprite->setFilaActual(6);
 					else
-						unSprite->setFilaActual(2);
+						unSprite->setFilaActual(3);
 				}
 				
 				if (estado->vida == 1) {
 					if (estado->nitroActivo)
-						unSprite->setFilaActual(3);
+						unSprite->setFilaActual(7);
 					else
-						unSprite->setFilaActual(3);
+						unSprite->setFilaActual(4);
 				}
 				
 				if (estado->vida == 0) {
 					if (estado->nitroActivo)
-						unSprite->setFilaActual(3);
+						unSprite->setFilaActual(8);
 					else
-						unSprite->setFilaActual(3);
+						unSprite->setFilaActual(5);
 				}
 				
 				switch (estado->estadoAuto) {
 				case EstadoAuto::DERECHO:
-					unSprite->setFrameActual(0);
+					if (animacion > 0)
+						unSprite->setFrameActual(0);
+					else
+						unSprite->setFrameActual(3);
 					break;
 				case EstadoAuto::DOBLANDO_IZQ:
-					unSprite->setFrameActual(1);
+					if (animacion > 0)
+						unSprite->setFrameActual(1);
+					else
+						unSprite->setFrameActual(4);
 					break;
 				case EstadoAuto::DOBLANDO_DER:
-					unSprite->setFrameActual(2);
+					if (animacion > 0)
+						unSprite->setFrameActual(2);
+					else
+						unSprite->setFrameActual(5);
 					break;
 				}
-
+				animacion = animacion*-1;
 				unSprite->setPosicionInt(estado->posX, estado->posY);
 				unSprite->setGrisar(!estado->conectado);
 			}
@@ -366,13 +375,14 @@ void EstadoJuegoActivo::setParametro(void * param) {
 }
 
 void EstadoJuegoActivo::inicializarObjetos(EstadoInicialJuego* unEstado) {
+	animacion = -1;
 	idJugador = unEstado->idJugador;
 	this->cantJugadores = unEstado->tamanio;
 	// creo los sprites del map
 	for (int i = 0; i < unEstado->tamanio; i++) {
 		Sprite* unSprite = new Sprite();
 		std::string fileName = "imagenes/player" + std::to_string(i + 1) + ".png";//el path de la imagen o el nombre deberia venir el struct
-		unSprite->setAnchoYAlto(80, 42); //cambiarlo a los alores q son 
+		unSprite->setAnchoYAlto(82, 43); //cambiarlo a los alores q son 
 		unSprite->setPosicionInt(0,0);
 		unSprite->setId(std::to_string(unEstado->id[i]));
 		unSprite->load(fileName, this->renderer->getRendererJuego());

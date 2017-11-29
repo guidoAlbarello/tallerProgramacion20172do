@@ -50,6 +50,7 @@ private:
 	map<int, long> puntajesEtapa2;
 	map<int, long> puntajesEtapa3;
 	map<int, long> puntajesTotal;
+	int animacion;
 	string idSonidoMotor;
 };
 

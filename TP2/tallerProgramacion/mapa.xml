@@ -1,9 +1,9 @@
 <mapa>
 	<tramo longitud="500" tipo="recta">
-		<arbol posicion="izquierda" ubicacion="100"></arbol>
-		<arbol posicion="derecha" ubicacion="200"></arbol>
+		<arbol posicion="derecha" ubicacion="100"></arbol>
+		<cartel posicion="derecha" ubicacion="200" valor="80"></cartel>
 		<arbol posicion="izquierda" ubicacion="300"></arbol>
-		<arbol posicion="derecha" ubicacion="400"></arbol>
+		<cartel posicion="izquierda" ubicacion="400" valor="80"></cartel>
 		<arbol posicion="izquierda" ubicacion="500"></arbol>
 	</tramo>
 	<!-- 500m -->
