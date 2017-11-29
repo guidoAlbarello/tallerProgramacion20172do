@@ -120,7 +120,15 @@ void EstadoJuegoActivo::update(ManejadorDeConexionCliente* conexionCliente) {
 					}
 				}
 				//SONIDO DEL MOTOR
-				if (estado->velocidadY >= LIMITE_SONIDO_MOTOR) {
+				if ((estado->nitroActivo)&& (estado->velocidadY > 0)) {
+					if (idSonidoMotor != "turbo1") {
+						ManejadorAudio::getInstance()->pauseTrack();
+						idSonidoMotor = "turbo1";
+						ManejadorAudio::getInstance()->startTrack(idSonidoMotor);
+					}
+				}
+
+				if ((estado->velocidadY >= LIMITE_SONIDO_MOTOR)&&!(estado->nitroActivo)) {
 					if (idSonidoMotor != "motor2") {
 						ManejadorAudio::getInstance()->pauseTrack();
 						idSonidoMotor = "motor2";
@@ -128,7 +136,7 @@ void EstadoJuegoActivo::update(ManejadorDeConexionCliente* conexionCliente) {
 					}
 				}
 				if ((estado->velocidadY < LIMITE_SONIDO_MOTOR) &&
-					(estado->velocidadY > 0) ){
+					(estado->velocidadY > 0) && !(estado->nitroActivo) ){
 					if (idSonidoMotor != "motor") {
 						ManejadorAudio::getInstance()->pauseTrack();
 						idSonidoMotor = "motor";

@@ -8,6 +8,8 @@ ManejadorAudio::ManejadorAudio()
 	this->load("sound/motor1.wav", "motor");
 	this->load("sound/motor2.wav", "motor2");
 	this->load("sound/car_crash.wav", "carCrash");
+	this->load("sound/turbo1.wav", "turbo1");
+	this->load("sound/turbo2.wav", "turbo2");
 }
 
 
