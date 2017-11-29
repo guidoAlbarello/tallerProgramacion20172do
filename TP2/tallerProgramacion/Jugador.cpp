@@ -173,24 +173,8 @@ void Jugador::chocar(double posicionY, int velocidad) {
 	this->setPosicionY(posicionY - 60);
 
 	// Logica sonido choque con timer, TODO!
-	if (!sonidoChoque) {
-		this->sonidoChoque = true;
+	this->sonidoChoque = true;
 
-		//if (tiempoSilencioChoque > 1 * 1000 || tiempoSilencioChoque == 0.0) { // 1seg silencio entre choque y choque
-		//	this->sonidoChoque = true;
-		//	tiempoSilencioChoque = 0;
-		//	inicioIntervaloSonidoChoque = chrono::high_resolution_clock::now();
-		//}
-	}
-	else {
-		this->sonidoChoque = false;
-		//this->sonidoChoque = false;
-		//auto finIntervalo = chrono::high_resolution_clock::now();
-		//auto dur = finIntervalo - inicioIntervaloSonidoChoque;
-		//auto ms = std::chrono::duration_cast<std::chrono::nanoseconds>(dur).count();
-		////inicioIntervaloSonidoChoque = chrono::high_resolution_clock::now();
-		//tiempoSilencioChoque += ms / 1000000.0;
-	}
 }
 
 long Jugador::getPuntos() {

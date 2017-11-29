@@ -16,7 +16,7 @@ bool Renderer::iniciarRendererJuego() {
 	bool success = true;
 
 	//Initialize SDL
-	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
 		Logger::getInstance()->log(Error, "No se pudo inicializar SDL");
 		success = false;
 	} else {
@@ -72,7 +72,7 @@ bool Renderer::iniciarRendererMapa() {
 	bool success = true;
 
 	//Initialize SDL
-	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
 		Logger::getInstance()->log(Error, "No se pudo inicializar SDL");
 		success = false;
 	}

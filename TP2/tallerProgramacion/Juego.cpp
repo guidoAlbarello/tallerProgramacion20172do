@@ -63,7 +63,8 @@ void Juego::update(Unidad tiempoDelta) {
 			if (otroJugador->getId() == unJugador->getId()) {
 				continue;
 			}
-			if (unJugador->getSonidoChoque()) unJugador->setSonidoChoque(false); // reset el sonido de la colision
+
+			//if (unJugador->getSonidoChoque()) unJugador->setSonidoChoque(false); // reset el sonido de la colision
 
 			if (hayColision(posicionAnteriorY, posicionActualY, posicionAnteriorX, posicionActualX, otroJugador)) {
 				unJugador->chocar(otroJugador->getPosicion()->getY(), otroJugador->getVelocidad().getY());

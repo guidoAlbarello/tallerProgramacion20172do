@@ -32,7 +32,7 @@ bool ManejadorAudio::load(std::string fileName, std::string	id) {
 
 	//Load the music
 	music = Mix_LoadMUS(fileName.c_str()); // Ya debe venir con extension .wav
-	//If there was a problem loading the music
+										   //If there was a problem loading the music
 	if (music == NULL)
 	{
 		return false;
@@ -69,14 +69,16 @@ bool ManejadorAudio::startOrPauseTrack(std::string id) {
 				return false;
 			}
 			return true;
-		} else {
+		}
+		else {
 			//If music is being played
 
 			//If the music is paused
 			if (Mix_PausedMusic() == 1) {
 				//Resume the music
 				Mix_ResumeMusic();
-			} else {
+			}
+			else {
 				//If the music is playing
 
 				//Pause the music
@@ -85,7 +87,8 @@ bool ManejadorAudio::startOrPauseTrack(std::string id) {
 			return true;
 		}
 		return false;
-	} catch (exception e) {
+	}
+	catch (exception e) {
 		Logger::getInstance()->log(Error, "Ocurrio un error al reproducir el sonido " + id);
 		return false;
 	}

@@ -103,12 +103,12 @@ void EstadoJuegoActivo::update(ManejadorDeConexionCliente* conexionCliente) {
 						//	}
 						//}
 					}
-					if (estado->sonidoChoque) {
-						//ManejadorAudio::getInstance()->playTrackOnce("carCrash");
-					}
-					else {
-						//ManejadorAudio::getInstance()->pauseTrack("carCrash");
-					}
+				}
+				if (estado->sonidoChoque) {
+					//ManejadorAudio::getInstance()->playTrackOnce("carCrash");
+				}
+				else {
+					//ManejadorAudio::getInstance()->pauseTrack("c");
 				}
 				//SONIDO DEL MOTOR
 				if ((estado->velocidadY >= LIMITE_SONIDO_MOTOR) &&

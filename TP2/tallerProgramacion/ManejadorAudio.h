@@ -20,7 +20,7 @@ public:
 	bool playTrackOnce(std::string id);
 private:
 	static ManejadorAudio* instance;
-	std::map<std::string, Mix_Music*> sonidos;	
+	std::map<std::string, Mix_Music*> sonidos;
 };
 
 #endif
