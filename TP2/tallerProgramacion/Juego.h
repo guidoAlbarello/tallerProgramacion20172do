@@ -12,6 +12,7 @@
 #include "Mapa.h"
 #include <mutex>
 #include "MaquinaEstados.h"
+#include "Cartel.h"
 
 
 #define MAX_SKIP_FRAMES 5

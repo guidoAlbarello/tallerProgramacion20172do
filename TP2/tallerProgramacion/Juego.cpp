@@ -307,21 +307,43 @@ int Juego::hayColision(int yDesde, int yHasta, int xDesde, int xHasta, Jugador* 
 // != 0 si hay algun tipo de colision (delante, detras, costados)
 int Juego::hayColisionObjetoFijo(int yDesde, int yHasta, int xDesde, int xHasta, ObjetoFijo* objeto2) {
 	int result = 0;
+
 	if (yDesde > (objeto2->getUbicacionM() * ALTO_TRAMO) - (ALTO_TRAMO  * FACTOR_CHOQUE)) {
 		return result;
 	}
 	if (yHasta < (objeto2->getUbicacionM() * ALTO_TRAMO) - (ALTO_TRAMO  * FACTOR_CHOQUE)) {
 		return result;
 	}
-	//punto de aclaje es 10, uso 30 de margen para la pista
-	if ((objeto2->getPosicion() == PDerecha) &&
-		((xHasta + 50) < (LIMITE_PISTA_X_DERECHA - 30))) {
-		return result;
+
+	// fix para los carteles xq se ven distinto, no es la misma coordenada de colision
+	boolean esCartel = false;
+	if (dynamic_cast<const Cartel*>(objeto2) != NULL) {
+		esCartel = true;
 	}
-	if ((objeto2->getPosicion() == PIzquierda) &&
-		((xDesde - 10) > (LIMITE_PISTA_X_IZQUIERDA + 30))) {
-		return result;
+
+	if (esCartel) {
+		//punto de aclaje es 10, uso 30 de margen para la pista
+		if ((objeto2->getPosicion() == PDerecha) &&
+			((xHasta + 50) < (LIMITE_PISTA_X_DERECHA - 200))) {
+			return result;
+		}
+		if ((objeto2->getPosicion() == PIzquierda) &&
+			((xDesde - 10) > (LIMITE_PISTA_X_IZQUIERDA + 200))) {
+			return result;
+		}
 	}
+	else {
+		//punto de aclaje es 10, uso 30 de margen para la pista
+		if ((objeto2->getPosicion() == PDerecha) &&
+			((xHasta + 50) < (LIMITE_PISTA_X_DERECHA - 30))) {
+			return result;
+		}
+		if ((objeto2->getPosicion() == PIzquierda) &&
+			((xDesde - 10) > (LIMITE_PISTA_X_IZQUIERDA + 30))) {
+			return result;
+		}
+	}
+
 	result = 1;
 
 	return result;
