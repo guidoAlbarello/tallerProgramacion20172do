@@ -170,7 +170,8 @@ void Jugador::chocar(double posicionY, int velocidad) {
 	} else {
 		this->velocidad.setY(0);
 	}
-	this->setPosicionY(posicionY - 60);
+	//this->setPosicionY(posicionY - 60);
+	this->setPosicionY(posicionY - 120);
 
 	// Logica sonido choque con timer, TODO!
 	this->sonidoChoque = true;
