@@ -43,8 +43,8 @@ Escenario::~Escenario() {
 }
 
 void Escenario::update(Unidad deltaTiempo) {
-	/*	gPromptTextTexture->loadFromRenderedText(this->mensaje, textColor);
-	gPromptTextTexture->render(SCREEN_WIDTH - WIDTH, 0);
+	//	gPromptTextTexture->loadFromRenderedText(this->mensaje, textColor);
+	//gPromptTextTexture->render(SCREEN_WIDTH - WIDTH, 0);
 	if (limiteImagenCielo())
 		posicionCielo.setX((int(posicionCielo.getX() + VELOCIDAD_CIELO * deltaTiempo)));
 	else
@@ -54,7 +54,6 @@ void Escenario::update(Unidad deltaTiempo) {
 	else
 		posicionColinas.setX(0);
 	//posicionColinas.setX((int(posicionColinas.getX() + VELOCIDAD_COLINAS * deltaTiempo)) % colinas->getAncho());
-	*/
 }
 void Escenario::setPosicionCielo(int x, int y){
 	while (x > 0) {
