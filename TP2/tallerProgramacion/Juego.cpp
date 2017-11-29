@@ -207,7 +207,7 @@ EstadoInicialJuego * Juego::getEstadoJuegoInicial() {
 
 	for (int i = 0; i < jugadores.size(); i++) {
 		Jugador* unJugador = jugadores[i];
-		unJugador->setPosicionY(0);
+		unJugador->setPosicionY(unJugador->getPosicionY());
 		unJugador->getCamara()->setPosicion(unJugador->getCamara()->getPosicion()->getX(), 0);
 		estado->id[i] = unJugador->getId();
 	}
@@ -216,6 +216,7 @@ EstadoInicialJuego * Juego::getEstadoJuegoInicial() {
 	escenario->getPosicionCielo()->setY(0);
 	escenario->getPosicionColinas()->setX(0);
 	escenario->getPosicionColinas()->setY(POS_Y_COLINAS);
+	estado->nivel = this->nivel;
 	this->tiempo = 0;
 	return estado;
 }
@@ -223,7 +224,7 @@ EstadoInicialJuego * Juego::getEstadoJuegoInicial() {
 Jugador* Juego::agregarJugador(string nombre) {
 	Jugador* nuevoJugador = new Jugador(nombre);
 	nuevoJugador->setId(cantidadJugadores);
-	nuevoJugador->setPosicion(this->cantidadJugadores * 100, 0);
+	nuevoJugador->setPosicion(this->cantidadJugadores * 200, 0);
 	this->cantidadJugadores++;
 	this->jugadores.push_back(nuevoJugador);
 	return nuevoJugador;
@@ -368,11 +369,14 @@ void Juego::inicializarNivel() {
 
 bool Juego::terminoNivel() {
 	int jugadoresEnLaMeta = 0;
+	int jugadoresConectados = cantidadJugadoresMaxima;
 	for (int i = 0; i < jugadores.size(); i++) {
 		Jugador* unJugador = jugadores[i];
 		if (unJugador->getDeshabilitarMovimiento())
 			jugadoresEnLaMeta++;
+		if (!unJugador->estaConectado())
+			jugadoresConectados--;
 	}
 
-	return jugadoresEnLaMeta == cantidadJugadoresMaxima;
+	return jugadoresConectados != 0 ? jugadoresEnLaMeta == jugadoresConectados : false;
 }

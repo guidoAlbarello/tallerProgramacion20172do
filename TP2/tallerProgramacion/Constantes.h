@@ -85,6 +85,7 @@ struct EstadoInicialJuego {
 	int id[4];
 	int tamanio;
 	int idJugador;
+	int nivel;
 };
 
 struct EstadoModeloJuego {

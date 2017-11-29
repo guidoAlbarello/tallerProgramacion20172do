@@ -29,6 +29,7 @@ public:
 	void setNombresJugadores(map<int, string> nombresJugadores) { this->nombresJugadores = nombresJugadores; }
 	map<int, string> getNombresJugadores() { return this->nombresJugadores; }
 	string obtenerNombreUsuarioPorId(int id, map<int, string> nombresJugadores);
+	void setNivel(int nivel) { this->nivel = 0; }
 private:
 	EstadoModeloJuego* estadoModeloJuego;
 	static const std::string s_playID;
@@ -44,6 +45,7 @@ private:
 	std::mutex m_estadoModelo;
 	Camara* camara;
 	int idJugador;
+	int nivel = 0;
 	int cantJugadores;
 	map<int, string> nombresJugadores;
 	map<int, long> puntajesEtapa1;

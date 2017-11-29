@@ -186,6 +186,7 @@ void EstadoJuegoActivo::render() {
 
 			//this->mapaView->renderMiniMap();
 		} else {
+			ManejadorAudio::getInstance()->pauseTrack();
 			dibujarPantallaTransicion();
 			SDL_RenderPresent(this->renderer->getRendererJuego());
 			std::this_thread::sleep_for(std::chrono::milliseconds(1000 * Constantes::TIEMPO_PANTALLA_TRANSICION));
@@ -331,8 +332,10 @@ string EstadoJuegoActivo::obtenerNombreUsuarioPorId(int id, map<int, string> nom
 bool EstadoJuegoActivo::onEnter(Renderer* renderer) {
 	ManejadorAudio::getInstance()->pauseTrack(); // Se pausa musica login
 	this->escenario = new Escenario(renderer);
+	escenario->setNivel(nivel);
 	this->escenario->iniciar();
 	this->mapaView = new MapaView(renderer);
+	mapaView->setNivel(nivel);
 	this->mapaView->init();
 	this->camara = new Camara();
 	ManejadorDeTexturas::getInstance()->setCamara(camara);
@@ -371,6 +374,7 @@ void EstadoJuegoActivo::cambiarNivel() {
 		estaEnPantallaTransicion = true;
 		this->mapaView->cambiarNivel();
 		this->escenario->cambiarNivel();
+		this->nivel++;
 		ManejadorDeTexturas::getInstance()->cambiarNivel();
 	}
 }
