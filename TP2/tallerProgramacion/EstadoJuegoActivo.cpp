@@ -36,16 +36,16 @@ void EstadoJuegoActivo::update(ManejadorDeConexionCliente* conexionCliente) {
 				
 				if (estado->vida == 1) {
 					if (estado->nitroActivo)
-						unSprite->setFilaActual(2);
+						unSprite->setFilaActual(3);
 					else
-						unSprite->setFilaActual(2);
+						unSprite->setFilaActual(3);
 				}
 				
 				if (estado->vida == 0) {
 					if (estado->nitroActivo)
-						unSprite->setFilaActual(2);
+						unSprite->setFilaActual(3);
 					else
-						unSprite->setFilaActual(2);
+						unSprite->setFilaActual(3);
 				}
 				
 				switch (estado->estadoAuto) {
