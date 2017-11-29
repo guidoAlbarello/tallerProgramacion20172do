@@ -32,7 +32,8 @@ public:
 	Camara* getCamara() { return camara; }
 	void setObjetosPorSegmento(std::vector<std::vector<ObjetoFijo*>> objetosPorSegmento) { this->objetosPorSegmento = objetosPorSegmento; }
 	std::vector<std::vector<ObjetoFijo*>> getObjetosPorSegmento() { return this->objetosPorSegmento; }
-	void cambiarNivel();
+	void cambiarNivel(int nivel);
+	void setNivel(int nivel) { this->nivel = nivel; }
 private:
 	Camara* camara;
 	float normZIndex(float zIndex);

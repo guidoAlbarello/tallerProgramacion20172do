@@ -273,8 +273,14 @@ float ManejadorDeTexturas::normZIndex(float zIndex) {
 ManejadorDeTexturas::~ManejadorDeTexturas() {
 }
 
-void ManejadorDeTexturas::cambiarNivel() {
-	this->nivel++;
+// Recibe -1 si no se especifica a que nivel cambiar, simplemente se incrementa
+void ManejadorDeTexturas::cambiarNivel(int i) {
+	if (i != -1) {
+		this->nivel = i;
+	}
+	else {
+		this->nivel++;
+	}
 	switch (nivel) {
 	case 0:
 		// dia

@@ -332,10 +332,11 @@ string EstadoJuegoActivo::obtenerNombreUsuarioPorId(int id, map<int, string> nom
 bool EstadoJuegoActivo::onEnter(Renderer* renderer) {
 	ManejadorAudio::getInstance()->pauseTrack(); // Se pausa musica login
 	this->escenario = new Escenario(renderer);
-	escenario->setNivel(nivel);
 	this->escenario->iniciar();
+	this->escenario->setNivel(nivel);
 	this->mapaView = new MapaView(renderer);
 	mapaView->setNivel(nivel);
+	ManejadorDeTexturas::getInstance()->cambiarNivel(nivel);
 	this->mapaView->init();
 	this->camara = new Camara();
 	ManejadorDeTexturas::getInstance()->setCamara(camara);
@@ -375,7 +376,7 @@ void EstadoJuegoActivo::cambiarNivel() {
 		this->mapaView->cambiarNivel();
 		this->escenario->cambiarNivel();
 		this->nivel++;
-		ManejadorDeTexturas::getInstance()->cambiarNivel();
+		ManejadorDeTexturas::getInstance()->cambiarNivel(-1);
 	}
 }
 

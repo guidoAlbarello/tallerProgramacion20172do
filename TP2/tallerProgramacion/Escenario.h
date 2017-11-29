@@ -35,7 +35,10 @@ public:
 	//bool limiteImagenCielo() { return posicionCielo.getX() < 1600; }
 	//bool limiteImagenColinas() { return posicionColinas.getX() < 1600; }
 	void setTiempo(long tiempo);
-	void setNivel(int nivel) { this->nivel = nivel; }
+	void setNivel(int nivel) { 
+		this->nivel = nivel; 
+		cambiarCieloYColinas(); 
+	}
 	int getNivel() { return this->nivel; }
 	void cambiarNivel();
 	void cambiarCieloYColinas();
