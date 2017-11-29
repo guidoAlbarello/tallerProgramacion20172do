@@ -116,6 +116,7 @@ void Escenario::cambiarNivel() {
 void Escenario::cambiarCieloYColinas() {
 	std::string skyFileName;
 	std::string hillsFileName;
+
 	switch (this->nivel) {
 	case 0:
 		// dia

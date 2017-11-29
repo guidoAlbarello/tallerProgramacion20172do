@@ -36,6 +36,15 @@ void Cliente::render() {
 			//cargar imagen game over
 			SDL_SetRenderDrawColor(renderer->getRendererJuego(), 242, 242, 242, 255);
 			SDL_RenderClear(this->renderer->getRendererJuego());
+
+			Ltexture* gBackgroundImage = new Ltexture();
+			gBackgroundImage->loadFromFile("imagenes/game_over.png");
+			SDL_Rect* rectanguloFullscreen = new SDL_Rect();
+			rectanguloFullscreen->w = 800;
+			rectanguloFullscreen->h = 600;
+			gBackgroundImage->render(0, 0, rectanguloFullscreen);
+
+
 			std::this_thread::sleep_for(std::chrono::milliseconds(1000 * 5)); 
 			clienteActivo = false;
 		}
@@ -499,10 +508,6 @@ void Cliente::procesarDatosRecibidos() {
 				Logger::getInstance()->log(Debug, "Recibio un TRANSITION_SCREEN");
 				this->maquinaDeEstados->cambiarNivel();
 				break;
-				case ComandoCliente::GAME_OVER:
-				Logger::getInstance()->log(Debug, "Recibio un GAME_OVER");
-				dibujarGameOver = true;
-				break;
 			case ComandoCliente::RESULTADO_PING:
 				Logger::getInstance()->log(Debug, "Recibio un RESULTADO_PING");
 				break;
@@ -510,6 +515,10 @@ void Cliente::procesarDatosRecibidos() {
 				Logger::getInstance()->log(Debug, "se recibio una lista de usuarios");
 				//mostrarUsuariosConectados(mensajeDeRed);
 				procesarNombresUsuario(mensajeDeRed);
+				break;
+			case ComandoCliente::GAME_OVER:
+				Logger::getInstance()->log(Debug, "Recibio un GAME_OVER");
+				dibujarGameOver = true;
 				break;
 			default:
 				Logger::getInstance()->log(Debug, datosRecibidos);

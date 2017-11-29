@@ -164,50 +164,53 @@ void MapaView::dibujarMapa(SDL_Renderer* renderer) {
 	Orientacion ultimaOrientacion = Orientacion::SUR;
 	SentidoCurva sentidoUltimaCurva = SentidoCurva::NINGUNO;
 	int longitudTotal = 0;
-	std::vector<Tramo*> tramos = this->mapa[nivel]->getTramosDelMapa();
-	for (std::vector<Tramo*>::iterator it = tramos.begin(); it != tramos.end(); ++it) {
-		Tramo* tramoActual = *it;
-		TipoTramo tipoTramo = tramoActual->getTipoTramo();
-		longitudTotal += tramoActual->getLongitud();
-		Line tramo;
-		TramoCurvo* tramoCurvo;
-		std::vector<ObjetoFijo*> objetosDelMapaConUbicacion;
-		if (tipoTramo == Recta) {
-			if (sentidoUltimaCurva != SentidoCurva::NINGUNO) {
-				// Si viene de una curva gira otros 45° para hacer la recta, de esta forma Recta-Curva-Recta implica un giro de 90°
-				// al dibujarObjetosTramo se le pasa el sentidoUltimaCurva como el sentidoRotacion
-				this->dibujarObjetosTramo(this->mapa[nivel]->getObjetosDelMapa(), ultimaOrientacion, coordenadaUltimoTramo->x, coordenadaUltimoTramo->y, tramoActual->getLongitud(), tramoActual->getMetroInicio(), coordenadaUltimoTramo, sentidoUltimaCurva, renderer);
-				ultimaOrientacion = unirTramoRotado(sentidoUltimaCurva, ultimaOrientacion, coordenadaUltimoTramo->x, coordenadaUltimoTramo->y, tramoActual->getLongitud(), coordenadaUltimoTramo, renderer);
+	if (nivel < 3) {
+		std::vector<Tramo*> tramos = this->mapa[nivel]->getTramosDelMapa();
+		for (std::vector<Tramo*>::iterator it = tramos.begin(); it != tramos.end(); ++it) {
+			Tramo* tramoActual = *it;
+			TipoTramo tipoTramo = tramoActual->getTipoTramo();
+			longitudTotal += tramoActual->getLongitud();
+			Line tramo;
+			TramoCurvo* tramoCurvo;
+			std::vector<ObjetoFijo*> objetosDelMapaConUbicacion;
+			if (tipoTramo == Recta) {
+				if (sentidoUltimaCurva != SentidoCurva::NINGUNO) {
+					// Si viene de una curva gira otros 45° para hacer la recta, de esta forma Recta-Curva-Recta implica un giro de 90°
+					// al dibujarObjetosTramo se le pasa el sentidoUltimaCurva como el sentidoRotacion
+					this->dibujarObjetosTramo(this->mapa[nivel]->getObjetosDelMapa(), ultimaOrientacion, coordenadaUltimoTramo->x, coordenadaUltimoTramo->y, tramoActual->getLongitud(), tramoActual->getMetroInicio(), coordenadaUltimoTramo, sentidoUltimaCurva, renderer);
+					ultimaOrientacion = unirTramoRotado(sentidoUltimaCurva, ultimaOrientacion, coordenadaUltimoTramo->x, coordenadaUltimoTramo->y, tramoActual->getLongitud(), coordenadaUltimoTramo, renderer);
+				}
+				else {
+					this->dibujarObjetosTramo(this->mapa[nivel]->getObjetosDelMapa(), ultimaOrientacion, coordenadaUltimoTramo->x, coordenadaUltimoTramo->y, tramoActual->getLongitud(), tramoActual->getMetroInicio(), coordenadaUltimoTramo, SentidoCurva::NINGUNO, renderer);
+					ultimaOrientacion = this->unirTramoRecto(ultimaOrientacion, coordenadaUltimoTramo->x, coordenadaUltimoTramo->y, tramoActual->getLongitud(), coordenadaUltimoTramo, renderer);
+				}
+				sentidoUltimaCurva = SentidoCurva::NINGUNO;
 			}
-			else {
-				this->dibujarObjetosTramo(this->mapa[nivel]->getObjetosDelMapa(), ultimaOrientacion, coordenadaUltimoTramo->x, coordenadaUltimoTramo->y, tramoActual->getLongitud(), tramoActual->getMetroInicio(), coordenadaUltimoTramo, SentidoCurva::NINGUNO, renderer);
-				ultimaOrientacion = this->unirTramoRecto(ultimaOrientacion, coordenadaUltimoTramo->x, coordenadaUltimoTramo->y, tramoActual->getLongitud(), coordenadaUltimoTramo, renderer);
+			else if (tipoTramo == Curva) {
+				tramoCurvo = (TramoCurvo*)tramoActual;
+				this->dibujarObjetosTramo(this->mapa[nivel]->getObjetosDelMapa(), ultimaOrientacion, coordenadaUltimoTramo->x, coordenadaUltimoTramo->y, tramoActual->getLongitud(), tramoActual->getMetroInicio(), coordenadaUltimoTramo, tramoCurvo->getSentido(), renderer);
+				sentidoUltimaCurva = tramoCurvo->getSentido();
+				ultimaOrientacion = unirTramoRotado(tramoCurvo->getSentido(), ultimaOrientacion, coordenadaUltimoTramo->x, coordenadaUltimoTramo->y, tramoActual->getLongitud(), coordenadaUltimoTramo, renderer);
 			}
-			sentidoUltimaCurva = SentidoCurva::NINGUNO;
 		}
-		else if (tipoTramo == Curva) {
-			tramoCurvo = (TramoCurvo*)tramoActual;
-			this->dibujarObjetosTramo(this->mapa[nivel]->getObjetosDelMapa(), ultimaOrientacion, coordenadaUltimoTramo->x, coordenadaUltimoTramo->y, tramoActual->getLongitud(), tramoActual->getMetroInicio(), coordenadaUltimoTramo, tramoCurvo->getSentido(), renderer);
-			sentidoUltimaCurva = tramoCurvo->getSentido();
-			ultimaOrientacion = unirTramoRotado(tramoCurvo->getSentido(), ultimaOrientacion, coordenadaUltimoTramo->x, coordenadaUltimoTramo->y, tramoActual->getLongitud(), coordenadaUltimoTramo, renderer);
-		}
-	}
 
-	// Se asocia cada segmento con su/s objetos para buscar en O(1)
-	std::vector<std::vector<ObjetoFijo*>> objetosPorSegmento(longitudTotal);
-	this->objetosPorSegmento = objetosPorSegmento;
-	for (int i = 0; i < this->mapa[nivel]->getObjetosDelMapa().size(); i++) {
+		// Se asocia cada segmento con su/s objetos para buscar en O(1)
+		std::vector<std::vector<ObjetoFijo*>> objetosPorSegmento(longitudTotal);
+		this->objetosPorSegmento = objetosPorSegmento;
+		for (int i = 0; i < this->mapa[nivel]->getObjetosDelMapa().size(); i++) {
 			ObjetoFijo* objetoActual = this->mapa[nivel]->getObjetosDelMapa()[i];
-		if ((objetoActual->getUbicacionM() < this->objetosPorSegmento.size()) &&
-		     (objetoActual->getUbicacionM() < this->segmentos.size())) {
-			//this->objetosPorSegmento[objetoActual->getUbicacionM() - 1].push_back(objetoActual);
-			//this->segmentos[objetoActual->getUbicacionM() - 1]->tieneObjeto = true;
-			this->objetosPorSegmento[objetoActual->getUbicacionM()].push_back(objetoActual);
-			this->segmentos[objetoActual->getUbicacionM()]->tieneObjeto = true;
+			if ((objetoActual->getUbicacionM() < this->objetosPorSegmento.size()) &&
+				(objetoActual->getUbicacionM() < this->segmentos.size())) {
+				//this->objetosPorSegmento[objetoActual->getUbicacionM() - 1].push_back(objetoActual);
+				//this->segmentos[objetoActual->getUbicacionM() - 1]->tieneObjeto = true;
+				this->objetosPorSegmento[objetoActual->getUbicacionM()].push_back(objetoActual);
+				this->segmentos[objetoActual->getUbicacionM()]->tieneObjeto = true;
+			}
 		}
+		ManejadorDeTexturas::getInstance()->setObjetosPorSegmento(this->objetosPorSegmento);
+		this->terminoDibujarMapa = true;
 	}
-	ManejadorDeTexturas::getInstance()->setObjetosPorSegmento(this->objetosPorSegmento);
-	this->terminoDibujarMapa = true;
+	
 }
 
 // vda
