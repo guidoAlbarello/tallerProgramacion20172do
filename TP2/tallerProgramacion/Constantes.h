@@ -42,7 +42,7 @@ public:
 	static constexpr const int PING_DELAY = 2000;
 	static constexpr const int TOLERANCIA_PING = 4000;
 	static constexpr const int RECV_TIMEOUT = 5000;
-	static constexpr const int FPS = 20;
+	static constexpr const int FPS = 45;
 	static constexpr const int UPDATE_MODEL_DELAY = 1000 / (Constantes::FPS - 7);
 	static constexpr const int MAX_CLIENTES = 8;
 	static constexpr const int CANT_JUGADORES_INICIAR = 1;

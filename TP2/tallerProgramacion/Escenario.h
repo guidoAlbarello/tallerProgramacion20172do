@@ -47,6 +47,7 @@ private:
 	Vector posicionColinas;
 	Sprite* cielo;
 	Sprite* colinas;
+	Sprite* pasto;
 	Renderer* renderer;
 	long distancia;
 	long velocidad;

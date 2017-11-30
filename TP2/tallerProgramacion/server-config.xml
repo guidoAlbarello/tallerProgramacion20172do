@@ -11,10 +11,10 @@
 		<nombre>Maria</nombre>
 		<password>654</password>
 	</usuario>
-	<usuarsio>
+	<usuario>
 		<nombre>Pepe</nombre>
 		<password>654</password>
-	</usuasrio>
+	</usuario>
 	<usuario>
 		<nombre>Carlos</nombre>
 		<password>654</password>

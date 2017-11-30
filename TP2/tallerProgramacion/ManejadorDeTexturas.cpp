@@ -46,8 +46,8 @@ void ManejadorDeTexturas::drawAnimatedSprite(std::string id, int x, int y, int a
 	proyectar(p1, anchoDest, anchoPantalla, altoPantalla, 0);
 
 
-	destRect.w = anchoDest * 3 / 2;
-	destRect.h = alto * anchoDest / ancho * 3 / 2;
+	destRect.w = 1.3*anchoDest * 3 / 2;
+	destRect.h = 1.3*alto * anchoDest / ancho * 3 / 2;
 	destRect.x = p1.x - destRect.w / 2;
 	destRect.y = p1.y - destRect.h / 2;
 	if (grisar)
@@ -144,16 +144,16 @@ void ManejadorDeTexturas::dibujarTramo(Segmento* unSegmento, int ancho, int anch
 			filledPolygonRGBA(renderer, vxPasto, vyPasto, 4, rPasto1, gPasto1, bPasto1, 255);
 		else
 			filledPolygonRGBA(renderer, vxPasto, vyPasto, 4, rPasto2, gPasto2, bPasto2, 255);
-
+		
 		if ((n) % 2)
-			filledPolygonRGBA(renderer, vxBorde, vyBorde, 4, 210, 210, 210, 255);
+			filledPolygonRGBA(renderer, vxBorde, vyBorde, 4, 240, 80, 80, 255);
 		else
-			filledPolygonRGBA(renderer, vxBorde, vyBorde, 4, 50, 50, 50, 255);
+			filledPolygonRGBA(renderer, vxBorde, vyBorde, 4, 240, 240, 240, 255);
 			
 		if ((n) % 2)
-			filledPolygonRGBA(renderer, vxTramo, vyTramo, 4, 165, 165, 165, 255);
+			filledPolygonRGBA(renderer, vxTramo, vyTramo, 4, 200, 200,200, 255);
 		else
-			filledPolygonRGBA(renderer, vxTramo, vyTramo, 4, 180, 180, 180, 255);
+			filledPolygonRGBA(renderer, vxTramo, vyTramo, 4, 210, 210, 210, 255);
 	}
 }
 
@@ -232,14 +232,14 @@ float ManejadorDeTexturas::proyectar(Coordenada & p, int& ancho, int anchoPantal
 		if (offset < 0.000001)
 			offset = 0;
 		if (offset != 0)
-			scalado = 0.84 / offset;
+			scalado =  0.84 / offset;
 		else
 			scalado = 0;
 
 		p.x -= camara->getPosicion()->getX() + x;
 		p.y -= 300;
 
-		p.x = (1 + scalado * p.x) * anchoPantalla / 2;
+		p.x =(1 +  scalado * p.x) * anchoPantalla / 2;
 		p.y = (1 - scalado * p.y) * altoPantalla / 2;
 		ancho = scalado * ancho * anchoPantalla / 2;
 
@@ -284,30 +284,30 @@ void ManejadorDeTexturas::cambiarNivel(int i) {
 	switch (nivel) {
 	case 0:
 		// dia
-		rPasto1 = 20;
-		gPasto1 = 170;
-		bPasto1 = 20;
-		rPasto2 = 5;
-		gPasto2 = 130;
-		bPasto2 = 2;
+		rPasto1 = 245;
+		gPasto1 = 245;
+		bPasto1 = 220;
+		rPasto2 = 242;
+		gPasto2 = 242;
+		bPasto2 = 218;
 		break;
 	case 1:
 		// tarde
-		rPasto1 = 206;
-		gPasto1 = 143;
-		bPasto1 = 47;
-		rPasto2 = 240;
-		gPasto2 = 176;
-		bPasto2 = 65;
+		rPasto1 = 220;
+		gPasto1 = 163;
+		bPasto1 = 54;
+		rPasto2 = 225;
+		gPasto2 = 171;
+		bPasto2 = 61;
 		break;
 	case 2:
 		// noche
-		rPasto1 = 55;
-		gPasto1 = 6;
-		bPasto1 = 92;
-		rPasto2 = 39;
-		gPasto2 = 4;
-		bPasto2 = 65;
+		rPasto1 = 198;
+		gPasto1 = 199;
+		bPasto1 = 140;
+		rPasto2 = 222;
+		gPasto2 = 231;
+		bPasto2 = 156;
 		break;
 	}
 }
