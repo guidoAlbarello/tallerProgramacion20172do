@@ -372,11 +372,13 @@ void EstadoJuegoActivo::recieveInput(void * param) {
 
 void EstadoJuegoActivo::cambiarNivel() {
 	if (!estaEnPantallaTransicion) {
-		estaEnPantallaTransicion = true;
-		this->mapaView->cambiarNivel();
-		this->escenario->cambiarNivel();
-		this->nivel++;
-		ManejadorDeTexturas::getInstance()->cambiarNivel(-1);
+		if (this->nivel < 3) {
+			estaEnPantallaTransicion = true;
+			this->mapaView->cambiarNivel();
+			this->escenario->cambiarNivel();
+			this->nivel++;
+			ManejadorDeTexturas::getInstance()->cambiarNivel(-1);
+		}
 	}
 }
 
