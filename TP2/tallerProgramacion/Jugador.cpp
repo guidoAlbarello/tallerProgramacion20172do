@@ -13,6 +13,10 @@ Jugador::Jugador(string nombre) {
 	this->puntos = 0;
 	this->nombre = nombre;
 	this->tiempo = 0;
+
+	for (int i = 0; i < Constantes::CANT_TECLAS; i++) {
+		entrada[i] = 0;
+	}
 }
 
 Jugador::Jugador(SDL_Renderer* renderer) : ObjetoDeJuego(renderer) {

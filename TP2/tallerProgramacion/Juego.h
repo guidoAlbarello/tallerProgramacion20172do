@@ -43,7 +43,7 @@ public:
 	bool gameOver() { return juegoTerminado; }
 private:
 	Renderer* renderer;
-	int cantidadJugadores;
+	int cantidadJugadores = 0;
 	bool juegoActivo;
 	void iniciarEscenario();
 	void gameLoop();
