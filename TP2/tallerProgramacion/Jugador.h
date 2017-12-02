@@ -6,7 +6,7 @@
 #include "Camara.h"
 #include <chrono>
 
-#define ACELERACION_AUTO_X 1.0
+#define ACELERACION_AUTO_X 0.4
 #define ACELERACION_AUTO_Y 0.1
 #define FACTOR_DESACELERACION_X 0
 #define FACTOR_DESACELERACION_Y 0.09

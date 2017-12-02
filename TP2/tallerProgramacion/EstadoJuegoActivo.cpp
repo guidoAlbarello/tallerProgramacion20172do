@@ -18,139 +18,144 @@ void EstadoJuegoActivo::update(ManejadorDeConexionCliente* conexionCliente) {
 			EstadoJugador* estado = &(estadoModeloJuego->estadoJugadores[i]);  //lockear solo esta parte, o todo el update asi updatea todo un frame. 
 			m_estadoModelo.unlock();
 
-			Sprite* unSprite = spritesMap[estado->id];
-			if (unSprite != NULL) {
-				if (estado->vida == 3) {  
-					if (estado->nitroActivo)
-						unSprite->setFilaActual(2);
-					else
-						unSprite->setFilaActual(1);
-				}
-				
-				if (estado->vida == 2) {
-					if (estado->nitroActivo)
-						unSprite->setFilaActual(6);
-					else
-						unSprite->setFilaActual(3);
-				}
-				
-				if (estado->vida == 1) {
-					if (estado->nitroActivo)
-						unSprite->setFilaActual(7);
-					else
-						unSprite->setFilaActual(4);
-				}
-				
-				if (estado->vida == 0) {
-					if (estado->nitroActivo)
-						unSprite->setFilaActual(8);
-					else
-						unSprite->setFilaActual(5);
-				}
-				
-				switch (estado->estadoAuto) {
-				case EstadoAuto::DERECHO:
-					if (animacion > 0)
-						unSprite->setFrameActual(0);
-					else
-						unSprite->setFrameActual(3);
-					break;
-				case EstadoAuto::DOBLANDO_IZQ:
-					if (animacion > 0)
-						unSprite->setFrameActual(1);
-					else
-						unSprite->setFrameActual(4);
-					break;
-				case EstadoAuto::DOBLANDO_DER:
-					if (animacion > 0)
-						unSprite->setFrameActual(2);
-					else
-						unSprite->setFrameActual(5);
-					break;
-				}
-				animacion = animacion*-1;
-				unSprite->setPosicionInt(estado->posX, estado->posY);
-				unSprite->setGrisar(!estado->conectado);
+			if (estadoModeloJuego->estadoJugadores[0].id < 0 || estadoModeloJuego->estadoJugadores[0].id > 3) {
+				// vino con basura
+				int k = 2;
 			}
+			else {
+				Sprite* unSprite = spritesMap[estado->id];
+				if (unSprite != NULL) {
+					if (estado->vida == 3) {
+						if (estado->nitroActivo)
+							unSprite->setFilaActual(2);
+						else
+							unSprite->setFilaActual(1);
+					}
 
-			if (estado->id == idJugador){
-				this->camara->setPosicion(estado->posXCamara, estado->posYCamara);
+					if (estado->vida == 2) {
+						if (estado->nitroActivo)
+							unSprite->setFilaActual(6);
+						else
+							unSprite->setFilaActual(3);
+					}
 
-				this->escenario->setPosicionCielo(estadoModeloJuego->estadoEscenario.cieloX, estadoModeloJuego->estadoEscenario.cieloY);
-				this->escenario->setVelocidad(estado->velocidadY);
-				this->escenario->setDistancia(estado->posY / ALTO_TRAMO);
-				this->escenario->setTiempo(estado->tiempo);
-				if (estado->velocidadY > 0) {
-					Segmento* segmentoActual = this->mapaView->getSegmentoActual();
-					Vector* posicion = this->escenario->getPosicionCielo();
-					if (estado->posX + estado->velocidadX < LIMITE_PISTA_X_DERECHA && estado->posX + estado->velocidadX > LIMITE_PISTA_X_IZQUIERDA) {
-						if (estado->velocidadX < 0) {
-							m_estadoModelo.lock();
-							this->escenario->setPosicionCielo(this->escenario->getPosicionCielo()->getX() + 3, POS_Y_CIELO);
-							this->escenario->setPosicionColinas(this->escenario->getPosicionColinas()->getX() + 6, POS_Y_COLINAS);
-							m_estadoModelo.unlock();
+					if (estado->vida == 1) {
+						if (estado->nitroActivo)
+							unSprite->setFilaActual(7);
+						else
+							unSprite->setFilaActual(4);
+					}
+
+					if (estado->vida == 0) {
+						if (estado->nitroActivo)
+							unSprite->setFilaActual(8);
+						else
+							unSprite->setFilaActual(5);
+					}
+
+					switch (estado->estadoAuto) {
+					case EstadoAuto::DERECHO:
+						if (animacion > 0)
+							unSprite->setFrameActual(0);
+						else
+							unSprite->setFrameActual(3);
+						break;
+					case EstadoAuto::DOBLANDO_IZQ:
+						if (animacion > 0)
+							unSprite->setFrameActual(1);
+						else
+							unSprite->setFrameActual(4);
+						break;
+					case EstadoAuto::DOBLANDO_DER:
+						if (animacion > 0)
+							unSprite->setFrameActual(2);
+						else
+							unSprite->setFrameActual(5);
+						break;
+					}
+					animacion = animacion*-1;
+					unSprite->setPosicionInt(estado->posX, estado->posY);
+					unSprite->setGrisar(!estado->conectado);
+				}
+
+				if (estado->id == idJugador) {
+					this->camara->setPosicion(estado->posXCamara, estado->posYCamara);
+
+					this->escenario->setPosicionCielo(estadoModeloJuego->estadoEscenario.cieloX, estadoModeloJuego->estadoEscenario.cieloY);
+					this->escenario->setVelocidad(estado->velocidadY);
+					this->escenario->setDistancia(estado->posY / ALTO_TRAMO);
+					this->escenario->setTiempo(estado->tiempo);
+					if (estado->velocidadY > 0) {
+						Segmento* segmentoActual = this->mapaView->getSegmentoActual();
+						Vector* posicion = this->escenario->getPosicionCielo();
+						if (estado->posX + estado->velocidadX < LIMITE_PISTA_X_DERECHA && estado->posX + estado->velocidadX > LIMITE_PISTA_X_IZQUIERDA) {
+							if (estado->velocidadX < 0) {
+								m_estadoModelo.lock();
+								this->escenario->setPosicionCielo(this->escenario->getPosicionCielo()->getX() + 3, POS_Y_CIELO);
+								this->escenario->setPosicionColinas(this->escenario->getPosicionColinas()->getX() + 6, POS_Y_COLINAS);
+								m_estadoModelo.unlock();
+							}
+							else if (estado->velocidadX > 0) {
+								m_estadoModelo.lock();
+								this->escenario->setPosicionCielo(this->escenario->getPosicionCielo()->getX() - 3, POS_Y_CIELO);
+								this->escenario->setPosicionColinas(this->escenario->getPosicionColinas()->getX() - 6, POS_Y_COLINAS);
+								m_estadoModelo.unlock();
+							}
+							//if (segmentoActual != NULL) {
+							//	Vector* posicion = this->escenario->getPosicionCielo();
+							//	if (segmentoActual->curva > 0) {
+							//		m_estadoModelo.lock();
+							//		this->escenario->setPosicionCielo(posicion->getX() + 2, 0);
+							//		//this->escenario->setPosicionColinas(posicion->getX() + 2, 0);
+							//		m_estadoModelo.unlock();
+							//	}
+							//	if (segmentoActual->curva < 0) {
+							//		m_estadoModelo.lock();
+							//		this->escenario->setPosicionCielo(posicion->getX() - 2, 0);
+							//		//this->escenario->setPosicionColinas(posicion->getX() - 2, 0);
+							//		m_estadoModelo.unlock();
+							//	}
+							//}
 						}
-						else if (estado->velocidadX > 0) {
-							m_estadoModelo.lock();
-							this->escenario->setPosicionCielo(this->escenario->getPosicionCielo()->getX() - 3, POS_Y_CIELO);
-							this->escenario->setPosicionColinas(this->escenario->getPosicionColinas()->getX() - 6, POS_Y_COLINAS);
-							m_estadoModelo.unlock();
+					}
+					if (estado->sonidoChoque) {
+						//ManejadorAudio::getInstance()->playTrackOnce("carCrash");
+					}
+					else {
+						//ManejadorAudio::getInstance()->pauseTrack("c");
+					}
+					//SONIDO DEL MOTOR
+					if ((estado->nitroActivo) && (estado->velocidadY > 0)) {
+						if (idSonidoMotor != "turbo1") {
+							ManejadorAudio::getInstance()->pauseTrack();
+							idSonidoMotor = "turbo1";
+							ManejadorAudio::getInstance()->startTrack(idSonidoMotor);
 						}
-						//if (segmentoActual != NULL) {
-						//	Vector* posicion = this->escenario->getPosicionCielo();
-						//	if (segmentoActual->curva > 0) {
-						//		m_estadoModelo.lock();
-						//		this->escenario->setPosicionCielo(posicion->getX() + 2, 0);
-						//		//this->escenario->setPosicionColinas(posicion->getX() + 2, 0);
-						//		m_estadoModelo.unlock();
-						//	}
-						//	if (segmentoActual->curva < 0) {
-						//		m_estadoModelo.lock();
-						//		this->escenario->setPosicionCielo(posicion->getX() - 2, 0);
-						//		//this->escenario->setPosicionColinas(posicion->getX() - 2, 0);
-						//		m_estadoModelo.unlock();
-						//	}
-						//}
 					}
-				}
-				if (estado->sonidoChoque) {
-					//ManejadorAudio::getInstance()->playTrackOnce("carCrash");
-				}
-				else {
-					//ManejadorAudio::getInstance()->pauseTrack("c");
-				}
-				//SONIDO DEL MOTOR
-				if ((estado->nitroActivo)&& (estado->velocidadY > 0)) {
-					if (idSonidoMotor != "turbo1") {
-						ManejadorAudio::getInstance()->pauseTrack();
-						idSonidoMotor = "turbo1";
-						ManejadorAudio::getInstance()->startTrack(idSonidoMotor);
-					}
-				}
 
-				if ((estado->velocidadY >= LIMITE_SONIDO_MOTOR)&&!(estado->nitroActivo)) {
-					if (idSonidoMotor != "motor2") {
-						ManejadorAudio::getInstance()->pauseTrack();
-						idSonidoMotor = "motor2";
-						ManejadorAudio::getInstance()->startTrack(idSonidoMotor);
+					if ((estado->velocidadY >= LIMITE_SONIDO_MOTOR) && !(estado->nitroActivo)) {
+						if (idSonidoMotor != "motor2") {
+							ManejadorAudio::getInstance()->pauseTrack();
+							idSonidoMotor = "motor2";
+							ManejadorAudio::getInstance()->startTrack(idSonidoMotor);
+						}
+					}
+					if ((estado->velocidadY < LIMITE_SONIDO_MOTOR) &&
+						(estado->velocidadY > 0) && !(estado->nitroActivo)) {
+						if (idSonidoMotor != "motor") {
+							ManejadorAudio::getInstance()->pauseTrack();
+							idSonidoMotor = "motor";
+							ManejadorAudio::getInstance()->startTrack(idSonidoMotor);
+						}
+					}
+					if (estado->velocidadY <= 0) {
+						if (idSonidoMotor != "") {
+							ManejadorAudio::getInstance()->pauseTrack();
+							idSonidoMotor = "";
+						}
 					}
 				}
-				if ((estado->velocidadY < LIMITE_SONIDO_MOTOR) &&
-					(estado->velocidadY > 0) && !(estado->nitroActivo) ){
-					if (idSonidoMotor != "motor") {
-						ManejadorAudio::getInstance()->pauseTrack();
-						idSonidoMotor = "motor";
-						ManejadorAudio::getInstance()->startTrack(idSonidoMotor);
-					}
-				}
-				if (estado->velocidadY <= 0){
-					if (idSonidoMotor != "") {
-						ManejadorAudio::getInstance()->pauseTrack();
-						idSonidoMotor = "";
-					}
-				}
-				
-			}
+			}			
 		}
 
 		//m_estadoModelo.lock();
