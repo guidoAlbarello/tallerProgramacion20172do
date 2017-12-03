@@ -49,6 +49,8 @@ public:
 	static constexpr const int CANT_TECLAS = 4;
 	static constexpr const int TIEMPO_PANTALLA_TRANSICION = 10;
 	static constexpr const int GLOBAL_FONT_SIZE = 16;
+	static constexpr const int INTENSIDAD_CENTRIFUGA = 35;
+	static constexpr const int MIN_VELOCIDAD_APLICA_CENTRIFUGA = 80;
 
 private:
 	Constantes();

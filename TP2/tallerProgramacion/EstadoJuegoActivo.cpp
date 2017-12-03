@@ -18,11 +18,7 @@ void EstadoJuegoActivo::update(ManejadorDeConexionCliente* conexionCliente) {
 			EstadoJugador* estado = &(estadoModeloJuego->estadoJugadores[i]);  //lockear solo esta parte, o todo el update asi updatea todo un frame. 
 			m_estadoModelo.unlock();
 
-			if (estadoModeloJuego->estadoJugadores[0].id < 0 || estadoModeloJuego->estadoJugadores[0].id > 3) {
-				// vino con basura
-				int k = 2;
-			}
-			else {
+			if (estadoModeloJuego->estadoJugadores[0].id >= 0 && estadoModeloJuego->estadoJugadores[0].id < 6) {
 				Sprite* unSprite = spritesMap[estado->id];
 				if (unSprite != NULL) {
 					if (estado->vida == 3) {

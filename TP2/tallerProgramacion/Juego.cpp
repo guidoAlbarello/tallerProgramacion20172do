@@ -64,8 +64,6 @@ void Juego::update(Unidad tiempoDelta) {
 				continue;
 			}
 
-			//if (unJugador->getSonidoChoque()) unJugador->setSonidoChoque(false); // reset el sonido de la colision
-
 			if (hayColision(posicionAnteriorY, posicionActualY, posicionAnteriorX, posicionActualX, otroJugador)) {
 				unJugador->chocar(otroJugador->getPosicion()->getY(), otroJugador->getVelocidad().getY());
 				//cout << "Hubo colision y, y: " << unJugador->getPosicion()->getY() << endl;
@@ -139,57 +137,58 @@ EstadoModeloJuego* Juego::getEstadoJuego() {
 
 	for (int i = 0; i < jugadores.size(); i++) { //solo envia  el estado de los jugadores, deberia mandar el de todas las entidades, cambiar esto cuando haya mas objetos.
 		Jugador* unJugador = jugadores[i];
-		nuevoEstado->estadoJugadores[i].id = unJugador->getId();
-		nuevoEstado->estadoJugadores[i].conectado = unJugador->estaConectado();
-		nuevoEstado->estadoJugadores[i].vida = unJugador->getVida();
-		nuevoEstado->estadoJugadores[i].nitroActivo = unJugador->getNitroActivo();
-		nuevoEstado->estadoJugadores[i].puntos = unJugador->getPuntos();
-		nuevoEstado->estadoJugadores[i].tiempo = unJugador->getTiempo();
-		nuevoEstado->estadoJugadores[i].sonidoChoque = unJugador->getSonidoChoque();
+		if (unJugador->getId() >= 0 && unJugador->getId() < 6) { // Por si llega a venir basura
+			nuevoEstado->estadoJugadores[i].id = unJugador->getId();
+			nuevoEstado->estadoJugadores[i].conectado = unJugador->estaConectado();
+			nuevoEstado->estadoJugadores[i].vida = unJugador->getVida();
+			nuevoEstado->estadoJugadores[i].nitroActivo = unJugador->getNitroActivo();
+			nuevoEstado->estadoJugadores[i].puntos = unJugador->getPuntos();
+			nuevoEstado->estadoJugadores[i].tiempo = unJugador->getTiempo();
+			nuevoEstado->estadoJugadores[i].sonidoChoque = unJugador->getSonidoChoque();
 
-		if (unJugador->getCamara()->getPosicionTarget()->getY() / ALTO_TRAMO >= mapa[nivel]->getLongitudTotal()) {
-			// LLego a la meta
-			unJugador->setDeshabilitarMovimiento(true);
-		}
-		else {
-			// Se modifica la coordenada x si esta en una curva y esta acelerando
-			if (unJugador->getAcelerando()) {
-				if (unJugador->getCamara()->getPosicionTarget()->getY() / ALTO_TRAMO < this->segmentos.size()) {
-					Segmento* segmentoActual = this->segmentos[unJugador->getCamara()->getPosicionTarget()->getY() / ALTO_TRAMO];
-					if (segmentoActual != NULL) {
-						// Es una curva
-						int intensidadCentrifuga = 35;
-						int nuevaPosicionX;
-						if (segmentoActual->curva > 0) {
-							// Curva izquierda
-							nuevaPosicionX = unJugador->getPosicionX() + intensidadCentrifuga;
-							if (nuevaPosicionX < LIMITE_PISTA_X_DERECHA && nuevaPosicionX > LIMITE_PISTA_X_IZQUIERDA) {
-								unJugador->setPosicionX(nuevaPosicionX);
+			if (unJugador->getCamara()->getPosicionTarget()->getY() / ALTO_TRAMO >= mapa[nivel]->getLongitudTotal()) {
+				// LLego a la meta
+				unJugador->setDeshabilitarMovimiento(true);
+			}
+			else {
+				// Se modifica la coordenada x si esta en una curva y esta acelerando
+				if (unJugador->getAcelerando()) {
+					if (unJugador->getCamara()->getPosicionTarget()->getY() / ALTO_TRAMO < this->segmentos.size()) {
+						Segmento* segmentoActual = this->segmentos[unJugador->getCamara()->getPosicionTarget()->getY() / ALTO_TRAMO];
+						if (segmentoActual != NULL) {
+							// Es una curva
+							int nuevaPosicionX;
+							if (segmentoActual->curva > 0 && unJugador->getVelocidad().getY() > Constantes::MIN_VELOCIDAD_APLICA_CENTRIFUGA) {
+								// Curva izquierda
+								nuevaPosicionX = unJugador->getPosicionX() + Constantes::INTENSIDAD_CENTRIFUGA;
+								if (nuevaPosicionX < LIMITE_PISTA_X_DERECHA && nuevaPosicionX > LIMITE_PISTA_X_IZQUIERDA) {
+									unJugador->setPosicionX(nuevaPosicionX);
+								}
+								nuevoEstado->estadoJugadores[i].posX = nuevaPosicionX;
 							}
-							nuevoEstado->estadoJugadores[i].posX = nuevaPosicionX;
-						}
-						else if (segmentoActual->curva < 0) {
-							// Curva derecha
-							nuevaPosicionX = unJugador->getPosicionX() - intensidadCentrifuga;
-							if (nuevaPosicionX < LIMITE_PISTA_X_DERECHA && nuevaPosicionX > LIMITE_PISTA_X_IZQUIERDA) {
-								unJugador->setPosicionX(nuevaPosicionX);
+							else if (segmentoActual->curva < 0 && unJugador->getVelocidad().getY() > Constantes::MIN_VELOCIDAD_APLICA_CENTRIFUGA) {
+								// Curva derecha
+								nuevaPosicionX = unJugador->getPosicionX() - Constantes::INTENSIDAD_CENTRIFUGA;
+								if (nuevaPosicionX < LIMITE_PISTA_X_DERECHA && nuevaPosicionX > LIMITE_PISTA_X_IZQUIERDA) {
+									unJugador->setPosicionX(nuevaPosicionX);
+								}
+								nuevoEstado->estadoJugadores[i].posX = nuevaPosicionX;
 							}
-							nuevoEstado->estadoJugadores[i].posX = nuevaPosicionX;
 						}
 					}
 				}
 			}
-		}
 
-		nuevoEstado->estadoJugadores[i].estadoAuto = unJugador->getEstado();
-		nuevoEstado->estadoJugadores[i].posX = unJugador->getPosicionX();
-		nuevoEstado->estadoJugadores[i].posY = unJugador->getPosicionY();
-		nuevoEstado->estadoJugadores[i].posXCamara = unJugador->getCamara()->getPosicionTarget()->getX();
-		nuevoEstado->estadoJugadores[i].posYCamara = unJugador->getCamara()->getPosicionTarget()->getY();
-		nuevoEstado->estadoJugadores[i].velocidadX = unJugador->getVelocidad().getX();
-		nuevoEstado->estadoJugadores[i].velocidadY = unJugador->getVelocidad().getY();
+			nuevoEstado->estadoJugadores[i].estadoAuto = unJugador->getEstado();
+			nuevoEstado->estadoJugadores[i].posX = unJugador->getPosicionX();
+			nuevoEstado->estadoJugadores[i].posY = unJugador->getPosicionY();
+			nuevoEstado->estadoJugadores[i].posXCamara = unJugador->getCamara()->getPosicionTarget()->getX();
+			nuevoEstado->estadoJugadores[i].posYCamara = unJugador->getCamara()->getPosicionTarget()->getY();
+			nuevoEstado->estadoJugadores[i].velocidadX = unJugador->getVelocidad().getX();
+			nuevoEstado->estadoJugadores[i].velocidadY = unJugador->getVelocidad().getY();
+
+		}
 	}
-	
 	nuevoEstado->tamanio = jugadores.size();
 	
 	nuevoEstado->estadoEscenario.cieloX = escenario->getPosicionCielo()->getX();
@@ -346,9 +345,7 @@ int Juego::hayColisionObjetoFijo(int yDesde, int yHasta, int xDesde, int xHasta,
 		}
 	}
 
-	result = 1;
-
-	return result;
+	return 1;
 }
 
 void Juego::inicializarNivel() {
