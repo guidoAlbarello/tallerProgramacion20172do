@@ -293,10 +293,10 @@ int Juego::hayColision(int yDesde, int yHasta, int xDesde, int xHasta, Jugador* 
 		return result;
 	}
 	//El punto de aclaje es 10 (no se porque, pero lo debugie)
-	if (xDesde - 10 > otroJugador->getPosicion()->getX() + 50) {
+	if (xDesde - 10 > otroJugador->getPosicion()->getX() + 110) {
 		return result;
 	}
-	if (xHasta + 50 < otroJugador->getPosicion()->getX() - 10) {
+	if (xHasta + 110 < otroJugador->getPosicion()->getX() - 10) {
 		return result;
 	}
 	result = 1;
