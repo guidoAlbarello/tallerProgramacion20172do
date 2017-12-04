@@ -15,6 +15,7 @@
 #define LIMITE_VELOCIDAD_AUTO_Y_PISTA 120.0
 #define ACELERACION_NITRO 3.0
 
+namespace sc = std::chrono;
 class Jugador : public ObjetoDeJuego {  //tal vez diferenciar entre movil y estatico
 
 public:
@@ -73,5 +74,6 @@ protected:
 	bool sonidoChoque = false;
 	std::chrono::time_point<std::chrono::steady_clock> inicioIntervaloSonidoChoque;
 	double tiempoSilencioChoque = 0;
+	long tiempoDeChocado = 0;
 };
 #endif

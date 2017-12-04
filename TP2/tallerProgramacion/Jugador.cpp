@@ -166,8 +166,16 @@ bool Jugador::estaChocado() {
 }
 
 void Jugador::chocar(double posicionY, int velocidad) {
+	auto time = sc::system_clock::now(); // get the current time
+	auto since_epoch = time.time_since_epoch(); // get the duration since epoch
+	auto millis = sc::duration_cast<sc::milliseconds>(since_epoch);
+	long now = millis.count();
+
 	this->chocado = true;
-	dañarAuto();
+	if (now - tiempoDeChocado > 1000) {
+		tiempoDeChocado = now;
+		dañarAuto();
+	}
 	this->velocidad.setX(0);
 	if (velocidad >= 40) {
 		this->velocidad.setY(velocidad - 40);
