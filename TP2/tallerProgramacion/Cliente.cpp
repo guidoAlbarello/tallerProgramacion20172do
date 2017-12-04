@@ -33,17 +33,15 @@ void Cliente::render() {
 				intervalo = (1000 / Constantes::FPS) - 1;
 			}
 		} else {
-			//cargar imagen game over
-			SDL_SetRenderDrawColor(renderer->getRendererJuego(), 242, 242, 242, 255);
+			SDL_SetRenderDrawColor(this->renderer->getRendererJuego(), 242, 242, 242, 255);
 			SDL_RenderClear(this->renderer->getRendererJuego());
-
-			Ltexture* gBackgroundImage = new Ltexture();
-			gBackgroundImage->loadFromFile("imagenes/game_over.png");
+			Ltexture* gBackgroundImage = new Ltexture(this->renderer->getRendererJuego());
+			gBackgroundImage->loadFromFile("imagenes/game_over.bmp");
 			SDL_Rect* rectanguloFullscreen = new SDL_Rect();
 			rectanguloFullscreen->w = 800;
 			rectanguloFullscreen->h = 600;
 			gBackgroundImage->render(0, 0, rectanguloFullscreen);
-
+			SDL_RenderPresent(this->renderer->getRendererJuego());
 
 			std::this_thread::sleep_for(std::chrono::milliseconds(1000 * 5)); 
 			clienteActivo = false;

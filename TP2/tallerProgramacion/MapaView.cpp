@@ -720,31 +720,33 @@ int MapaView::getTramoActual() {
 void MapaView::initSegmentos() {
 	for (int i = 0; i < this->mapa[nivel]->getLongitudTotal(); i++) {
 		// i == metro actual
-		std::vector<Tramo*> tramos = this->mapa[nivel]->getTramosDelMapa();
-		for (std::vector<Tramo*>::iterator it = tramos.begin(); it != tramos.end(); ++it) {
-			Tramo* tramoActual = *it;
-			if ((i > tramoActual->getMetroInicio()) && (i <= tramoActual->getMetroInicio() + tramoActual->getLongitud())) {
-				// Dibuja segmento curvo o recto en base al tramo al que pertenece
-				Segmento* unSegmento = new Segmento();
-				unSegmento->p1.x = 0;
-				unSegmento->p2.x = 0;
-				unSegmento->p1.y = 0;
-				unSegmento->p2.y = 0;
-				unSegmento->p1.z = i * ALTO_TRAMO;
-				unSegmento->p2.z = (i + 1) * ALTO_TRAMO;
-				if (tramoActual->getTipoTramo() == TipoTramo::Recta) {
-					unSegmento->curva = 0;
+		if (nivel < 3) {
+			std::vector<Tramo*> tramos = this->mapa[nivel]->getTramosDelMapa();
+			for (std::vector<Tramo*>::iterator it = tramos.begin(); it != tramos.end(); ++it) {
+				Tramo* tramoActual = *it;
+				if ((i > tramoActual->getMetroInicio()) && (i <= tramoActual->getMetroInicio() + tramoActual->getLongitud())) {
+					// Dibuja segmento curvo o recto en base al tramo al que pertenece
+					Segmento* unSegmento = new Segmento();
+					unSegmento->p1.x = 0;
+					unSegmento->p2.x = 0;
+					unSegmento->p1.y = 0;
+					unSegmento->p2.y = 0;
+					unSegmento->p1.z = i * ALTO_TRAMO;
+					unSegmento->p2.z = (i + 1) * ALTO_TRAMO;
+					if (tramoActual->getTipoTramo() == TipoTramo::Recta) {
+						unSegmento->curva = 0;
+					}
+					else {
+						if (tramoActual->getSentidoCurva() == SentidoCurva::SCDerecha)
+							unSegmento->curva = -INTENSIDAD_CURVAS; // - == curva derecha
+						else if (tramoActual->getSentidoCurva() == SentidoCurva::SCIzquierda)
+							unSegmento->curva = INTENSIDAD_CURVAS; // + == curva izquierda
+					}
+					this->segmentos.push_back(unSegmento);
+					break;
 				}
-				else {
-					if (tramoActual->getSentidoCurva() == SentidoCurva::SCDerecha)
-						unSegmento->curva = -INTENSIDAD_CURVAS; // - == curva derecha
-					else if (tramoActual->getSentidoCurva() == SentidoCurva::SCIzquierda)
-						unSegmento->curva = INTENSIDAD_CURVAS; // + == curva izquierda
-				}
-				this->segmentos.push_back(unSegmento);
-				break;
 			}
-		}	
+		}
 	}
 }
 

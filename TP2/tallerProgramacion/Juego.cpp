@@ -224,7 +224,7 @@ EstadoInicialJuego * Juego::getEstadoJuegoInicial() {
 Jugador* Juego::agregarJugador(string nombre) {
 	Jugador* nuevoJugador = new Jugador(nombre);
 	nuevoJugador->setId(cantidadJugadores);
-	nuevoJugador->setPosicion(this->cantidadJugadores * 200, 0);
+	nuevoJugador->setPosicion(this->cantidadJugadores * 250, 0);
 	this->cantidadJugadores++;
 	this->jugadores.push_back(nuevoJugador);
 	return nuevoJugador;
