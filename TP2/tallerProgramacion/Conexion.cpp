@@ -31,7 +31,8 @@ void Conexion::cerrarConexion() {
 				this->getUsuario()->getJugador()->recibirEntrada(3, false);
 			}
 		}
-		this->conexionConCliente->cerrarCliente();
+		if(!clienteCerroConexion)
+			this->conexionConCliente->cerrarCliente();
 		try {
 			if (t_procesarDatosRecibidos.joinable()) {
 				t_procesarDatosRecibidos.join();
@@ -347,6 +348,7 @@ void Conexion::procesarDatosRecibidos() {
 				break;
 			case ComandoServidor::CLOSE:
 				//Logger::getInstance()->log(Debug, "Recibio un PING");
+				this->clienteCerroConexion = true;
 				this->conexionActiva = false;
 				this->conexionViva = false;
 				this->conexionInicializada = false;

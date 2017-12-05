@@ -51,12 +51,12 @@ void Cliente::render() {
 }
 
 Cliente::Cliente() {
-	int a = 1414877262;
+	/*int a = 1414877262;
 	char b[5]; 
 	memcpy(b, &a, sizeof(int));
 	b[4] = '\0';
 	cout << b << endl;
-
+	*/
 	this->clienteActivo = true;
 	this->estaLogueado = false;
 	this->conexionViva = false;

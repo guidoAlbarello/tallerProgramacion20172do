@@ -30,6 +30,7 @@ public:
 	void enviarGameOver();
 	void procesarPeticionListaDeUsuarios(std::vector<Jugador*> jugadores);
 private:
+	bool clienteCerroConexion = false;
 	ManejadorDeConexionConexion* conexionConCliente;
 	void procesarInput(bool* entrada);
 	void procesarSend_Message(MensajeDeRed* unMensajeDeRed);
