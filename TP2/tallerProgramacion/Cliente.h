@@ -27,6 +27,8 @@ public:
 	void cerrarCliente();
 
 protected:
+	bool clienteDecideCerrar = false;
+	bool enPantallaDeTransicion = false;
 	MaquinaEstados* maquinaDeEstados;
 	void mostrarMensajesPrivados(MensajeDeRed* unMensajeDeRed);
 	void procesarMensajesGlobales(MensajeDeRed* unMensajeDeRed);

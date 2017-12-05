@@ -28,6 +28,8 @@ string Constantes::getComandoServidor(ComandoServidor comando)
 		return "USUARIOS";
 	case ComandoServidor::INPUT:
 		return "INPUT";
+	case ComandoServidor::CLOSE:
+		return "CLOSE"; 
 	default:
 		return "Not recognized..";
 	}
@@ -61,7 +63,10 @@ ComandoServidor Constantes::getConstComandoServidor(string comando){
 	if (comando.compare("INPUT") == 0) {
 		return ComandoServidor::INPUT;
 	}
-
+	if (comando.compare("CLOSE") == 0) {
+		return ComandoServidor::CLOSE;
+	}
+	
 	return ComandoServidor::UPDATE_MODEL;
 }
 
@@ -94,7 +99,9 @@ string Constantes::getComandoCliente(ComandoCliente comando)
 	case ComandoCliente::TRANSITION_SCREEN:
 		return "TRANSITION_SCREEN";
 	case ComandoCliente::GAME_OVER:
-		return "GAME_OVER";
+		return "GAME_OVER"; 
+	case ComandoCliente::CLOSE:
+		return "CLOSE"; 
 	default:
 		return "Not recognized..";
 	}
@@ -147,6 +154,9 @@ ComandoCliente Constantes::getConstComandoCliente(string comando) {
 
 	if (comando.compare("GAME_OVER") == 0) {
 		return ComandoCliente::GAME_OVER;
+	}
+	if (comando.compare("CLOSE") == 0) {
+		return ComandoCliente::CLOSE;
 	}
 	
 	return ComandoCliente::UPDATE_MODEL;

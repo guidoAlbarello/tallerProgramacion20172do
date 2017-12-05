@@ -15,6 +15,7 @@ public:
 	//bool ejecutarComando(Comando comando, std::stri, std::string puertoServidor);
 	bool login(string user, string pass);
 	bool enviarMensajeGlobal(string unMensaje);
+	bool desconectarServidor();
 	bool enviarMensajePrivado(string unDestinatario, string unMensaje);
 	bool realizarPeticionUsuarios();
 	bool devolverMensajesPrivados();

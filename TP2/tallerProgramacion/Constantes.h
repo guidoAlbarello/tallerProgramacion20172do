@@ -17,10 +17,10 @@ using namespace std;
 
 typedef float Unidad;
 // Actualizar a medida que necesitemos
-enum class ComandoServidor { LOG = '0', PING = '1', SEND_MESSAGE = '2', RETRIEVE_MESSAGES = '3', UPDATE_MODEL = '4', USUARIOS = '5', INPUT = '6'};
+enum class ComandoServidor { LOG = '0', PING = '1', SEND_MESSAGE = '2', RETRIEVE_MESSAGES = '3', UPDATE_MODEL = '4', USUARIOS = '5', INPUT = '6', CLOSE = '7'};
 enum class ComandoCliente {
 	LOG = '0', PRINT = '1', UPDATE_MODEL = '2', RESULTADO_LOGIN = '3', RESULTADO_SEND_MESSAGE = '4', RESULTADO_RETRIEVE_MESSAGES = '5', RECIEVE_GLOBAL_MESSAGES = '6', RECIEVE_PRIVATE_MESSAGES = '7', RESULTADO_USUARIOS = '8', RESULTADO_PING = '9', INIT = '10', TRANSITION_SCREEN
-	= '11', GAME_OVER = '12'
+	= '11', GAME_OVER = '12', CLOSE = '13'
 };
 enum class EstadoAuto { DERECHO = '0', DOBLANDO_IZQ = '1', DOBLANDO_DER = '2', DERECHO_CHOCADO = '3', DOBLANDO_IZQ_CHOCADO = '4', DOBLANDO_DER_CHOCADO = '5' };
 enum class TipoObjeto { ARBOL = '0', CARTEL = '1' };

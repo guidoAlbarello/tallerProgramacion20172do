@@ -125,6 +125,7 @@ bool SocketSincronico::enviarDatos(const char* datosAEnviar, int tamanio) {
 	if (tamanio <= 0) {
 		return true;
 	}
+	cout << tamanio << endl;
 	tamanioDeDatosEnviados = send(this->socketDeConexion, (char*)&tamanio, sizeof(tamanio), 0);
 	if (tamanioDeDatosEnviados == sizeof(tamanio)) {
 		int cantidadDatosEnviados = 0;

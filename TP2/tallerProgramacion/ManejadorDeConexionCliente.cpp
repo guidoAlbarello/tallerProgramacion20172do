@@ -10,7 +10,7 @@ bool ManejadorDeConexionCliente::iniciarConexion(std::string ipServidor, std::st
 	this->t_RecibirDatos = std::thread(&ManejadorDeConexionCliente::recibirDatos, this);
 	if (resultadoConexion == 0) {
 		Logger::getInstance()->log(Actividad, "El cliente con ip = " + ipServidor + " se ha conectado satisfactoriamente al servidor");
-		cout << "Se ha conectado satisfactoriamente al servidor" << endl;
+		
 		this->conexionActiva = true;
 		return true;
 	} else {
@@ -40,6 +40,15 @@ bool ManejadorDeConexionCliente::enviarMensajeGlobal(string unMensaje) {
 	mensajeDeRed->agregarParametro(unMensaje);
 	string mensaje = mensajeDeRed->getComandoServidorSerializado();
 	int tamanio = mensaje.length() + 1;;
+	Logger::getInstance()->log(Debug, mensaje);
+	return this->socket->enviarDatos(mensaje.c_str(), tamanio);;
+}
+
+bool ManejadorDeConexionCliente::desconectarServidor() {
+	MensajeDeRed* mensajeDeRed = new MensajeDeRed(ComandoServidor::CLOSE);
+	//Logger::getInstance()->log(Debug, "se realiza el envio de un PING");
+	string mensaje = mensajeDeRed->getComandoServidorSerializado();
+	int tamanio = mensaje.length() + 1;
 	Logger::getInstance()->log(Debug, mensaje);
 	return this->socket->enviarDatos(mensaje.c_str(), tamanio);;
 }

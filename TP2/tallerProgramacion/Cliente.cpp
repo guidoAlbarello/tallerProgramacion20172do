@@ -51,6 +51,12 @@ void Cliente::render() {
 }
 
 Cliente::Cliente() {
+	int a = 1414877262;
+	char b[5]; 
+	memcpy(b, &a, sizeof(int));
+	b[4] = '\0';
+	cout << b << endl;
+
 	this->clienteActivo = true;
 	this->estaLogueado = false;
 	this->conexionViva = false;
@@ -86,10 +92,11 @@ void Cliente::iniciarCliente() {
 	this->leerClientConfig();
 	conectarseAlServidor();
 	if (!this->conexionViva) {
-		cout << "Necesita estar conectado con el servidor para realizar esta accion." << endl;
+		cout << "No se pudo conectar al servidor. Maxima cantidad de clientes conectados." << endl;
+		this->cerrarCliente();
 		return;
 	}
-
+	cout << "Se ha conectado satisfactoriamente al servidor" << endl;
 	if (this->estaLogueado) {
 		cout << "Usted ya esta logueado." << endl;
 		return;
@@ -103,10 +110,12 @@ void Cliente::iniciarCliente() {
 void Cliente::correrCicloPrincipal() {
 	while (clienteActivo) {
 		this->maquinaDeEstados->update(this->conexionDelCliente);
-		if (ManejadorInput::getInstance()->cerrarCliente())
+		if (ManejadorInput::getInstance()->cerrarCliente()) {
+			this->clienteDecideCerrar = true;
 			clienteActivo = false;
+		}
 		//std::this_thread::sleep_for(std::chrono::milliseconds(1000 / (Constantes::FPS)));
-		std::this_thread::sleep_for(std::chrono::milliseconds(20));
+		std::this_thread::sleep_for(std::chrono::milliseconds(25));
 	}
 	this->cerrarCliente();
 }
@@ -176,6 +185,8 @@ void Cliente::desconectarseDelServidor() {
 	this->estaLogueado = false;
 	this->conexionViva = false;
 	this->clienteActivo = false;
+	if(clienteDecideCerrar)
+		this->conexionDelCliente->desconectarServidor();
 	try {
 		if (this->t_render.joinable()) {
 			t_render.join();
@@ -486,6 +497,11 @@ void Cliente::procesarDatosRecibidos() {
 				Logger::getInstance()->log(Debug, "Recibio un LOG");
 				Logger::getInstance()->log(Debug, datosRecibidosString);
 				break;
+			case ComandoCliente::CLOSE:
+				this->estaLogueado = false;
+				this->conexionViva = false;
+				this->clienteActivo = false;
+				break;
 			case ComandoCliente::PRINT:
 				Logger::getInstance()->log(Debug, "Recibio un PRINT");
 				std::cout << datosRecibidosString << endl;
@@ -498,12 +514,14 @@ void Cliente::procesarDatosRecibidos() {
 				break;
 			case ComandoCliente::UPDATE_MODEL:
 				//Logger::getInstance()->log(Debug, "Recibio un UPDATE_MODEL");
+				enPantallaDeTransicion = false;
 				estadoModeloJuego = new EstadoModeloJuego();
 				memcpy(estadoModeloJuego, datosRecibidos + 12 + 1, sizeof(EstadoModeloJuego));
 				procesarEstadoModelo(estadoModeloJuego);
 				break;
 			case ComandoCliente::TRANSITION_SCREEN:
 				Logger::getInstance()->log(Debug, "Recibio un TRANSITION_SCREEN");
+				enPantallaDeTransicion = true;
 				this->maquinaDeEstados->cambiarNivel();
 				break;
 			case ComandoCliente::RESULTADO_PING:
@@ -535,7 +553,7 @@ void Cliente::procesarDatosRecibidos() {
 
 
 		double tiempoTardado = std::chrono::duration_cast<std::chrono::duration<double, std::ratio<1>>>(std::chrono::high_resolution_clock::now() - timeOut).count() * 1000;
-		if (this->juegoIniciado && tiempoTardado > (Constantes::PING_DELAY) + Constantes::TOLERANCIA_PING) {
+		if (!enPantallaDeTransicion && this->juegoIniciado && tiempoTardado > (Constantes::PING_DELAY) + Constantes::TOLERANCIA_PING) {
 			this->estaLogueado = false;
 			this->conexionViva = false;
 			this->clienteActivo = false;
@@ -639,13 +657,13 @@ void Cliente::procesarResultadoLogin(MensajeDeRed* mensajeDeRed, char* datosReci
 
 
 void Cliente::enviarPingAServidor() {
-	while (this->conexionViva) {
+	/*while (this->conexionViva) {
 		if (this->juegoIniciado) {
 			//Logger::getInstance()->log(Debug, "Cliente enviando PING al servidor");
 			ManejadorInput::getInstance()->setCerrar(!this->conexionDelCliente->enviarSolicitudPing());
 		}
 		std::this_thread::sleep_for(std::chrono::milliseconds(500));
-	}
+	}*/
 }
 
 void Cliente::mostrarMenuLogin() {
