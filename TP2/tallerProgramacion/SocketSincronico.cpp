@@ -120,7 +120,7 @@ int SocketSincronico::crearSocketServidor(std::string unPuerto, int conexionesMa
 }
 
 bool SocketSincronico::enviarDatos(const char* datosAEnviar, int tamanio) {
-	int tamanioDeDatosEnviados;
+	int tamanioDeDatosEnviados = 0;
 	// Send an initial buffer
 	if (tamanio <= 0) {
 		return true;
@@ -155,39 +155,39 @@ bool SocketSincronico::enviarDatos(const char* datosAEnviar, int tamanio) {
 }
 
 char* SocketSincronico::recibirDatos() {
-	int tamanioDeDatosRecibidos;
-	int tamanio;
+	int tamanioDeDatosRecibidos = 0;
+	int tamanio = 0;
 	void* datosARecibir = NULL;
-	// Send an initial buffer
-	tamanioDeDatosRecibidos = recv(this->socketDeConexion, (char*)&tamanio, sizeof(tamanio), 0);
-	if (tamanioDeDatosRecibidos > 0) {
-		if (tamanioDeDatosRecibidos == sizeof(tamanio)) {
-			int cantidadDatosRecibidos = 0;
-			datosARecibir = malloc(tamanio);
-			while (cantidadDatosRecibidos < tamanio) {
-				int datosRecibidos = recv(this->socketDeConexion, (char*)datosARecibir + cantidadDatosRecibidos, tamanio - cantidadDatosRecibidos, 0);
-				if (datosRecibidos > 0) {
-					cantidadDatosRecibidos += datosRecibidos;
-				}
-				else {
-					/*"Falla al recibir datos"*/
-					closesocket(this->socketDeConexion);
-					return (char*)datosARecibir;
+		// Send an initial buffer
+		tamanioDeDatosRecibidos = recv(this->socketDeConexion, (char*)&tamanio, sizeof(tamanio), 0);
+		if (tamanioDeDatosRecibidos > 0) {
+			if (tamanioDeDatosRecibidos == sizeof(tamanio)) {
+				int cantidadDatosRecibidos = 0;
+				datosARecibir = malloc(tamanio);
+				while (cantidadDatosRecibidos < tamanio) {
+					int datosRecibidos = recv(this->socketDeConexion, (char*)datosARecibir + cantidadDatosRecibidos, tamanio - cantidadDatosRecibidos, 0);
+					if (datosRecibidos > 0) {
+						cantidadDatosRecibidos += datosRecibidos;
+					}
+					else {
+						/*"Falla al recibir datos"*/
+						closesocket(this->socketDeConexion);
+						return (char*)datosARecibir;
+					}
 				}
 			}
-		}
-		else if (tamanioDeDatosRecibidos <= 0) {
-			closesocket(this->socketDeConexion);
+			else if (tamanioDeDatosRecibidos <= 0) {
+				closesocket(this->socketDeConexion);
 
-			/*"Falla al recibir datos"*/
-			//return (char*)datosARecibir;
-		}
+				/*"Falla al recibir datos"*/
+				//return (char*)datosARecibir;
+			}
 
-		/*"Se recibieron los datos correctamente"*/
-		string mensaje((char *)datosARecibir);
-		//Logger::getInstance()->log(Debug, "datos recibidos: " + mensaje);
-		//cout << "|----------------------------|" << mensaje;
-	}
+			/*"Se recibieron los datos correctamente"*/
+			string mensaje((char *)datosARecibir);
+			//Logger::getInstance()->log(Debug, "datos recibidos: " + mensaje);
+			//cout << "|----------------------------|" << mensaje;
+		}
 	return (char*)datosARecibir;
 }
 

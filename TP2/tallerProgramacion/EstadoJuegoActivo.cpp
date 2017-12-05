@@ -421,5 +421,20 @@ void EstadoJuegoActivo::limpiarMapa() {
 
 void EstadoJuegoActivo::limpiarObjetos() {
 	//liberar memoria objetos
+	spritesVec.clear();
+	spritesMap.clear();
+}
 
+EstadoJuegoActivo::~EstadoJuegoActivo() {
+	delete estadoModeloJuego;
+	delete mapaView;
+	delete escenario;
+	delete camara;
+	spritesMap.clear();
+	spritesVec.clear();
+	nombresJugadores.clear();
+	puntajesEtapa1.clear();
+	puntajesEtapa2.clear();
+	puntajesEtapa3.clear();
+	puntajesTotal.clear();
 }

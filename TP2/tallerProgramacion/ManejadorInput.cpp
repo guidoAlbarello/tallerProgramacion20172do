@@ -40,4 +40,5 @@ ManejadorInput::ManejadorInput() {
 }
 
 ManejadorInput::~ManejadorInput() {
+	delete instance;
 }

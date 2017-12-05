@@ -78,7 +78,7 @@ void ManejadorDeConexionCliente::borrarEntorno() {
 
 bool ManejadorDeConexionCliente::enviarSolicitudPing() {
 	MensajeDeRed* mensajeDeRed = new MensajeDeRed(ComandoServidor::PING);
-	Logger::getInstance()->log(Debug, "se realiza el envio de un PING");
+	//Logger::getInstance()->log(Debug, "se realiza el envio de un PING");
 	string mensaje = mensajeDeRed->getComandoServidorSerializado();
 	int tamanio = mensaje.length() + 1;
 	Logger::getInstance()->log(Debug, mensaje);
@@ -87,7 +87,7 @@ bool ManejadorDeConexionCliente::enviarSolicitudPing() {
 
 bool ManejadorDeConexionCliente::enviarEntrada() {
 	
-	Logger::getInstance()->log(Debug, "Enviando entrada");
+	//Logger::getInstance()->log(Debug, "Enviando entrada");
 
 	bool teclas[Constantes::CANT_TECLAS];
 	teclas[0] = ManejadorInput::getInstance()->estaTeclaPresionada(SDL_SCANCODE_UP);

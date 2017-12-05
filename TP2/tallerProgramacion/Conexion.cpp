@@ -231,7 +231,7 @@ void Conexion::enviarChatGlobal(bool tipoDeChat, string unEmisor, string unMensa
 }
 
 void Conexion::enviarUpdate(EstadoModeloJuego* estado) {
-	Logger::getInstance()->log(Debug, "Enviando update");
+	//Logger::getInstance()->log(Debug, "Enviando update");
 
 	int tamanio = sizeof(EstadoModeloJuego) + 12 + 1;  //+ tamaño "update_model" + caracter separador
 	char* data = new char[tamanio];
@@ -342,7 +342,7 @@ void Conexion::procesarDatosRecibidos() {
 				}
 				break;
 			case ComandoServidor::PING:
-				Logger::getInstance()->log(Debug, "Recibio un PING");
+				//Logger::getInstance()->log(Debug, "Recibio un PING");
 				procesarSolicitudPing();
 				break;
 			case ComandoServidor::SEND_MESSAGE:
@@ -358,7 +358,7 @@ void Conexion::procesarDatosRecibidos() {
 				//procesarPeticionListaDeUsuarios();
 				break;
 			case ComandoServidor::INPUT:
-				Logger::getInstance()->log(Debug, "Recibio Input");
+				//Logger::getInstance()->log(Debug, "Recibio Input");
 				this->conexionInicializada = true;
 				memcpy(entrada, datosRecibidos + 6, sizeof(bool) * Constantes::CANT_TECLAS);
 				procesarInput(entrada);
@@ -377,6 +377,7 @@ void Conexion::procesarDatosRecibidos() {
 			this->conexionActiva = false;
 			this->conexionViva = false;
 			this->conexionInicializada = false;
+			Logger::getInstance()->log(Debug, "Se cierra una conexion por PING");
 			//this->cerrarConexion();
 		}
 

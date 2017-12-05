@@ -26,6 +26,12 @@ LoggerView::~LoggerView() {
 	if (gBackgroundImage != NULL) {
 		gBackgroundImage->free();
 	}
+
+	delete gPromptTextTexture;
+	delete gInputTextTexture;
+	delete gPromptPasswordTextTexture;
+	delete gInputPasswordTextTexture;
+	delete gBackgroundImage;
 	
 	TTF_CloseFont(gFont);
 	Mix_HaltMusic(); //Stop the music

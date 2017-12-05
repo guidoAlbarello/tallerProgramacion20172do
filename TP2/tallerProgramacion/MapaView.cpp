@@ -12,8 +12,11 @@ MapaView::MapaView(Renderer* renderer) {
 	this->terminoDibujarMapa = false;
 }
 
-MapaView::~MapaView()
-{
+MapaView::~MapaView() {
+	segmentos.clear();
+	lineasADibujarMapa.clear();
+	objetosADibujar.clear();
+	objetosPorSegmento.clear();
 }
 
 void MapaView::init() {

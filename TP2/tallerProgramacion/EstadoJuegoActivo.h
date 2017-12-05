@@ -15,6 +15,7 @@
 
 class EstadoJuegoActivo : public EstadoJuego {
 public:
+	~EstadoJuegoActivo();
 	void update(ManejadorDeConexionCliente* conexionCliente);
 	void render();
 	bool onEnter(Renderer* renderer);

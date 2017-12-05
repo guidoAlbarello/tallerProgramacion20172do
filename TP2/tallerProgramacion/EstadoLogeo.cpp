@@ -29,6 +29,7 @@ bool EstadoLogeo::onEnter(Renderer* renderer) {
 bool EstadoLogeo::onExit() {
 	//cerrar logeo 
 	loggerView->close();
+	delete loggerView;
 	return true;
 }
 

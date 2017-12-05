@@ -2,7 +2,6 @@
 #ifndef MAPAVIEW_H
 #define MAPAVIEW_H
 
-//#include "Ltexture.h"
 #include <string>
 #include "Renderer.h"
 #include "Constantes.h"
@@ -17,7 +16,6 @@
 #define ALTO_TRAMO 200
 #define INTENSIDAD_CURVAS 1.1
 using namespace std;
-
 
 
 enum class Orientacion { ESTE = '0', NORESTE = '1', NORTE = '2', NOROESTE = '3', OESTE = '4', SUROESTE = '5', SUR = '6', SURESTE = '7' };

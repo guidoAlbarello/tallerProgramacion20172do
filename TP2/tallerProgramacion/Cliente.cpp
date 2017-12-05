@@ -497,7 +497,7 @@ void Cliente::procesarDatosRecibidos() {
 				iniciarJuego(estadoInicialJuego);
 				break;
 			case ComandoCliente::UPDATE_MODEL:
-				Logger::getInstance()->log(Debug, "Recibio un UPDATE_MODEL");
+				//Logger::getInstance()->log(Debug, "Recibio un UPDATE_MODEL");
 				estadoModeloJuego = new EstadoModeloJuego();
 				memcpy(estadoModeloJuego, datosRecibidos + 12 + 1, sizeof(EstadoModeloJuego));
 				procesarEstadoModelo(estadoModeloJuego);
@@ -641,7 +641,7 @@ void Cliente::procesarResultadoLogin(MensajeDeRed* mensajeDeRed, char* datosReci
 void Cliente::enviarPingAServidor() {
 	while (this->conexionViva) {
 		if (this->juegoIniciado) {
-			Logger::getInstance()->log(Debug, "Cliente enviando PING al servidor");
+			//Logger::getInstance()->log(Debug, "Cliente enviando PING al servidor");
 			ManejadorInput::getInstance()->setCerrar(!this->conexionDelCliente->enviarSolicitudPing());
 		}
 		std::this_thread::sleep_for(std::chrono::milliseconds(500));
