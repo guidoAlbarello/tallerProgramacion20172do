@@ -224,7 +224,7 @@ EstadoInicialJuego * Juego::getEstadoJuegoInicial() {
 Jugador* Juego::agregarJugador(string nombre) {
 	Jugador* nuevoJugador = new Jugador(nombre);
 	nuevoJugador->setId(cantidadJugadores);
-	nuevoJugador->setPosicion(this->cantidadJugadores * 250, 0);
+	nuevoJugador->setPosicion(this->cantidadJugadores * 250 - ANCHO_TRAMO *1/ 4, 0);
 	this->cantidadJugadores++;
 	this->jugadores.push_back(nuevoJugador);
 	return nuevoJugador;
@@ -352,7 +352,7 @@ void Juego::inicializarNivel() {
 	//reiniciar posiciones jugadores 
 	for (int i = 0; i < jugadores.size(); i++) {
 		Jugador* unJugador = jugadores[i];
-		unJugador->setPosicion(unJugador->getId() * 100,0);
+		unJugador->setPosicion(unJugador->getId() * 250 - ANCHO_TRAMO*1/4,0);
 		unJugador->setDeshabilitarMovimiento(false);
 	}
 	tiempo = 0;
