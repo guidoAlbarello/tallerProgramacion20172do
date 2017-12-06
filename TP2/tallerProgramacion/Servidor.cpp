@@ -22,8 +22,7 @@ bool Servidor::usuarioDentroDeJuego(Usuario * unUsuario) {
 			if (listaDeUsuarios[i]->getJugador() != NULL && listaDeUsuarios[i]->getNombre().compare(unUsuario->getNombre()) == 0)
 				resultado = true;
 		}
-	}
-	else {
+	} else {
 		// Para el primer logueo
 		resultado = true;
 	}
@@ -88,11 +87,12 @@ void Servidor::iniciarServidor() {
 	try {
 		Logger::getInstance()->log(Debug, "Iniciando servidor...");
 		this->leerServerConfig();
-		if (this->elJuego->iniciarJuego(configuracion->getMaxClientes())) {  
+		if (this->elJuego->iniciarJuego(configuracion->getMaxClientes())) {
 			this->conexionDelServidor->iniciarConexion(this->configuracion->getPuerto(), this->configuracion->getMaxClientes());
 
 			this->t_escucharClientes = std::thread(&Servidor::escucharClientes, this);
 			this->t_updateModel = std::thread(&Servidor::updateModel, this);
+			this->t_verificarConexiones = std::thread(&Servidor::verificarConexiones, this);
 			this->correrCicloPrincipal();
 		}
 	} catch (exception e) {
@@ -116,6 +116,10 @@ void Servidor::cerrarServidor() {
 		if (t_updateModel.joinable()) {
 			t_updateModel.join();
 		}
+
+		if (t_verificarConexiones.joinable()) {
+			t_verificarConexiones.join();
+		}
 	} catch (exception e) {
 		Logger::getInstance()->log(Error, "Ocurrio un error al cerrar el servidor");
 	}
@@ -123,14 +127,18 @@ void Servidor::cerrarServidor() {
 }
 
 void Servidor::verificarConexiones() {
-	if (this->conexionesActivas.size() > 0) {
-		for (int i = 0; i < this->conexionesActivas.size(); i++) {
-			if (!this->conexionesActivas.at(i)->getConexionActiva()) {
-				this->conexionesActivas.at(i)->cerrarConexion();
-				delete (this->conexionesActivas.at(i));
-				this->conexionesActivas.erase(this->conexionesActivas.begin() + i);
+	while (servidorActivo) {
+		if (!cerrandoConexiones)
+			if (this->conexionesActivas.size() > 0) {
+				for (int i = 0; i < this->conexionesActivas.size(); i++) {
+					if (!this->conexionesActivas.at(i)->getConexionActiva()) {
+						this->conexionesActivas.at(i)->cerrarConexion();
+						delete (this->conexionesActivas.at(i));
+						this->conexionesActivas.erase(this->conexionesActivas.begin() + i);
+					}
+				}
 			}
-		}
+		std::this_thread::sleep_for(std::chrono::milliseconds(800));
 	}
 }
 
@@ -352,7 +360,7 @@ void Servidor::mostrarMenuUsuariosConectados() {
 }
 
 Usuario* Servidor::validarLogin(std::string usuario, std::string contrasenia, string &mensajeResultado, bool& enviarEstadoInicial) {
-	
+
 	Usuario* unUsuario = this->usuarioValido(usuario, contrasenia);
 	if (unUsuario == NULL) {
 		mensajeResultado = "Login Invalido. EL usuario o la password son incorrectos.";
@@ -371,7 +379,7 @@ Usuario* Servidor::validarLogin(std::string usuario, std::string contrasenia, st
 		} else {
 			enviarEstadoInicial = true;
 		}
-		unUsuario->getJugador()->setEstadoConexion(true);  
+		unUsuario->getJugador()->setEstadoConexion(true);
 	}
 	return unUsuario;
 }
@@ -379,11 +387,8 @@ Usuario* Servidor::validarLogin(std::string usuario, std::string contrasenia, st
 void Servidor::updateModel() {
 	yaEnvioEstado = false;
 	while (servidorActivo) {
-
-		if(!cerrandoConexiones)
-			this->verificarConexiones();
 		if (elJuego->getJugadores().size() == this->configuracion->getMaxClientes()) {
-			if (yaEnvioEstado) {									
+			if (yaEnvioEstado) {
 				if (!elJuego->gameOver()) {
 					if (!this->elJuego->terminoNivel()) {
 						EstadoModeloJuego* nuevoEstado = this->elJuego->getEstadoJuego();
@@ -423,15 +428,23 @@ void Servidor::updateModel() {
 					Conexion* unaConexion = (Conexion*)*it;
 					if (unaConexion->getUsuario() != NULL && unaConexion->getConexionActiva()) {
 						unaConexion->procesarPeticionListaDeUsuarios(this->elJuego->getJugadores());
+					}
+				}
+
+				std::this_thread::sleep_for(std::chrono::milliseconds(Constantes::PING_DELAY));
+
+				for (std::vector<Conexion*>::iterator it = conexionesActivas.begin(); it != conexionesActivas.end(); ++it) {
+					Conexion* unaConexion = (Conexion*)*it;
+					if (unaConexion->getUsuario() != NULL && unaConexion->getConexionActiva()) {
 						unaConexion->inicializarClienteJuego(estadoInicial, NULL);  //    !!!!!!!!!!!!!!!!!!!!esto va a haber q mandarlo cuando se reconecte el cliente tmb. aca solo se va a mandar la primera vez !!!!!!!
 					}
 				}
-				if(estadoInicial != NULL)
+				if (estadoInicial != NULL)
 					delete estadoInicial;
 			}
-			yaEnvioEstado = true;	
-		} 
-		
+			yaEnvioEstado = true;
+		}
+
 		std::this_thread::sleep_for(std::chrono::milliseconds(Constantes::UPDATE_MODEL_DELAY));//esdto se podria cambiar x un while hasta q no pase el intervalo de tiempo, y mientras q no pase aprovechar el tiempo para hacer clean ups  
 	}
 

@@ -4,6 +4,7 @@ EsperaView::EsperaView(SDL_Renderer* renderer) {
 	this->gRenderer = renderer;
 	this->gResutladoLoginTexture = new Ltexture(gRenderer);
 	this->gBackgroundImage = new Ltexture(gRenderer);
+	rectanguloFullscreen = new SDL_Rect();
 }
 
 EsperaView::~EsperaView() {
@@ -13,7 +14,8 @@ EsperaView::~EsperaView() {
 	if (gBackgroundImage != NULL) {
 		gBackgroundImage->free();
 	}
-
+	if(rectanguloFullscreen != NULL)
+		delete rectanguloFullscreen;
 	TTF_CloseFont(gFont);
 	gFont = NULL;
 }
@@ -29,6 +31,8 @@ bool EsperaView::init() {
 		Logger::getInstance()->log(Error, "Ocurrio un error al iniciar la textura Esperando a los demas usuarios");
 	}
 
+	rectanguloFullscreen->w = 800;
+	rectanguloFullscreen->h = 600;
 	return false;
 }
 
@@ -39,9 +43,7 @@ void EsperaView::render() {
 	SDL_RenderClear(gRenderer);
 
 	// Render imagen fondo
-	SDL_Rect* rectanguloFullscreen = new SDL_Rect();
-	rectanguloFullscreen->w = 800;
-	rectanguloFullscreen->h = 600;
+	
 	gBackgroundImage->render(0, 0, rectanguloFullscreen);
 
 	//Render text textures

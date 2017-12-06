@@ -18,6 +18,7 @@ public:
 	bool close();
 	void update();
 private:
+	SDL_Rect* rectanguloFullscreen = NULL;
 	TTF_Font *gFont = NULL;
 	const int SCREEN_WIDTH = 800;
 	const int SCREEN_HEIGHT = 600;
