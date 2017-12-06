@@ -1,65 +1,15 @@
 <mapa>
-	<tramo longitud="500" tipo="recta">
+	<tramo longitud="200" tipo="recta">
 		<cartel posicion="derecha" ubicacion="200" valor="80"></cartel>
 		<arbol posicion="izquierda" ubicacion="200"></arbol>
 	</tramo>
 	<!-- 500m -->
-	<tramo longitud="200" tipo="curva" sentido="derecha">
-	</tramo>
+	<!-- <tramo longitud="200" tipo="curva" sentido="derecha">
+	</tramo> -->
 	<!-- 700m -->
-	<tramo longitud="500" tipo="recta">
+	<!-- <tramo longitud="500" tipo="recta">
 		<cartel posicion="izquierda" ubicacion="900" valor="80"></cartel>
 		<arbol posicion="derecha" ubicacion="900"></arbol>
-	</tramo>
+	</tramo> -->
 	<!-- 1200m -->
-	<tramo longitud="200" tipo="curva" sentido="izquierda">
-	</tramo>
-	<!-- 1400m -->
-	<tramo longitud="500" tipo="recta">
-		<cartel posicion="derecha" ubicacion="1600" valor="80"></cartel>
-		<arbol posicion="izquierda" ubicacion="1600"></arbol>
-	</tramo>
-	<!-- 1900m -->
-	<tramo longitud="200" tipo="curva" sentido="derecha">
-	</tramo>
-	<!-- 2100m -->
-	<tramo longitud="500" tipo="recta">
-		<cartel posicion="izquierda" ubicacion="2300" valor="80"></cartel>
-		<arbol posicion="derecha" ubicacion="2300"></arbol>
-	</tramo>
-	<!-- 2600m -->
-	<tramo longitud="200" tipo="curva" sentido="izquierda">
-	</tramo>
-	<!-- 2800m -->
-	<tramo longitud="500" tipo="recta">
-		<cartel posicion="derecha" ubicacion="3000" valor="80"></cartel>
-		<arbol posicion="izquierda" ubicacion="3000"></arbol>
-	</tramo>
-	<!-- 3300m -->
-	<tramo longitud="200" tipo="curva" sentido="izquierda">
-	</tramo>
-	<!-- 3500m -->
-	<tramo longitud="500" tipo="recta">
-		<cartel posicion="izquierda" ubicacion="3700" valor="80"></cartel>
-		<arbol posicion="derecha" ubicacion="3700"></arbol>
-	</tramo>
-	<!-- 4000m -->
-	<tramo longitud="200" tipo="curva" sentido="derecha">
-	</tramo>
-	<!-- 4200m -->
-	<tramo longitud="800" tipo="recta">
-		<arbol posicion="derecha" ubicacion="4600"></arbol>
-		<arbol posicion="derecha" ubicacion="4610"></arbol>
-		<arbol posicion="derecha" ubicacion="4620"></arbol>
-		<arbol posicion="derecha" ubicacion="4630"></arbol>
-		<arbol posicion="derecha" ubicacion="4640"></arbol>
-		<arbol posicion="izquierda" ubicacion="4650"></arbol>
-		<arbol posicion="izquierda" ubicacion="4660"></arbol>
-		<arbol posicion="izquierda" ubicacion="4670"></arbol>
-		<arbol posicion="izquierda" ubicacion="4680"></arbol>
-		<arbol posicion="izquierda" ubicacion="4690"></arbol>
-		<arbol posicion="izquierda" ubicacion="4900"></arbol>
-		<cartel posicion="derecha" ubicacion="4900" valor="80"></cartel>
-	</tramo>
-	<!-- 5000m -->
 </mapa>

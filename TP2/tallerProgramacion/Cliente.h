@@ -78,6 +78,7 @@ protected:
 	void leerTestXML(std::string stressFileName, int stressTestTime);
 	void procesarNombresUsuario(MensajeDeRed* mensajeDeRed);
 	bool dibujarGameOver = false;
+	bool enviandoPing = false;
 	Renderer* renderer;
 	std::map<int, string> nombreJugadores;
 };

@@ -108,12 +108,26 @@ void Cliente::iniciarCliente() {
 }
 
 void Cliente::correrCicloPrincipal() {
+	Uint32 inicio = 0;
+	Uint32 fin = 0;
+	Uint32 intervalo = 0;
+
 	while (clienteActivo) {
 		this->maquinaDeEstados->update(this->conexionDelCliente);
 		if (ManejadorInput::getInstance()->cerrarCliente()) {
 			this->clienteDecideCerrar = true;
 			clienteActivo = false;
 		}
+		if (!juegoIniciado || enPantallaDeTransicion) {
+			enviandoPing = true;
+			fin = SDL_GetTicks();
+			intervalo = fin - inicio;
+			if (intervalo > Constantes::PING_DELAY) {
+				this->conexionDelCliente->enviarSolicitudPing();
+				intervalo = 0;
+			}
+		}
+		
 		//std::this_thread::sleep_for(std::chrono::milliseconds(1000 / (Constantes::FPS)));
 		std::this_thread::sleep_for(std::chrono::milliseconds(25));
 	}
@@ -476,7 +490,7 @@ void Cliente::procesarDatosRecibidos() {
 			MensajeDeRed* mensajeDeRed = new MensajeDeRed(datosRecibidosString, Constantes::CLIENTE);
 			EstadoModeloJuego* estadoModeloJuego = NULL;
 			EstadoInicialJuego* estadoInicialJuego = NULL;
-
+			bool resultado = false;
 			switch (mensajeDeRed->getComandoCliente()) {
 			case ComandoCliente::RESULTADO_LOGIN:
 				procesarResultadoLogin(mensajeDeRed, datosRecibidos);
@@ -508,24 +522,30 @@ void Cliente::procesarDatosRecibidos() {
 				break;
 			case ComandoCliente::INIT:
 				Logger::getInstance()->log(Debug, "Recibio un INIT");
+				enviandoPing = false;
 				estadoInicialJuego = new EstadoInicialJuego();
 				memcpy(estadoInicialJuego, datosRecibidos + 4 + 1, sizeof(EstadoInicialJuego));
 				iniciarJuego(estadoInicialJuego);
 				break;
 			case ComandoCliente::UPDATE_MODEL:
 				//Logger::getInstance()->log(Debug, "Recibio un UPDATE_MODEL");
-				enPantallaDeTransicion = false;
-				estadoModeloJuego = new EstadoModeloJuego();
-				memcpy(estadoModeloJuego, datosRecibidos + 12 + 1, sizeof(EstadoModeloJuego));
-				procesarEstadoModelo(estadoModeloJuego);
+				if (!enviandoPing) {
+					enviandoPing = false;
+					enPantallaDeTransicion = false;
+					estadoModeloJuego = new EstadoModeloJuego();
+					memcpy(estadoModeloJuego, datosRecibidos + 12 + 1, sizeof(EstadoModeloJuego));
+					procesarEstadoModelo(estadoModeloJuego);
+				}
 				break;
 			case ComandoCliente::TRANSITION_SCREEN:
 				Logger::getInstance()->log(Debug, "Recibio un TRANSITION_SCREEN");
+				enviandoPing = false;
 				enPantallaDeTransicion = true;
 				this->maquinaDeEstados->cambiarNivel();
 				break;
 			case ComandoCliente::RESULTADO_PING:
 				Logger::getInstance()->log(Debug, "Recibio un RESULTADO_PING");
+				enviandoPing = false;
 				break;
 			case ComandoCliente::RESULTADO_USUARIOS:
 				Logger::getInstance()->log(Debug, "se recibio una lista de usuarios");
@@ -553,7 +573,7 @@ void Cliente::procesarDatosRecibidos() {
 
 
 		double tiempoTardado = std::chrono::duration_cast<std::chrono::duration<double, std::ratio<1>>>(std::chrono::high_resolution_clock::now() - timeOut).count() * 1000;
-		if (!enPantallaDeTransicion && this->juegoIniciado && tiempoTardado > (Constantes::PING_DELAY) + Constantes::TOLERANCIA_PING) {
+		if (!enPantallaDeTransicion /*&& this->juegoIniciado*/ && tiempoTardado > (Constantes::PING_DELAY) + Constantes::TOLERANCIA_PING) {
 			this->estaLogueado = false;
 			this->conexionViva = false;
 			this->clienteActivo = false;
@@ -614,7 +634,8 @@ void Cliente::iniciarJuego(EstadoInicialJuego* unEstadoInicial) {
 }
 
 void Cliente::procesarEstadoModelo(EstadoModeloJuego* estadoModeloJuego) {
-	this->maquinaDeEstados->recieveInput(estadoModeloJuego);
+	if(juegoIniciado)
+		this->maquinaDeEstados->recieveInput(estadoModeloJuego);
 }
 
 void Cliente::procesarResultadoSendMessage(MensajeDeRed* mensajeDeRed) {

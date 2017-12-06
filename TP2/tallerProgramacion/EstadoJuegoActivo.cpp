@@ -3,7 +3,8 @@
 
 const std::string EstadoJuegoActivo::s_playID = "JUEGO_ACTIVO";
 void EstadoJuegoActivo::update(ManejadorDeConexionCliente* conexionCliente) {
-
+	inicio = SDL_GetTicks();
+	
 	if (inicializado) {
 		ManejadorInput::getInstance()->update();
 		conexionCliente->enviarEntrada();
@@ -13,10 +14,11 @@ void EstadoJuegoActivo::update(ManejadorDeConexionCliente* conexionCliente) {
 	//hago el update de cada sprite enelmap
 	if (estadoModeloJuego != NULL) {
 		for (int i = 0; i < estadoModeloJuego->tamanio; ++i) {
-
+		
 			m_estadoModelo.lock();
 			EstadoJugador* estado = &(estadoModeloJuego->estadoJugadores[i]);  //lockear solo esta parte, o todo el update asi updatea todo un frame. 
 			m_estadoModelo.unlock();
+
 
 			if (estado->id >= 0 && estado->id < 6) {
 				Sprite* unSprite = spritesMap[estado->id];
@@ -51,25 +53,29 @@ void EstadoJuegoActivo::update(ManejadorDeConexionCliente* conexionCliente) {
 
 					switch (estado->estadoAuto) {
 					case EstadoAuto::DERECHO:
-						if (animacion > 0)
+						if (animacion[i] > 0)
 							unSprite->setFrameActual(0);
 						else
 							unSprite->setFrameActual(3);
 						break;
 					case EstadoAuto::DOBLANDO_IZQ:
-						if (animacion > 0)
+						if (animacion[i] > 0)
 							unSprite->setFrameActual(1);
 						else
 							unSprite->setFrameActual(4);
 						break;
 					case EstadoAuto::DOBLANDO_DER:
-						if (animacion > 0)
+						if (animacion[i] > 0)
 							unSprite->setFrameActual(2);
 						else
 							unSprite->setFrameActual(5);
 						break;
 					}
-					animacion = animacion*-1;
+					timerAnimacion[i] += inicio - SDL_GetTicks();
+					if ( timerAnimacion[i] > 500) {
+						animacion[i] = animacion[i]*-1;
+						timerAnimacion[i] = 0;
+					}
 					unSprite->setPosicionInt(estado->posX, estado->posY);
 					unSprite->setGrisar(!estado->conectado);
 				}
@@ -373,7 +379,7 @@ void EstadoJuegoActivo::recieveInput(void * param) {
 
 void EstadoJuegoActivo::cambiarNivel() {
 	if (!estaEnPantallaTransicion) {
-		if (this->nivel < 3) {
+		if (this->nivel <2) {
 			estaEnPantallaTransicion = true;
 			this->mapaView->cambiarNivel();
 			this->escenario->cambiarNivel();
@@ -391,7 +397,6 @@ void EstadoJuegoActivo::setParametro(void * param) {
 }
 
 void EstadoJuegoActivo::inicializarObjetos(EstadoInicialJuego* unEstado) {
-	animacion = -1;
 	idJugador = unEstado->idJugador;
 	this->cantJugadores = unEstado->tamanio;
 	// creo los sprites del map

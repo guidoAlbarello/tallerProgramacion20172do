@@ -1,7 +1,7 @@
 #include "Sprite.h"
 
 void Sprite::renderStatic(Renderer * renderer) {
-	ManejadorDeTexturas::getInstance()->dibujarSprite(id, posicion.getX(), posicion.getY(), ancho, alto, 
+	ManejadorDeTexturas::getInstance()->dibujarSprite(id, posicion.getX(), posicion.getY(), ancho, alto,
 		renderer->getAnchoVentana(), renderer->getRendererJuego(), SDL_FLIP_NONE);
 }
 void Sprite::renderStaticEnCoord(Renderer * renderer, int xDest, int yDest) {

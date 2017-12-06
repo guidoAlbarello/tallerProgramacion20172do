@@ -48,12 +48,14 @@ private:
 	int idJugador;
 	int nivel = 0;
 	int cantJugadores;
+	Uint32 inicio = 0;
 	map<int, string> nombresJugadores;
 	map<int, long> puntajesEtapa1;
 	map<int, long> puntajesEtapa2;
 	map<int, long> puntajesEtapa3;
 	map<int, long> puntajesTotal;
-	int animacion;
+	int animacion[4] = {-1, -1, -1, -1};
+	Uint32 timerAnimacion[4] = { 0,0,0,0 };
 	string idSonidoMotor;
 };
 

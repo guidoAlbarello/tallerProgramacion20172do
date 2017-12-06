@@ -29,6 +29,7 @@ public:
 	void enviarPantallaTransicion();
 	void enviarGameOver();
 	void procesarPeticionListaDeUsuarios(std::vector<Jugador*> jugadores);
+	bool getEnviarPing() { return enviarPing; }
 private:
 	bool clienteCerroConexion = false;
 	ManejadorDeConexionConexion* conexionConCliente;
@@ -41,6 +42,7 @@ private:
 	bool conexionInicializada = false;
 	bool conexionActiva;
 	bool conexionViva;
+	bool enviarPing = false;
 	bool cerrando = false;
 	Servidor* servidor;
 

@@ -62,7 +62,7 @@ void Conexion::procesarSolicitudPing() {
 	Logger::getInstance()->log(Debug, "Enviando respuesta de ping a cliente");
 
 	this->conexionConCliente->getSocket().enviarDatos(mensaje.c_str(), tamanio);
-
+	enviarPing = false;
 }
 
 void Conexion::enviarPantallaTransicion() {
@@ -344,7 +344,7 @@ void Conexion::procesarDatosRecibidos() {
 				break;
 			case ComandoServidor::PING:
 				//Logger::getInstance()->log(Debug, "Recibio un PING");
-				procesarSolicitudPing();
+				enviarPing = true;
 				break;
 			case ComandoServidor::CLOSE:
 				//Logger::getInstance()->log(Debug, "Recibio un PING");
