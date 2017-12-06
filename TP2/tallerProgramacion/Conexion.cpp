@@ -230,6 +230,7 @@ void Conexion::procesarSolicitudLogin() {
 
 		} else {
 			this->procesarPeticionListaDeUsuarios(this->servidor->getJuego()->getJugadores());
+			std::this_thread::sleep_for(std::chrono::milliseconds(2000)); // para que no se pisen los nombres en la reconexion
 			EstadoInicialJuego* estadoInicial = this->servidor->getJuego()->getEstadoJuegoInicial();
 			estadoInicial->tamanio = this->servidor->getConfiguracion()->getMaxClientes();
 

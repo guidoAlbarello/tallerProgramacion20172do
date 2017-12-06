@@ -220,7 +220,8 @@ void EstadoJuegoActivo::dibujarPantallaTransicion() {
 	int SCREEN_WIDTH = 800;
 	int SCREEN_HEIGHT = 600;
 
-	SDL_Color textColor = { 0, 0, 0, 0xFF };
+	SDL_Color textColor = { 255, 7, 7, 0xFF };
+
 	SDL_SetRenderDrawColor(this->renderer->getRendererJuego(), 128, 128, 128, 255);
 
 	Ltexture* gJugador = new Ltexture(this->renderer->getRendererJuego());

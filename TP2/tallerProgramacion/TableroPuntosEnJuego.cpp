@@ -35,7 +35,8 @@ void TableroPuntosEnJuego::setVelocidad(long velocidad) {
 	this->velocidad = velocidad;
 }
 void TableroPuntosEnJuego::init() {
-	textColor = { 0, 0, 0, 0xFF };
+	textColor = { 255, 7, 7, 0xFF };
+
 	/*
 	if (!gPromptTextTexture->loadFromRenderedText(this->mensaje, textColor)) {
 		Logger::getInstance()->log(Error, "Ocurrio un error al iniciar la textura Usuario:");
