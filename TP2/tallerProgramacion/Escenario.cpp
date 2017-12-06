@@ -82,15 +82,11 @@ void Escenario::render() {
 	//->cielo->setPosicion(posicionCielo.getX(), posicionCielo.getY());
 	this->cielo->renderStaticEnCoord(renderer, posicionCielo.getX(), posicionCielo.getY());
 	this->colinas->renderStaticEnCoord(renderer, posicionColinas.getX(), posicionColinas.getY());
-	std::stringstream sVelocidad;
-	sVelocidad << velocidad;
-	this->tablero->setVelocidad("Velocidad: " + sVelocidad.str());
+	this->tablero->setVelocidad(velocidad);
 	std::stringstream sTiempo;
 	sTiempo << tiempo;
 	this->tablero->setTiempo("Tiempo: " + sTiempo.str() + "s");
-	std::stringstream sDistancia;
-	sDistancia << distancia;
-	this->tablero->setDistancia("Distancia: " + sDistancia.str());
+	this->tablero->setDistancia(distancia);
 	this->tablero->update();
 	//this->colinas->renderStatic(renderer);
 	//Renderear puntos

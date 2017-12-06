@@ -7,6 +7,9 @@
 #include <string>
 #include "Logger.h"
 #include "Constantes.h"
+#include "MapaView.h"
+#include <iomanip> // setprecision
+#include <sstream> // stringstream
 
 using namespace std;
 
@@ -18,9 +21,9 @@ public:
 
 	void init();
 	void update();
-	void setDistancia(string distancia);
+	void setDistancia(long distancia);
 	void setTiempo(string tiempo);
-	void setVelocidad(string velocidad);
+	void setVelocidad(long velocidad);
 private:
 	const int WIDTH = 300;
 	const int HEIGHT = 150;
@@ -29,9 +32,9 @@ private:
 	Ltexture* gPromptDistancia;
 	Ltexture* gPromptTiempo;
 	Ltexture* gPromptVelocidad;
-	string distancia;
+	long distancia;
 	string tiempo;
-	string velocidad;
+	long velocidad;
 	bool success;
 	SDL_Renderer* gRenderer = NULL;
 

@@ -24,14 +24,14 @@ TableroPuntosEnJuego::~TableroPuntosEnJuego()
 	}
 }
 
-void TableroPuntosEnJuego::setDistancia(string distancia) {
+void TableroPuntosEnJuego::setDistancia(long distancia) {
 	this->distancia = distancia;
 }
 
 void TableroPuntosEnJuego::setTiempo(string tiempo) {
 	this->tiempo = tiempo;
 }
-void TableroPuntosEnJuego::setVelocidad(string velocidad) {
+void TableroPuntosEnJuego::setVelocidad(long velocidad) {
 	this->velocidad = velocidad;
 }
 void TableroPuntosEnJuego::init() {
@@ -45,11 +45,20 @@ void TableroPuntosEnJuego::init() {
 
 }
 
-void  TableroPuntosEnJuego::update() {
-	gPromptVelocidad->loadFromRenderedText(this->velocidad, textColor);
+void TableroPuntosEnJuego::update() {
+	int velocidadEnMs = this->velocidad * Constantes::FPS / ALTO_TRAMO;
+	int velocidadEnKmh = velocidadEnMs * 3600 / 1000;
+	string strVelocidadEnKmh = to_string(velocidadEnKmh);
+	gPromptVelocidad->loadFromRenderedText("Velocidad: " + strVelocidadEnKmh + "km/h", textColor);
 	gPromptVelocidad->render(10, 10);
+
 	gPromptTiempo->loadFromRenderedText(this->tiempo, textColor);
-	gPromptTiempo->render(280, 10);
-	gPromptDistancia->loadFromRenderedText(this->distancia, textColor);
+	gPromptTiempo->render(310, 10);
+
+	float distanciaEnKm = distancia / 1000.000;
+	stringstream stream;
+	stream << fixed << setprecision(3) << distanciaEnKm;
+	string strDistancia = stream.str();
+	gPromptDistancia->loadFromRenderedText("Distancia: " + strDistancia + "km", textColor);
 	gPromptDistancia->render(510, 10);
 }
