@@ -53,6 +53,8 @@ public:
 	void setTiempo(long t);
 	bool getSonidoChoque() { return this->sonidoChoque; }
 	void setSonidoChoque(bool sonidoChoque) { this->sonidoChoque = false; }
+	void setVida(int vida) { this->vida = vida; }
+	void setChocado(bool chocado) { this->chocado = chocado; }
 protected:
 	void dañarAuto();
 	bool entrada[Constantes::CANT_TECLAS];
@@ -70,7 +72,7 @@ protected:
 	double tiempoNitro = 0;
 	string nombre;
 	std::chrono::time_point<std::chrono::steady_clock> inicioIntervalo;
-	long tiempo;
+	long tiempo = 0;
 	bool sonidoChoque = false;
 	std::chrono::time_point<std::chrono::steady_clock> inicioIntervaloSonidoChoque;
 	double tiempoSilencioChoque = 0;

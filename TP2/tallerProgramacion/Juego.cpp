@@ -9,7 +9,6 @@ bool Juego::iniciarJuego(int cantidadJugadoresMaxima) {
 	this->iniciarEscenario();
 	this->procesarMapa();
 	this->t_gameLoop = std::thread(&Juego::gameLoop, this);
-	this->tiempo = 0;
 	return true;
 }
 
@@ -56,17 +55,24 @@ void Juego::update(Unidad tiempoDelta) {
 		int posicionActualY = unJugador->getPosicionY();
 		int posicionActualX = unJugador->getPosicionX();
 		//cout << "jugador z: " << unJugador->getZIndex() << ", jugador Y: " << unJugador->getPosicionY() << endl;
-		
+
 		//Si los demas jugadores estan SOLO en "jugadores", hay q hacer otro de estos for...
 		for (int j = 0; j < this->jugadores.size(); j++) {
 			Jugador* otroJugador = this->jugadores[j];
 			if (otroJugador->getId() == unJugador->getId()) {
 				continue;
 			}
+	
+			if (posicionActualY / ALTO_TRAMO  < mapa[nivel]->getLongitudTotal() - 5) { // fix para que no colisione cuando se acerca a la meta
+				if (hayColision(posicionAnteriorY, posicionActualY, posicionAnteriorX, posicionActualX, otroJugador)) {
+					unJugador->chocar(otroJugador->getPosicion()->getY(), otroJugador->getVelocidad().getY());
+					//cout << "Hubo colision y, y: " << unJugador->getPosicion()->getY() << endl;
+				}
+			}
 
-			if (hayColision(posicionAnteriorY, posicionActualY, posicionAnteriorX, posicionActualX, otroJugador)) {
-				unJugador->chocar(otroJugador->getPosicion()->getY(), otroJugador->getVelocidad().getY());
-				//cout << "Hubo colision y, y: " << unJugador->getPosicion()->getY() << endl;
+			//fix no deje en un kilometro mas adelante que el final de la pista
+			if (posicionActualY / ALTO_TRAMO > mapa[nivel]->getLongitudTotal()) {
+				unJugador->setPosicionY(mapa[nivel]->getLongitudTotal() * ALTO_TRAMO);
 			}
 		}
 
@@ -98,7 +104,6 @@ void Juego::update(Unidad tiempoDelta) {
 		unJugador->setTiempo(tiempo / 1000);
 		
 	}
-
 }
 
 bool Juego::vaPuntero(Jugador * unJugador) {
@@ -134,6 +139,11 @@ std::vector<Jugador*> Juego::getJugadores() {
 
 EstadoModeloJuego* Juego::getEstadoJuego() {
 	EstadoModeloJuego* nuevoEstado = new EstadoModeloJuego();
+
+	if (!yaInicioTiempo) {
+		this->tiempo = 0;
+		yaInicioTiempo = true;
+	}
 
 	for (int i = 0; i < jugadores.size(); i++) { //solo envia  el estado de los jugadores, deberia mandar el de todas las entidades, cambiar esto cuando haya mas objetos.
 		Jugador* unJugador = jugadores[i];
@@ -217,7 +227,6 @@ EstadoInicialJuego * Juego::getEstadoJuegoInicial() {
 	escenario->getPosicionColinas()->setX(0);
 	escenario->getPosicionColinas()->setY(POS_Y_COLINAS);
 	estado->nivel = this->nivel;
-	this->tiempo = 0;
 	return estado;
 }
 
@@ -354,6 +363,8 @@ void Juego::inicializarNivel() {
 		Jugador* unJugador = jugadores[i];
 		unJugador->setPosicion(unJugador->getId() * 250 - ANCHO_TRAMO*1/4,0);
 		unJugador->setDeshabilitarMovimiento(false);
+		unJugador->setVida(3);
+		unJugador->setChocado(false);
 	}
 	tiempo = 0;
 	//aumentar nivel

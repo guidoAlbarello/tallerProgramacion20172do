@@ -60,6 +60,7 @@ private:
 	int nivel = 0;
 	bool juegoTerminado = false;
 	unsigned long tiempo;
+	bool yaInicioTiempo = false;
 };
 
 #endif

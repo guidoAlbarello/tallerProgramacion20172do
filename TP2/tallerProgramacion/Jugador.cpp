@@ -69,8 +69,8 @@ void Jugador::update(Unidad delta) {
 				posicion.setX(posicion.getX() + velocidad.getX());  //retocar un poco mas tal vez, multiplicar por delta la velocidad ? 
 			}
 
-			int limitePastoXDerecha = ANCHO_TRAMO / 2;
-			int limitePastoXIzquierda = ANCHO_TRAMO / 2 * (-1);
+			int limitePastoXDerecha = ANCHO_TRAMO / 2 + 90;
+			int limitePastoXIzquierda = ANCHO_TRAMO / 2 * (-1) - 90;
 
 			if ((posicion.getX() > limitePastoXDerecha) ||
 				(posicion.getX() < limitePastoXIzquierda)) {
