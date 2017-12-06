@@ -404,6 +404,7 @@ void Servidor::updateModel() {
 						this->elJuego->inicializarNivel();
 					}
 				} else {
+					std::this_thread::sleep_for(std::chrono::milliseconds(Constantes::PING_DELAY));
 					for (std::vector<Conexion*>::iterator it = conexionesActivas.begin(); it != conexionesActivas.end(); ++it) {
 						Conexion* unaConexion = (Conexion*)*it;
 						if (unaConexion->getUsuario() != NULL && unaConexion->getConexionActiva() && unaConexion->getConexionInicializada()) {
@@ -426,14 +427,15 @@ void Servidor::updateModel() {
 					delete estadoInicial;
 			}
 			yaEnvioEstado = true;	
-		} else {
-			for (std::vector<Conexion*>::iterator it = conexionesActivas.begin(); it != conexionesActivas.end(); ++it) {
-				Conexion* unaConexion = (Conexion*)*it;
-				if (unaConexion->getConexionActiva()) {
-					unaConexion->procesarSolicitudPing();
-				}
+		} 
+
+		for (std::vector<Conexion*>::iterator it = conexionesActivas.begin(); it != conexionesActivas.end(); ++it) {
+			Conexion* unaConexion = (Conexion*)*it;
+			if (unaConexion->getConexionActiva() && unaConexion->getEnviarPing()) {
+				unaConexion->procesarSolicitudPing();
 			}
 		}
+
 		std::this_thread::sleep_for(std::chrono::milliseconds(Constantes::UPDATE_MODEL_DELAY));//esdto se podria cambiar x un while hasta q no pase el intervalo de tiempo, y mientras q no pase aprovechar el tiempo para hacer clean ups  
 	}
 

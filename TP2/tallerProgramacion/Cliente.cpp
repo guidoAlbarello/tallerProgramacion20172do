@@ -118,7 +118,7 @@ void Cliente::correrCicloPrincipal() {
 			this->clienteDecideCerrar = true;
 			clienteActivo = false;
 		}
-		if (!juegoIniciado || enPantallaDeTransicion) {
+		if (!juegoIniciado /*|| enPantallaDeTransicion*/) {
 			enviandoPing = true;
 			fin = SDL_GetTicks();
 			intervalo = fin - inicio;
