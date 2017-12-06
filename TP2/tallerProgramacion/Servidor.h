@@ -23,7 +23,7 @@ public:
 	Usuario* buscarUsuario(std::string unUsuario);
 	void iniciarServidor();
 	void cerrarServidor();
-	Usuario* validarLogin(MensajeDeRed* mensaje, string &mensajeResultado, bool& enviarEstadoInicial);
+	Usuario* validarLogin(std::string usuario, std::string contrasenia, string &mensajeResultado, bool& enviarEstadoInicial);
 	std::vector<Conexion*> getConexionesActivas();
 	std::vector<Usuario*> getUsuarios() { return this->configuracion->getUsuarios(); }
 	void recibirMensajeGlobal(string unEmisor, string unMensaje);

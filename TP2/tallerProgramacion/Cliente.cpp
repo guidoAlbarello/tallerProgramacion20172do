@@ -493,6 +493,7 @@ void Cliente::procesarDatosRecibidos() {
 			bool resultado = false;
 			switch (mensajeDeRed->getComandoCliente()) {
 			case ComandoCliente::RESULTADO_LOGIN:
+				enviandoPing = false;
 				procesarResultadoLogin(mensajeDeRed, datosRecibidos);
 				break;
 			case ComandoCliente::RESULTADO_SEND_MESSAGE:
@@ -512,6 +513,7 @@ void Cliente::procesarDatosRecibidos() {
 				Logger::getInstance()->log(Debug, datosRecibidosString);
 				break;
 			case ComandoCliente::CLOSE:
+				enviandoPing = false;
 				this->estaLogueado = false;
 				this->conexionViva = false;
 				this->clienteActivo = false;

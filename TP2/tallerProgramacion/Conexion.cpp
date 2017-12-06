@@ -206,6 +206,66 @@ void Conexion::procesarPeticionListaDeUsuarios(std::vector<Jugador*> jugadores) 
 	this->conexionConCliente->getSocket().enviarDatos(mensaje.c_str(), tamanio);
 }
 
+void Conexion::procesarSolicitudLogin() {
+	string mensajeResultado;
+	Usuario* unUsuario = NULL;
+	bool enviarEstadoInicial = false;
+	unUsuario = this->servidor->validarLogin(userRecibido, passRecibida, mensajeResultado, enviarEstadoInicial);
+	if (unUsuario != NULL) {
+
+		Logger::getInstance()->log(Debug, "El login fue satisfactorio");
+		if (!enviarEstadoInicial) {
+			ComandoCliente comando = ComandoCliente::RESULTADO_LOGIN;
+			MensajeDeRed* mensajeDeRed = new MensajeDeRed(comando);
+			mensajeDeRed->agregarParametro("LOGIN_OK"); // ResultCode
+			mensajeDeRed->agregarParametro("0");
+			mensajeDeRed->agregarParametro(to_string(unUsuario->getJugador()->getId()));
+			mensajeDeRed->agregarParametro(mensajeResultado);
+			string mensaje = mensajeDeRed->getComandoClienteSerializado();
+			int tamanio = mensaje.length() + 1;
+			Logger::getInstance()->log(Debug, "Enviando mensaje");
+			Logger::getInstance()->log(Debug, mensaje);
+
+			this->conexionConCliente->getSocket().enviarDatos(mensaje.c_str(), tamanio);
+
+		} else {
+			EstadoInicialJuego* estadoInicial = this->servidor->getJuego()->getEstadoJuegoInicial();
+			estadoInicial->tamanio = this->servidor->getConfiguracion()->getMaxClientes();
+
+			estadoInicial->idJugador = unUsuario->getJugador()->getId();
+			int tamanio = sizeof(EstadoInicialJuego) + 27;
+			char* data = new char[tamanio];
+			std::string strComando = "RESULTADO_LOGIN";
+			strComando.append(&Constantes::separador).append("LOGIN_OK").append(&Constantes::separador).append("1").append(&Constantes::separador);
+			const char* comando = strComando.c_str();
+			memcpy(data, comando, 27);
+			memcpy(data + 27, estadoInicial, sizeof(EstadoInicialJuego));
+
+			this->conexionConCliente->getSocket().enviarDatos(data, tamanio);
+
+
+			delete estadoInicial;
+			if (data != NULL)
+				free(data);
+		}
+		this->usuarioConectado = unUsuario;
+	} else {
+		Logger::getInstance()->log(Debug, "Login invalido");
+		ComandoCliente comando = ComandoCliente::RESULTADO_LOGIN;
+		MensajeDeRed* mensajeDeRed = new MensajeDeRed(comando);
+		mensajeDeRed->agregarParametro("LOGIN_NOK"); // ResultCode
+		mensajeDeRed->agregarParametro(mensajeResultado);
+		string mensaje = mensajeDeRed->getComandoClienteSerializado();
+		int tamanio = mensaje.length() + 1;
+		Logger::getInstance()->log(Debug, "Login invalido");
+		Logger::getInstance()->log(Debug, mensaje);
+
+		this->conexionConCliente->getSocket().enviarDatos(mensaje.c_str(), tamanio);
+
+	}
+	procesarLogin = false;
+}
+
 void Conexion::enviarChatGlobal(bool tipoDeChat, string unEmisor, string unMensaje) {
 	Logger::getInstance()->log(Debug, "El envio de mensaje fue satisfactorio");
 	ComandoCliente comando;
@@ -276,71 +336,20 @@ void Conexion::procesarDatosRecibidos() {
 	while (conexionActiva) {
 		char* datosRecibidos = this->conexionConCliente->getMensaje();
 		if (datosRecibidos != NULL) {
-			string mensajeResultado;
+
 			timeOut = std::chrono::high_resolution_clock::now();
 			Logger::getInstance()->log(Debug, datosRecibidos);
 			std::string datosRecibidosString(datosRecibidos);
 			MensajeDeRed *mensajeDeRed = new MensajeDeRed(datosRecibidosString, Constantes::SERVIDOR);
-			Usuario* unUsuario = NULL;
-			bool enviarEstadoInicial = false;
+			
 			bool entrada[Constantes::CANT_TECLAS];
 			switch (mensajeDeRed->getComandoServidor()) {
 			case ComandoServidor::LOG:
 				Logger::getInstance()->log(Debug, "Recibio un LOG");
 				// Envia respuesta con el resultado del login
-				unUsuario = this->servidor->validarLogin(mensajeDeRed, mensajeResultado, enviarEstadoInicial);
-				if (unUsuario != NULL) {
-
-					Logger::getInstance()->log(Debug, "El login fue satisfactorio");
-					if (!enviarEstadoInicial) {
-						ComandoCliente comando = ComandoCliente::RESULTADO_LOGIN;
-						MensajeDeRed* mensajeDeRed = new MensajeDeRed(comando);
-						mensajeDeRed->agregarParametro("LOGIN_OK"); // ResultCode
-						mensajeDeRed->agregarParametro("0");
-						mensajeDeRed->agregarParametro(to_string(unUsuario->getJugador()->getId()));
-						mensajeDeRed->agregarParametro(mensajeResultado);
-						string mensaje = mensajeDeRed->getComandoClienteSerializado();
-						int tamanio = mensaje.length() + 1;
-						Logger::getInstance()->log(Debug, "Enviando mensaje");
-						Logger::getInstance()->log(Debug, mensaje);
-					
-						this->conexionConCliente->getSocket().enviarDatos(mensaje.c_str(), tamanio);
-					
-					} else {
-						EstadoInicialJuego* estadoInicial = this->servidor->getJuego()->getEstadoJuegoInicial();
-						estadoInicial->tamanio = this->servidor->getConfiguracion()->getMaxClientes();
-
-						estadoInicial->idJugador = unUsuario->getJugador()->getId();
-						int tamanio = sizeof(EstadoInicialJuego) + 27;
-						char* data = new char[tamanio];
-						std::string strComando = "RESULTADO_LOGIN";
-						strComando.append(&Constantes::separador).append("LOGIN_OK").append(&Constantes::separador).append("1").append(&Constantes::separador);
-						const char* comando = strComando.c_str();
-						memcpy(data, comando, 27);
-						memcpy(data + 27, estadoInicial, sizeof(EstadoInicialJuego));
-						
-						this->conexionConCliente->getSocket().enviarDatos(data, tamanio);
-					
-
-						delete estadoInicial;
-						if (data != NULL)
-							free(data);
-					}
-					this->usuarioConectado = unUsuario;
-				} else {
-					Logger::getInstance()->log(Debug, "Login invalido");
-					ComandoCliente comando = ComandoCliente::RESULTADO_LOGIN;
-					MensajeDeRed* mensajeDeRed = new MensajeDeRed(comando);
-					mensajeDeRed->agregarParametro("LOGIN_NOK"); // ResultCode
-					mensajeDeRed->agregarParametro(mensajeResultado);
-					string mensaje = mensajeDeRed->getComandoClienteSerializado();
-					int tamanio = mensaje.length() + 1;
-					Logger::getInstance()->log(Debug, "Login invalido");
-					Logger::getInstance()->log(Debug, mensaje);
-				
-					this->conexionConCliente->getSocket().enviarDatos(mensaje.c_str(), tamanio);
-				
-				}
+				userRecibido = mensajeDeRed->getParametro(0);
+				passRecibida = mensajeDeRed->getParametro(1);
+				procesarLogin = true;
 				break;
 			case ComandoServidor::PING:
 				//Logger::getInstance()->log(Debug, "Recibio un PING");

@@ -351,9 +351,7 @@ void Servidor::mostrarMenuUsuariosConectados() {
 	std::cout << "|----------------------------|" << std::endl;
 }
 
-Usuario* Servidor::validarLogin(MensajeDeRed* mensaje, string &mensajeResultado, bool& enviarEstadoInicial) {
-	std::string usuario = mensaje->getParametro(0);
-	std::string contrasenia = mensaje->getParametro(1);
+Usuario* Servidor::validarLogin(std::string usuario, std::string contrasenia, string &mensajeResultado, bool& enviarEstadoInicial) {
 	
 	Usuario* unUsuario = this->usuarioValido(usuario, contrasenia);
 	if (unUsuario == NULL) {
@@ -437,8 +435,11 @@ void Servidor::updateModel() {
 		m_agregarConexion.lock();
 		for (std::vector<Conexion*>::iterator it = conexionesActivas.begin(); it != conexionesActivas.end(); ++it) {
 			Conexion* unaConexion = (Conexion*)*it;
-			if (unaConexion->getConexionActiva() && unaConexion->getEnviarPing()) {
+			if (unaConexion->getConexionActiva() && unaConexion->getEnviarPing() && !unaConexion->getProcesarLogin()) {
 				unaConexion->procesarSolicitudPing();
+			}
+			if (unaConexion->getConexionActiva() && unaConexion->getProcesarLogin()) {
+				unaConexion->procesarSolicitudLogin();
 			}
 		}
 		m_agregarConexion.unlock();

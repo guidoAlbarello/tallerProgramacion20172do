@@ -9,6 +9,7 @@
 #include "ParserDeMensajes.h"
 #include "Servidor.h"
 #include <chrono>
+#include <string>
 
 class Servidor;  // Declaracion forward de la clase Servidor
 
@@ -30,7 +31,10 @@ public:
 	void enviarGameOver();
 	void procesarPeticionListaDeUsuarios(std::vector<Jugador*> jugadores);
 	bool getEnviarPing() { return enviarPing; }
+	bool getProcesarLogin() { return procesarLogin; }
+	void procesarSolicitudLogin();
 private:
+	bool procesarLogin = false;
 	bool clienteCerroConexion = false;
 	ManejadorDeConexionConexion* conexionConCliente;
 	void procesarInput(bool* entrada);
@@ -45,7 +49,8 @@ private:
 	bool enviarPing = false;
 	bool cerrando = false;
 	Servidor* servidor;
-
+	std::string userRecibido;
+	std::string passRecibida;
 };
 
 #endif
