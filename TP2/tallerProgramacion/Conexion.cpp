@@ -264,6 +264,7 @@ void Conexion::procesarSolicitudLogin() {
 
 	}
 	procesarLogin = false;
+	enviarPing = false;
 }
 
 void Conexion::enviarChatGlobal(bool tipoDeChat, string unEmisor, string unMensaje) {
@@ -390,7 +391,7 @@ void Conexion::procesarDatosRecibidos() {
 		}
 
 		double tiempoTardado = std::chrono::duration_cast<std::chrono::duration<double, std::ratio<1>>>(std::chrono::high_resolution_clock::now() - timeOut).count() * 1000;
-		if (this->conexionInicializada && tiempoTardado > (Constantes::PING_DELAY) + Constantes::TOLERANCIA_PING) {
+		if (tiempoTardado > (Constantes::PING_DELAY) + Constantes::TOLERANCIA_PING) {
 			this->conexionActiva = false;
 			this->conexionViva = false;
 			this->conexionInicializada = false;
