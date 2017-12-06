@@ -62,6 +62,7 @@ protected:
 	Juego* elJuego;
 	bool cerrandoConexiones = false;
 	Mapa* mapa[3];
+	std::mutex m_agregarConexion;
 };
 
 #endif

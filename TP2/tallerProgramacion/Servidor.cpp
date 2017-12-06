@@ -223,12 +223,15 @@ void Servidor::escucharClientes() {
 }
 
 void Servidor::agregarNuevaConexionEntrante(SOCKET unCliente) {
+	m_agregarConexion.lock();
 	Conexion* nuevaConexion = new Conexion(unCliente, this);
 	conexionesActivas.push_back(nuevaConexion);
+	m_agregarConexion.unlock();
 }
 
 void Servidor::cerrarTodasLasConexiones() {
 	Logger::getInstance()->log(Debug, "Cerrando todas las conexiones del servidor...");
+	m_agregarConexion.lock();
 	cerrandoConexiones = true;
 	for (unsigned int i = 0; i < conexionesActivas.size(); i++) {
 		Conexion* unaConexion = conexionesActivas[i];
@@ -238,6 +241,7 @@ void Servidor::cerrarTodasLasConexiones() {
 
 	conexionesActivas.erase(conexionesActivas.begin(), conexionesActivas.end());
 	cerrandoConexiones = false;
+	m_agregarConexion.unlock();
 }
 
 void Servidor::cambiarNivelLogeo() {
@@ -377,6 +381,7 @@ Usuario* Servidor::validarLogin(MensajeDeRed* mensaje, string &mensajeResultado,
 void Servidor::updateModel() {
 	yaEnvioEstado = false;
 	while (servidorActivo) {
+
 		if(!cerrandoConexiones)
 			this->verificarConexiones();
 		if (elJuego->getJugadores().size() == this->configuracion->getMaxClientes()) {
@@ -429,13 +434,14 @@ void Servidor::updateModel() {
 			yaEnvioEstado = true;	
 		} 
 
+		m_agregarConexion.lock();
 		for (std::vector<Conexion*>::iterator it = conexionesActivas.begin(); it != conexionesActivas.end(); ++it) {
 			Conexion* unaConexion = (Conexion*)*it;
 			if (unaConexion->getConexionActiva() && unaConexion->getEnviarPing()) {
 				unaConexion->procesarSolicitudPing();
 			}
 		}
-
+		m_agregarConexion.unlock();
 		std::this_thread::sleep_for(std::chrono::milliseconds(Constantes::UPDATE_MODEL_DELAY));//esdto se podria cambiar x un while hasta q no pase el intervalo de tiempo, y mientras q no pase aprovechar el tiempo para hacer clean ups  
 	}
 
