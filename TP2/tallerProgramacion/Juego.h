@@ -61,6 +61,7 @@ private:
 	bool juegoTerminado = false;
 	unsigned long tiempo;
 	bool yaInicioTiempo = false;
+	bool yaSumoBonusPuntero = false;
 };
 
 #endif

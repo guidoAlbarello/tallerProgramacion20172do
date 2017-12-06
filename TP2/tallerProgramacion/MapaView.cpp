@@ -25,6 +25,10 @@ void MapaView::init() {
 	this->mapa[2] = new Mapa(3);
 	this->initSegmentos();
 	this->renderInit();
+	//while (!esRenderizacionValida) {
+	//	cout << "render init en init()" << endl;
+	//	this->renderInit();
+	//}
 	this->metroActualAuto = 0;
 }
 
@@ -35,7 +39,7 @@ void MapaView::cambiarNivel() {
 }
 
 void MapaView::renderInit() {
-
+	//esRenderizacionValida = true;
 	SDL_Window* window = this->gRenderer->getWindowMapa();
 	SDL_Renderer* renderer = this->gRenderer->getRendererMapa();
 	SDL_SetRenderDrawColor(renderer, 242, 242, 242, 255);
@@ -642,6 +646,7 @@ Orientacion MapaView::unirTramoRotado(SentidoCurva sentidoRotacion, Orientacion 
 			return orientacionNueva;
 		}
 		else {
+			//esRenderizacionValida = false;
 			return orientacionAnterior;
 		}
 	}
@@ -708,6 +713,7 @@ bool MapaView::validarLineaDibujable(Line lineaADibujar) {
 	if (excede) {
 		ESCALA_MAPA = ESCALA_MAPA * FACTOR_DECREMENTO_ESCALA;
 		this->terminoDibujarMapa = false;
+		//cout << "render init en validarLineaDibujable()" << endl;
 		this->renderInit();
 		return false;
 	}

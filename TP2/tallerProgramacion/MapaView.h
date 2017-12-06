@@ -9,6 +9,7 @@
 #include "TramoCurvo.h"
 #include "ManejadorDeTexturas.h"
 #include <SDL_ttf.h>
+#include <iostream>
 
 #define PI 3.14159265
 #define DISTANCIA_DIBUJADO 50
@@ -66,6 +67,7 @@ private:
 	int nivel = 0;
 	int metroActualAuto;
 	std::vector<std::vector<ObjetoFijo*>> objetosPorSegmento;
+	//bool esRenderizacionValida = false;
 	
 };
 

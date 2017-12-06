@@ -78,9 +78,6 @@ void Juego::update(Unidad tiempoDelta) {
 
 		for (int j = 0; j < this->mapa[nivel]->getObjetosDelMapa().size(); j++) {
 			ObjetoFijo* objeto = this->mapa[nivel]->getObjetosDelMapa()[j];
-			//if (j == 0) {
-			//	cout << "objeto Y: " << objeto->get
-			//}
 			if (hayColisionObjetoFijo(posicionAnteriorY, posicionActualY, posicionAnteriorX, posicionActualX, objeto) != 0) {
 				unJugador->chocar(objeto->getUbicacionM() * ALTO_TRAMO - (ALTO_TRAMO * FACTOR_CHOQUE), 0);
 					//cout << "COLISION, yAnterior: " << posicionAnteriorY << ", actual: " << posicionActualY << ", objetoM: " << objeto->getUbicacionM() << ", velocidadY: "<< unJugador->getVelocidad().getY() <<endl;
@@ -98,11 +95,14 @@ void Juego::update(Unidad tiempoDelta) {
 		*/
 
 		//Ojo cuando choca, la velocidad queda en cero, entonces en ese frame no suma nada
-		int factorVapunterto = vaPuntero(unJugador) ? 2 : 1;
-		unJugador->addPuntos(((unJugador->getPosicionY() - posicionAnteriorY) / 100) * unJugador->getVelocidad().getY() * factorVapunterto);
-		//cout << "puntos: " << unJugador->getPuntos() << ", y: "<< unJugador->getPosicionY() / 100 << ", velocidad: " << unJugador->getVelocidad().getY() << ", puntero: " << vaPuntero(unJugador) <<endl;
-		unJugador->setTiempo(tiempo / 1000);
-		
+		int factorVapuntero = vaPuntero(unJugador) ? 2 : 1;
+
+		// Para sumar los puntos se usa la velocidad en km/h
+		int velocidadEnMs = unJugador->getVelocidad().getY() * Constantes::FPS / ALTO_TRAMO;
+		int velocidadEnKmh = velocidadEnMs * 3600 / 1000;
+		unJugador->addPuntos(((unJugador->getPosicionY() - posicionAnteriorY) / ALTO_TRAMO) * velocidadEnKmh * factorVapuntero);
+
+		unJugador->setTiempo(tiempo / 1000);		
 	}
 }
 
@@ -159,6 +159,12 @@ EstadoModeloJuego* Juego::getEstadoJuego() {
 			if (unJugador->getCamara()->getPosicionTarget()->getY() / ALTO_TRAMO >= mapa[nivel]->getLongitudTotal()) {
 				// LLego a la meta
 				unJugador->setDeshabilitarMovimiento(true);
+				if (!yaSumoBonusPuntero) {
+					if (vaPuntero(unJugador)) {
+						unJugador->addPuntos(100000);
+						yaSumoBonusPuntero = true;
+					}
+				}
 			}
 			else {
 				// Se modifica la coordenada x si esta en una curva y esta acelerando
@@ -366,6 +372,7 @@ void Juego::inicializarNivel() {
 		unJugador->setVida(3);
 		unJugador->setChocado(false);
 	}
+	yaSumoBonusPuntero = false;
 	tiempo = 0;
 	//aumentar nivel
 	if (nivel < 2) {
