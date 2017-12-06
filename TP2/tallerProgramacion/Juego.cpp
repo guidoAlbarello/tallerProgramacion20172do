@@ -69,13 +69,13 @@ void Juego::update(Unidad tiempoDelta) {
 				auto millis = sc::duration_cast<sc::milliseconds>(since_epoch);
 				long now = millis.count();
 
-				if (!unJugador->estaChocado()) {
+				//if (!unJugador->estaChocado()) {
 					if (hayColision(posicionAnteriorY, posicionActualY, posicionAnteriorX, posicionActualX, otroJugador)) {
-						unJugador->setChocado(true);
+						//unJugador->setChocado(true);
 						unJugador->chocar(otroJugador->getPosicion()->getY(), otroJugador->getVelocidad().getY());
 						//cout << "Hubo colision y, y: " << unJugador->getPosicion()->getY() << endl;
 					}
-				}
+				//}
 
 				if (now - unJugador->getTiempoDeChocado() > 1000) {
 					unJugador->setChocado(false);

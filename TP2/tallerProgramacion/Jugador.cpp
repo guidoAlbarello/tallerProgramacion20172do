@@ -24,13 +24,56 @@ Jugador::Jugador(SDL_Renderer* renderer) : ObjetoDeJuego(renderer) {
 	this->texture = NULL;
 }
 void Jugador::update(Unidad delta) {
-	if (!chocado) {
-		if (entrada[3])
-			if (!usarNitro) {
+	//auto time = sc::system_clock::now(); // get the current time
+	//auto since_epoch = time.time_since_epoch(); // get the duration since epoch
+	//auto millis = sc::duration_cast<sc::milliseconds>(since_epoch);
+	//long now = millis.count();
+
+	//Uint32 inicio = 0;
+	//Uint32 fin = 0;
+	Uint32 intervaloNitro = 0;
+
+	Uint32 inicio = SDL_GetTicks();
+
+	//fin = SDL_GetTicks();
+	//intervaloNitro = fin - inicio;
+
+	//if (intervaloNitro > Constantes::PING_DELAY);
+
+	//if (!chocado) {
+
+	intervaloNitro += inicio - SDL_GetTicks();
+	if (intervaloNitro > 2000) {
+		prohibirUsoNitro = false;
+		//usarNitro = true;
+		//tiempoNitro = 0;
+		//inicioIntervalo = chrono::high_resolution_clock::now();
+
+		//intervaloNitro = 0;
+	}
+
+		if (entrada[3]) {
+			//if (!usarNitro) {
+
+			
+			if (!prohibirUsoNitro) {
 				usarNitro = true;
 				tiempoNitro = 0;
 				inicioIntervalo = chrono::high_resolution_clock::now();
 			}
+
+			//if (now - tiempoUltimoNitro > 2000) {
+				
+			//}
+			//}
+		}
+		else {
+			if (usarNitro) {
+				// prohibir uso nit
+				//prohibirUsoNitro = true;
+			}
+			usarNitro = false;
+		}
 		if (usarNitro) {
 			auto finIntervalo = chrono::high_resolution_clock::now();
 			auto dur = finIntervalo - inicioIntervalo;
@@ -39,8 +82,10 @@ void Jugador::update(Unidad delta) {
 			tiempoNitro += ms / 1000000.0;
 		}
 
-		if (usarNitro && tiempoNitro >= 10 * 1000)
+		if (usarNitro && tiempoNitro >= 10 * 1000) {
 			usarNitro = false;
+			prohibirUsoNitro = true;
+		}
 
 		/*if (entrada[1])
 		movimientoDeshabilitado = true;*/
@@ -51,7 +96,7 @@ void Jugador::update(Unidad delta) {
 				desacelerar(delta);
 
 			if (entrada[1])			//tecla derecha
-				doblarDerecha(delta);
+					doblarDerecha(delta);
 			//else
 			//dejarDoblarDerecha(delta);
 			else
@@ -87,7 +132,7 @@ void Jugador::update(Unidad delta) {
 			velocidad.setY(0);
 			velocidad.setX(0);
 		}
-	}
+	//}
 }
 
 void Jugador::recibirEntrada(int pos, bool estadoEntrada) {
@@ -98,21 +143,22 @@ void Jugador::acelerar(Unidad delta) {
 	acelerando = true;
 	this->estado = EstadoAuto::DERECHO;
 	if (!usarNitro) {
-		if (velocidad.getY() < velocidadMaxima)
+		if (this->velocidad.getY() + ACELERACION_AUTO_Y * delta < velocidadMaxima)
 			this->velocidad.setY(this->velocidad.getY() + ACELERACION_AUTO_Y * delta);
 		else
 			velocidad.setY(velocidadMaxima);
-	} else {
-		if (velocidad.getY() < velocidadMaxima * ACELERACION_NITRO)
+	}
+	else {
+		if (this->velocidad.getY() + ACELERACION_NITRO * delta < LIMITE_VELOCIDAD_AUTO_NITRO)
 			this->velocidad.setY(this->velocidad.getY() + ACELERACION_NITRO * delta);
 		else
-			velocidad.setY(velocidadMaxima * ACELERACION_NITRO);
+			velocidad.setY(LIMITE_VELOCIDAD_AUTO_NITRO);
 	}
 }
 
 void Jugador::doblarDerecha(Unidad delta) {
 	if (acelerando) {
-		if (posicion.getX() + this->velocidad.getX() + ACELERACION_AUTO_X * delta < LIMITE_PISTA_X_DERECHA 
+		if (posicion.getX() + this->velocidad.getX() + ACELERACION_AUTO_X * delta < LIMITE_PISTA_X_DERECHA
 			&& posicion.getX() + this->velocidad.getX() + ACELERACION_AUTO_X * delta > LIMITE_PISTA_X_IZQUIERDA) {
 			this->estado = EstadoAuto::DOBLANDO_DER;
 			if (velocidad.getX() < LIMITE_VELOCIDAD_AUTO_X)
@@ -125,7 +171,7 @@ void Jugador::doblarDerecha(Unidad delta) {
 
 void Jugador::doblarIzquierda(Unidad delta) {
 	if (acelerando) {
-		if (posicion.getX() - this->velocidad.getX() - ACELERACION_AUTO_X * delta < LIMITE_PISTA_X_DERECHA 
+		if (posicion.getX() - this->velocidad.getX() - ACELERACION_AUTO_X * delta < LIMITE_PISTA_X_DERECHA
 			&& posicion.getX() - this->velocidad.getX() - ACELERACION_AUTO_X * delta > LIMITE_PISTA_X_IZQUIERDA) {
 			this->estado = EstadoAuto::DOBLANDO_IZQ;
 			if (velocidad.getX() > -LIMITE_VELOCIDAD_AUTO_X)
@@ -137,8 +183,18 @@ void Jugador::doblarIzquierda(Unidad delta) {
 }
 
 void Jugador::desacelerar(Unidad delta) {
-	if (velocidad.getY() > 0)
+	if (velocidad.getY() > 0) {
 		this->velocidad.setY(this->velocidad.getY() - FACTOR_DESACELERACION_Y * delta);
+		if (this->velocidad.getY() < 0) {
+			this->velocidad.setY(0);
+		}
+	}
+	else if (velocidad.getY() < 0) {
+		this->velocidad.setY(this->velocidad.getY() + FACTOR_DESACELERACION_Y * delta);
+		if (this->velocidad.getY() > 0) {
+			this->velocidad.setY(0);
+		}
+	}
 	else {
 		velocidad.setY(0);
 		acelerando = false;
@@ -149,9 +205,9 @@ void Jugador::dejarDoblarDerecha(Unidad delta) {
 	//if (velocidad.getX() > 0)
 	//	this->velocidad.setY(this->velocidad.getY() - ACELERACION_AUTO_X * delta * FACTOR_DESACELERACION_Y);
 	//else {
-		velocidad.setX(0);
-		if(!entrada[2])
-			this->estado = EstadoAuto::DERECHO;
+	velocidad.setX(0);
+	if (!entrada[2])
+		this->estado = EstadoAuto::DERECHO;
 	//}
 }
 
@@ -159,9 +215,9 @@ void Jugador::dejarDoblarIzquierda(Unidad delta) {
 	//if (velocidad.getX() < 0)
 	//	this->velocidad.setY(this->velocidad.getY() + ACELERACION_AUTO_X * delta * FACTOR_DESACELERACION_Y);
 	//else {
-		velocidad.setX(0);
-		if (!entrada[1])
-			this->estado = EstadoAuto::DERECHO;
+	velocidad.setX(0);
+	if (!entrada[1])
+		this->estado = EstadoAuto::DERECHO;
 	//}
 }
 
@@ -170,22 +226,27 @@ bool Jugador::estaChocado() {
 }
 
 void Jugador::chocar(double posicionY, int velocidad) {
-	auto time = sc::system_clock::now(); // get the current time
-	auto since_epoch = time.time_since_epoch(); // get the duration since epoch
-	auto millis = sc::duration_cast<sc::milliseconds>(since_epoch);
-	long now = millis.count();
+	//auto time = sc::system_clock::now(); // get the current time
+	//auto since_epoch = time.time_since_epoch(); // get the duration since epoch
+	//auto millis = sc::duration_cast<sc::milliseconds>(since_epoch);
+	//long now = millis.count();
+	dañarAuto();
 
-	if (now - tiempoDeChocado > 1000) {
-		tiempoDeChocado = now;
-		dañarAuto();
-	}
+
+	//if (now - tiempoDeChocado > 1000) {
+	//	tiempoDeChocado = now;
+	//	dañarAuto();
+	//}
 	this->velocidad.setX(0);
 	if (velocidad >= 40) {
 		this->velocidad.setY(velocidad - 40);
-	} else {
+	}
+	else {
 		this->velocidad.setY(0);
 	}
-	this->setPosicionY(posicionY - 180);
+	this->velocidad.setY(-20);
+	//this->setPosicionY(posicionY - 190);
+	//this->setPosicionX(posicion.getX() - 30);
 
 	// Logica sonido choque con timer, TODO!
 	this->sonidoChoque = true;

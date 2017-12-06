@@ -7,13 +7,14 @@
 #include <chrono>
 
 #define ACELERACION_AUTO_X 0.25
-#define ACELERACION_AUTO_Y 0.1
+#define ACELERACION_AUTO_Y 0.05
 #define FACTOR_DESACELERACION_X 0
 #define FACTOR_DESACELERACION_Y 0.09
 #define LIMITE_VELOCIDAD_AUTO_X 33.0
 #define LIMITE_VELOCIDAD_AUTO_Y_PASTO 60.0
 #define LIMITE_VELOCIDAD_AUTO_Y_PISTA 120.0
-#define ACELERACION_NITRO 3.0
+#define LIMITE_VELOCIDAD_AUTO_NITRO 250
+#define ACELERACION_NITRO 0.3
 
 namespace sc = std::chrono;
 class Jugador : public ObjetoDeJuego {  //tal vez diferenciar entre movil y estatico
@@ -79,5 +80,8 @@ protected:
 	std::chrono::time_point<std::chrono::steady_clock> inicioIntervaloSonidoChoque;
 	double tiempoSilencioChoque = 0;
 	long tiempoDeChocado = 0;
+	long tiempoUltimoNitro = 0;
+	Uint32 intervaloNitro = 0;
+	bool prohibirUsoNitro = false;
 };
 #endif

@@ -190,6 +190,7 @@ void EstadoJuegoActivo::render() {
 				spritesVec[i]->render(this->renderer);
 			}
 			SDL_RenderPresent(this->renderer->getRendererJuego());
+			SDL_RenderPresent(this->renderer->getRendererMapa());
 
 			//this->mapaView->renderMiniMap();
 		} else {
