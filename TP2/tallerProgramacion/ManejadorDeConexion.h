@@ -3,7 +3,7 @@
 #ifndef  MANEJADOR_DE_CONEXION_H
 #define MANEJADOR_DE_CONEXION_H
 
-#define USAR_COLA_MENSAJES true
+#define USAR_COLA_MENSAJES false
 #define LIMITE_COLA_MENSAJES 2
 #include "SocketSincronico.h"
 #include <thread>
@@ -13,6 +13,7 @@
 
 class ManejadorDeConexion {
 public:
+	bool recibioPing();
 	ManejadorDeConexion();
 	ManejadorDeConexion(SOCKET unSocket);
 	ManejadorDeConexion(SocketSincronico* unSocket);
@@ -39,11 +40,13 @@ protected:
 	std::condition_variable condicion_enviar;
 	std::condition_variable condicion_recibir;
 	std::vector<char*> mensajesEntrantes;
-
+	int tamanioDatosRecibidos = 0;
 	char* mensajeRecibido;
 	char* bufferDatosRecibidos;
 	char* bufferDatosAEnviar;
+	char* mensajeAUtilizar = NULL;
 	int tamanioDatosAEnviar;
+	bool estadoPing = false;
 };
 
 #endif

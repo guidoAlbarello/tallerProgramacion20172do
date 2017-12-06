@@ -54,7 +54,7 @@ void Conexion::cerrarConexion() {
 
 void Conexion::procesarSolicitudPing() {
 	// Envia un ping de vuelta hacia el cliente como respuesta
-	ComandoCliente comando = ComandoCliente::RESULTADO_PING;
+	ComandoCliente comando = ComandoCliente::HRESULTADO_PING;
 	MensajeDeRed* mensajeDeRed = new MensajeDeRed(comando);
 	string mensaje = mensajeDeRed->getComandoClienteSerializado();
 	int tamanio = mensaje.length() + 1;
@@ -229,6 +229,7 @@ void Conexion::procesarSolicitudLogin() {
 			this->conexionConCliente->getSocket().enviarDatos(mensaje.c_str(), tamanio);
 
 		} else {
+			this->procesarPeticionListaDeUsuarios(this->servidor->getJuego()->getJugadores());
 			EstadoInicialJuego* estadoInicial = this->servidor->getJuego()->getEstadoJuegoInicial();
 			estadoInicial->tamanio = this->servidor->getConfiguracion()->getMaxClientes();
 
@@ -336,6 +337,7 @@ void Conexion::procesarDatosRecibidos() {
 	auto timeOut = std::chrono::high_resolution_clock::now();
 	while (conexionActiva) {
 		char* datosRecibidos = this->conexionConCliente->getMensaje();
+		bool recibioPing = this->conexionConCliente->recibioPing();
 		if (datosRecibidos != NULL) {
 
 			timeOut = std::chrono::high_resolution_clock::now();
@@ -350,12 +352,12 @@ void Conexion::procesarDatosRecibidos() {
 				// Envia respuesta con el resultado del login
 				userRecibido = mensajeDeRed->getParametro(0);
 				passRecibida = mensajeDeRed->getParametro(1);
-				procesarLogin = true;
+				procesarSolicitudLogin();
 				break;
-			case ComandoServidor::PING:
+			/*case ComandoServidor::HPING:
 				//Logger::getInstance()->log(Debug, "Recibio un PING");
 				enviarPing = true;
-				break;
+				break;*/
 			case ComandoServidor::CLOSE:
 				//Logger::getInstance()->log(Debug, "Recibio un PING");
 				this->clienteCerroConexion = true;
@@ -389,7 +391,10 @@ void Conexion::procesarDatosRecibidos() {
 			}
 			timeOut = std::chrono::high_resolution_clock::now();
 		}
-
+		if (recibioPing) {
+			procesarSolicitudPing();
+			timeOut = std::chrono::high_resolution_clock::now();
+		}
 		double tiempoTardado = std::chrono::duration_cast<std::chrono::duration<double, std::ratio<1>>>(std::chrono::high_resolution_clock::now() - timeOut).count() * 1000;
 		if (tiempoTardado > (Constantes::PING_DELAY) + Constantes::TOLERANCIA_PING) {
 			this->conexionActiva = false;

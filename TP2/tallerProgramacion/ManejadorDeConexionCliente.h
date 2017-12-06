@@ -10,6 +10,7 @@ using namespace std;
 
 class ManejadorDeConexionCliente : public ManejadorDeConexion {
 public:
+
 	bool enviarEntrada();
 	bool iniciarConexion(string ipServidor, string puertoServidor);
 	//bool ejecutarComando(Comando comando, std::stri, std::string puertoServidor);
@@ -22,6 +23,8 @@ public:
 	void borrarEntorno();
 
 	bool enviarSolicitudPing();
+
+
 };
 
 #endif

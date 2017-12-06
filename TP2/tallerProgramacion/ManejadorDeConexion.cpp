@@ -1,5 +1,11 @@
 #include "ManejadorDeConexion.h"
 
+bool ManejadorDeConexion::recibioPing() {
+	bool resultado = estadoPing;
+	estadoPing = false;
+	return resultado;
+}
+
 ManejadorDeConexion::ManejadorDeConexion() {
 	this->socket = new SocketSincronico();
 	bufferDatosAEnviar = NULL;
@@ -31,21 +37,29 @@ void  ManejadorDeConexion::notificarDatoARecibir() {
 }
 
 char* ManejadorDeConexion::getMensaje() {
-	char* primerMensaje = NULL;
+	char* mensajeAUtilizar = NULL;
 	if (USAR_COLA_MENSAJES) {
 		m_bufferDatosRecibidos.lock();
 		if (this->mensajesEntrantes.size() > 0) {
-			primerMensaje = this->mensajesEntrantes.at(0);
+			mensajeAUtilizar = this->mensajesEntrantes.at(0);
 			this->mensajesEntrantes.erase(this->mensajesEntrantes.begin());
 		}
 		m_bufferDatosRecibidos.unlock();
 	} else {
-		m_bufferDatosRecibidos.lock();
-		primerMensaje = mensajeRecibido;
-		mensajeRecibido = NULL;					//esto puede ser el causante de muchos crash random por el free de memoria en conexion.cpp procesarDatosRecibidos
-		m_bufferDatosRecibidos.unlock();
+		//m_bufferDatosRecibidos.lock();
+		if (mensajeRecibido != NULL) {
+			mensajeAUtilizar = (char*) malloc(tamanioDatosRecibidos);
+			memcpy(mensajeAUtilizar, mensajeRecibido, tamanioDatosRecibidos);
+			tamanioDatosRecibidos = 0;
+			if (mensajeRecibido != NULL) {
+				free(mensajeRecibido);
+				mensajeRecibido = NULL;
+			}
+		}
+		//esto puede ser el causante de muchos crash random por el free de memoria en conexion.cpp procesarDatosRecibidos
+		//m_bufferDatosRecibidos.unlock();
 	}
-	return primerMensaje;
+	return mensajeAUtilizar;
 }
 
 void ManejadorDeConexion::enviarDatos() {
@@ -66,7 +80,9 @@ void ManejadorDeConexion::enviarDatos() {
 void ManejadorDeConexion::recibirDatos() {
 
 	while (conexionActiva) {
-		char *datosRecibidos = this->socket->recibirDatos();
+		m_bufferDatosRecibidos.lock();
+		char *datosRecibidos = this->socket->recibirDatos(&tamanioDatosRecibidos);
+		m_bufferDatosRecibidos.unlock();
 		if (datosRecibidos != NULL) {
 			if (USAR_COLA_MENSAJES) {
 				m_bufferDatosRecibidos.lock();
@@ -82,10 +98,12 @@ void ManejadorDeConexion::recibirDatos() {
 				m_bufferDatosRecibidos.unlock();
 			} else {
 				m_bufferDatosRecibidos.lock();
-				if (mensajeRecibido != NULL) {
-					free(mensajeRecibido);
+				
+				if (datosRecibidos[0] == 'H') {
+					estadoPing = true;
 				}
-				mensajeRecibido = datosRecibidos;
+				else
+					mensajeRecibido = datosRecibidos;
 				m_bufferDatosRecibidos.unlock();
 			}
 		}

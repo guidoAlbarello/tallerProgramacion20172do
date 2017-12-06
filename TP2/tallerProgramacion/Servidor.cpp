@@ -432,24 +432,6 @@ void Servidor::updateModel() {
 			yaEnvioEstado = true;	
 		} 
 		
-		m_agregarConexion.lock();
-		//bool yaDurmio = false;
-		for (std::vector<Conexion*>::iterator it = conexionesActivas.begin(); it != conexionesActivas.end(); ++it) {
-			Conexion* unaConexion = (Conexion*)*it;
-			if (unaConexion->getConexionActiva() && unaConexion->getEnviarPing() && !unaConexion->getProcesarLogin()) {
-				unaConexion->procesarSolicitudPing();
-			}
-
-			//if (!yaDurmio) {
-			//	std::this_thread::sleep_for(std::chrono::milliseconds(2000));
-			//	yaDurmio = true;
-			//}
-			
-			if (unaConexion->getConexionActiva() && unaConexion->getProcesarLogin()) {
-				unaConexion->procesarSolicitudLogin();
-			}
-		}
-		m_agregarConexion.unlock();
 		std::this_thread::sleep_for(std::chrono::milliseconds(Constantes::UPDATE_MODEL_DELAY));//esdto se podria cambiar x un while hasta q no pase el intervalo de tiempo, y mientras q no pase aprovechar el tiempo para hacer clean ups  
 	}
 

@@ -16,8 +16,8 @@ string Constantes::getComandoServidor(ComandoServidor comando)
 	{
 	case ComandoServidor::LOG:
 		return "LOG";
-	case ComandoServidor::PING:
-		return "PING";
+	case ComandoServidor::HPING:
+		return "HPING";
 	case ComandoServidor::SEND_MESSAGE:
 		return "SEND_MESSAGE";
 	case ComandoServidor::RETRIEVE_MESSAGES:
@@ -40,9 +40,9 @@ ComandoServidor Constantes::getConstComandoServidor(string comando){
 	{
 		return ComandoServidor::LOG;
 	}
-	if (comando.compare("PING") == 0)
+	if (comando.compare("HPING") == 0)
 	{
-		return ComandoServidor::PING;
+		return ComandoServidor::HPING;
 	}
 	if (comando.compare("SEND_MESSAGE") == 0)
 	{
@@ -90,8 +90,8 @@ string Constantes::getComandoCliente(ComandoCliente comando)
 		return "RECIEVE_GLOBAL_MESSAGES";
 	case ComandoCliente::RECIEVE_PRIVATE_MESSAGES:
 		return "RECIEVE_PRIVATE_MESSAGES";
-	case ComandoCliente::RESULTADO_PING:
-		return "RESULTADO_PING";
+	case ComandoCliente::HRESULTADO_PING:
+		return "HRESULTADO_PING";
 	case ComandoCliente::RESULTADO_USUARIOS:
 		return "RESULTADO_USUARIOS";
 	case ComandoCliente::INIT:
@@ -136,8 +136,8 @@ ComandoCliente Constantes::getConstComandoCliente(string comando) {
 		return ComandoCliente::RECIEVE_PRIVATE_MESSAGES;
 	}
 
-	if (comando.compare("RESULTADO_PING") == 0) {
-		return ComandoCliente::RESULTADO_PING;
+	if (comando.compare("HRESULTADO_PING") == 0) {
+		return ComandoCliente::HRESULTADO_PING;
 	}
 
 	if (comando.compare("RESULTADO_USUARIOS") == 0) {

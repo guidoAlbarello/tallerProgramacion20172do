@@ -113,12 +113,7 @@ void Cliente::correrCicloPrincipal() {
 	Uint32 intervalo = 0;
 
 	while (clienteActivo) {
-		this->maquinaDeEstados->update(this->conexionDelCliente);
-		if (ManejadorInput::getInstance()->cerrarCliente()) {
-			this->clienteDecideCerrar = true;
-			clienteActivo = false;
-		}
-		if (!juegoIniciado /*|| enPantallaDeTransicion*/) {
+		if (!juegoIniciado || enPantallaDeTransicion) {
 			enviandoPing = true;
 			fin = SDL_GetTicks();
 			intervalo = fin - inicio;
@@ -127,7 +122,11 @@ void Cliente::correrCicloPrincipal() {
 				intervalo = 0;
 			}
 		}
-		
+		this->maquinaDeEstados->update(this->conexionDelCliente);
+		if (ManejadorInput::getInstance()->cerrarCliente()) {
+			this->clienteDecideCerrar = true;
+			clienteActivo = false;
+		}		
 		//std::this_thread::sleep_for(std::chrono::milliseconds(1000 / (Constantes::FPS)));
 		std::this_thread::sleep_for(std::chrono::milliseconds(25));
 	}
@@ -481,19 +480,21 @@ void Cliente::procesarMensajesPrivados(MensajeDeRed * unMensajeDeRed) {
 /* Procesa comandos recibidos desde el servidor */
 void Cliente::procesarDatosRecibidos() {
 	auto timeOut = std::chrono::high_resolution_clock::now();
-
+	bool usandoBuffer = false;
 	while (this->conexionViva) {
+		usandoBuffer = true;
 		char* datosRecibidos = this->conexionDelCliente->getMensaje();
+		bool recibioPing = this->conexionDelCliente->recibioPing();
 		if (datosRecibidos != NULL) {
 			timeOut = std::chrono::high_resolution_clock::now();
 			std::string datosRecibidosString(datosRecibidos);
 			MensajeDeRed* mensajeDeRed = new MensajeDeRed(datosRecibidosString, Constantes::CLIENTE);
 			EstadoModeloJuego* estadoModeloJuego = NULL;
 			EstadoInicialJuego* estadoInicialJuego = NULL;
+
 			bool resultado = false;
 			switch (mensajeDeRed->getComandoCliente()) {
 			case ComandoCliente::RESULTADO_LOGIN:
-				enviandoPing = false;
 				procesarResultadoLogin(mensajeDeRed, datosRecibidos);
 				break;
 			case ComandoCliente::RESULTADO_SEND_MESSAGE:
@@ -513,7 +514,6 @@ void Cliente::procesarDatosRecibidos() {
 				Logger::getInstance()->log(Debug, datosRecibidosString);
 				break;
 			case ComandoCliente::CLOSE:
-				enviandoPing = false;
 				this->estaLogueado = false;
 				this->conexionViva = false;
 				this->clienteActivo = false;
@@ -524,31 +524,25 @@ void Cliente::procesarDatosRecibidos() {
 				break;
 			case ComandoCliente::INIT:
 				Logger::getInstance()->log(Debug, "Recibio un INIT");
-				enviandoPing = false;
 				estadoInicialJuego = new EstadoInicialJuego();
 				memcpy(estadoInicialJuego, datosRecibidos + 4 + 1, sizeof(EstadoInicialJuego));
 				iniciarJuego(estadoInicialJuego);
 				break;
 			case ComandoCliente::UPDATE_MODEL:
 				//Logger::getInstance()->log(Debug, "Recibio un UPDATE_MODEL");
-				if (!enviandoPing) {
-					enviandoPing = false;
 					enPantallaDeTransicion = false;
 					estadoModeloJuego = new EstadoModeloJuego();
 					memcpy(estadoModeloJuego, datosRecibidos + 12 + 1, sizeof(EstadoModeloJuego));
 					procesarEstadoModelo(estadoModeloJuego);
-				}
 				break;
 			case ComandoCliente::TRANSITION_SCREEN:
 				Logger::getInstance()->log(Debug, "Recibio un TRANSITION_SCREEN");
-				enviandoPing = false;
 				enPantallaDeTransicion = true;
 				this->maquinaDeEstados->cambiarNivel();
 				break;
-			case ComandoCliente::RESULTADO_PING:
+			/*case ComandoCliente::RESULTADO_PING:
 				Logger::getInstance()->log(Debug, "Recibio un RESULTADO_PING");
-				enviandoPing = false;
-				break;
+				break;*/
 			case ComandoCliente::RESULTADO_USUARIOS:
 				Logger::getInstance()->log(Debug, "se recibio una lista de usuarios");
 				//mostrarUsuariosConectados(mensajeDeRed);
@@ -573,9 +567,11 @@ void Cliente::procesarDatosRecibidos() {
 			timeOut = std::chrono::high_resolution_clock::now();
 		} 
 
+		if(recibioPing)
+			timeOut = std::chrono::high_resolution_clock::now();
 
 		double tiempoTardado = std::chrono::duration_cast<std::chrono::duration<double, std::ratio<1>>>(std::chrono::high_resolution_clock::now() - timeOut).count() * 1000;
-		if (!enPantallaDeTransicion /*&& this->juegoIniciado*/ && tiempoTardado > (Constantes::PING_DELAY) + Constantes::TOLERANCIA_PING) {
+		if (/*!enPantallaDeTransicion && this->juegoIniciado &&*/ tiempoTardado > (Constantes::PING_DELAY) + Constantes::TOLERANCIA_PING) {
 			this->estaLogueado = false;
 			this->conexionViva = false;
 			this->clienteActivo = false;

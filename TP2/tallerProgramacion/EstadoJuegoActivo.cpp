@@ -379,7 +379,7 @@ void EstadoJuegoActivo::recieveInput(void * param) {
 
 void EstadoJuegoActivo::cambiarNivel() {
 	if (!estaEnPantallaTransicion) {
-		if (this->nivel <2) {
+		if (this->nivel <3) {
 			estaEnPantallaTransicion = true;
 			this->mapaView->cambiarNivel();
 			this->escenario->cambiarNivel();

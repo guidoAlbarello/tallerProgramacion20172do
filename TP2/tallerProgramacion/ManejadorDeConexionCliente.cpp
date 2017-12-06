@@ -86,7 +86,7 @@ void ManejadorDeConexionCliente::borrarEntorno() {
 }
 
 bool ManejadorDeConexionCliente::enviarSolicitudPing() {
-	MensajeDeRed* mensajeDeRed = new MensajeDeRed(ComandoServidor::PING);
+	MensajeDeRed* mensajeDeRed = new MensajeDeRed(ComandoServidor::HPING);
 	//Logger::getInstance()->log(Debug, "se realiza el envio de un PING");
 	string mensaje = mensajeDeRed->getComandoServidorSerializado();
 	int tamanio = mensaje.length() + 1;

@@ -50,8 +50,10 @@ void ManejadorDeTexturas::drawAnimatedSprite(std::string id, int x, int y, int a
 	destRect.h = 1.3*alto * anchoDest / ancho * 3 / 2;
 	destRect.x = p1.x - destRect.w / 2;
 	destRect.y = p1.y - destRect.h / 2;
-	if (grisar)
+	if (grisar) {
+		srcRect.x = 0;
 		SDL_RenderCopyEx(pRenderer, texturas["autoGrisado"], &srcRect, &destRect, 0, 0, flip);
+	}
 	else
 		SDL_RenderCopyEx(pRenderer, texturas[id], &srcRect, &destRect, 0, 0, flip);
 }

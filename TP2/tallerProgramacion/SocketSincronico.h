@@ -19,7 +19,7 @@ public:
 	int crearSocketCliente(std::string unaIp, std::string unPuerto);
 	int crearSocketServidor(std::string unPuerto, int cantidadMaximaDeConexiones);
 	bool enviarDatos(const char* datosAEnviar, int tamanio);
-	char* recibirDatos();
+	char* recibirDatos(int *tamanioBuffer = NULL);
 	int cerrarSocket();
 	int hayClienteIntentandoConectarse();
 	SOCKET getSocket() { return this->socketDeConexion; };

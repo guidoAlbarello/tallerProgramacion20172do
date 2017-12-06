@@ -154,15 +154,16 @@ bool SocketSincronico::enviarDatos(const char* datosAEnviar, int tamanio) {
 	return true;
 }
 
-char* SocketSincronico::recibirDatos() {
+char* SocketSincronico::recibirDatos(int* tamanioBuffer) {
 	int tamanioDeDatosRecibidos = 0;
 	int tamanio = 0;
 	void* datosARecibir = NULL;
+	int cantidadDatosRecibidos = 0;
 		// Send an initial buffer
 		tamanioDeDatosRecibidos = recv(this->socketDeConexion, (char*)&tamanio, sizeof(tamanio), 0);
 		if (tamanioDeDatosRecibidos > 0) {
 			if (tamanioDeDatosRecibidos == sizeof(tamanio)) {
-				int cantidadDatosRecibidos = 0;
+				cantidadDatosRecibidos = 0;
 				datosARecibir = malloc(tamanio);
 				while (cantidadDatosRecibidos < tamanio) {
 					int datosRecibidos = recv(this->socketDeConexion, (char*)datosARecibir + cantidadDatosRecibidos, tamanio - cantidadDatosRecibidos, 0);
@@ -188,6 +189,11 @@ char* SocketSincronico::recibirDatos() {
 			//Logger::getInstance()->log(Debug, "datos recibidos: " + mensaje);
 			//cout << "|----------------------------|" << mensaje;
 		}
+
+		if (tamanioBuffer != NULL )
+			if(cantidadDatosRecibidos > 0 && ((char*)datosARecibir)[0] != 'H')
+				*tamanioBuffer = tamanio;
+		
 	return (char*)datosARecibir;
 }
 
