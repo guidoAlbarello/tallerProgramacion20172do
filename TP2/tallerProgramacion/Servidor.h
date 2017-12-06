@@ -45,6 +45,7 @@ protected:
 	std::thread t_escucharClientes;
 	std::thread t_enviarChatGlobal;
 	std::thread t_updateModel;
+	std::thread t_verificarConexiones;
 	bool servidorActivo;
 	void leerServerConfig();
 	void escucharClientes();

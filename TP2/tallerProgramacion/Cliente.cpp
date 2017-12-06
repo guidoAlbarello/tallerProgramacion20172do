@@ -627,6 +627,7 @@ void Cliente::iniciarJuego(EstadoInicialJuego* unEstadoInicial) {
 		estadoJuegoActivo->setNivel(unEstadoInicial->nivel);
 		this->maquinaDeEstados->changeState(estadoJuegoActivo, unEstadoInicial);
 		this->juegoIniciado = true;
+		cout << "comando init procesado" << endl;
 		m_init_juego.unlock();
 	}
 }
