@@ -24,65 +24,69 @@ Jugador::Jugador(SDL_Renderer* renderer) : ObjetoDeJuego(renderer) {
 	this->texture = NULL;
 }
 void Jugador::update(Unidad delta) {
-	if (entrada[3])
-		if (!usarNitro) {
-			usarNitro = true;
-			tiempoNitro = 0;
+	if (!chocado) {
+		if (entrada[3])
+			if (!usarNitro) {
+				usarNitro = true;
+				tiempoNitro = 0;
+				inicioIntervalo = chrono::high_resolution_clock::now();
+			}
+		if (usarNitro) {
+			auto finIntervalo = chrono::high_resolution_clock::now();
+			auto dur = finIntervalo - inicioIntervalo;
+			auto ms = std::chrono::duration_cast<std::chrono::nanoseconds>(dur).count();
 			inicioIntervalo = chrono::high_resolution_clock::now();
+			tiempoNitro += ms / 1000000.0;
 		}
-	if (usarNitro) {
-		auto finIntervalo = chrono::high_resolution_clock::now();
-		auto dur = finIntervalo - inicioIntervalo;
-		auto ms = std::chrono::duration_cast<std::chrono::nanoseconds>(dur).count();
-		inicioIntervalo = chrono::high_resolution_clock::now();
-		tiempoNitro += ms / 1000000.0;
-	}
 
-	if (usarNitro && tiempoNitro >= 10 * 1000)
-		usarNitro = false;
+		if (usarNitro && tiempoNitro >= 10 * 1000)
+			usarNitro = false;
 
-	/*if (entrada[1])
+		/*if (entrada[1])
 		movimientoDeshabilitado = true;*/
-	if (!movimientoDeshabilitado) {
-		if (entrada[0]) 		//tecla arriba
-			acelerar(delta);
-		else
-			desacelerar(delta);
+		if (!movimientoDeshabilitado) {
+			if (entrada[0]) 		//tecla arriba
+				acelerar(delta);
+			else
+				desacelerar(delta);
 
-		if (entrada[1])			//tecla derecha
-			doblarDerecha(delta);
-		//else
+			if (entrada[1])			//tecla derecha
+				doblarDerecha(delta);
+			//else
 			//dejarDoblarDerecha(delta);
-		else
+			else
 
-			if (entrada[2])			//tecla izquierda
-				doblarIzquierda(delta);
-			else {
-				dejarDoblarDerecha(delta);
-				dejarDoblarIzquierda(delta);
-			}
+				if (entrada[2])			//tecla izquierda
+					doblarIzquierda(delta);
+				else {
+					dejarDoblarDerecha(delta);
+					dejarDoblarIzquierda(delta);
+				}
 
-			// los 340 q aparecen son la mitaddel alcho de la pantlla menos el ancho de la imagen
-			// agrande la imagen en 1/2 la veia muychica cualquir csa se puede cambiar
-			//if ((posicion.getX() + velocidad.getX()) >= -340 & (posicion.getX() + velocidad.getX()) <= 340) {
-			if (posicion.getX() + velocidad.getX() < LIMITE_PISTA_X_DERECHA && posicion.getX() + velocidad.getX() > LIMITE_PISTA_X_IZQUIERDA) {
-				posicion.setX(posicion.getX() + velocidad.getX());  //retocar un poco mas tal vez, multiplicar por delta la velocidad ? 
-			}
+				// los 340 q aparecen son la mitaddel alcho de la pantlla menos el ancho de la imagen
+				// agrande la imagen en 1/2 la veia muychica cualquir csa se puede cambiar
+				//if ((posicion.getX() + velocidad.getX()) >= -340 & (posicion.getX() + velocidad.getX()) <= 340) {
+				if (posicion.getX() + velocidad.getX() < LIMITE_PISTA_X_DERECHA && posicion.getX() + velocidad.getX() > LIMITE_PISTA_X_IZQUIERDA) {
+					posicion.setX(posicion.getX() + velocidad.getX());  //retocar un poco mas tal vez, multiplicar por delta la velocidad ? 
+				}
 
-			int limitePastoXDerecha = ANCHO_TRAMO / 2 + 90;
-			int limitePastoXIzquierda = ANCHO_TRAMO / 2 * (-1) - 90;
+				int limitePastoXDerecha = ANCHO_TRAMO / 2 + 90;
+				int limitePastoXIzquierda = ANCHO_TRAMO / 2 * (-1) - 90;
 
-			if ((posicion.getX() > limitePastoXDerecha) ||
-				(posicion.getX() < limitePastoXIzquierda)) {
-				velocidadMaxima = LIMITE_VELOCIDAD_AUTO_Y_PASTO;
-			} else {
-				velocidadMaxima = LIMITE_VELOCIDAD_AUTO_Y_PISTA;
-			}
+				if ((posicion.getX() > limitePastoXDerecha) ||
+					(posicion.getX() < limitePastoXIzquierda)) {
+					velocidadMaxima = LIMITE_VELOCIDAD_AUTO_Y_PASTO;
+				}
+				else {
+					velocidadMaxima = LIMITE_VELOCIDAD_AUTO_Y_PISTA;
+				}
 
-			posicion.setY(posicion.getY() + velocidad.getY());
-	} else {
-		velocidad.setY(0);
-		velocidad.setX(0);
+				posicion.setY(posicion.getY() + velocidad.getY());
+		}
+		else {
+			velocidad.setY(0);
+			velocidad.setX(0);
+		}
 	}
 }
 
@@ -171,7 +175,6 @@ void Jugador::chocar(double posicionY, int velocidad) {
 	auto millis = sc::duration_cast<sc::milliseconds>(since_epoch);
 	long now = millis.count();
 
-	this->chocado = true;
 	if (now - tiempoDeChocado > 1000) {
 		tiempoDeChocado = now;
 		dañarAuto();
@@ -182,8 +185,7 @@ void Jugador::chocar(double posicionY, int velocidad) {
 	} else {
 		this->velocidad.setY(0);
 	}
-	//this->setPosicionY(posicionY - 60);
-	this->setPosicionY(posicionY - 120);
+	this->setPosicionY(posicionY - 180);
 
 	// Logica sonido choque con timer, TODO!
 	this->sonidoChoque = true;

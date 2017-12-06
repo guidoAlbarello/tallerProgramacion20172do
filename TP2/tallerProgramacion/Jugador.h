@@ -55,6 +55,8 @@ public:
 	void setSonidoChoque(bool sonidoChoque) { this->sonidoChoque = false; }
 	void setVida(int vida) { this->vida = vida; }
 	void setChocado(bool chocado) { this->chocado = chocado; }
+	long getTiempoDeChocado() { return this->tiempoDeChocado; }
+	void setTiempoDeChocado(long tiempoDeChocado) { this->tiempoDeChocado = tiempoDeChocado; }
 protected:
 	void dañarAuto();
 	bool entrada[Constantes::CANT_TECLAS];

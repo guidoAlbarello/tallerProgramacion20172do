@@ -62,6 +62,7 @@ private:
 	unsigned long tiempo;
 	bool yaInicioTiempo = false;
 	bool yaSumoBonusPuntero = false;
+	long tiempoDeChocado = 0;
 };
 
 #endif

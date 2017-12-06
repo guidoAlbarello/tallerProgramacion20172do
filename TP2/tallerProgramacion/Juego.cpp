@@ -64,9 +64,21 @@ void Juego::update(Unidad tiempoDelta) {
 			}
 	
 			if (posicionActualY / ALTO_TRAMO  < mapa[nivel]->getLongitudTotal() - 5) { // fix para que no colisione cuando se acerca a la meta
-				if (hayColision(posicionAnteriorY, posicionActualY, posicionAnteriorX, posicionActualX, otroJugador)) {
-					unJugador->chocar(otroJugador->getPosicion()->getY(), otroJugador->getVelocidad().getY());
-					//cout << "Hubo colision y, y: " << unJugador->getPosicion()->getY() << endl;
+				auto time = sc::system_clock::now(); // get the current time
+				auto since_epoch = time.time_since_epoch(); // get the duration since epoch
+				auto millis = sc::duration_cast<sc::milliseconds>(since_epoch);
+				long now = millis.count();
+
+				if (!unJugador->estaChocado()) {
+					if (hayColision(posicionAnteriorY, posicionActualY, posicionAnteriorX, posicionActualX, otroJugador)) {
+						unJugador->setChocado(true);
+						unJugador->chocar(otroJugador->getPosicion()->getY(), otroJugador->getVelocidad().getY());
+						//cout << "Hubo colision y, y: " << unJugador->getPosicion()->getY() << endl;
+					}
+				}
+
+				if (now - unJugador->getTiempoDeChocado() > 1000) {
+					unJugador->setChocado(false);
 				}
 			}
 
@@ -301,10 +313,10 @@ void Juego::gameLoop() {
 int Juego::hayColision(int yDesde, int yHasta, int xDesde, int xHasta, Jugador* otroJugador) {
 	int result = 0;
 	//TODO, para "Y" le podria sumar la altura de el auto, para que la colision sea con la parte superior del auto
-	if (yDesde > otroJugador->getPosicion()->getY() - 30) {
+	if (yDesde > otroJugador->getPosicion()->getY() - 120) {
 		return result;
 	}
-	if (yHasta < otroJugador->getPosicion()->getY() - 30) {
+	if (yHasta < otroJugador->getPosicion()->getY() - 120) {
 		return result;
 	}
 	//El punto de aclaje es 10 (no se porque, pero lo debugie)
