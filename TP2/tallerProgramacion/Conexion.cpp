@@ -264,6 +264,7 @@ void Conexion::procesarSolicitudLogin() {
 
 	}
 	procesarLogin = false;
+	enviarPing = false;
 }
 
 void Conexion::enviarChatGlobal(bool tipoDeChat, string unEmisor, string unMensaje) {
