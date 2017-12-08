@@ -42,25 +42,25 @@ void Jugador::update(Unidad delta) {
 
 	//if (!chocado) {
 
-	intervaloNitro += inicio - SDL_GetTicks();
-	if (intervaloNitro > 2000) {
-		prohibirUsoNitro = false;
-		//usarNitro = true;
-		//tiempoNitro = 0;
-		//inicioIntervalo = chrono::high_resolution_clock::now();
-
-		//intervaloNitro = 0;
-	}
+	
 
 		if (entrada[3]) {
 			//if (!usarNitro) {
 
 			
 			if (!prohibirUsoNitro) {
+				if (!usarNitro) {
+					tiempoNitro = 0;
+					inicioIntervalo = chrono::high_resolution_clock::now();
+				}
 				usarNitro = true;
-				tiempoNitro = 0;
-				inicioIntervalo = chrono::high_resolution_clock::now();
 			}
+
+
+			//if (usarNitro && tiempoNitro >= 10 * 1000) {
+			//	usarNitro = false;
+			//	prohibirUsoNitro = true;
+			//}
 
 			//if (now - tiempoUltimoNitro > 2000) {
 				
@@ -70,7 +70,7 @@ void Jugador::update(Unidad delta) {
 		else {
 			if (usarNitro) {
 				// prohibir uso nit
-				//prohibirUsoNitro = true;
+				prohibirUsoNitro = true;
 			}
 			usarNitro = false;
 		}
@@ -131,6 +131,16 @@ void Jugador::update(Unidad delta) {
 		else {
 			velocidad.setY(0);
 			velocidad.setX(0);
+		}
+
+		intervaloNitro += inicio - SDL_GetTicks();
+		if (intervaloNitro > 2000) {
+			prohibirUsoNitro = false;
+			//usarNitro = true;
+			//tiempoNitro = 0;
+			//inicioIntervalo = chrono::high_resolution_clock::now();
+
+			intervaloNitro = 0;
 		}
 	//}
 }

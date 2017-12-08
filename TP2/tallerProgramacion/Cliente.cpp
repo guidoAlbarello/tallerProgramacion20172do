@@ -29,8 +29,8 @@ void Cliente::render() {
 			}
 			fin = SDL_GetTicks();
 			intervalo = fin - inicio;
-			if (intervalo > 16) {
-				intervalo = 16 - 1;
+			if (intervalo > (1000 / Constantes::FPS)) {
+				intervalo = (1000 / Constantes::FPS) - 1;
 			}
 		} else {
 			SDL_SetRenderDrawColor(this->renderer->getRendererJuego(), 242, 242, 242, 255);
